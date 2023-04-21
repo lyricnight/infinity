@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "compatibilityLevel": "JAVA_8",
+  "package": "me.lyric.infinity.mixin.mixins",
+  "refmap": "mixins.solaros.refmap.json",
+  "mixins": [
+    "accessors.ICPacketPlayer",
+    "accessors.IEntity",
+    "accessors.IEntityPlayerSP",
+    "blocks.MixinBlockLiquid",
+    "entity.MixinEntityOtherPlayerMP",
+    "entity.MixinEntityPlayerSP",
+    "entity.MixinEntity",
+    "entity.MixinEntityRenderer",
+    "gui.MixinGuiIngame",
+    "network.MixinNetworkManager",
+    "render.MixinRenderEnderCrystal",
+    "render.MixinRenderLivingBase"
+  ]
+}
