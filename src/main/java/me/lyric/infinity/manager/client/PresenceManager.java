@@ -9,10 +9,6 @@ import club.minnced.discord.rpc.DiscordRichPresence;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.GuiConnecting;
 
-/**
- * @author zzurio
- */
-
 public class PresenceManager implements IGlobals {
 
     final private static DiscordRPC lib = DiscordRPC.INSTANCE;
