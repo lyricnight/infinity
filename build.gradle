@@ -37,7 +37,7 @@ def getGitHash = { ->
 }
 
 group = 'me.lyric.infinity'
-version = '0.0.1-' + getGitHash()
+version = '0.0.2-' + getGitHash()
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -131,7 +131,7 @@ mixin {
 }
 
 jar.manifest.attributes(
-        'MixinConfigs': 'mixins.solaros.json',
+        'MixinConfigs': 'mixins.infinity.json',
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'TweakOrder': 0,
         'FMLCorePluginContainsFMLMod': true,

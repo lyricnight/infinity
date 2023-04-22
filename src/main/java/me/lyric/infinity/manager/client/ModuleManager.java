@@ -78,6 +78,7 @@ public class ModuleManager {
 
         // MISC
         this.modules.add(new AntiAim());
+        this.modules.add(new BetterChat());
         this.modules.add(new AutoRespawn());
         this.modules.add(new ChorusControl());
         this.modules.add(new LiquidInteract());

@@ -12,7 +12,7 @@ public class MixinLoader implements IFMLLoadingPlugin {
 
     public MixinLoader() {
         MixinBootstrap.init();
-        Mixins.addConfiguration("mixins.solaros.json");
+        Mixins.addConfiguration("mixins.infinity.json");
         MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
     }
 

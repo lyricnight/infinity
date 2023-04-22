@@ -2,7 +2,7 @@
   {
     "modid": "infinity",
     "name": "Infinity",
-    "description": "not skidded real",
+    "description": "from london with love",
     "version": "0.0.1",
     "mcversion": "1.12.2-14.23.5.2768",
     "url": "",
@@ -10,7 +10,7 @@
     "authorList": [
       "lyric"
     ],
-    "credits": "lyric",
+    "credits": "lyric, CPacketCustomPayload",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []
