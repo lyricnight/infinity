@@ -65,7 +65,7 @@ public class ModuleManager {
         this.modules.add(new BlockHighlight());
         this.modules.add(new Chams());
         this.modules.add(new Crosshair());
-        this.modules.add(new ESP());
+        this.modules.add(new ShaderChams());
         this.modules.add(new Brightness());
         this.modules.add(new CameraClip());
         this.modules.add(new NoRender());

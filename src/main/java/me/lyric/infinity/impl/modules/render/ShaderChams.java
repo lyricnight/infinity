@@ -20,11 +20,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 
-/**
- * @author zzurio
- */
 
-public class ESP extends Module {
+
+public class ShaderChams extends Module {
 
     public Setting<Boolean> players = register(new Setting<>("Players", "Renders the ESP on players.", true));
     public Setting<Boolean> crystals = register(new Setting<>("Crystals", "Renders the ESP on crystals.", true));
@@ -49,11 +47,10 @@ public class ESP extends Module {
     // Nametags variable due to bug with Shader ESP. (This fixes it.) TODO: Find a better way?
     boolean renderNametags;
 
-    public ESP() {
-        super("ESP", "Highlights entities in various ways.", Category.RENDER);
+    public ShaderChams() {
+        super("ShaderChams", "Highlights entities in various ways.", Category.RENDER);
     }
 
-    // WHAT THE FUCK. TODO: Clean this up.
     @SubscribeEvent
     public void onRender2D(RenderGameOverlayEvent.Pre event) {
         if (!nullSafe()) return;
