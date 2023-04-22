@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 @Mixin(EntityRenderer.class)

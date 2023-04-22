@@ -13,7 +13,7 @@ import static net.minecraft.client.renderer.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class RenderUtils implements IGlobals {

@@ -16,6 +16,7 @@
     "gui.MixinGuiIngame",
     "network.MixinNetworkManager",
     "render.MixinRenderEnderCrystal",
-    "render.MixinRenderLivingBase"
+    "render.MixinRenderLivingBase",
+    "render.MixinLayerArmorBase"
   ]
 }

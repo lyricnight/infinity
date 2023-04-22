@@ -8,7 +8,7 @@ import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class AutoWalk extends Module {

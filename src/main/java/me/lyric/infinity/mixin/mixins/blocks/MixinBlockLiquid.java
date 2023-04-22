@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 @Mixin(value = BlockLiquid.class)

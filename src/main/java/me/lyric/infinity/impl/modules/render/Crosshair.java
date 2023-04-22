@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.awt.*;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class Crosshair extends Module {

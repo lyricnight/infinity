@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class AntiAim extends Module {

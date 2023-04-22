@@ -4,7 +4,7 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class Rotation implements IGlobals {

@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.util.string;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class StringUtils {

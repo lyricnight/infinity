@@ -5,22 +5,20 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.init.MobEffects;
 
-/**
- * @author Paupro
- */
 
 public class NoRender extends Module {
-
+    public static NoRender INSTANCE;
     public Setting<Boolean> effects = register(new Setting<>("Effects", "Cancels potions effects.", false)); // TODO: Add more potion effects lol.
     public Setting<Boolean> weather = register(new Setting<>("Weather", "Cancels weather.", false));
 
-    /*
-     public Setting<Boolean> Fire = register(new Setting<>("Fire", "Avoids fire overlay render.", false));
+
+     //public Setting<Boolean> Fire = register(new Setting<>("Fire", "Avoids fire overlay render.", false));
      public Setting<Boolean> NoArmor = register(new Setting<>("NoArmor", "Avoids armor overlay render.", false));
-    */
+
 
     public NoRender() {
         super("NoRender", "Cancels rendering various things.", Category.RENDER);
+        INSTANCE = this;
     }
 
     // TODO: NoArmor & Fire

@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.util.time;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class Timer {

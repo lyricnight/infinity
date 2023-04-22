@@ -10,7 +10,7 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * @author Paupro (Thanks zzurio for help)
+ * @author Paupro (Thanks lyric for help)
  */
 
 public class AutoRespawn extends Module {

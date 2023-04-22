@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class Module extends Register implements IGlobals {

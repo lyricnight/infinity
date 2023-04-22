@@ -6,7 +6,7 @@ import me.lyric.infinity.api.module.Module;
 import event.bus.EventListener;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class LiquidInteract extends Module {

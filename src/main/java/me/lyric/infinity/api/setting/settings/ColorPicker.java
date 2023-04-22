@@ -3,7 +3,7 @@ package me.lyric.infinity.api.setting.settings;
 import java.awt.*;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class ColorPicker {

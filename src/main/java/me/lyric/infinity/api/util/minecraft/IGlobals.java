@@ -3,7 +3,7 @@ package me.lyric.infinity.api.util.minecraft;
 import net.minecraft.client.Minecraft;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public interface IGlobals {

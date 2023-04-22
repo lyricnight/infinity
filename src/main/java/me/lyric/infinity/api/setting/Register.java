@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class Register {

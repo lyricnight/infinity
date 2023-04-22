@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 @Mixin(EntityOtherPlayerMP.class)
@@ -41,7 +41,7 @@ public class MixinEntityOtherPlayerMP extends AbstractClientPlayer {
     }
 
     /**
-     * @author zzurio
+     * @author lyric
      * @NoInterpolation module.
      * Overwrite player rotations to get more accurate server-side player positions.
      */

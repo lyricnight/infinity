@@ -6,7 +6,7 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.mixin.mixins.entity.MixinEntityRenderer;
 
 /**
- * @author zzurio
+ * @author lyric
  * {@link MixinEntityRenderer}
  */
 

@@ -1,7 +1,7 @@
 package me.lyric.infinity.manager.client;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class AnimationManager {

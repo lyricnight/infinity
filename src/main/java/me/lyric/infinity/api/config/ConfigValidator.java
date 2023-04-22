@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.config;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class ConfigValidator {

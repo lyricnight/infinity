@@ -17,7 +17,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class HUD extends Module {

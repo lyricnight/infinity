@@ -8,7 +8,7 @@ import me.lyric.infinity.api.setting.Setting;
 import event.bus.EventListener;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 @SuppressWarnings("unused")

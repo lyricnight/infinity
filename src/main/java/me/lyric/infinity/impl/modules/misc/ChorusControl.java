@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.Queue;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class ChorusControl extends Module {

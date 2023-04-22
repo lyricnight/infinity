@@ -3,7 +3,7 @@ package me.lyric.infinity.api.event.events.render;
 import event.bus.Event;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class AspectEvent extends Event {

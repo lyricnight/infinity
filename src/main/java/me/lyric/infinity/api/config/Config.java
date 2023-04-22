@@ -3,7 +3,7 @@ package me.lyric.infinity.api.config;
 import me.lyric.infinity.api.util.bytes.ByteChanger;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class Config {

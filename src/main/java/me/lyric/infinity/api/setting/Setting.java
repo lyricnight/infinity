@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.setting;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class Setting<T> {

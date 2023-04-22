@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * @author zzurio
+ * @author
  */
 
 @Cancelable

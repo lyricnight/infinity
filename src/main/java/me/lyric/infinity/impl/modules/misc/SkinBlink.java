@@ -5,7 +5,7 @@ import me.lyric.infinity.api.module.Module;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class SkinBlink extends Module {

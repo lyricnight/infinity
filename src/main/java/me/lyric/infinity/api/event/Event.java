@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.event;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class Event extends event.bus.Event {}

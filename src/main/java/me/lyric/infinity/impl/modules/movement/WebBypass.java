@@ -11,7 +11,7 @@ import static net.minecraft.network.play.client.CPacketEntityAction.Action.START
 import static net.minecraft.network.play.client.CPacketEntityAction.Action.STOP_SNEAKING;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class WebBypass extends Module {

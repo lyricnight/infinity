@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class ConfigManager {

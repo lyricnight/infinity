@@ -7,7 +7,7 @@ import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class PrefixCommand extends Command {

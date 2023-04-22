@@ -10,7 +10,7 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class NoHandshake extends Module {

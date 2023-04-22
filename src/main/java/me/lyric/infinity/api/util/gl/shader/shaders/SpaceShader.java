@@ -5,7 +5,7 @@ import me.lyric.infinity.api.util.minecraft.IGlobals;
 import org.lwjgl.opengl.GL20;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class SpaceShader extends FramebufferShader {

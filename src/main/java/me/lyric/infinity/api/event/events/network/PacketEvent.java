@@ -4,7 +4,7 @@ import me.lyric.infinity.api.event.Event;
 import net.minecraft.network.Packet;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class PacketEvent extends Event {

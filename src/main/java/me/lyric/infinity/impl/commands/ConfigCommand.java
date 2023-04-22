@@ -10,7 +10,7 @@ import me.lyric.infinity.manager.client.ConfigManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public class ConfigCommand extends Command {

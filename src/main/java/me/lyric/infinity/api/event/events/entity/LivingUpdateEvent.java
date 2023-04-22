@@ -4,7 +4,7 @@ import me.lyric.infinity.api.event.Event;
 import net.minecraft.client.entity.EntityPlayerSP;
 
 /**
- * @author zzurio
+ * @author
  */
 
 public class LivingUpdateEvent extends Event {

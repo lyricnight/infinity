@@ -3,7 +3,7 @@ package me.lyric.infinity.api.util.metadata;
 import com.google.gson.JsonObject;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public enum MetaDataUtils {

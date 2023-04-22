@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author zzurio
+ * @author lyric
  */
 
 public abstract class Shader {
