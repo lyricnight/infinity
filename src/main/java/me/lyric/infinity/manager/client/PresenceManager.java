@@ -17,7 +17,7 @@ public class PresenceManager implements IGlobals {
     public static void start() {
         final DiscordEventHandlers handlers = new DiscordEventHandlers();
         handlers.ready = (user) -> System.out.println("[Infinity] RPC Started!");
-        lib.Discord_Initialize("922967411739721808", handlers, true, "");
+        lib.Discord_Initialize("1099438888424054864", handlers, true, "");
 
         presence.startTimestamp = System.currentTimeMillis() / 1000;
         presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
