@@ -35,10 +35,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.*;
 import java.util.stream.Stream;
 
-/**
- * @author lukflug
- */
-
 public class PanelStudioGUI extends MinecraftGUI {
 
     public static final int WIDTH = 120, HEIGHT = 12, DISTANCE = 6, BORDER = 2;

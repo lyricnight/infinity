@@ -94,6 +94,9 @@ public class Module extends Register implements IGlobals {
     public boolean isEnabled() {
         return this.bind.getValue().isState();
     }
+    public final boolean isDisabled() {
+        return !isEnabled();
+    }
 
     public void setEnabled(boolean state) {
         if (state != this.bind.getValue().isState()) {

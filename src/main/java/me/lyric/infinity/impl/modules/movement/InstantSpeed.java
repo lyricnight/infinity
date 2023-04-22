@@ -2,6 +2,7 @@ package me.lyric.infinity.impl.modules.movement;
 
 import event.bus.EventListener;
 import me.lyric.infinity.api.event.events.player.MotionEvent;
+import me.lyric.infinity.api.event.events.player.MoveEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -24,8 +25,8 @@ public class InstantSpeed extends Module {
     }
 
     @EventListener
-    public void onMove(MotionEvent e) {
-        if (!this.isEnabled() || mc.player.isElytraFlying()) {
+    public void onMove(MoveEvent e) {
+        if (this.isDisabled() || mc.player.isElytraFlying()) {
             return;
         }
         if (this.noLiquid.getValue() && EntityUtil.isInLiquid() || mc.player.capabilities.isFlying) {
