@@ -20,6 +20,7 @@ public class Infinity {
 
     public static EventBus EVENT_BUS = EventBus.INSTANCE;
     public static PanelStudioGUI gui;
+    public TPSManager tpsManager;
 
     public ForgeEventManager forgeEventManager;
     public ModuleManager moduleManager;
@@ -62,6 +63,9 @@ public class Infinity {
 
         this.rotationManager = new RotationManager();
         this.rotationManager.init();
+
+        this.tpsManager = new TPSManager();
+        this.tpsManager.load();
 
         gui = new PanelStudioGUI();
 
