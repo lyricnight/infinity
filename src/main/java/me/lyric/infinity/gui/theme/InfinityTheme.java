@@ -10,10 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.IntSupplier;
 
-/**
- * @author lukflug
- * @author zzurio
- */
+
 
 public class InfinityTheme extends ThemeBase {
 
