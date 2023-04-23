@@ -1,6 +1,7 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import event.bus.EventListener;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -8,6 +9,7 @@ import me.lyric.infinity.api.util.minecraft.EntityUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.string.StringUtils;
+import me.lyric.infinity.manager.client.FriendManager;
 import me.lyric.infinity.manager.client.InteractionManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
@@ -161,7 +163,7 @@ public class HoleFiller extends Module {
         closestTarget = null;
 
         for (EntityPlayer target : playerList) {
-            if (target == mc.player || !EntityUtil.isLiving(target) || target.getHealth() <= 0.0f) continue;
+            if (target == mc.player || !EntityUtil.isLiving(target) || target.getHealth() <= 0.0f || Infinity.INSTANCE.friendManager.isFriend(target)) continue;
             if (closestTarget == null) {
                 closestTarget = target;
                 continue;

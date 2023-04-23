@@ -1,6 +1,5 @@
 package me.lyric.infinity.impl.modules.player;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
@@ -119,6 +118,10 @@ public class AutoCity extends Module {
                 continue;
             }
             if((target == mc.player)) {
+                continue;
+            }
+            if(Infinity.INSTANCE.friendManager.isFriend(target))
+            {
                 continue;
             }
             if (((target).getHealth() <= 0) || target.isDead) {

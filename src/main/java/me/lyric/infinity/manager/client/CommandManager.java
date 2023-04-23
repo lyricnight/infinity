@@ -1,6 +1,7 @@
 package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.api.command.Command;
+import me.lyric.infinity.impl.commands.FriendCommand;
 import me.lyric.infinity.impl.commands.PrefixCommand;
 import me.lyric.infinity.impl.commands.ConfigCommand;
 import me.lyric.infinity.impl.commands.ToggleCommand;
@@ -41,6 +42,7 @@ public class CommandManager {
     public void init() {
         this.commands.add(new PrefixCommand());
         this.commands.add(new ConfigCommand());
+        this.commands.add(new FriendCommand());
         this.commands.add(new ToggleCommand());
     }
 

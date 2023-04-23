@@ -8,6 +8,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
+import java.io.File;
+
 @Mod(
         modid = "infinity",
         version = "0.0.1"
@@ -26,6 +28,7 @@ public class Infinity {
     public ModuleManager moduleManager;
     public InteractionManager interactionManager;
     public CommandManager commandManager;
+    public FriendManager friendManager;
     public ConfigManager configManager;
     public RotationManager rotationManager;
 
@@ -36,6 +39,7 @@ public class Infinity {
     }
 
     public static void shutdown() {
+        FriendManager.unload();
         ConfigManager.reload();
         ConfigManager.process(ConfigManager.SAVE);
     }
@@ -55,6 +59,7 @@ public class Infinity {
         this.commandManager = new CommandManager();
         this.commandManager.init();
 
+
         this.forgeEventManager = new ForgeEventManager();
         this.forgeEventManager.init();
 
@@ -66,7 +71,9 @@ public class Infinity {
 
         this.tpsManager = new TPSManager();
         this.tpsManager.load();
-
+        this.friendManager = new FriendManager();
+        friendManager.setDirectory(new File(CONFIG_PATH, "friends.json"));
+        friendManager.init();
         gui = new PanelStudioGUI();
 
         MinecraftForge.EVENT_BUS.register(this.forgeEventManager);
