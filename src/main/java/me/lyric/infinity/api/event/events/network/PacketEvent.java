@@ -3,9 +3,6 @@ package me.lyric.infinity.api.event.events.network;
 import me.lyric.infinity.api.event.Event;
 import net.minecraft.network.Packet;
 
-/**
- * @author
- */
 
 public class PacketEvent extends Event {
 

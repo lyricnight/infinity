@@ -18,11 +18,10 @@ public class PresenceManager implements IGlobals {
         final DiscordEventHandlers handlers = new DiscordEventHandlers();
         handlers.ready = (user) -> System.out.println("[Infinity] RPC Started!");
         lib.Discord_Initialize("1099438888424054864", handlers, true, "");
-
         presence.startTimestamp = System.currentTimeMillis() / 1000;
         presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
         presence.state = "";
-        presence.largeImageKey = "infinity";
+        presence.largeImageKey = "infinity-symbol";
         presence.largeImageText = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).largeImageText.getValue();
 
         lib.Discord_UpdatePresence(presence);
@@ -32,7 +31,7 @@ public class PresenceManager implements IGlobals {
 
                 presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
                 presence.state = "";
-                presence.largeImageKey = "infinity";
+                presence.largeImageKey = "infinity-symbol";
                 presence.largeImageText = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).largeImageText.getValue();
 
                 if (mc.world == null) {
