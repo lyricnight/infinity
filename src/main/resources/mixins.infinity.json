@@ -14,6 +14,7 @@
     "entity.MixinEntityPlayerSP",
     "entity.MixinEntity",
     "entity.MixinEntityRenderer",
+    "entity.MixinEntityLivingBase",
     "gui.MixinGuiIngame",
     "gui.MixinGuiNewChat",
     "network.MixinNetworkManager",
