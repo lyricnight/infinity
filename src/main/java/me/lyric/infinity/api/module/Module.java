@@ -1,6 +1,7 @@
 package me.lyric.infinity.api.module;
 
 import me.lyric.infinity.Infinity;
+import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.setting.Register;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.Bind;
@@ -12,6 +13,7 @@ import me.lyric.infinity.manager.client.AnimationManager;
 import me.lyric.infinity.manager.client.ConfigManager;
 import com.google.gson.*;
 import com.mojang.realmsclient.gui.ChatFormatting;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
@@ -89,6 +91,13 @@ public class Module extends Register implements IGlobals {
 
     public Category getCategory() {
         return category;
+    }
+    public void onTotemPop(EntityPlayer player)
+    {
+
+    }
+    public void onDeath(EntityPlayer player){
+
     }
 
     public boolean isEnabled() {

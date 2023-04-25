@@ -5,6 +5,7 @@ import me.lyric.infinity.impl.modules.client.ClickGUI;
 import me.lyric.infinity.impl.modules.client.HUD;
 import me.lyric.infinity.impl.modules.client.Notifications;
 import me.lyric.infinity.impl.modules.client.RPC;
+import me.lyric.infinity.impl.modules.combat.Clip;
 import me.lyric.infinity.impl.modules.combat.Criticals;
 import me.lyric.infinity.impl.modules.combat.HoleFiller;
 import me.lyric.infinity.impl.modules.misc.*;
@@ -97,6 +98,7 @@ public class ModuleManager {
         // COMBAT
         this.modules.add(new Criticals());
         this.modules.add(new HoleFiller());
+        this.modules.add(new Clip());
     }
 
     public Set<Module> getModules() {
