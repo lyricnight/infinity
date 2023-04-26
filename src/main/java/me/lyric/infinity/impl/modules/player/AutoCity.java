@@ -74,7 +74,7 @@ public class AutoCity extends Module {
                 mc.player.rotationYawHead = angle[0];
                 event.setPitch(angle[1]);
             }
-            if(!switchedToPickaxe && tappedBlock && isBlockDoneMining) {
+            if(!switchedToPickaxe && tappedBlock) {
                 if(switchToPick.getValue()) {
                     if (mc.player.inventory.currentItem != findPickaxe() && findPickaxe() != -1) {
                         mc.player.inventory.currentItem = findPickaxe();
