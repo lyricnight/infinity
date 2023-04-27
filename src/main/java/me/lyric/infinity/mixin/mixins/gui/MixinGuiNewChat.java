@@ -19,9 +19,9 @@ public class MixinGuiNewChat {
     @Redirect(method = {"drawChat"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V"))
     public void drawChatHook1(int left, int top, int right, int bottom, int color) {
         if (BetterChat.getInstance().isEnabled() && BetterChat.getInstance().giantBeetleSoundsLikeJackhammer.getValue()) {
-            Gui.drawRect((int) left, (int) top, (int) right, (int) bottom, (int) 0);
+            Gui.drawRect(left, top, right, bottom, 0);
         } else {
-            Gui.drawRect((int) left, (int) top, (int) right, (int) bottom, (int) color);
+            Gui.drawRect(left, top, right, bottom, color);
         }
     }
 }

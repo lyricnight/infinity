@@ -16,12 +16,15 @@
     "entity.MixinEntity",
     "entity.MixinEntityRenderer",
     "entity.MixinPlayerControllerMP",
-    "entity.MixinEntityLivingBase",
+    "entity.MixinEntityLivingBase", ,
     "gui.MixinGuiIngame",
     "gui.MixinGuiNewChat",
     "network.MixinNetworkManager",
     "render.MixinRenderEnderCrystal",
     "render.MixinRenderLivingBase",
-    "render.MixinLayerArmorBase"
+    "render.MixinLayerArmorBase",
+    "render.MixinItemRenderer",
+    "render.MixinRenderItem"
+
   ]
 }

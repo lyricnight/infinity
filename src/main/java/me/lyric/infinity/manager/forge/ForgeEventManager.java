@@ -67,7 +67,6 @@ public class ForgeEventManager implements IGlobals {
         Infinity.INSTANCE.moduleManager.onLogout();
 
     }
-
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Post event) {
         if (event.isCanceled()) {

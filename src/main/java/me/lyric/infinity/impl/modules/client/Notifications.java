@@ -49,7 +49,7 @@ public class Notifications extends Module {
         if (totemPops.containsKey(player.getName()) && totem.getValue()) {
             int popCount = totemPops.get(player.getName());
             totemPops.remove(player.getName());
-                ChatUtils.sendMessage((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) + player.getName() + "died after popping " + popCount + (popCount == 1 ? " totem!" : " totems!"));
+                ChatUtils.sendMessage((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() +ChatFormatting.RESET+ " died after popping " +"§l"+ popCount +ChatFormatting.RESET+ (popCount == 1 ? " totem!" : " totems!"));
         }
     }
     @EventListener
@@ -80,7 +80,7 @@ public class Notifications extends Module {
         } else {
             totemPops.put(player.getName(), popCount);
         }
-        ChatUtils.sendMessage((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) + player.getName() + " has popped " + popCount + (popCount == 1 ? " totem!" : " totems!") );
+        ChatUtils.sendMessage((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() + ChatFormatting.RESET + " has popped " +"§l"+ popCount +ChatFormatting.RESET+ (popCount == 1 ? " totem!" : " totems!") );
     }
 }
 

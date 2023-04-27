@@ -82,6 +82,7 @@ public class ModuleManager {
         this.modules.add(new AntiAim());
         this.modules.add(new BetterChat());
         this.modules.add(new AutoRespawn());
+        this.modules.add(new UnicodeResolver());
         this.modules.add(new ChorusControl());
         this.modules.add(new LiquidInteract());
         this.modules.add(new NoHandshake());

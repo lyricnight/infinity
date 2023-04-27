@@ -1,7 +1,6 @@
 package me.lyric.infinity.api.module;
 
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.setting.Register;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.Bind;
@@ -165,7 +164,7 @@ public class Module extends Register implements IGlobals {
 
     public void setListener() {
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
-            ChatUtils.sendOverwriteMessage(ChatFormatting.WHITE + this.name + " " + ChatFormatting.RESET + ChatFormatting.GREEN + "enabled.");
+            ChatUtils.sendOverwriteMessage(ChatFormatting.WHITE +"§l"+ this.name + " " + ChatFormatting.RESET + ChatFormatting.GREEN + "enabled.");
         }
         this.bind.getValue().setState(true);
 
@@ -176,7 +175,7 @@ public class Module extends Register implements IGlobals {
 
     public void unsetListener() {
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
-            ChatUtils.sendOverwriteMessage(ChatFormatting.WHITE + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled.");
+            ChatUtils.sendOverwriteMessage(ChatFormatting.WHITE +"§l"+ this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled.");
         }
         this.bind.getValue().setState(false);
 

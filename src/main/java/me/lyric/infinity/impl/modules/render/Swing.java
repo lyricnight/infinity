@@ -12,6 +12,7 @@ public class Swing extends Module {
 
     public Setting<SwingHand> swing =
             register(new Setting<>("Swing","Changes hand of swing.", SwingHand.MAINHAND));
+    public Setting<Boolean> noSway = register(new Setting<>("No Sway" , "Prevents swaying.", false));
     public Setting<Boolean> slowSwing =
             register(new Setting<>("SlowSwing","Makes the swing animation slower.", false));
     public Setting<Boolean> instantSwap =
@@ -28,11 +29,16 @@ public class Swing extends Module {
 
     @Override
     public void onUpdate(){
+        if (mc.player == null)
+        {
+            return;
+        }
+
         if (instantSwap.getValue()) {
 
-            if (mc.entityRenderer.itemRenderer.prevEquippedProgressMainHand >= 0.9) {
-                mc.entityRenderer.itemRenderer.equippedProgressMainHand = 1.0f;
-                mc.entityRenderer.itemRenderer.itemStackMainHand = mc.player.getHeldItemMainhand();
+            if (this.mc.entityRenderer.itemRenderer.prevEquippedProgressMainHand >= 0.9) {
+                this.mc.entityRenderer.itemRenderer.equippedProgressMainHand = 1.0f;
+                this.mc.entityRenderer.itemRenderer.itemStackMainHand = mc.player.getHeldItemMainhand();
             }
         }
         if (swing.getValue() == SwingHand.OFFHAND) {
