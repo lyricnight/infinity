@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(value = {ItemRenderer.class})
 public abstract class MixinItemRenderer implements IItemRenderer {
+
+
     @Override
     @Accessor(value = "prevEquippedProgressMainHand")
     public abstract float getprevEquippedProgressMainHand();
