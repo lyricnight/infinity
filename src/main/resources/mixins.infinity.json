@@ -23,8 +23,6 @@
     "render.MixinRenderEnderCrystal",
     "render.MixinRenderLivingBase",
     "render.MixinLayerArmorBase",
-    "render.MixinItemRenderer",
-    "render.MixinRenderItem"
-
+    "render.MixinItemRenderer"
   ]
 }

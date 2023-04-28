@@ -1,28 +1,24 @@
 package me.lyric.infinity.mixin.mixins.render;
 
-import me.lyric.infinity.impl.modules.render.Swing;
-import net.minecraft.client.Minecraft;
+
+import me.lyric.infinity.mixin.transformer.IItemRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
-import org.spongepowered.asm.mixin.Final;
+import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(value = {ItemRenderer.class})
-public abstract class MixinItemRenderer {
+public abstract class MixinItemRenderer implements IItemRenderer {
+    @Override
+    @Accessor(value = "prevEquippedProgressMainHand")
+    public abstract float getprevEquippedProgressMainHand();
 
-    @Shadow
-    @Final
-    public Minecraft mc;
+    @Override
+    @Accessor(value = "equippedProgressMainHand")
+    public abstract void setequippedProgressMainHand(float progress);
 
-    @Inject(method = "rotateArm", at = @At("HEAD"), cancellable = true)
-    public void rotateArmHook(float partialTicks, CallbackInfo info) {
-        Swing mod = Swing.INSTANCE;
+    @Override
+    @Accessor(value = "itemStackMainHand")
+    public abstract void setitemStackMainHand(ItemStack itemStack);
 
-        if (mod.isEnabled() && mod.noSway.getValue()) {
-            info.cancel();
-        }
-    }
 }

@@ -3,6 +3,7 @@ package me.lyric.infinity.impl.modules.render;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.mixin.transformer.IItemRenderer;
 import net.minecraft.util.EnumHand;
 
 public class Swing extends Module {
@@ -12,11 +13,10 @@ public class Swing extends Module {
 
     public Setting<SwingHand> swing =
             register(new Setting<>("Swing","Changes hand of swing.", SwingHand.MAINHAND));
-    public Setting<Boolean> noSway = register(new Setting<>("No Sway" , "Prevents swaying.", false));
     public Setting<Boolean> slowSwing =
             register(new Setting<>("SlowSwing","Makes the swing animation slower.", false));
     public Setting<Boolean> instantSwap =
-            register(new Setting<>("InstantSwap","Changes some stuff.", false));
+            register(new Setting<>("InstantSwap","AKA 1.8 Animations.", false));
 
     public Swing() {
         super("Swing", "Changes swing.", Category.RENDER);
@@ -36,9 +36,9 @@ public class Swing extends Module {
 
         if (instantSwap.getValue()) {
 
-            if (this.mc.entityRenderer.itemRenderer.prevEquippedProgressMainHand >= 0.9) {
-                this.mc.entityRenderer.itemRenderer.equippedProgressMainHand = 1.0f;
-                this.mc.entityRenderer.itemRenderer.itemStackMainHand = mc.player.getHeldItemMainhand();
+            if (((IItemRenderer)mc.entityRenderer.itemRenderer).getprevEquippedProgressMainHand() >= 0.9) {
+                ((IItemRenderer)mc.entityRenderer.itemRenderer).setequippedProgressMainHand(1.0f);
+                ((IItemRenderer)mc.entityRenderer.itemRenderer).setitemStackMainHand(mc.player.getHeldItemMainhand());
             }
         }
         if (swing.getValue() == SwingHand.OFFHAND) {
