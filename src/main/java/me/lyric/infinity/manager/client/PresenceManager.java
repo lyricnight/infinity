@@ -31,7 +31,7 @@ public class PresenceManager implements IGlobals {
 
                 presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
                 presence.state = "";
-                presence.largeImageKey = "infinity-symbol";
+                presence.largeImageKey = "rich";
                 presence.largeImageText = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).largeImageText.getValue();
 
                 if (mc.world == null) {
