@@ -21,7 +21,7 @@ public class PresenceManager implements IGlobals {
         presence.startTimestamp = System.currentTimeMillis() / 1000;
         presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
         presence.state = "";
-        presence.largeImageKey = "infinity-symbol";
+        presence.largeImageKey = "rich";
         presence.largeImageText = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).largeImageText.getValue();
 
         lib.Discord_UpdatePresence(presence);
