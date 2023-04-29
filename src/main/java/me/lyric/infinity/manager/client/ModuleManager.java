@@ -11,6 +11,7 @@ import me.lyric.infinity.impl.modules.combat.HoleFiller;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
 import me.lyric.infinity.impl.modules.player.AutoCity;
+import me.lyric.infinity.impl.modules.player.AutoReply;
 import me.lyric.infinity.impl.modules.player.NoInterpolation;
 import me.lyric.infinity.impl.modules.render.*;
 
@@ -69,6 +70,7 @@ public class ModuleManager {
         this.modules.add(new ShaderChams());
         this.modules.add(new Brightness());
         this.modules.add(new CameraClip());
+        this.modules.add(new NameTags());
         this.modules.add(new NoRender());
         this.modules.add(new Swing());
 
@@ -76,6 +78,7 @@ public class ModuleManager {
         // PLAYER
         this.modules.add(new NoInterpolation());
         this.modules.add(new AutoCity());
+        this.modules.add(new AutoReply());
 
 
         // MISC

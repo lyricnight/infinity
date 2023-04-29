@@ -61,7 +61,6 @@ public class ForgeEventManager implements IGlobals {
             }
         }
     }
-
     @SubscribeEvent
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         Infinity.INSTANCE.moduleManager.onLogout();

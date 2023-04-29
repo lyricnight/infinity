@@ -59,7 +59,6 @@ public class HUD extends Module {
 
         if (!nullSafe()) return;
 
-        // Why do we create these here?
         /**
          * SCREEN_WIDTH - Gets the maximum possible width of the minecraft screen.
          * SCREEN_HEIGHT - Gets the maximum possible height of the minecraft screen.
