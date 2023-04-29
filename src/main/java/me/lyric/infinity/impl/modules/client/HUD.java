@@ -63,7 +63,7 @@ public class HUD extends Module {
          * SCREEN_WIDTH - Gets the maximum possible width of the minecraft screen.
          * SCREEN_HEIGHT - Gets the maximum possible height of the minecraft screen.
          * Tip to remember this: Think of resolution of the screen 1080x1080.
-         * --> The highest width and height here is 1080. This is is fetched, but just in the minecraft window instead.
+         * --> The highest width and height here is 1080. This is fetched, but just in the minecraft window instead.
          */
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int SCREEN_HEIGHT = new ScaledResolution(mc).getScaledHeight();

@@ -6,9 +6,11 @@ import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
-import me.lyric.infinity.api.util.string.FontUtil;
+import me.lyric.infinity.impl.modules.client.HUD;
 import me.lyric.infinity.mixin.mixins.accessors.IRenderManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -22,6 +24,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -37,16 +41,17 @@ public class NameTags extends Module {
     public Setting<Boolean> totemPops = register(new Setting<>("TotemPops","Displays TotemPops on nametags.", true));
     public Setting<Boolean> shortEnchants = register(new Setting<>("Enchants","Displays Enchantment names.", true));
     public Setting<Double> scaling = register(new Setting<>("Scaling","Scale for the nametags.", 3.0d, 1.0d, 5.0d));
-    public Setting<Boolean> border = register(new Setting<>("Border", "Dummy", true));
+    public Setting<Boolean> border = register(new Setting<>("Border", "Makes a border", true));
+    public Setting<Integer> borderWidth = register(new Setting<>("Border Width", "How wide the border should be.",1, 1, 5));
+
 
     public static NameTags INSTANCE;
     public NameTags() {
         super("NameTags","Good Nametags.", Category.RENDER);
         INSTANCE = this;
     }
-
+    public ColorPicker color = Infinity.INSTANCE.moduleManager.getModuleByClass(HUD.class).color.getValue();
     private final ICamera camera = new Frustum();
-    private float borderWidth = 0.1f;
 
     @Override
     public void onRender3D(float partialTicks) {
@@ -86,7 +91,7 @@ public class NameTags extends Module {
         camera.posZ = interpolate(camera.prevPosZ, camera.posZ, delta);
 
         double distance = camera.getDistance(x + (mc.getRenderManager()).viewerPosX, y + (mc.getRenderManager()).viewerPosY, z +  (mc.getRenderManager()).viewerPosZ);
-        int width = (int) (FontUtil.getStringWidth(getDisplayName(player)) / 2);
+        int width = (int) (mc.fontRenderer.getStringWidth(getDisplayName(player)) / 2);
         double scale = distance > 8.0d ? 0.0018d + (scaling.getValue() * 0.001d) * distance : 0.0018d + (scaling.getValue() * 0.001d) * 8.0d;
 
         GlStateManager.pushMatrix();
@@ -102,12 +107,12 @@ public class NameTags extends Module {
         GlStateManager.depthMask(false);
         GL11.glDisable(2929);
         GlStateManager.enableBlend();
-        drawBorderedRect(-width - 2.0f, -(FontUtil.getFontHeight() + 2.3f), width + 4.0f, 1.5F, borderWidth, 1996488704, 1996488704);
+        drawBorderedRect(-width - 2.0f, -(Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 2.3f), width + 4.0f, 1.5F, borderWidth.getValue().floatValue(), 1996488704, color.getColor().getRGB());
         GlStateManager.disableBlend();
         GlStateManager.disableAlpha();
         GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        FontUtil.drawStringWithShadow(getDisplayName(player), -width, (int) -(FontUtil.getFontHeight() - 1), getDisplayColour(player));
+        mc.fontRenderer.drawStringWithShadow(getDisplayName(player), -width, (int) -(Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT - 1), getDisplayColour(player));
         GlStateManager.glNormal3f(0.0F, 0.0F, 0.0F);
         if (armor.getValue()) {
             GlStateManager.pushMatrix();
@@ -171,14 +176,14 @@ public class NameTags extends Module {
                     renderItemStack(stacks, renderStack, xOffset, -(getEnchantSpace(stacks)+26)+26+10);
                     if (itemName.getValue() && !renderStack.isEmpty() && renderStack.getItem() != Items.AIR) {
                         String stackName = renderStack.getDisplayName();
-                        int stackNameWidth = (int) (FontUtil.getStringWidth(stackName) / 2);
+                        int stackNameWidth = (int) (mc.fontRenderer.getStringWidth(stackName) / 2);
                         GL11.glPushMatrix();
                         GL11.glScalef((float)0.5f, (float)0.5f, (float)0.0f);
                         int enchantY = 2-getEnchantSpace(stacks)-24;
                         if(!(enchantY < -50)) {
                             enchantY = -50;
                         }
-                        FontUtil.drawString(stackName, -stackNameWidth, (int) (enchantY - 20), -1);
+                        mc.fontRenderer.drawStringWithShadow(stackName, -stackNameWidth, (int) (enchantY - 20), -1);
                         GL11.glScalef((float)1.5f, (float)1.5f, (float)1.0f);
                         GL11.glPopMatrix();
                     }
@@ -339,7 +344,7 @@ public class NameTags extends Module {
             if (durability.getValue()) {
                 float armorPercent = ((float)(stack.getMaxDamage()-stack.getItemDamage()) /  (float)stack.getMaxDamage())*100.0f;
                 int armorBarPercent = (int)Math.min(armorPercent, 999.0f);
-                FontUtil.drawStringWithShadow(String.valueOf(armorBarPercent)+"%", x * 2, y - 10, stack.getItem().getRGBDurabilityForDisplay(stack));
+                mc.fontRenderer.drawStringWithShadow(String.valueOf(armorBarPercent)+"%", x * 2, y - 10, stack.getItem().getRGBDurabilityForDisplay(stack));
             }
         }
         if(!shortEnchants.getValue()) {
@@ -364,14 +369,14 @@ public class NameTags extends Module {
                             encName = "Van";
                         }
                         encName = encName.substring(0, 1).toUpperCase() + encName.substring(1);
-                        FontUtil.drawStringWithShadow(encName, x * 2, enchantmentY, 0xffffffff);
+                        mc.fontRenderer.drawStringWithShadow(encName, x * 2, enchantmentY, 0xffffffff);
                         enchantmentY += 8;
                     }
                 }
             }
         }
         if (stack.getItem() == Items.GOLDEN_APPLE && stack.hasEffect()) {
-            FontUtil.drawStringWithShadow("God", (x * 2), enchantmentY, 0xff9e1800);
+            mc.fontRenderer.drawStringWithShadow("God", (x * 2), enchantmentY, 0xff9e1800);
         }
     }
 
