@@ -7,9 +7,8 @@ import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 public class TPSManager
         implements IGlobals {
@@ -30,7 +29,7 @@ public class TPSManager
         }
         Infinity.EVENT_BUS.register(this);
     }
-    public float getTickRate() {
+    public Float getTickRate() {
         int tickCount = 0;
         float tickRate = 0.0f;
         for (float tick : this.ticks) {
@@ -38,8 +37,21 @@ public class TPSManager
             tickRate += tick;
             ++tickCount;
         }
-        return MathHelper.clamp((float)(tickRate / (float)tickCount), (float)0.0f, (float)20.0f);
+
+        return MathHelper.clamp((tickRate / (float)tickCount), (float)0.0f, (float)20.0f);
     }
+    public String getTickRateRound() {
+        int tickCount = 0;
+        float tickRate = 0.0f;
+        for (float tick : this.ticks) {
+            if (!(tick > 0.0f)) continue;
+            tickRate += tick;
+            ++tickCount;
+        }
+
+        return format.format(MathHelper.clamp((tickRate / (float)tickCount), (float)0.0f, (float)20.0f));
+    }
+
 
     @EventListener
     public void onPacketReceive(PacketEvent.Receive event) {

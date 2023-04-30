@@ -43,7 +43,7 @@ public class AutoCity extends Module {
         }
         if(tappedBlock)
         {
-            if(blockTimer.hasPassed((int) (2000.0f * (20F / Infinity.INSTANCE.tpsManager.getTickRate())))) {
+            if(blockTimer.hasPassed((int) (2000.0f * (20F /  Infinity.INSTANCE.tpsManager.getTickRate())))) {
                 this.isBlockDoneMining = true;
                 blockTimer.reset();
             }

@@ -5,6 +5,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.manager.client.TPSManager;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -36,15 +37,21 @@ public class HUD extends Module {
 
     public Setting<Boolean> speed = register(new Setting<>("Speed", "Draws your speed.", true));
         public Setting<Integer> speedX = register(new Setting<>("Speed X", "Position X for Speed.", 2, 1, 1000).withParent(speed));
-        public Setting<Integer> speedY = register(new Setting<>("Speed Y", "Position X for Speed.", 10, 1, 1000).withParent(speed));
+        public Setting<Integer> speedY = register(new Setting<>("Speed Y", "Position Y for Speed.", 12, 1, 1000).withParent(speed));
 
     public Setting<Boolean> ping = register(new Setting<>("Ping", "Draws your server connection speed.", true));
         public Setting<Integer> pingX = register(new Setting<>("Ping X", "Position X for Ping.", 2, 1, 1000).withParent(ping));
-        public Setting<Integer> pingY = register(new Setting<>("Ping Y", "Position X for Ping.", 12, 1, 1000).withParent(ping));
+        public Setting<Integer> pingY = register(new Setting<>("Ping Y", "Position Y for Ping.", 14, 1, 1000).withParent(ping));
 
     public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
         public Setting<Integer> fpsX = register(new Setting<>("FPS X", "Position X for FPS.", 2, 1, 1000).withParent(fps));
-        public Setting<Integer> fpsY = register(new Setting<>("FPS Y", "Position Y for FPS.", 4, 1, 1000).withParent(fps));
+        public Setting<Integer> fpsY = register(new Setting<>("FPS Y", "Position Y for FPS.", 6, 1, 1000).withParent(fps));
+    public Setting<Boolean> tps = register(new Setting<>("TPS", "Draws TPS.", true));
+    public Setting<Integer> tpsX = register(new Setting<>("TPS X", "Position X for TPS.", 2, 1, 1000).withParent(tps));
+    public Setting<Integer> tpsY = register(new Setting<>("TPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(tps));
+
+
+
 
     public Setting<Boolean> reset = register(new Setting<>("Reset", "Sets HUD components to default positions.", false));
 
@@ -99,6 +106,10 @@ public class HUD extends Module {
         if (fps.getValue()) {
         String fpsDisplay = "FPS " + TextFormatting.WHITE + mc.getDebugFPS();
         mc.fontRenderer.drawStringWithShadow(fpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(fpsDisplay) - fpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - fpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
+        }
+        if (tps.getValue()) {
+            String tpsDisplay = "TPS " + TextFormatting.WHITE + Infinity.INSTANCE.tpsManager.getTickRateRound();
+            mc.fontRenderer.drawStringWithShadow(tpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(tpsDisplay) - tpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - tpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
         }
 
         if (coordinates.getValue()) {
