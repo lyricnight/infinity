@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.setting.Setting;
@@ -31,8 +32,8 @@ public class Clip extends Module {
     }
 
     @Override
-    public String getInfo() {
-        return String.valueOf(packets);
+    public String getDisplayInfo() {
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET+ChatFormatting.WHITE+ChatFormatting.BOLD + String.valueOf(packets) +ChatFormatting.RESET+ ChatFormatting.GRAY + "]";
     }
 
     @Override
@@ -65,4 +66,6 @@ public class Clip extends Module {
             return high;
         }
     }
+
+
 }

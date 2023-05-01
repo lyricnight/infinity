@@ -70,16 +70,16 @@ public class HoleFiller extends Module {
     }
 
     @Override
-    public String getInfo() {
-        if (mc.player == null )
+    public String getDisplayInfo() {
+        if (mc.player == null)
         {
             return "";
         }
         if (closestTarget == null)
         {
-            return ChatFormatting.RED + "No Target";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "None" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        return closestTarget.getDisplayNameString();
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE+ ChatFormatting.BOLD + closestTarget.getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
     @Override

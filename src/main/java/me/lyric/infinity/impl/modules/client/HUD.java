@@ -18,7 +18,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 /**
- * @author lyric
+ * @author lyric - thanks to CPacketCustomPayload
  */
 
 public class HUD extends Module {
@@ -47,14 +47,10 @@ public class HUD extends Module {
         public Setting<Integer> fpsX = register(new Setting<>("FPS X", "Position X for FPS.", 2, 1, 1000).withParent(fps));
         public Setting<Integer> fpsY = register(new Setting<>("FPS Y", "Position Y for FPS.", 6, 1, 1000).withParent(fps));
     public Setting<Boolean> tps = register(new Setting<>("TPS", "Draws TPS.", true));
-    public Setting<Integer> tpsX = register(new Setting<>("TPS X", "Position X for TPS.", 2, 1, 1000).withParent(tps));
-    public Setting<Integer> tpsY = register(new Setting<>("TPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(tps));
+        public Setting<Integer> tpsX = register(new Setting<>("TPS X", "Position X for TPS.", 2, 1, 1000).withParent(tps));
+        public Setting<Integer> tpsY = register(new Setting<>("TPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(tps));
 
-
-
-
-    public Setting<Boolean> reset = register(new Setting<>("Reset", "Sets HUD components to default positions.", false));
-
+        public Setting<Boolean> reset = register(new Setting<>("Reset", "Sets HUD components to default positions.", false));
     float offset;
 
     public HUD() {
@@ -65,13 +61,6 @@ public class HUD extends Module {
     public void onRender2D(RenderGameOverlayEvent.Text event) {
 
         if (!nullSafe()) return;
-
-        /**
-         * SCREEN_WIDTH - Gets the maximum possible width of the minecraft screen.
-         * SCREEN_HEIGHT - Gets the maximum possible height of the minecraft screen.
-         * Tip to remember this: Think of resolution of the screen 1080x1080.
-         * --> The highest width and height here is 1080. This is fetched, but just in the minecraft window instead.
-         */
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int SCREEN_HEIGHT = new ScaledResolution(mc).getScaledHeight();
 
@@ -116,7 +105,7 @@ public class HUD extends Module {
             String overWorldCoords = mc.player.dimension != -1 ? "" + TextFormatting.WHITE + roundFloat(mc.player.posX, 1) + " " + roundFloat(mc.player.posY, 1) + " " + roundFloat(mc.player.posZ, 1) : "" + TextFormatting.WHITE + roundFloat(mc.player.posX * 8, 1) + " " + roundFloat(mc.player.posY * 8, 1) + " " + roundFloat(mc.player.posZ * 8, 1);
             String netherCoords = mc.player.dimension == -1 ? "" + TextFormatting.WHITE + roundFloat(mc.player.posX, 1) + " " + roundFloat(mc.player.posY, 1) + " " + roundFloat(mc.player.posZ, 1) : "" + TextFormatting.WHITE + roundFloat(mc.player.posX / 8, 1) + " " + roundFloat(mc.player.posY / 8, 1) + " " + roundFloat(mc.player.posZ / 8, 1);
 
-            mc.fontRenderer.drawStringWithShadow(TextFormatting.AQUA + "XYZ" + ":" + " " + TextFormatting.AQUA + "[" + overWorldCoords + TextFormatting.AQUA + "]" + TextFormatting.AQUA + "{" + netherCoords + TextFormatting.AQUA + "}", coordX.getValue(), SCREEN_HEIGHT - coordY.getValue(), color.getValue().getColor().getRGB());
+            mc.fontRenderer.drawStringWithShadow(TextFormatting.GRAY + "XYZ" + ":" + " " + TextFormatting.GRAY + "[" + overWorldCoords + TextFormatting.GRAY + "]" + TextFormatting.GRAY + "{" + netherCoords + TextFormatting.GRAY + "}", coordX.getValue(), SCREEN_HEIGHT - coordY.getValue(), color.getValue().getColor().getRGB());
         }
 
         if (reset.getValue()) {

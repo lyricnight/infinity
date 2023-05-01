@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.movement;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.event.events.entity.LivingUpdateEvent;
 import me.lyric.infinity.api.event.events.player.MotionEvent;
 import me.lyric.infinity.api.module.Category;
@@ -11,7 +12,6 @@ import event.bus.EventListener;
  * @author lyric
  */
 
-@SuppressWarnings("unused")
 public class Sprint extends Module {
 
     public Setting<Mode> mode = register(new Setting<>("Mode", "The mode for sprint.", Mode.DIRECTIONAL));
@@ -43,10 +43,6 @@ public class Sprint extends Module {
         event.setCancelled(nullSafe() && handleSprint() && isMoving() && mode.getValue().equals(Mode.DIRECTIONAL));
     }
 
-    /**
-     * Convenience functions.
-     */
-
     public static boolean isMoving() {
         return (mc.player.moveForward != 0 || mc.player.moveStrafing != 0);
     }
@@ -58,5 +54,14 @@ public class Sprint extends Module {
     public enum Mode {
         DIRECTIONAL,
         NORMAL
+    }
+    @Override
+    public String getDisplayInfo()
+    {
+        if(mc.player == null)
+        {
+            return "";
+        }
+        return ChatFormatting.GRAY +"["+ ChatFormatting.RESET + ChatFormatting.WHITE +  ChatFormatting.BOLD + mode.getValue().toString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 }

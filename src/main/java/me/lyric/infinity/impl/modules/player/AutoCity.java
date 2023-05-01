@@ -299,17 +299,17 @@ public class AutoCity extends Module {
         }
     }
     @Override
-    public String getInfo()
+    public String getDisplayInfo()
     {
-        if (nullSafe())
+        if (mc.player == null)
         {
             return "";
         }
         if (findClosestTarget() == null)
         {
-            return ChatFormatting.RED + "No Target";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "None" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        return Objects.requireNonNull(findClosestTarget()).getDisplayNameString();
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE+ ChatFormatting.BOLD + findClosestTarget().getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
 

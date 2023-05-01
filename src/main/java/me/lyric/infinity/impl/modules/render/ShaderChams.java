@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.render;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -114,13 +115,27 @@ public class ShaderChams extends Module {
         }
     }
 
-    // Nametags bug fix. :(
+    // Nametags bug fix.
     @EventListener
     public void onRenderNametag(RenderNametagEvent event) {
         if (!nullSafe()) return;
         if (renderNametags)
             event.cancel();
     }
+    @Override
+    public String getDisplayInfo()
+    {
+        if(mc.player == null)
+        {
+            return "";
+        }
+        if(shader.getValue() == Shader.SPACE)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "Space" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE +  ChatFormatting.BOLD + "Rainbow" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+    }
+
 
     public enum Shader {
         NONE,

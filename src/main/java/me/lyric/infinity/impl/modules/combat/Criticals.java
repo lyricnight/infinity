@@ -12,10 +12,10 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 
 public class Criticals extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "Mode used to make critic damage.", Mode.PACKET));
+    public Setting<Mode> mode = register(new Setting<>("Mode", "Mode used for critical damage.", Mode.PACKET));
 
     public Criticals() {
-        super("Criticals", "Allows you to always make critical damage.", Category.COMBAT);
+        super("Criticals", "Allows you to always hit critical damage.", Category.COMBAT);
     }
 
     @EventListener
@@ -43,7 +43,7 @@ public class Criticals extends Module {
     }
 
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + mode.getValue().toString() + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + ChatFormatting.BOLD + mode.getValue().toString() +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
     enum Mode {

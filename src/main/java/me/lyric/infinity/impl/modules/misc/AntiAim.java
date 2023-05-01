@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.misc;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -13,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * @author lyric
+ * @author lyric :)
  */
 
 public class AntiAim extends Module {
@@ -90,29 +91,31 @@ public class AntiAim extends Module {
         }
     }
     @Override
-    public String getInfo()
+    public String getDisplayInfo()
     {
         if(yaw.getValue() == Yaw.LINEAR)
         {
-            return "Linear";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Linear" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         if(yaw.getValue() == Yaw.REVERSE)
         {
-            return "Reverse";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Reverse" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
         }
         if(yaw.getValue() == Yaw.RANDOM)
         {
-            return "Random";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Random" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
         }
         if(yaw.getValue() == Yaw.TOGGLE)
         {
-            return "Toggle";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Toggle" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         if(yaw.getValue() == Yaw.NONE)
         {
-            return "None";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "None" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        return "";
+        return ChatFormatting.GRAY + "[]";
 
     }
 

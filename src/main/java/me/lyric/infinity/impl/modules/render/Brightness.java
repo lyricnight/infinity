@@ -8,7 +8,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 
 /**
- * @author Paupro
+ * @author lyric
  */
 
 public class Brightness extends Module {
@@ -83,6 +83,6 @@ public class Brightness extends Module {
 
     @Override
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + mode.getValue().toString() + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + mode.getValue().toString() +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 }

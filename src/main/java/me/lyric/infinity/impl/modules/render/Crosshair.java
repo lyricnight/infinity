@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.render;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.event.events.render.crosshair.CrosshairEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -88,4 +89,28 @@ public class Crosshair extends Module {
         NORMAL,
         DYNAMIC
     }
+
+    @Override
+    public String getDisplayInfo()
+    {
+        if(mc.player == null)
+        {
+            return "";
+        }
+        if (gapMode.getValue() == GapMode.NONE)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "Default-MC" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+        if (gapMode.getValue() == GapMode.NORMAL)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "FIXED" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+        if (gapMode.getValue() == GapMode.DYNAMIC)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "DYNAMIC" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+        return "";
+    }
+
+
 }

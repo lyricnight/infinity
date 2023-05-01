@@ -11,7 +11,7 @@ import static net.minecraft.network.play.client.CPacketEntityAction.Action.START
 import static net.minecraft.network.play.client.CPacketEntityAction.Action.STOP_SNEAKING;
 
 /**
- * @author lyric
+ * @author lyric :(
  */
 
 public class WebBypass extends Module {
@@ -55,7 +55,7 @@ public class WebBypass extends Module {
 
     @Override
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + mode.getValue().toString() + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + ChatFormatting.BOLD + mode.getValue().toString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
     public enum Mode {
