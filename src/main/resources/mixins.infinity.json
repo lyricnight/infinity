@@ -15,6 +15,7 @@
     "entity.MixinEntityOtherPlayerMP",
     "entity.MixinEntityPlayerSP",
     "entity.MixinEntity",
+    "entity.MixinMinecraft",
     "entity.MixinEntityRenderer",
     "entity.MixinPlayerControllerMP",
     "entity.MixinEntityLivingBase",
