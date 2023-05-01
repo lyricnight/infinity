@@ -76,10 +76,6 @@ public class Crosshair extends Module {
         event.setCancelled(true);
     }
 
-    /**
-     * Convenience function.
-     */
-
     public static boolean isMoving() {
         return mc.player.moveForward != 0.0 || mc.player.moveStrafing != 0.0;
     }
@@ -99,18 +95,16 @@ public class Crosshair extends Module {
         }
         if (gapMode.getValue() == GapMode.NONE)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "Default-MC" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "default-mc" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         if (gapMode.getValue() == GapMode.NORMAL)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "FIXED" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "fixed" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         if (gapMode.getValue() == GapMode.DYNAMIC)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "DYNAMIC" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "dynamic" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         return "";
     }
-
-
 }
