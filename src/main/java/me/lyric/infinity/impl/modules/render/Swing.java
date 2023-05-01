@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.render;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -48,4 +49,25 @@ public class Swing extends Module {
             mc.player.swingingHand = EnumHand.MAIN_HAND;
         }
     }
+    @Override
+    public String getDisplayInfo()
+    {
+        if (mc.player == null)
+        {
+            return "";
+        }
+        if (swing.getValue() == SwingHand.MAINHAND)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "mainhand" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+        if (swing.getValue() == SwingHand.OFFHAND)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "offhand" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+        return "";
+    }
+
+
+
+
 }

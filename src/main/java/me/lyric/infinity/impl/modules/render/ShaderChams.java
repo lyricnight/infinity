@@ -131,9 +131,9 @@ public class ShaderChams extends Module {
         }
         if(shader.getValue() == Shader.SPACE)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ChatFormatting.BOLD + "Space" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "space" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE +  ChatFormatting.BOLD + "Rainbow" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "rainbow" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
 

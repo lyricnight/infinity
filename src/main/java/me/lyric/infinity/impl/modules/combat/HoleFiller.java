@@ -79,7 +79,7 @@ public class HoleFiller extends Module {
         {
             return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "None" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE+ ChatFormatting.BOLD + closestTarget.getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE + closestTarget.getDisplayNameString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
     @Override

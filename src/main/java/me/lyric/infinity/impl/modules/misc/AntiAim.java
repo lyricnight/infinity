@@ -95,25 +95,25 @@ public class AntiAim extends Module {
     {
         if(yaw.getValue() == Yaw.LINEAR)
         {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Linear" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET  + "linear" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         if(yaw.getValue() == Yaw.REVERSE)
         {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Reverse" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + "reverse" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 
         }
         if(yaw.getValue() == Yaw.RANDOM)
         {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Random" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + "random" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 
         }
         if(yaw.getValue() == Yaw.TOGGLE)
         {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "Toggle" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + "toggle" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         if(yaw.getValue() == Yaw.NONE)
         {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.BOLD + "None" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         return ChatFormatting.GRAY + "[]";
 

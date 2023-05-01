@@ -307,9 +307,9 @@ public class AutoCity extends Module {
         }
         if (findClosestTarget() == null)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "None" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE+ ChatFormatting.BOLD + findClosestTarget().getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE+ ChatFormatting.BOLD + findClosestTarget().getDisplayNameString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
 

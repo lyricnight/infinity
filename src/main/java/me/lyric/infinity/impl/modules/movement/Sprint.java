@@ -62,6 +62,6 @@ public class Sprint extends Module {
         {
             return "";
         }
-        return ChatFormatting.GRAY +"["+ ChatFormatting.RESET + ChatFormatting.WHITE +  ChatFormatting.BOLD + mode.getValue().toString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY +"["+ ChatFormatting.RESET + ChatFormatting.WHITE + mode.getValue().toString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 }

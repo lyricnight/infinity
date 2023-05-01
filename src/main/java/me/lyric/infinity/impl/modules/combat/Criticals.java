@@ -43,7 +43,7 @@ public class Criticals extends Module {
     }
 
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + ChatFormatting.BOLD + mode.getValue().toString() +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + mode.getValue().toString().toLowerCase() +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
     enum Mode {
