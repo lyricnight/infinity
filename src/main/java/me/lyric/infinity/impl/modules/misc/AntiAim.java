@@ -89,6 +89,32 @@ public class AntiAim extends Module {
             ((ICPacketPlayer) event.getPacket()).setPitch(aimPitch);
         }
     }
+    @Override
+    public String getInfo()
+    {
+        if(yaw.getValue() == Yaw.LINEAR)
+        {
+            return "Linear";
+        }
+        if(yaw.getValue() == Yaw.REVERSE)
+        {
+            return "Reverse";
+        }
+        if(yaw.getValue() == Yaw.RANDOM)
+        {
+            return "Random";
+        }
+        if(yaw.getValue() == Yaw.TOGGLE)
+        {
+            return "Toggle";
+        }
+        if(yaw.getValue() == Yaw.NONE)
+        {
+            return "None";
+        }
+        return "";
+
+    }
 
     public enum Yaw {
         LINEAR, REVERSE, RANDOM, TOGGLE, NONE

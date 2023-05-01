@@ -100,4 +100,5 @@ public class MixinEntityOtherPlayerMP extends AbstractClientPlayer {
         this.collideWithNearbyEntities();
         this.world.profiler.endSection();
     }
+
 }

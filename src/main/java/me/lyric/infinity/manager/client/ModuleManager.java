@@ -69,6 +69,7 @@ public class ModuleManager {
         this.modules.add(new Crosshair());
         this.modules.add(new ShaderChams());
         this.modules.add(new Brightness());
+        this.modules.add(new CustomTime());
         this.modules.add(new CameraClip());
         this.modules.add(new NoRender());
         this.modules.add(new Swing());

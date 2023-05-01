@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
@@ -70,12 +71,15 @@ public class HoleFiller extends Module {
 
     @Override
     public String getInfo() {
-        if (smart.getValue()) {
-            return StringUtils.normalizeCases(logic.getValue());
-
-        } else {
-            return "Normal";
+        if (mc.player == null )
+        {
+            return "";
         }
+        if (closestTarget == null)
+        {
+            return ChatFormatting.RED + "No Target";
+        }
+        return closestTarget.getDisplayNameString();
     }
 
     @Override

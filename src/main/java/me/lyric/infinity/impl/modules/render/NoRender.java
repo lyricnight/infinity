@@ -14,6 +14,7 @@ public class NoRender extends Module {
 
      //public Setting<Boolean> Fire = register(new Setting<>("Fire", "Avoids fire overlay render.", false));
      public Setting<Boolean> NoArmor = register(new Setting<>("NoArmor", "Avoids armor overlay render.", false));
+     public Setting<Boolean> sneak = register(new Setting<>("Force Sneak", "Forces all players to sneak clientside.", true));
 
 
     public NoRender() {

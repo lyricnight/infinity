@@ -19,7 +19,7 @@ public class TPSManager
     private long lastUpdate = -1L;
     private final Timer timer = new Timer();
     private final float[] tpsCounts = new float[10];
-    private final DecimalFormat format = new DecimalFormat("##.00#");
+    private final DecimalFormat format = new DecimalFormat("##.00");
 
     public void load() {
         this.prevTime = -1L;

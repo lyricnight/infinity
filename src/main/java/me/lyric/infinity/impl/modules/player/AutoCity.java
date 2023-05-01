@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.player;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
@@ -18,6 +19,8 @@ import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Objects;
 
 public class AutoCity extends Module {
     public Setting<Boolean> switchToPick = register(new Setting<Boolean>("PickaxeSwitch","Pretty useless, unless this helps for strict idk", true));
@@ -295,4 +298,21 @@ public class AutoCity extends Module {
             return new BlockPos(this.getX(), this.getY(), this.getZ());
         }
     }
+    @Override
+    public String getInfo()
+    {
+        if (nullSafe())
+        {
+            return "";
+        }
+        if (findClosestTarget() == null)
+        {
+            return ChatFormatting.RED + "No Target";
+        }
+        return Objects.requireNonNull(findClosestTarget()).getDisplayNameString();
+    }
+
+
+
+
 }

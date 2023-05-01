@@ -3,6 +3,9 @@ package me.lyric.infinity.mixin.mixins.entity;
 import event.bus.EventBus;
 import me.lyric.infinity.api.event.events.player.TurnEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.impl.modules.player.NoInterpolation;
+import me.lyric.infinity.impl.modules.render.NoRender;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,10 +13,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
 @Mixin(value = {Entity.class}, priority = Integer.MAX_VALUE)
 public abstract class MixinEntity {
+
+    Minecraft mc = Minecraft.getMinecraft();
+
 
     @Shadow
     private int entityId;
@@ -27,12 +34,15 @@ public abstract class MixinEntity {
     @Shadow
     public double motionX;
 
+
+    @Shadow
+    protected abstract boolean getFlag(int flag);
+
     @Shadow
     public double motionY;
 
     @Shadow
     public double motionZ;
-
     @Shadow
     public abstract boolean equals(Object paramObject);
 
@@ -46,5 +56,14 @@ public abstract class MixinEntity {
             info.cancel();
         }
     }
+    @Inject(method = "isSneaking", at = @At(value = "RETURN"), cancellable = true)
+    private void isSneaking(CallbackInfoReturnable<Boolean> cir)
+    {
+        if (mc.player != null && mc.world != null)
+        {
+            cir.setReturnValue(NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.sneak.getValue() || this.getFlag(1));
+        }
+    }
+
 
 }
