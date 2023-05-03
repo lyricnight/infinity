@@ -1,16 +1,21 @@
 package me.lyric.infinity.impl.modules.client;
 
+import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
+import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.manager.client.TPSManager;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
 import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -50,15 +55,31 @@ public class HUD extends Module {
         public Setting<Integer> tpsX = register(new Setting<>("TPS X", "Position X for TPS.", 2, 1, 1000).withParent(tps));
         public Setting<Integer> tpsY = register(new Setting<>("TPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(tps));
 
-        public Setting<Boolean> reset = register(new Setting<>("Reset", "Sets HUD components to default positions.", false));
+    public Setting<Boolean> pps = register(new Setting<>("PPS", "Draws Packets per Second sent to server.", true));
+    public Setting<Integer> ppsX = register(new Setting<>("PPS Y", "Position X for TPS.", 2, 1, 1000).withParent(pps));
+    public Setting<Integer> ppsY = register(new Setting<>("PPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(pps));
+    public Setting<Boolean> reset = register(new Setting<>("Reset", "Sets HUD components to default positions.", false));
     float offset;
+    public Timer packetTimer = new Timer();
+    int packets;
 
     public HUD() {
         super("HUD", "Renders various components on your screen.", Category.CLIENT);
     }
 
+
+    @EventListener
+    public void onPacketSend(PacketEvent.Send event)
+    {
+        packets++;
+    }
     @SubscribeEvent
     public void onRender2D(RenderGameOverlayEvent.Text event) {
+        if (packetTimer.passedMs(1000))
+        {
+            packets = 0;
+            packetTimer.reset();
+        }
 
         if (!nullSafe()) return;
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
@@ -79,13 +100,13 @@ public class HUD extends Module {
         if (speed.getValue()) {
             double distanceX = mc.player.posX - mc.player.prevPosX;
             double distanceZ = mc.player.posZ - mc.player.prevPosZ;
-            String speedDisplay = "Speed " + TextFormatting.WHITE + roundFloat((MathHelper.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceZ, 2)) / 1000) / (0.05F / 3600), 1) + " kmh";
+            String speedDisplay = "Speed: " + TextFormatting.WHITE + roundFloat((MathHelper.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceZ, 2)) / 1000) / (0.05F / 3600), 1) + " kmh";
             mc.fontRenderer.drawStringWithShadow(speedDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(speedDisplay) - speedX.getValue(), SCREEN_HEIGHT - speedY.getValue() /* 10 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
         }
 
         if (ping.getValue()) {
             try {
-                String pingDisplay = "Ping " + TextFormatting.WHITE + (!mc.isSingleplayer() ? Objects.requireNonNull(mc.getConnection()).getPlayerInfo(mc.player.getUniqueID()).getResponseTime() : 0) + "ms";
+                String pingDisplay = "Ping: " + TextFormatting.WHITE + (!mc.isSingleplayer() ? Objects.requireNonNull(mc.getConnection()).getPlayerInfo(mc.player.getUniqueID()).getResponseTime() : 0) + "ms";
                 mc.fontRenderer.drawStringWithShadow(pingDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(pingDisplay) - pingX.getValue(), SCREEN_HEIGHT - mc.fontRenderer.FONT_HEIGHT - pingY.getValue() /* 12 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
             } catch (NullPointerException e) {
                 // Hmm...
@@ -93,12 +114,16 @@ public class HUD extends Module {
         }
 
         if (fps.getValue()) {
-        String fpsDisplay = "FPS " + TextFormatting.WHITE + mc.getDebugFPS();
+        String fpsDisplay = "FPS: " + TextFormatting.WHITE + mc.getDebugFPS();
         mc.fontRenderer.drawStringWithShadow(fpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(fpsDisplay) - fpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - fpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
         }
         if (tps.getValue()) {
-            String tpsDisplay = "TPS " + TextFormatting.WHITE + Infinity.INSTANCE.tpsManager.getTickRateRound();
+            String tpsDisplay = "TPS: " + TextFormatting.WHITE + Infinity.INSTANCE.tpsManager.getTickRateRound();
             mc.fontRenderer.drawStringWithShadow(tpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(tpsDisplay) - tpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - tpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
+        }
+        if (pps.getValue()) {
+            String ppsDisplay = "Packets: " + TextFormatting.WHITE + packets;
+            mc.fontRenderer.drawStringWithShadow(ppsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(ppsDisplay) - ppsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - ppsY.getValue() /* 19 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
         }
 
         if (coordinates.getValue()) {
@@ -120,7 +145,6 @@ public class HUD extends Module {
             waterX.setValue(2);
             waterY.setValue(2);
             //TODO: Just make it get the original value?
-            // We turn the setting off.
             reset.setValue(false);
         }
     }

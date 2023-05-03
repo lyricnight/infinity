@@ -5,7 +5,7 @@ import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.util.string.StringUtils;
 
-//author lyric
+//author lyric :))
 
 public class FriendCommand extends Command {
     public FriendCommand(){
@@ -14,7 +14,7 @@ public class FriendCommand extends Command {
     }
     @Override
     public String theCommand() {
-        return "friend <add/del> <name>";
+        return "friend <add/del/list/clearall> <name>";
     }
     @Override
     public void onCommand(String[] args)
@@ -25,7 +25,6 @@ public class FriendCommand extends Command {
         {
             splash(CommandState.ERROR);
         }
-
         if (args.length > 2)
         {
             task = args[1];
@@ -45,6 +44,17 @@ public class FriendCommand extends Command {
             Infinity.INSTANCE.friendManager.removeFriend(friend);
             this.splash(CommandState.PERFORMED);
         }
+        if (StringUtils.contains(task, "list"))
+        {
+            Infinity.INSTANCE.friendManager.returnAllFriends();
+            this.splash(CommandState.PERFORMED);
+        }
+        if (StringUtils.contains(task, "clearall"))
+        {
+            Infinity.INSTANCE.friendManager.clearFriends();
+            this.splash(CommandState.PERFORMED);
+        }
+
     }
 
 

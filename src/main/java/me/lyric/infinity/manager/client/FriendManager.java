@@ -2,6 +2,7 @@ package me.lyric.infinity.manager.client;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -57,7 +58,7 @@ public class FriendManager {
     }
 
     public void addFriend(String name) {
-        ChatUtils.sendMessage("Added " + name + " as a friend ");
+        ChatUtils.sendMessage(ChatFormatting.BOLD + "Added " +ChatFormatting.BLUE + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
         friends.add(new Friend(name));
     }
 
@@ -78,8 +79,22 @@ public class FriendManager {
     }
 
     public void clearFriends() {
+        int val = friends.size();
         friends.clear();
+        ChatUtils.sendMessage(ChatFormatting.BOLD + "Successfully cleared " + val + " friends!");
     }
+
+    public void returnAllFriends()
+    {
+        StringBuilder message = new StringBuilder(ChatFormatting.BOLD +"Friends: ");
+        for (int i = 0; i <= friends.size(); i++)
+        {
+            message.append(friends.get(i).getName()).append(" ");
+        }
+        ChatUtils.sendMessage(String.valueOf(message));
+    }
+
+
 
     public void removeFriend(String name) {
         Friend f = getFriend(name);
