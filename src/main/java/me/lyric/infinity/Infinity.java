@@ -1,5 +1,6 @@
 package me.lyric.infinity;
 
+import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
@@ -23,7 +24,6 @@ public class Infinity {
     public static EventBus EVENT_BUS = EventBus.INSTANCE;
     public static PanelStudioGUI gui;
     public TPSManager tpsManager;
-
     public ForgeEventManager forgeEventManager;
     public ModuleManager moduleManager;
     public InteractionManager interactionManager;

@@ -1,10 +1,15 @@
 package me.lyric.infinity.api.util.gl;
 
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.impl.modules.client.HUD;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import java.awt.Color;
@@ -13,14 +18,15 @@ import static net.minecraft.client.renderer.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * @author
+ * @author lyric :)))
  */
 
 public class RenderUtils implements IGlobals {
 
     private final static Tessellator tessellator = Tessellator.getInstance();
-
+    private static final RenderItem itemRender = mc.getRenderItem();
     private final static BufferBuilder bufferBuilder = tessellator.getBuffer();
+    private static final ItemStack totem = new ItemStack(Items.TOTEM_OF_UNDYING);
 
     public static void drawBBSlab(AxisAlignedBB bb, double height, Color color) {
         final int r = color.getRed();
@@ -315,5 +321,72 @@ public class RenderUtils implements IGlobals {
 
     private static void width(float width) {
         GlStateManager.glLineWidth(width);
+    }
+
+    public static void renderTotem() {
+        int width = new ScaledResolution(mc).getScaledWidth();
+        int height = new ScaledResolution(mc).getScaledHeight();
+        int totems = mc.player.inventory.mainInventory.stream().filter(itemStack -> (itemStack.getItem() == Items.TOTEM_OF_UNDYING)).mapToInt(ItemStack::getCount).sum();
+        if (mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING)
+            totems += mc.player.getHeldItemOffhand().getCount();
+        if (totems > 0) {
+            GlStateManager.enableTexture2D();
+            int i = width / 2;
+            int iteration = 0;
+            int y = height - 55 - ((mc.player.isInWater() && mc.playerController.gameIsSurvivalOrAdventure()) ? 10 : 0);
+            int x = i - 189 + 180 + 2;
+            GlStateManager.enableDepth();
+            itemRender.zLevel = 200.0F;
+            itemRender.renderItemAndEffectIntoGUI(totem, x, y);
+            itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, totem, x, y, "");
+            itemRender.zLevel = 0.0F;
+            GlStateManager.enableTexture2D();
+            GlStateManager.disableLighting();
+            GlStateManager.disableDepth();
+            mc.fontRenderer.drawStringWithShadow(totems + "", (x + 19 - 2 - mc.fontRenderer.getStringWidth(totems + "")), (y + 9), 16777215);
+            GlStateManager.enableDepth();
+            GlStateManager.disableLighting();
+        }
+    }
+    public static void renderArmor(final boolean percent) {
+        final int width = new ScaledResolution(mc).getScaledWidth();
+        final int height = new ScaledResolution(mc).getScaledHeight();
+        GlStateManager.enableTexture2D();
+        final int i = width / 2;
+        int iteration = 0;
+        final int y = height - 55 - ((HUD.mc.player.isInWater() && HUD.mc.playerController.gameIsSurvivalOrAdventure()) ? 10 : 0);
+        for (final ItemStack is : HUD.mc.player.inventory.armorInventory) {
+            ++iteration;
+            if (is.isEmpty()) {
+                continue;
+            }
+            final int x = i - 90 + (9 - iteration) * 20 + 2;
+            GlStateManager.enableDepth();
+            itemRender.zLevel = 200.0f;
+            itemRender.renderItemAndEffectIntoGUI(is, x, y);
+            itemRender.renderItemOverlayIntoGUI(HUD.mc.fontRenderer, is, x, y, "");
+            itemRender.zLevel = 0.0f;
+            GlStateManager.enableTexture2D();
+            GlStateManager.disableLighting();
+            GlStateManager.disableDepth();
+            final String s = (is.getCount() > 1) ? (is.getCount() + "") : "";
+            mc.fontRenderer.drawStringWithShadow(s, (float)(x + 19 - 2 - mc.fontRenderer.getStringWidth(s)), (float)(y + 9), 16777215);
+            if (!percent) {
+                continue;
+            }
+            int dmg = 0;
+            final int itemDurability = is.getMaxDamage() - is.getItemDamage();
+            final float green = (is.getMaxDamage() - (float)is.getItemDamage()) / is.getMaxDamage();
+            final float red = 1.0f - green;
+            if (percent) {
+                dmg = 100 - (int)(red * 100.0f);
+            }
+            else {
+                dmg = itemDurability;
+            }
+            mc.fontRenderer.drawStringWithShadow(dmg + "", (float)(x + 8 - mc.fontRenderer.getStringWidth(dmg + "") / 2), (float)(y - 10), ColorUtils.toRGBA((int)(red * 255.0f), (int)(green * 255.0f), 0));
+        }
+        GlStateManager.enableDepth();
+        GlStateManager.disableLighting();
     }
 }

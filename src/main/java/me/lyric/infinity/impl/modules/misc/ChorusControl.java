@@ -87,7 +87,6 @@ public class ChorusControl extends Module {
 
     @Override
     public void onLogout() {
-        // Disable module, so you can join a server once you open up minecraft. LMAO
         this.setEnabled(false);
     }
 }

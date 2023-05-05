@@ -1,10 +1,7 @@
 package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.impl.modules.client.ClickGUI;
-import me.lyric.infinity.impl.modules.client.HUD;
-import me.lyric.infinity.impl.modules.client.Notifications;
-import me.lyric.infinity.impl.modules.client.RPC;
+import me.lyric.infinity.impl.modules.client.*;
 import me.lyric.infinity.impl.modules.combat.Clip;
 import me.lyric.infinity.impl.modules.combat.Criticals;
 import me.lyric.infinity.impl.modules.combat.HoleFiller;

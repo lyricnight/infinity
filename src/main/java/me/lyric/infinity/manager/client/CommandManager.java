@@ -16,6 +16,7 @@ import java.util.Set;
 public class CommandManager {
 
     private static CommandManager commandManager;
+    private String clientMessage = "[Infinity]";
 
     private final Set<Command> commands = new HashSet<>();
 
@@ -56,5 +57,13 @@ public class CommandManager {
 
     public Set<Command> getCommands() {
         return commands;
+    }
+
+    public String getClientMessage() {
+        return this.clientMessage;
+    }
+
+    public void setClientMessage(String clientMessage) {
+        this.clientMessage = clientMessage;
     }
 }

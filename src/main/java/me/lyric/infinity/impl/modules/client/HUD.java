@@ -7,9 +7,17 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.util.gl.ColorUtils;
+import me.lyric.infinity.api.util.gl.RenderUtils;
+import me.lyric.infinity.api.util.string.TextColorUtils;
 import me.lyric.infinity.api.util.time.Timer;
+import me.lyric.infinity.impl.modules.player.AutoReply;
+import me.lyric.infinity.manager.client.CommandManager;
 import me.lyric.infinity.manager.client.TPSManager;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -47,7 +55,15 @@ public class HUD extends Module {
     public Setting<Boolean> ping = register(new Setting<>("Ping", "Draws your server connection speed.", true));
         public Setting<Integer> pingX = register(new Setting<>("Ping X", "Position X for Ping.", 2, 1, 1000).withParent(ping));
         public Setting<Integer> pingY = register(new Setting<>("Ping Y", "Position Y for Ping.", 14, 1, 1000).withParent(ping));
-
+    public Setting<Boolean> armor = register(new Setting<>("Armor", "Draws Armor HUD.", false));
+        public Setting<Boolean> perc = register(new Setting<>("Percentage Display", "Draws armor percentage.", false).withParent(armor));
+    public Setting<Boolean> tot = register(new Setting<>("Totem Display", "For impcat because he's retarded and can't press e", false));
+    public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
+    public Setting<String> textthing = register(new Setting<String>("Welcomer Text", "Type the text you want to be displayed.", "Welcome to infinity.uk, "));
+    public Setting<TextColorUtils.Color> bracketColor = register(new Setting<>("BracketColor","Color of the brackets.", TextColorUtils.Color.BLUE));
+    public Setting<TextColorUtils.Color> commandColor = register(new Setting<>("NameColor","Color of Infinity's name.", TextColorUtils.Color.BLUE));
+    public Setting<String> commandBracket = register(new Setting<>("Bracket","Symbol to use for the first bracket.", "<"));
+    public Setting<String> commandBracket2 = register(new Setting<>("Bracket 2","Symbol to use for the 2nd bracket.",  ">"));
     public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
         public Setting<Integer> fpsX = register(new Setting<>("FPS X", "Position X for FPS.", 2, 1, 1000).withParent(fps));
         public Setting<Integer> fpsY = register(new Setting<>("FPS Y", "Position Y for FPS.", 6, 1, 1000).withParent(fps));
@@ -56,12 +72,24 @@ public class HUD extends Module {
         public Setting<Integer> tpsY = register(new Setting<>("TPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(tps));
 
     public Setting<Boolean> pps = register(new Setting<>("PPS", "Draws Packets per Second sent to server.", true));
-    public Setting<Integer> ppsX = register(new Setting<>("PPS Y", "Position X for TPS.", 2, 1, 1000).withParent(pps));
-    public Setting<Integer> ppsY = register(new Setting<>("PPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(pps));
+        public Setting<Integer> ppsX = register(new Setting<>("PPS Y", "Position X for TPS.", 2, 1, 1000).withParent(pps));
+        public Setting<Integer> ppsY = register(new Setting<>("PPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(pps));
     public Setting<Boolean> reset = register(new Setting<>("Reset", "Sets HUD components to default positions.", false));
     float offset;
     public Timer packetTimer = new Timer();
     int packets;
+    public RenderItem itemRender = mc.getRenderItem();
+
+    private static HUD INSTANCE = new HUD();
+    public static HUD getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new HUD();
+        }
+        return INSTANCE;
+    }
+    private void setInstance() {
+        INSTANCE = this;
+    }
 
     public HUD() {
         super("HUD", "Renders various components on your screen.", Category.CLIENT);
@@ -84,6 +112,7 @@ public class HUD extends Module {
         if (!nullSafe()) return;
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int SCREEN_HEIGHT = new ScaledResolution(mc).getScaledHeight();
+        Infinity.INSTANCE.commandManager.setClientMessage(getCommandMessage());
 
         if (activeModules.getValue()) {
             offset = 0;
@@ -94,7 +123,7 @@ public class HUD extends Module {
         }
 
         if (watermark.getValue()) {
-            mc.fontRenderer.drawStringWithShadow("Infinity" + TextFormatting.WHITE + " " + "0.0.2", waterX.getValue(), waterY.getValue(), color.getValue().getColor().getRGB()); // X & Y can be made custom.
+            mc.fontRenderer.drawStringWithShadow("Infinity" + TextFormatting.WHITE + " " + "0.0.2-beta", waterX.getValue(), waterY.getValue(), color.getValue().getColor().getRGB()); // X & Y can be made custom.
         }
 
         if (speed.getValue()) {
@@ -112,7 +141,18 @@ public class HUD extends Module {
                 // Hmm...
             }
         }
-
+        if (armor.getValue())
+        {
+            RenderUtils.renderArmor(perc.getValue());
+        }
+        if (tot.getValue())
+        {
+           RenderUtils.renderTotem();
+        }
+        if (welcomer.getValue())
+        {
+            renderGreeter();
+        }
         if (fps.getValue()) {
         String fpsDisplay = "FPS: " + TextFormatting.WHITE + mc.getDebugFPS();
         mc.fontRenderer.drawStringWithShadow(fpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(fpsDisplay) - fpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - fpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
@@ -150,11 +190,18 @@ public class HUD extends Module {
         }
     }
 
-
     public static float roundFloat(double number, int scale) {
         BigDecimal bd = BigDecimal.valueOf(number);
         bd = bd.setScale(scale, RoundingMode.FLOOR);
         return bd.floatValue();
+    }
+    public void renderGreeter() {
+        final int width = new ScaledResolution(mc).getScaledWidth();
+        String welcomerString = String.format(textthing.getValue(), mc.player.getName());
+        mc.fontRenderer.drawStringWithShadow(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, color.getValue().getColor().getRGB());
+    }
+    public String getCommandMessage() {
+        return TextColorUtils.coloredString(this.commandBracket.getValue(), this.bracketColor.getValue()) + TextColorUtils.coloredString("Infinity", this.commandColor.getValue()) + TextColorUtils.coloredString(this.commandBracket2.getValue(), this.bracketColor.getValue());
     }
 }
 
