@@ -144,14 +144,12 @@ public class HUD extends Module {
             speedY.setValue(10);
             waterX.setValue(2);
             waterY.setValue(2);
-            //TODO: Just make it get the original value?
+            ppsX.setValue(2);
+            ppsY.setValue(14);
             reset.setValue(false);
         }
     }
 
-    /**
-     * Convenience function.
-     */
 
     public static float roundFloat(double number, int scale) {
         BigDecimal bd = BigDecimal.valueOf(number);
@@ -163,7 +161,7 @@ public class HUD extends Module {
 /**
  * To add HUD information:
  *
- * @Override public String getInfo() {
+ * @Override public String getDisplayInfo() {
  * return "The Information";
  * }
  * <p>

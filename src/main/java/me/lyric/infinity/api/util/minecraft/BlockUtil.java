@@ -20,8 +20,6 @@ import java.util.List;
 
 public class BlockUtil implements IGlobals {
 
-    //Getters
-
     public static IBlockState getState(BlockPos pos) {
         return mc.world.getBlockState(pos);
     }

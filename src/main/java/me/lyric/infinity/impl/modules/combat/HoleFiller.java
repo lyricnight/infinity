@@ -24,6 +24,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import static net.minecraft.util.EnumHand.MAIN_HAND;
 
@@ -40,6 +41,7 @@ public class HoleFiller extends Module {
             register(new Setting<>("Radius","Range to fill", 4, 0, 6));
     private final Setting<Boolean> webs =
             register(new Setting<>("Webs","fuck prestige", true));
+    public Setting<Boolean> wait = register(new Setting<>("Hole Wait","Waits for a target to leave their hole before holefilling. Recommended.", true));
 
     private final Setting<Boolean> smart =
             register(new Setting<>("Smart","Robot", false));
@@ -48,6 +50,7 @@ public class HoleFiller extends Module {
     private final Setting<Integer> smartRange =
             register(new Setting<>("EnemyRange","Range to enemy", 4, 0, 6));
     private EntityPlayer closestTarget;
+    private EntityPlayer invalidTarget;
 
     public HoleFiller() {
         super("HoleFiller", "Fills all safe spots in radius.", Category.COMBAT);
@@ -66,6 +69,7 @@ public class HoleFiller extends Module {
     @Override
     public void onDisable() {
         closestTarget = null;
+        invalidTarget = null;
         RotationManager.resetRotationsPacket();
     }
 
@@ -74,6 +78,11 @@ public class HoleFiller extends Module {
         if (mc.player == null)
         {
             return "";
+        }
+        if (invalidTarget != null)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + invalidTarget.getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
         }
         if (closestTarget == null)
         {
@@ -99,7 +108,7 @@ public class HoleFiller extends Module {
 
         if (obbySlot == -1 && eChestSlot == -1)
         {
-            ChatUtils.sendMessage("No Obsidian! Disabling HoleFiller...");
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "No Obsidian! Disabling HoleFiller...");
             toggle();
             return;
 
@@ -160,14 +169,24 @@ public class HoleFiller extends Module {
         }
         return null;
     }
+    private BlockPos getTargetPos(EntityPlayer target)
+    {
+        return new BlockPos(Math.floor(target.posX), Math.floor(target.posY), Math.floor(target.posZ));
+    }
 
     private void findClosestTarget() {
         List<EntityPlayer> playerList = mc.world.playerEntities;
 
         closestTarget = null;
+        invalidTarget = null;
 
         for (EntityPlayer target : playerList) {
             if (target == mc.player || !EntityUtil.isLiving(target) || target.getHealth() <= 0.0f || Infinity.INSTANCE.friendManager.isFriend(target)) continue;
+            if (wait.getValue() && isHole(getTargetPos(target)))
+            {
+                invalidTarget = target;
+                continue;
+            }
             if (closestTarget == null) {
                 closestTarget = target;
                 continue;
@@ -181,7 +200,7 @@ public class HoleFiller extends Module {
     private boolean isInRange(BlockPos blockPos) {
         NonNullList positions = NonNullList.create();
 
-        positions.addAll(getSphere(getPlayerPos(), range.getValue().floatValue(), range.getValue().intValue()).stream().filter(this::isHole).collect(Collectors.toList()));
+        positions.addAll(getSphere(getPlayerPos(), range.getValue(), range.getValue()).stream().filter(this::isHole).collect(Collectors.toList()));
         return positions.contains(blockPos);
     }
 
@@ -189,9 +208,9 @@ public class HoleFiller extends Module {
         NonNullList positions = NonNullList.create();
 
         if (smart.getValue() && closestTarget != null) {
-            positions.addAll(getSphere(getClosestTargetPos(), smartRange.getValue().floatValue(), range.getValue().intValue()).stream().filter(this::isHole).filter(this::isInRange).collect(Collectors.toList()));
+            positions.addAll(getSphere(Objects.requireNonNull(getClosestTargetPos()), smartRange.getValue().floatValue(), range.getValue()).stream().filter(this::isHole).filter(this::isInRange).collect(Collectors.toList()));
         } else if (!smart.getValue()) {
-            positions.addAll(getSphere(getPlayerPos(), range.getValue().floatValue(), range.getValue().intValue()).stream().filter(this::isHole).collect(Collectors.toList()));
+            positions.addAll(getSphere(getPlayerPos(), range.getValue().floatValue(), range.getValue()).stream().filter(this::isHole).collect(Collectors.toList()));
         }
         return positions;
     }
