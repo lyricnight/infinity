@@ -5,9 +5,14 @@ import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.util.string.StringUtils;
 
-//author lyric :))
+/**
+ * @author lyric :((
+ */
 
 public class FriendCommand extends Command {
+
+    //TODO: Why the fuck doesn't clear and list commands work
+
     public FriendCommand(){
         super("friend", "adds and removes friends.");
 

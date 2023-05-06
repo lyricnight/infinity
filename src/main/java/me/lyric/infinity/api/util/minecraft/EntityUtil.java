@@ -14,7 +14,7 @@ public class EntityUtil implements IGlobals {
     public static int getPing(EntityPlayer p) {
         int ping = 0;
         try {
-            ping = (int) mc.getConnection().getPlayerInfo(p.getUniqueID()).getResponseTime();
+            ping = mc.getConnection().getPlayerInfo(p.getUniqueID()).getResponseTime();
         } catch (NullPointerException np) {}
         return ping;
     }

@@ -26,15 +26,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Game world interactions management.
- * @author t.me/asphyxia1337
+ * interactions
+ * @author written by asphyxia and modified by lyric
  */
 
 public class InteractionManager {
     private static final Timer attackTimer = new Timer();
     private static final Minecraft mc = Minecraft.getMinecraft();
-    //Block placements
-
     public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal, boolean ignoreEntities) {
 
         if (mc.player == null) return;
@@ -93,21 +91,6 @@ public class InteractionManager {
         placeBlock(pos, rotate, packet, attackCrystal, false);
     }
 
-    //Entity interactions
-
-    public void attackEntity(Entity entity, boolean packet, boolean swing) {
-
-        if (packet) {
-            mc.player.connection.sendPacket(new CPacketUseEntity(entity));
-        } else {
-            mc.playerController.attackEntity(mc.player, entity);
-        }
-
-        if (swing) {
-            mc.player.swingArm(EnumHand.MAIN_HAND);
-        }
-    }
-
     public static void attackCrystals(BlockPos pos, boolean rotate) {
 
         boolean sprint = mc.player.isSprinting();
@@ -138,8 +121,6 @@ public class InteractionManager {
             }
         }
     }
-
-    //Getters & variable methods
 
     public static class ClickLocation {
         public final BlockPos neighbour;

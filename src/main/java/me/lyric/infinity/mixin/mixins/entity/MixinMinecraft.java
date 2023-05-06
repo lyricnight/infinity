@@ -4,7 +4,9 @@ import event.bus.EventBus;
 import me.lyric.infinity.api.event.events.network.GameLoopEvent;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.Timer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -24,7 +26,7 @@ public abstract class MixinMinecraft implements IMinecraft {
         GameLoopEvent event = new GameLoopEvent();
         EventBus.post(event);
     }
-
-
-
+    @Override
+    @Accessor(value = "timer")
+    public abstract Timer getTimer();
 }

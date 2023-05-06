@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.client;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
@@ -14,6 +15,7 @@ import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.impl.modules.player.AutoReply;
 import me.lyric.infinity.manager.client.CommandManager;
 import me.lyric.infinity.manager.client.TPSManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
@@ -59,11 +61,11 @@ public class HUD extends Module {
         public Setting<Boolean> perc = register(new Setting<>("Percentage Display", "Draws armor percentage.", false).withParent(armor));
     public Setting<Boolean> tot = register(new Setting<>("Totem Display", "For impcat because he's retarded and can't press e", false));
     public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
-    public Setting<String> textthing = register(new Setting<String>("Welcomer Text", "Type the text you want to be displayed.", "Welcome to infinity.uk, "));
+    public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!"));
     public Setting<TextColorUtils.Color> bracketColor = register(new Setting<>("BracketColor","Color of the brackets.", TextColorUtils.Color.BLUE));
     public Setting<TextColorUtils.Color> commandColor = register(new Setting<>("NameColor","Color of Infinity's name.", TextColorUtils.Color.BLUE));
-    public Setting<String> commandBracket = register(new Setting<>("Bracket","Symbol to use for the first bracket.", "<"));
-    public Setting<String> commandBracket2 = register(new Setting<>("Bracket 2","Symbol to use for the 2nd bracket.",  ">"));
+    public Setting<String> commandBracket = register(new Setting<>("Bracket","Symbol to use for the first bracket.", "["));
+    public Setting<String> commandBracket2 = register(new Setting<>("Bracket 2","Symbol to use for the 2nd bracket.",  "]"));
     public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
         public Setting<Integer> fpsX = register(new Setting<>("FPS X", "Position X for FPS.", 2, 1, 1000).withParent(fps));
         public Setting<Integer> fpsY = register(new Setting<>("FPS Y", "Position Y for FPS.", 6, 1, 1000).withParent(fps));
@@ -154,7 +156,7 @@ public class HUD extends Module {
             renderGreeter();
         }
         if (fps.getValue()) {
-        String fpsDisplay = "FPS: " + TextFormatting.WHITE + mc.getDebugFPS();
+        String fpsDisplay = "FPS: " + TextFormatting.WHITE + Minecraft.getDebugFPS();
         mc.fontRenderer.drawStringWithShadow(fpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(fpsDisplay) - fpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - fpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
         }
         if (tps.getValue()) {

@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class AutoRespawn extends Module {
 
-    //public Setting<Integer> delay = register(new Setting<>("Delay", "The time taken to respawn after you die."));
     public Setting<Boolean> message = register(new Setting<>("Message", "Sends your death coordinates in chat after you die.", true));
 
     public AutoRespawn() {

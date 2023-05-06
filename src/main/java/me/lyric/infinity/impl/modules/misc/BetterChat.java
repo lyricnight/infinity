@@ -37,7 +37,7 @@ public class BetterChat
         if (event.getPacket() instanceof SPacketChat) {
             SPacketChat packet = (SPacketChat)event.getPacket();
             if (this.timeStamps.getValue()) {
-                ((ISPacketChat)packet).setChatComponent((ITextComponent) new TextComponentString(getTimeString() + packet.getChatComponent().getFormattedText()));
+                ((ISPacketChat)packet).setChatComponent(new TextComponentString(getTimeString() + packet.getChatComponent().getFormattedText()));
             }
         }
     }

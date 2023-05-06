@@ -11,6 +11,7 @@
     "accessors.ISPacketChat",
     "accessors.IEntityLivingBase",
     "accessors.IRenderManager",
+    "accessors.ITimer",
     "blocks.MixinBlockLiquid",
     "entity.MixinEntityOtherPlayerMP",
     "entity.MixinEntityPlayerSP",

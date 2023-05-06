@@ -8,6 +8,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.CombatUtil;
+import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -72,7 +73,7 @@ public class AutoCity extends Module {
                 BlockPos adjacentBlock = interpolatedPos.add(cityOffsets[0]).offset(placeSide);
                 EnumFacing opposingSide = placeSide.getOpposite();
                 Vec3d hitVector = CombatUtil.getHitVector(adjacentBlock, opposingSide);
-                final float[] angle = CombatUtil.getLegitRotations(hitVector);
+                final float[] angle = Rotation.getLegitRotations(hitVector);
                 event.setYaw(angle[0]);
                 mc.player.rotationYawHead = angle[0];
                 event.setPitch(angle[1]);
@@ -148,28 +149,28 @@ public class AutoCity extends Module {
         return bestTarget;
     }
 
-    private BlockPos[] northCity = {
+    private final BlockPos[] northCity = {
             new BlockPos(0, 0, -1),
             new BlockPos(0, 0, -2),
             new BlockPos(0, -1, -2),
             new BlockPos(0, 0, -2)
     };
 
-    private BlockPos[] eastCity = {
+    private final BlockPos[] eastCity = {
             new BlockPos(1, 0, 0),
             new BlockPos(2, 0, 0),
             new BlockPos(2, -1, 0),
             new BlockPos(2, 0, 0)
     };
 
-    private BlockPos[] southCity = {
+    private final BlockPos[] southCity = {
             new BlockPos(0, 0, 1),
             new BlockPos(0, 0, 2),
             new BlockPos(0, -1, 2),
             new BlockPos(0, 0, 2)
     };
 
-    private BlockPos[] westCity = {
+    private final BlockPos[] westCity = {
             new BlockPos(-1, 0, 0),
             new BlockPos(-2, 0, 0),
             new BlockPos(-2, -1, 0),
@@ -256,21 +257,14 @@ public class AutoCity extends Module {
 
     private boolean canAddSize(BlockPos pos, BlockPos unaddedOrigin) {
         if(unaddedOrigin.getY() == -1) {
-            if(CombatUtil.isValidPlacePos(oneBlock.getValue(), pos)) {
-                return true;
-            }
+            return CombatUtil.isValidPlacePos(oneBlock.getValue(), pos);
         } else {
             if(unaddedOrigin.getX() == 1 || unaddedOrigin.getX() == -1 || unaddedOrigin.getZ() == 1 || unaddedOrigin.getZ() == -1) {
-                if (CombatUtil.isHard(mc.world.getBlockState(pos).getBlock())) {
-                    return true;
-                }
+                return CombatUtil.isHard(mc.world.getBlockState(pos).getBlock());
             } else {
-                if (mc.world.getBlockState(pos).getBlock() == Blocks.AIR) {
-                    return true;
-                }
+                return mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
             }
         }
-        return false;
     }
 
     private class CityBlock extends BlockPos{

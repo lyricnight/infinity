@@ -24,7 +24,7 @@ import java.util.Set;
  */
 
 public class ConfigManager {
-
+    //TODO: This isn't brilliant
     public static final int SAVE = 331;
     public static final int LOAD = 332;
 

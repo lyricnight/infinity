@@ -1,22 +1,13 @@
 package me.lyric.infinity.manager.forge;
 
-import event.bus.EventBus;
-import event.bus.EventListener;
-import event.bus.EventState;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
-import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.manager.client.ModuleManager;
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketEntityStatus;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;

@@ -306,7 +306,6 @@ public class PanelStudioGUI extends MinecraftGUI {
                 return new ColorPickerComponent(setting, new ThemeTuple(theme.theme, theme.logicalLevel, colorLevel));
             }
         };
-        // Doctor Swag: use this
         IComponentGenerator swagGenerator = new ComponentGenerator(keybindKey, charFilter, keys) {
             @Override
             public IComponent getEnumComponent(IEnumSetting setting, Supplier<Animation> animation, IComponentAdder adder, ThemeTuple theme, int colorLevel, boolean isContainer) {

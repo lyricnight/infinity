@@ -2,6 +2,8 @@ package me.lyric.infinity.api.util.minecraft.rotation;
 
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * @author lyric
@@ -58,5 +60,19 @@ public class Rotation implements IGlobals {
 
     public enum Rotate {
         PACKET, CLIENT, NONE
+    }
+    public static float[] getLegitRotations(Vec3d vec) {
+        Vec3d eyesPos = new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ);
+        double diffX = vec.x - eyesPos.x;
+        double diffY = vec.y - eyesPos.y;
+        double diffZ = vec.z - eyesPos.z;
+        double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
+
+        float yaw = (float)Math.toDegrees(Math.atan2(diffZ, diffX)) - 90.0F;
+        float pitch = (float)-Math.toDegrees(Math.atan2(diffY, diffXZ));
+
+        return new float[] { mc.player.rotationYaw +
+                MathHelper.wrapDegrees(yaw - mc.player.rotationYaw), mc.player.rotationPitch +
+                MathHelper.wrapDegrees(pitch - mc.player.rotationPitch) };
     }
 }

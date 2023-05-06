@@ -80,10 +80,10 @@ public class CombatUtil implements IGlobals {
         if(!isOnePointThirteen) {
             final BlockPos boost = blockPos.add(0, 1, 0);
             final BlockPos boost2 = blockPos.add(0, 2, 0);
-            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB((Class)Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB((Class)Entity.class, new AxisAlignedBB(boost2)).isEmpty();
+            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getBlockState(boost2).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
         } else {
             final BlockPos boost = blockPos.add(0, 1, 0);
-            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB((Class)Entity.class, new AxisAlignedBB(boost)).isEmpty();
+            return (mc.world.getBlockState(blockPos).getBlock() == Blocks.BEDROCK || mc.world.getBlockState(blockPos).getBlock() == Blocks.OBSIDIAN) && mc.world.getBlockState(boost).getBlock() == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty();
         }
     }
 
@@ -115,21 +115,4 @@ public class CombatUtil implements IGlobals {
         cornerFacings.put(EnumFacing.WEST, new Vec3d(-0.5f, 0.0f, 0.0f));
         cornerFacings.put(EnumFacing.WEST, new Vec3d(-0.5f, -0.5f, 0.0f));
     }
-    public static float[] getLegitRotations(Vec3d vec) {
-        Vec3d eyesPos = new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ);
-        double diffX = vec.x - eyesPos.x;
-        double diffY = vec.y - eyesPos.y;
-        double diffZ = vec.z - eyesPos.z;
-        double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
-
-        float yaw = (float)Math.toDegrees(Math.atan2(diffZ, diffX)) - 90.0F;
-        float pitch = (float)-Math.toDegrees(Math.atan2(diffY, diffXZ));
-
-        return new float[] { mc.player.rotationYaw +
-                MathHelper.wrapDegrees(yaw - mc.player.rotationYaw), mc.player.rotationPitch +
-                MathHelper.wrapDegrees(pitch - mc.player.rotationPitch) };
-    }
-
-
-
 }

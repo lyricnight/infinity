@@ -28,15 +28,6 @@ public class ASMTransformer implements IClassTransformer {
             for (MethodNode methodNode : node.methods) {
                 if (matches(methodNode)) {
 
-                    /**
-                     * METHOD CODE BEFORE:
-                     * this.setChatLine(...)
-                     * LOGGER.info(...)
-                     *
-                     * METHOD CODE AFTER:
-                     * this.setChatLine(...)
-                     */
-
                     for (int i = 0; i < 13; i++) {
                         methodNode.instructions.remove(methodNode.instructions.get(11));
                     }

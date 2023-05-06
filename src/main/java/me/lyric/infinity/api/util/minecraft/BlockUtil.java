@@ -122,36 +122,7 @@ public class BlockUtil implements IGlobals {
     public static boolean raytraceCheck(BlockPos pos, float height) {
         return mc.world.rayTraceBlocks(new Vec3d(mc.player.posX, mc.player.posY + (double) mc.player.getEyeHeight(), mc.player.posZ), new Vec3d(pos.getX(), (float) pos.getY() + height, pos.getZ()), false, true, false) == null;
     }
-
-    public static boolean isHole(BlockPos posIn) {
-
-        for (BlockPos pos : getHorizontalOffsets(posIn)) {
-
-            if (getBlock(pos) != Blocks.AIR
-                    && (getBlock(pos) == Blocks.BEDROCK
-                    || getBlock(pos) == Blocks.OBSIDIAN
-                    || getBlock(pos) == Blocks.ENDER_CHEST)) continue;
-
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isUnsafe(Block block) {
-        List<Block> unsafeBlocks = Arrays.asList(Blocks.OBSIDIAN, Blocks.BEDROCK, Blocks.ENDER_CHEST, Blocks.ANVIL);
-
-        return unsafeBlocks.contains(block);
-    }
-
-    public static boolean isSlab(Block block) {
-        return block instanceof BlockSlab || block instanceof BlockCarpet || block instanceof BlockCake;
-    }
-
-    public static boolean isStair(Block block) {
-        return block instanceof BlockStairs;
-    }
-
-    public static boolean isFence(Block block) {
-        return block instanceof BlockFence || block instanceof BlockFenceGate;
+    public static boolean isAir(BlockPos pos) {
+        return BlockUtil.mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
     }
 }

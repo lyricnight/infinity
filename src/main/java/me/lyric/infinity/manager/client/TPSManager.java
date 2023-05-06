@@ -5,6 +5,8 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.time.Timer;
+import me.lyric.infinity.mixin.mixins.accessors.ITimer;
+import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraft.util.math.MathHelper;
 
@@ -16,6 +18,7 @@ public class TPSManager
     private final float[] ticks = new float[20];
     private int currentTick;
     private float TPS = 20.0f;
+    static float timer2 = 1.0f;
     private long lastUpdate = -1L;
     private final Timer timer = new Timer();
     private final float[] tpsCounts = new float[10];
@@ -29,6 +32,12 @@ public class TPSManager
         }
         Infinity.EVENT_BUS.register(this);
     }
+
+    public static void unload()
+    {
+        timer2 = 1.0f;
+        ((ITimer) ((IMinecraft) mc).getTimer()).setTickLength(50.0f);
+    }
     public Float getTickRate() {
         int tickCount = 0;
         float tickRate = 0.0f;
@@ -38,7 +47,7 @@ public class TPSManager
             ++tickCount;
         }
 
-        return MathHelper.clamp((tickRate / (float)tickCount), (float)0.0f, (float)20.0f);
+        return MathHelper.clamp((tickRate / (float)tickCount), 0.0f, 20.0f);
     }
     public String getTickRateRound() {
         int tickCount = 0;
@@ -49,7 +58,7 @@ public class TPSManager
             ++tickCount;
         }
 
-        return format.format(MathHelper.clamp((tickRate / (float)tickCount), (float)0.0f, (float)20.0f));
+        return format.format(MathHelper.clamp((tickRate / (float)tickCount), 0.0f, 20.0f));
     }
 
 
@@ -94,10 +103,20 @@ public class TPSManager
     public void receivePacket(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketTimeUpdate) {
             if (this.prevTime != -1L) {
-                this.ticks[this.currentTick % this.ticks.length] = MathHelper.clamp((float)(20.0f / ((float)(System.currentTimeMillis() - this.prevTime) / 1000.0f)), (float)0.0f, (float)20.0f);
+                this.ticks[this.currentTick % this.ticks.length] = MathHelper.clamp(20.0f / ((float)(System.currentTimeMillis() - this.prevTime) / 1000.0f), 0.0f, 20.0f);
                 ++this.currentTick;
             }
             this.prevTime = System.currentTimeMillis();
         }
     }
+    public void set(float timer) {
+        if (timer > 0.0f) {
+            ((ITimer) ((IMinecraft) mc).getTimer()).setTickLength(50.0f / timer);
+        }
+    }
+    public void reset2() {
+        timer2 = 1.0f;
+        ((ITimer) ((IMinecraft) mc).getTimer()).setTickLength(50.0f);
+    }
+
 }

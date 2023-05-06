@@ -5,7 +5,7 @@ import me.lyric.infinity.api.module.Module;
 import net.minecraft.init.MobEffects;
 
 /**
- * @author Paupro
+ * @author lyric :((
  */
 
 public class AntiLevitation extends Module {

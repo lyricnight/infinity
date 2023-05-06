@@ -7,7 +7,7 @@ import event.bus.EventListener;
 import net.minecraft.network.play.client.CPacketEntityAction;
 
 /**
- * @author Paupro
+ * @author lyric ;)
  */
 
 public class AntiHunger extends Module {

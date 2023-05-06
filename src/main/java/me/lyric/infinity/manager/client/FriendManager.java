@@ -100,6 +100,7 @@ public class FriendManager {
         Friend f = getFriend(name);
         if (f != null)
             friends.remove(f);
+        ChatUtils.sendMessage(ChatFormatting.BOLD + "Removed " +ChatFormatting.RED + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
     }
 
     public static final class Friend  {

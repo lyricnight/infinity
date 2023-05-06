@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.command;
 
 /**
- * @author
+ * @author lyric (-_0)
  */
 
 public enum CommandState {

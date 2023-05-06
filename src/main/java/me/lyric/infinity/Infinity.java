@@ -40,6 +40,7 @@ public class Infinity {
     }
 
     public static void shutdown() {
+        TPSManager.unload();
         FriendManager.unload();
         ConfigManager.reload();
         ConfigManager.process(ConfigManager.SAVE);

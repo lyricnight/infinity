@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.config;
 
 /**
- * @author
+ * @author CPacketCustomPayload - thanks a lot!
  */
 
 public class ConfigValidator {

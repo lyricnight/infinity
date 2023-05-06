@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author lyric :)
+ * this is alright I guess
  */
 
 public class AntiAim extends Module {

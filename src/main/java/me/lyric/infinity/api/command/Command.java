@@ -5,7 +5,7 @@ import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
 /**
- * @author
+ * @author lyric -_-
  */
 
 public class Command {

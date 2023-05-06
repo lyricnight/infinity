@@ -11,6 +11,7 @@ import me.lyric.infinity.impl.modules.player.AutoCity;
 import me.lyric.infinity.impl.modules.player.AutoReply;
 import me.lyric.infinity.impl.modules.player.NoInterpolation;
 import me.lyric.infinity.impl.modules.render.*;
+import scala.tools.reflect.quasiquotes.Holes;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -91,6 +92,7 @@ public class ModuleManager {
         // Movement
         this.modules.add(new AutoWalk());
         this.modules.add(new EntitySpeed());
+        this.modules.add(new HoleSnap());
         this.modules.add(new AntiLevitation());
         this.modules.add(new InstantSpeed());
         this.modules.add(new Sprint());

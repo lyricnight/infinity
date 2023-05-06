@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author lyric
+ * @author lyric - forced to use clientMessage here
  */
 
 public class CommandManager {
