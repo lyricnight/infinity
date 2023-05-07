@@ -22,6 +22,7 @@ public class HoleSnap
         extends Module {
     public Setting<Float> range = register(new Setting<>("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
     public Setting<Float> factor = register(new Setting<>("Factor","Factor for the holesnap.", 2.5f, 1.0f, 15.0f));
+
     Timer timer = new Timer();
     HoleUtil.Hole holes;
 
@@ -31,7 +32,7 @@ public class HoleSnap
 
     @Override
     public void onEnable() {
-        if (!nullSafe()) {
+        if (mc.player == null) {
             return;
         }
         this.timer.reset();
@@ -40,17 +41,12 @@ public class HoleSnap
     @Override
     public String getDisplayInfo()
     {
-        if (!nullSafe())
-        {
-            return "";
-        }
         return ChatFormatting.GRAY + "[" + ChatFormatting.GREEN + "snapping" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-
     }
 
     @Override
     public void onDisable() {
-        if (!nullSafe()) {
+        if (mc.player == null) {
             return;
         }
         this.timer.reset();
@@ -62,7 +58,7 @@ public class HoleSnap
 
     @Override
     public void onUpdate() {
-        if (!nullSafe()) {
+        if (mc.player == null) {
             return;
         }
         if (EntityUtil.isInLiquid()) {

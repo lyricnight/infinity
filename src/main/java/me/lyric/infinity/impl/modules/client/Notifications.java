@@ -8,7 +8,6 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.manager.client.ModuleManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketEntityStatus;
 import java.util.HashMap;

@@ -7,11 +7,10 @@ import me.lyric.infinity.impl.modules.combat.Criticals;
 import me.lyric.infinity.impl.modules.combat.HoleFiller;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
-import me.lyric.infinity.impl.modules.player.AutoCity;
+import me.lyric.infinity.impl.modules.combat.AutoCity;
 import me.lyric.infinity.impl.modules.player.AutoReply;
 import me.lyric.infinity.impl.modules.player.NoInterpolation;
 import me.lyric.infinity.impl.modules.render.*;
-import scala.tools.reflect.quasiquotes.Holes;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -75,7 +74,6 @@ public class ModuleManager {
 
         // PLAYER
         this.modules.add(new NoInterpolation());
-        this.modules.add(new AutoCity());
         this.modules.add(new AutoReply());
 
 
@@ -102,6 +100,7 @@ public class ModuleManager {
         this.modules.add(new Criticals());
         this.modules.add(new HoleFiller());
         this.modules.add(new Clip());
+        this.modules.add(new AutoCity());
     }
 
     public Set<Module> getModules() {
