@@ -20,6 +20,7 @@ public class HoleUtil
     public static boolean isHole(BlockPos pos) {
         boolean isHole = false;
         int amount = 0;
+        BlockPos check = pos;
         for (BlockPos p : holeOffsets) {
             if (HoleUtil.mc.world.getBlockState(pos.add((Vec3i)p)).getMaterial().isReplaceable()) continue;
             ++amount;
@@ -143,19 +144,6 @@ public class HoleUtil
         }
         return circleblocks;
     }
-
-    public static boolean[] isHole(BlockPos pos, boolean above) {
-        boolean[] result = new boolean[]{false, true};
-        if (!BlockUtil.isAir(pos) || !BlockUtil.isAir(pos.up()) || above && !BlockUtil.isAir(pos.up(2))) {
-            return result;
-        }
-        return HoleUtil.is1x1(pos, result);
-    }
-
-    public static boolean[] is1x1(BlockPos pos) {
-        return HoleUtil.is1x1(pos, new boolean[]{false, true});
-    }
-
     public static boolean[] is1x1(BlockPos pos, boolean[] result) {
         for (EnumFacing facing : EnumFacing.values()) {
             BlockPos offset;

@@ -1,8 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -17,8 +15,6 @@ import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.common.eventhandler.*;
-import net.minecraft.network.play.client.*;
-import net.minecraft.network.*;
 import net.minecraft.util.*;
 import net.minecraft.init.*;
 import net.minecraft.util.math.*;
@@ -28,17 +24,14 @@ import java.util.function.*;
 
 public class AutoCity extends Module
 {
-    public Setting<Mode> mode = register(new Setting<>("Mode", "Mode of City", Mode.SMART));
-    public Setting<Integer> targetRange = register(new Setting<>("Target Range", "Range to target", 10, 2, 15));
+    public Setting<Integer> targetRange = register(new Setting<>("Target Range", "Range to target.", 10, 2, 15));
     public Setting<Integer> range = register(new Setting<>("Break Range", "Range to break.", 4, 1, 9));
 
-    public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SWITCH));
-    public Setting<Boolean> autoBreak = register(new Setting<>("Auto Break","Handles swapback.", true));
+    public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
+    public Setting<Boolean> autoBreak = register(new Setting<>("Pick","If you want to silently swap to a pick to click the block, or not. This may desync you.", true));
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
 
     public Setting<Boolean> holeCheck = register(new Setting<>("Hole Check","Checks if the target is in a hole.", true));
-
-    public Setting<Boolean> Abort = register(new Setting<>("Abort","Handles aborting speedmine.", true));
 
     BlockPos mining;
     long startTime;
@@ -62,13 +55,13 @@ public class AutoCity extends Module
         }
         if (target != null)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + target.getDisplayName() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ((EntityPlayer)target).getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 
     }
-    @Override
-    public void onUpdate() {
+    @SubscribeEvent
+    public void onUpdate(TickEvent.ClientTickEvent e) {
         if (mc.player == null) {
             return;
         }
@@ -95,7 +88,7 @@ public class AutoCity extends Module
                 this.mining = null;
             }
         }
-        if (this.cityMode.getValue() == Mode2.SWITCH) {
+        if (this.cityMode.getValue() == Mode2.REQUIRE_PICK) {
             if (this.mining == null && AutoCity.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && getCityBlock((EntityPlayer)this.target) != null) {
                 this.mine(getCityBlock((EntityPlayer)this.target));
             }
@@ -106,14 +99,10 @@ public class AutoCity extends Module
     }
 
     private void mine(final BlockPos blockPos) {
-        if (this.Abort.getValue()) {
-            AutoCity.mc.getConnection().sendPacket((Packet)new CPacketPlayerDigging(CPacketPlayerDigging.Action.ABORT_DESTROY_BLOCK, blockPos, EnumFacing.UP));
-        }
-        AutoCity.mc.getConnection().sendPacket((Packet)new CPacketPlayerDigging(CPacketPlayerDigging.Action.START_DESTROY_BLOCK, blockPos, EnumFacing.UP));
+        mc.playerController.onPlayerDamageBlock(blockPos, EnumFacing.UP);
         if (!(boolean)this.NoSwing.getValue()) {
             AutoCity.mc.player.swingArm(EnumHand.MAIN_HAND);
         }
-        AutoCity.mc.getConnection().sendPacket((Packet)new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, blockPos, EnumFacing.UP));
         this.mining = blockPos;
         this.startTime = System.currentTimeMillis();
     }
@@ -167,15 +156,9 @@ public class AutoCity extends Module
     public AxisAlignedBB AxisAlignedBB(final BlockPos poslel) {
         return new AxisAlignedBB(poslel.getX() + 0.5, poslel.getY() + 0.5, poslel.getZ() + 0.5, poslel.getX() + 0.5, poslel.getY() + 0.5, poslel.getZ() + 0.5);
     }
-    public enum Mode
-    {
-        SMART,
-        ENABLE
-
-    }
     public enum Mode2
     {
-        SWITCH,
-        ALWAYS
+        REQUIRE_PICK,
+        SILENT
     }
 }
