@@ -89,8 +89,9 @@ public class HoleSnap
 
     @EventListener
     public void onPacketReceive(PacketEvent.Receive e) {
-        if (e.getPacket() instanceof SPacketPlayerPosLook && this.isEnabled()) {
-            this.toggle();
+        if (e.getPacket() instanceof SPacketPlayerPosLook) {
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "HoleSnap lagged you back! Preventing snapping...");
+            toggle();
         }
     }
 }
