@@ -1,11 +1,5 @@
 package me.lyric.infinity.impl.modules.render;
 
-import me.chloe.moonlight.injection.inj.access.IRenderManager;
-import me.chloe.moonlight.util.EntityUtil;
-import me.chloe.moonlight.util.render.RenderUtil;
-import me.chloe.moonlight.event.impl.world.Render3DEvent;
-import me.chloe.moonlight.module.Module;
-import me.chloe.moonlight.module.impl.client.Colors;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -13,13 +7,9 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
-import me.lyric.infinity.api.util.string.TextColorUtils;
 import me.lyric.infinity.mixin.mixins.accessors.IRenderManager;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +18,6 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -223,11 +212,6 @@ public class NameTags extends Module {
         if(!(enchantY < -50)) {
             enchantY = -50;
         }
-
-        GlStateManager.pushMatrix();
-        GlStateManager.depthMask(true);
-        GlStateManager.clear(256);
-        RenderHelper.enableStandardItemLighting();
         (mc.getRenderItem()).zLevel = -150.0F;
         mc.getRenderItem().renderItemAndEffectIntoGUI(stack, x, armorY);
         mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, x, armorY);
