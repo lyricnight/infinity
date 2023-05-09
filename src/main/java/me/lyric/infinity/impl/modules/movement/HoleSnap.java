@@ -68,7 +68,7 @@ public class HoleSnap
         }
         this.holes = RotationManager.getTargetHoleVec3D(this.range.getValue());
         if (this.holes == null || HoleUtil.isObbyHole(RotationManager.getPlayerPos()) || HoleUtil.isBedrockHoles(RotationManager.getPlayerPos())) {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, disabling...");
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
             this.toggle();
             return;
         }

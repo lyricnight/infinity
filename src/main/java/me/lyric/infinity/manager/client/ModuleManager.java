@@ -9,6 +9,7 @@ import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
 import me.lyric.infinity.impl.modules.combat.AutoCity;
 import me.lyric.infinity.impl.modules.player.AutoReply;
+import me.lyric.infinity.impl.modules.player.KickPrevent;
 import me.lyric.infinity.impl.modules.player.NoInterpolation;
 import me.lyric.infinity.impl.modules.render.*;
 
@@ -76,6 +77,7 @@ public class ModuleManager {
         // PLAYER
         this.modules.add(new NoInterpolation());
         this.modules.add(new AutoReply());
+        this.modules.add(new KickPrevent());
 
 
         // MISC
