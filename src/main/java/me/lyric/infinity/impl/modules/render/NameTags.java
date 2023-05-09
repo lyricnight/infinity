@@ -6,7 +6,6 @@ import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
 import me.lyric.infinity.mixin.mixins.accessors.IRenderManager;
 import net.minecraft.client.renderer.GlStateManager;
