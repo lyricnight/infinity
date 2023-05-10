@@ -40,6 +40,6 @@ public class ClickGUI extends Module {
     }
 
     public enum Layout {
-        ClassicPanel, PopupPanel, DraggablePanel, SinglePanel, PanelMenu, ColorPanel, CSGOHorizontal, CSGOVertical, CSGOCategory, SearchableCSGO
+        CSGOHorizontal, CSGOVertical, CSGOCategory, SearchableCSGO
     }
 }
