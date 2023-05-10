@@ -101,9 +101,8 @@ public class NameTags extends Module {
         GlStateManager.depthMask(false);
         GL11.glDisable(2929);
         GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
         drawBorderedRect(-width - 2.0f, -(mc.fontRenderer.FONT_HEIGHT + 2.3f), width + 4.0f, 1.5F, borderWidth, 1996488704, 1996488704);
-        GlStateManager.disableBlend();
-        GlStateManager.disableAlpha();
         GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         mc.fontRenderer.drawStringWithShadow(getDisplayName(player), -width, (int) -(mc.fontRenderer.FONT_HEIGHT - 1), getDisplayColour(player));
@@ -189,6 +188,7 @@ public class NameTags extends Module {
         camera.posX = originalPositionX;
         camera.posY = originalPositionY;
         camera.posZ = originalPositionZ;
+        GlStateManager.enableTexture2D();
         GlStateManager.enableDepth();
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
@@ -212,6 +212,7 @@ public class NameTags extends Module {
         float blue = (borderColor & 255) / 255.0F;
         GlStateManager.pushMatrix();
         enableGL2D();
+        GlStateManager.disableTexture2D();
         if(border.getValue()) {
             GL11.glColor4f(red, green, blue, alpha);
             GL11.glEnable(GL11.GL_BLEND);
@@ -228,6 +229,7 @@ public class NameTags extends Module {
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             GL11.glDisable(GL11.GL_BLEND);
         }
+        GlStateManager.enableTexture2D();
         disableGL2D();
         GlStateManager.popMatrix();
     }
@@ -437,8 +439,6 @@ public class NameTags extends Module {
         if (!nullSafe()) return;
         event.cancel();
     }
-
-
     private double interpolate(double previous, double current, float delta) {
         return previous + (current - previous) * delta;
     }
