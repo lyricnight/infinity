@@ -80,4 +80,5 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         EventBus.post(event);
     }
 
+
 }
