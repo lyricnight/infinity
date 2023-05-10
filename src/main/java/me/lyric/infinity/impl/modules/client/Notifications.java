@@ -58,12 +58,12 @@ public class Notifications extends Module {
                 return;
             }
             if (Notifications.mc.player.isPotionActive(Objects.requireNonNull(Potion.getPotionFromResourceLocation((String)"weakness"))) && !this.last) {
-                ChatUtils.sendMessage(ChatFormatting.RED + "You have been weaknessed!");
+                ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " have been" + ChatFormatting.DARK_GRAY + " weaknessed" + ChatFormatting.BOLD + "!");
                 this.last = true;
             }
             if (!Notifications.mc.player.isPotionActive(Objects.requireNonNull(Potion.getPotionFromResourceLocation((String)"weakness"))) && this.last) {
 
-                ChatUtils.sendMessage(ChatFormatting.GREEN + "You no longer have weakness!");
+                ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " no longer have" + ChatFormatting.DARK_GRAY + "weakness" + ChatFormatting.BOLD + "!");
 
                 this.last = false;
             }
@@ -77,21 +77,21 @@ public class Notifications extends Module {
                 if (entityPlayer.equals((Object)Notifications.mc.player))
                 {
                     if (entityPlayer.isPotionActive(MobEffects.STRENGTH) && !this.str.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(ChatFormatting.BOLD + "You have strength!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " have"  + ChatFormatting.RED + " strength" + ChatFormatting.BOLD + "!");
                         this.str.add(entityPlayer);
                     }
                     if (!this.str.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.STRENGTH)) continue;
-                    ChatUtils.sendMessage(ChatFormatting.BOLD + "You no longer have strength!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " no longer have" + ChatFormatting.RED + " strength"+ ChatFormatting.BOLD + "!");
                     this.str.remove(entityPlayer);
                 }
                 else
                 {
                     if (entityPlayer.isPotionActive(MobEffects.STRENGTH) && !this.str.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(entityPlayer.getDisplayNameString() + ChatFormatting.RED + " has strength!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + ChatFormatting.WHITE + " has" + ChatFormatting.RED + " strength" + ChatFormatting.BOLD + "!");
                         this.str.add(entityPlayer);
                     }
                     if (!this.str.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.STRENGTH)) continue;
-                    ChatUtils.sendMessage(entityPlayer.getDisplayNameString() + ChatFormatting.GREEN + " no longer has strength!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + ChatFormatting.WHITE + " no longer has" + ChatFormatting.RED + " strength"+ ChatFormatting.BOLD + "!");
                     this.str.remove(entityPlayer);
                 }
 
@@ -107,21 +107,21 @@ public class Notifications extends Module {
                 if (entityPlayer.equals((Object)Notifications.mc.player))
                 {
                     if (entityPlayer.isPotionActive(MobEffects.SPEED) && !this.spd.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(ChatFormatting.BOLD + "You have speed!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " have" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                         this.spd.add(entityPlayer);
                     }
                     if (!this.spd.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.SPEED)) continue;
-                    ChatUtils.sendMessage(ChatFormatting.BOLD + "You no longer have speed!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " no longer have" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                     this.spd.remove(entityPlayer);
                 }
                 else
                 {
                     if (entityPlayer.isPotionActive(MobEffects.SPEED) && !this.spd.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(entityPlayer.getDisplayNameString() + ChatFormatting.RED + " has speed!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + ChatFormatting.WHITE + " has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                         this.spd.add(entityPlayer);
                     }
                     if (!this.spd.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.SPEED)) continue;
-                    ChatUtils.sendMessage(entityPlayer.getDisplayNameString() + ChatFormatting.GREEN + " no longer has speed!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + ChatFormatting.WHITE + " no longer has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                     this.spd.remove(entityPlayer);
                 }
 

@@ -30,8 +30,7 @@ public class ShaderChams extends Module {
     public Setting<Boolean> mobs = register(new Setting<>("Mobs", "Renders the ESP on mobs.", false));
     public Setting<Boolean> items = register(new Setting<>("Items", "Renders the ESP on items.", false));
 
-    public Setting<Boolean> shaders = register(new Setting<>("Shaders", "Applies shaders on entities.", false));
-    public Setting<Shader> shader = register(new Setting<>("Shader", "The type of shader.", Shader.SPACE)).withParent(shaders);
+    public Setting<Shader> shader = register(new Setting<>("Shader", "The type of shader.", Shader.SPACE));
 
     // RAINBOW
     public Setting<Boolean> outline = register(new Setting<>("Outline", "Renders a dynamic rainbow gradient.", true));
@@ -89,7 +88,6 @@ public class ShaderChams extends Module {
                     renderNametags = false;
                     framebuffer.stopDraw(color.getValue().getColor(), 1f, 1f, 0.8f, 1, 0.5f, 0.5f);
                 }
-                if (shaders.getValue()) {
                     switch (shader.getValue()) {
                         case SPACE:
                             framebuffer = SpaceShader.INSTANCE;
@@ -108,7 +106,6 @@ public class ShaderChams extends Module {
                     }
                     renderNametags = false;
                     framebuffer.stopDraw(color.getValue().getColor(), 1f, 1f, 0.8f, 1, 0.5f, 0.5f);
-                }
             } catch (NullPointerException nullPointerException) {
                 // Do nothing. :)
             }

@@ -79,4 +79,5 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         UpdateWalkingPlayerEvent event = new UpdateWalkingPlayerEvent(EventState.POST);
         EventBus.post(event);
     }
+
 }
