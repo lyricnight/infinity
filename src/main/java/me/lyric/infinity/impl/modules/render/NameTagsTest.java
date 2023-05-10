@@ -46,12 +46,12 @@ public class NameTagsTest extends Module {
     private final Setting<Float> lineWidth = this.register(new Setting<Object>("LineWidth","Width of line.", 1.5f, 0.1f, 5.0f).withParent(outline));
     private final Setting<Boolean> sneak = this.register(new Setting<>("SneakColor","Displays a different color for sneaking entities.", false));
     private final Setting<Boolean> heldStackName = this.register(new Setting<>("StackName","Name of item stack.", false));
-    private final Setting<Float> factor = this.register(new Setting<Object>("Factor","Scale Factor.", 0.3f, 0.1f, 1.0f).withParent(scaleing));
+    private final Setting<Float> factor = this.register(new Setting<Object>("Factor","Scale Factor.", 1.0f, 0.1f, 1.0f).withParent(scaleing));
     private final Setting<Boolean> smartScale = this.register(new Setting<Object>("SmartScale","Whether scaling should be calculated automatically.", false).withParent(scaleing));
     private final Setting<Boolean> ench = this.register(new Setting<>("Enchantments","Whether to render enchantment names.", false));
     private final Setting<ColorPicker> mainColor = this.register(new Setting<>("MainColour", "Colour of the main rect.", new ColorPicker(Color.BLACK)));
     private final Setting<ColorPicker> outlineColor = this.register(new Setting<>("OutlineColour", "Colour of the main rect's outline.", new ColorPicker(Color.BLACK)));
-    private final Setting<ColorPicker> textColor = this.register(new Setting<>("TextColour", "Colour of the main rect's text.", new ColorPicker(Color.BLACK)));
+    private final Setting<ColorPicker> textColor = this.register(new Setting<>("TextColour", "Colour of the main rect's text.", new ColorPicker(Color.WHITE)));
     private final Setting<ColorPicker> friendtextColor = this.register(new Setting<>("FriendColor", "Colour of the nametags for friends.", new ColorPicker(Color.CYAN)));
     private final Setting<ColorPicker> invisibleText = this.register(new Setting<>("InvisColour", "Colour of the main rect's text for invis entities.", new ColorPicker(Color.ORANGE)));
     private final Setting<ColorPicker> shiftColor = this.register(new Setting<>("ShiftColour", "Colour of the main rect's text when an entity is shifted.", new ColorPicker(Color.magenta)));
@@ -69,17 +69,13 @@ public class NameTagsTest extends Module {
 
     @Override
     public void onRender3D(float partialTicks) {
-        if (mc.player != null) {
             for (EntityPlayer player : players) {
-                if (player == null || player.equals(mc.player) || !player.isEntityAlive() || player.isInvisible() && !this.invisibles.getValue())
-                    continue;
                 double x = this.interpolate(player.lastTickPosX, player.posX, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosX();
                 double y = this.interpolate(player.lastTickPosY, player.posY, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosY();
                 double z = this.interpolate(player.lastTickPosZ, player.posZ, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosZ();
                 renderNameTag(player, x, y, z, partialTicks);
             }
         }
-    }
 
     public void drawRect(float x, float y, float w, float h, int color) {
         float alpha = (float) (color >> 24 & 0xFF) / 255.0f;
