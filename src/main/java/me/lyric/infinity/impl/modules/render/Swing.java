@@ -1,14 +1,10 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.mixin.transformer.IItemRenderer;
-import net.minecraft.network.play.client.CPacketAnimation;
-import net.minecraft.util.EnumHand;
 
 public class Swing extends Module {
 
