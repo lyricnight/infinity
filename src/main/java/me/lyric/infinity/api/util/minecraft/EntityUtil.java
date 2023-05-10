@@ -20,4 +20,11 @@ public class EntityUtil implements IGlobals {
         } catch (NullPointerException np) {}
         return ping;
     }
+    public static float getHealth(Entity entity) {
+        if (EntityUtil.isLiving(entity)) {
+            EntityLivingBase livingBase = (EntityLivingBase) entity;
+            return livingBase.getHealth() + livingBase.getAbsorptionAmount();
+        }
+        return 0.0f;
+    }
 }
