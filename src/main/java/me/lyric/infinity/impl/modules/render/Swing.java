@@ -45,12 +45,6 @@ public class Swing extends Module {
                 ((IItemRenderer)mc.entityRenderer.itemRenderer).setitemStackMainHand(mc.player.getHeldItemMainhand());
             }
         }
-        if (swing.getValue() == SwingHand.OFFHAND) {
-            mc.player.swingingHand = EnumHand.OFF_HAND;
-
-        } else if (swing.getValue() == SwingHand.MAINHAND) {
-            mc.player.swingingHand = EnumHand.MAIN_HAND;
-        }
     }
     @Override
     public String getDisplayInfo()
@@ -68,12 +62,5 @@ public class Swing extends Module {
             return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "offhand" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         return "";
-    }
-
-    @EventListener
-    public void onPacketSend(PacketEvent.Send event) {
-        if (event.getPacket() instanceof CPacketAnimation) {
-            event.cancel();
-        }
     }
 }

@@ -8,10 +8,13 @@ import com.mojang.authlib.GameProfile;
 import event.bus.EventBus;
 import me.lyric.infinity.api.event.events.player.MoveEvent;
 import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
+import me.lyric.infinity.impl.modules.render.Swing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.MoverType;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,10 +24,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Shadow protected abstract void onUpdateWalkingPlayer();
+    private static Minecraft mc = Minecraft.getMinecraft();
     private UpdateWalkingPlayerEvent eventUpdateWalkingPlayer;
 
     public MixinEntityPlayerSP(World worldIn, GameProfile playerProfile) {
@@ -78,6 +84,21 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
     private void onUpdateWalkingPlayerPost(CallbackInfo callbackInfo) {
         UpdateWalkingPlayerEvent event = new UpdateWalkingPlayerEvent(EventState.POST);
         EventBus.post(event);
+    }
+    @Inject(method = { "swingArm" }, at = { @At("HEAD") }, cancellable = true)
+    public void swingArm(EnumHand enumHand, CallbackInfo info) {
+        if (Swing.INSTANCE.isEnabled()) {
+            if (Swing.INSTANCE.swing.getValue() == Swing.SwingHand.MAINHAND)
+            {
+                super.swingArm(EnumHand.MAIN_HAND);
+            }
+            if (Swing.INSTANCE.swing.getValue() == Swing.SwingHand.OFFHAND)
+            {
+                super.swingArm(EnumHand.OFF_HAND);
+            }
+            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPacketAnimation(enumHand));
+            info.cancel();
+        }
     }
 
 
