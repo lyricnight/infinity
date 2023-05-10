@@ -165,7 +165,7 @@ public class Module extends Register implements IGlobals {
 
     public void setListener() {
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
-            ChatUtils.sendOverwriteMessage(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.GREEN + "enabled.");
+            ChatUtils.sendOverwriteMessage(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.GREEN + "enabled!");
         }
         this.bind.getValue().setState(true);
 
@@ -176,7 +176,7 @@ public class Module extends Register implements IGlobals {
 
     public void unsetListener() {
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
-            ChatUtils.sendOverwriteMessage(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled.");
+            ChatUtils.sendOverwriteMessage(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled!");
         }
         this.bind.getValue().setState(false);
 
