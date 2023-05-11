@@ -9,15 +9,14 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketChat;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.ITextComponent;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BetterChat
         extends Module {
-    public final Setting<Boolean> timeStamps = this.register(new Setting<Boolean>("Timestamps","Does what it says on the tin lad",  true));
-    public final Setting<Boolean> giantBeetleSoundsLikeJackhammer = this.register(new Setting<Boolean>("NoRect","Removes rectangle", true));
+    public final Setting<Boolean> timeStamps = register(new Setting<>("Timestamps","Does what it says on the tin lad",  true));
+    public final Setting<Boolean> giantBeetleSoundsLikeJackhammer = register(new Setting<>("NoRect","Removes rectangle", true));
     private static BetterChat INSTANCE = new BetterChat();
 
     public BetterChat() {
