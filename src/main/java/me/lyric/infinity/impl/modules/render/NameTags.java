@@ -33,6 +33,8 @@ public class NameTags extends Module {
 
     private final Setting<Boolean> health = this.register(new Setting<>("Health","Renders health.", true));
     private final Setting<Boolean> armor = this.register(new Setting<>("Armor","Renders armor.", true));
+     private final Setting<Boolean> reversedArmour = this.register(new Setting<>("ReversedArmour","Reverses the render for armour.", true).withParent(armor));
+
     private final Setting<Boolean> scaleing = this.register(new Setting<>("Scale","Whether to modify scale or not.", false));
     private final Setting<Float> scaling = this.register(new Setting<>("Scaler","Scale for the nametags.", 0.3f, 0.1f, 20.0f).withParent(scaleing));
     private final Setting<Boolean> invisibles = this.register(new Setting<>("Invisibles","Whether to render invis entities or not.", false));
@@ -168,7 +170,7 @@ public class NameTags extends Module {
             GL11.glScalef(1.5f, 1.5f, 1.0f);
             GL11.glPopMatrix();
         }
-        if (this.armor.getValue()) {
+        if (reversedArmour.getValue()) {
             GlStateManager.pushMatrix();
             int xOffset = -8;
             for (ItemStack stack : player.inventory.armorInventory) {
@@ -185,6 +187,30 @@ public class NameTags extends Module {
                 this.renderItemStack(armourStack, xOffset, -26);
                 xOffset += 16;
             }
+            this.renderItemStack(renderMainHand, xOffset, -26);
+            GlStateManager.popMatrix();
+        } else {
+            GlStateManager.pushMatrix();
+            int xOffset = -8;
+            for (int i = player.inventory.armorInventory.size() - 1; i >= 0; i--) {
+                ItemStack stack = player.inventory.armorInventory.get(i);
+                if (stack == null) continue;
+                xOffset -= 8;
+            }
+            xOffset -= 8;
+
+            ItemStack renderOffhand = player.getHeldItemOffhand().copy();
+            this.renderItemStack(renderOffhand, xOffset, -26);
+            xOffset += 16;
+
+            for (int i = player.inventory.armorInventory.size() - 1; i >= 0; i--) {
+                ItemStack stack = player.inventory.armorInventory.get(i);
+                if (stack == null) continue;
+                ItemStack armourStack = stack.copy();
+                this.renderItemStack(armourStack, xOffset, -26);
+                xOffset += 16;
+            }
+
             this.renderItemStack(renderMainHand, xOffset, -26);
             GlStateManager.popMatrix();
         }
