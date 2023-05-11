@@ -170,49 +170,51 @@ public class NameTags extends Module {
             GL11.glScalef(1.5f, 1.5f, 1.0f);
             GL11.glPopMatrix();
         }
-        if (reversedArmour.getValue()) {
-            GlStateManager.pushMatrix();
-            int xOffset = -8;
-            for (ItemStack stack : player.inventory.armorInventory) {
-                if (stack == null) continue;
-                xOffset -= 8;
-            }
-            xOffset -= 8;
-            ItemStack renderOffhand = player.getHeldItemOffhand().copy();
-            this.renderItemStack(renderOffhand, xOffset, -26);
-            xOffset += 16;
-            for (ItemStack stack : player.inventory.armorInventory) {
-                if (stack == null) continue;
-                ItemStack armourStack = stack.copy();
-                this.renderItemStack(armourStack, xOffset, -26);
-                xOffset += 16;
-            }
-            this.renderItemStack(renderMainHand, xOffset, -26);
-            GlStateManager.popMatrix();
-        } else {
-            GlStateManager.pushMatrix();
-            int xOffset = -8;
-            for (int i = player.inventory.armorInventory.size() - 1; i >= 0; i--) {
-                ItemStack stack = player.inventory.armorInventory.get(i);
-                if (stack == null) continue;
-                xOffset -= 8;
-            }
-            xOffset -= 8;
+        if (armor.getValue()) {
+           if (reversedArmour.getValue()) {
+               GlStateManager.pushMatrix();
+               int xOffset = -8;
+               for (ItemStack stack : player.inventory.armorInventory) {
+                   if (stack == null) continue;
+                   xOffset -= 8;
+               }
+               xOffset -= 8;
+               ItemStack renderOffhand = player.getHeldItemOffhand().copy();
+               this.renderItemStack(renderOffhand, xOffset, -26);
+               xOffset += 16;
+               for (ItemStack stack : player.inventory.armorInventory) {
+                   if (stack == null) continue;
+                   ItemStack armourStack = stack.copy();
+                   this.renderItemStack(armourStack, xOffset, -26);
+                   xOffset += 16;
+               }
+               this.renderItemStack(renderMainHand, xOffset, -26);
+               GlStateManager.popMatrix();
+           } else {
+               GlStateManager.pushMatrix();
+               int xOffset = -8;
+               for (int i = player.inventory.armorInventory.size() - 1; i >= 0; i--) {
+                   ItemStack stack = player.inventory.armorInventory.get(i);
+                   if (stack == null) continue;
+                   xOffset -= 8;
+               }
+               xOffset -= 8;
 
-            ItemStack renderOffhand = player.getHeldItemOffhand().copy();
-            this.renderItemStack(renderOffhand, xOffset, -26);
-            xOffset += 16;
+               ItemStack renderOffhand = player.getHeldItemOffhand().copy();
+               this.renderItemStack(renderOffhand, xOffset, -26);
+               xOffset += 16;
 
-            for (int i = player.inventory.armorInventory.size() - 1; i >= 0; i--) {
-                ItemStack stack = player.inventory.armorInventory.get(i);
-                if (stack == null) continue;
-                ItemStack armourStack = stack.copy();
-                this.renderItemStack(armourStack, xOffset, -26);
-                xOffset += 16;
-            }
+               for (int i = player.inventory.armorInventory.size() - 1; i >= 0; i--) {
+                   ItemStack stack = player.inventory.armorInventory.get(i);
+                   if (stack == null) continue;
+                   ItemStack armourStack = stack.copy();
+                   this.renderItemStack(armourStack, xOffset, -26);
+                   xOffset += 16;
+               }
 
-            this.renderItemStack(renderMainHand, xOffset, -26);
-            GlStateManager.popMatrix();
+               this.renderItemStack(renderMainHand, xOffset, -26);
+               GlStateManager.popMatrix();
+           }
         }
         mc.fontRenderer.drawStringWithShadow(displayTag, -width, -(mc.fontRenderer.FONT_HEIGHT - 1), this.getDisplayColour(player));
         camera.posX = originalPositionX;
