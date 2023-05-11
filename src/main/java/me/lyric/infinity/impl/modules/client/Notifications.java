@@ -153,8 +153,6 @@ public class Notifications extends Module {
             }
         }
     }
-
-
     public void onTotemPop(EntityPlayer player) {
         int popCount = 1;
         boolean isFriend = (Infinity.INSTANCE.friendManager.isFriend(player.getName()));

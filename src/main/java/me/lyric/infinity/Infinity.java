@@ -29,7 +29,6 @@ public class Infinity {
     public InteractionManager interactionManager;
     public HoleManager holeManager;
     public CommandManager commandManager;
-    public TotemPopManager totemPopManager;
     public FriendManager friendManager;
     public ConfigManager configManager;
     public RotationManager rotationManager;
@@ -75,8 +74,6 @@ public class Infinity {
         this.tpsManager = new TPSManager();
         this.tpsManager.load();
         this.friendManager = new FriendManager();
-        this.totemPopManager = new TotemPopManager();
-        this.totemPopManager.init();
         friendManager.setDirectory(new File(CONFIG_PATH, "friends.json"));
         friendManager.init();
         this.threadManager = new ThreadManager();

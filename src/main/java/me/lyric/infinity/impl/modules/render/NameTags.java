@@ -8,6 +8,7 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
+import me.lyric.infinity.impl.modules.client.Notifications;
 import me.lyric.infinity.mixin.mixins.accessors.IRenderManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -313,7 +314,15 @@ public class NameTags extends Module {
         }
         String popStr = " ";
         if (this.totemPops.getValue()) {
-            popStr = popStr + Infinity.INSTANCE.totemPopManager.getPops(String.valueOf(player));
+            if (Notifications.totemPops.get(player.getDisplayNameString()) == null)
+            {
+                popStr = " ";
+            }
+            else
+            {
+                popStr = popStr +"-"+ Notifications.totemPops.get(player.getDisplayNameString());
+
+            }
         }
         String idString = "";
         if (this.entityID.getValue()) {
@@ -323,8 +332,8 @@ public class NameTags extends Module {
         if (this.gamemode.getValue()) {
             gameModeStr = player.isCreative() ? gameModeStr + "[C] " : (player.isSpectator() || player.isInvisible() ? gameModeStr + "[I] " : gameModeStr + "[S] ");
         }
-        name = Math.floor(health) == (double) health ? name + color + " " + (health > 0.0f ? Integer.valueOf((int) Math.floor(health)) : "dead") : name + color + " " + (health > 0.0f ? Integer.valueOf((int) health) : "dead");
-        return pingStr + idString + gameModeStr + name + popStr;
+        name = Math.floor(health) == (double) health ? name + color + " " + (health > 0.0f ? Integer.valueOf((int) Math.floor(health)) : "0 ") : name + color + " " + (health > 0.0f ? Integer.valueOf((int) health) : "0 ");
+        return name +" "+ idString + gameModeStr + pingStr + popStr;
     }
 
     private int getDisplayColour(EntityPlayer player) {
