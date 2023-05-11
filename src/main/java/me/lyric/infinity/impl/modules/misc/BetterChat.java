@@ -12,6 +12,9 @@ import net.minecraft.util.text.TextComponentString;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+/**
+    @author lyric - this is kinda broken
+ */
 
 public class BetterChat
         extends Module {

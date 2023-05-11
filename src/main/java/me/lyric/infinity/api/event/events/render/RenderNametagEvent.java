@@ -3,7 +3,7 @@ package me.lyric.infinity.api.event.events.render;
 import me.lyric.infinity.api.event.Event;
 
 /**
- * @author
+ * @author lyric ;)
  */
 
 public class RenderNametagEvent extends Event {

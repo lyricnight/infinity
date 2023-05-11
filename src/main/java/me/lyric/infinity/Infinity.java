@@ -26,7 +26,9 @@ public class Infinity {
     public TPSManager tpsManager;
     public ForgeEventManager forgeEventManager;
     public ModuleManager moduleManager;
+    public ThreadManager threadManager;
     public InteractionManager interactionManager;
+    public HoleManager holeManager;
     public CommandManager commandManager;
     public TotemPopManager totemPopManager;
     public FriendManager friendManager;
@@ -78,6 +80,9 @@ public class Infinity {
         this.totemPopManager.init();
         friendManager.setDirectory(new File(CONFIG_PATH, "friends.json"));
         friendManager.init();
+        this.threadManager = new ThreadManager();
+        this.holeManager = new HoleManager();
+        this.holeManager.init();
         gui = new PanelStudioGUI();
         MinecraftForge.EVENT_BUS.register(this.forgeEventManager);
         startup();

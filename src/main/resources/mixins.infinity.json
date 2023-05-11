@@ -12,6 +12,7 @@
     "accessors.IEntityLivingBase",
     "accessors.IRenderManager",
     "accessors.ITimer",
+    "accessors.IEntityPlayer",
     "blocks.MixinBlockLiquid",
     "entity.MixinEntityOtherPlayerMP",
     "entity.MixinEntityPlayerSP",

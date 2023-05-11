@@ -42,8 +42,9 @@ public class MixinEntityOtherPlayerMP extends AbstractClientPlayer {
 
     /**
      * @author lyric
-     * @NoInterpolation module.
+     * resolver.
      * Overwrite player rotations to get more accurate server-side player positions.
+     * @reason to use the thing duh
      */
 
     @Overwrite

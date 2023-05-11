@@ -7,9 +7,11 @@ import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityExpBottle;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -124,5 +126,44 @@ public class BlockUtil implements IGlobals {
     }
     public static boolean isAir(BlockPos pos) {
         return BlockUtil.mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
+    }
+    public static List<BlockPos> getSphere(final double radius, AirType airType, EntityPlayer entityPlayer) {
+        ArrayList<BlockPos> sphere = new ArrayList<>();
+        try
+        {
+            BlockPos pos = new BlockPos(entityPlayer.getPositionVector());
+            int posX = pos.getX();
+            int posY = pos.getY();
+            int posZ = pos.getZ();
+            int radiuss = (int) radius;
+            for (int x = posX - radiuss; x <= posX + radius; ++x) {
+                for (int z = posZ - radiuss; z <= posZ + radius; ++z) {
+                    for (int y = posY - radiuss; y < posY + radius; ++y) {
+                        double dist = (posX - x) * (posX - x) + (posZ - z) * (posZ - z) + (posY - y) * (posY - y);
+                        BlockPos position;
+                        if (dist < radius * radius) {
+                            position = new BlockPos(x, y, z);
+                            if ((mc.world.getBlockState(position).getBlock().equals(Blocks.AIR) && airType.equals(AirType.IgnoreAir)) || (!mc.world.getBlockState(position).getBlock().equals(Blocks.AIR) && airType.equals(AirType.OnlyAir)))
+                                continue;
+
+                            sphere.add(position);
+                        }
+                    }
+                }
+            }
+            return sphere;
+        }
+        catch (NullPointerException e)
+        {
+            //???
+        }
+        return null;
+    }
+
+
+    public enum AirType {
+        OnlyAir,
+        IgnoreAir,
+        None
     }
 }

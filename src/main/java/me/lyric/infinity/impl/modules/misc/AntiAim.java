@@ -112,12 +112,7 @@ public class AntiAim extends Module {
         {
             return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + "toggle" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        if(yaw.getValue() == Yaw.NONE)
-        {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-        }
-        return ChatFormatting.GRAY + "[]";
-
+        return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 
     public enum Yaw {
