@@ -1,10 +1,10 @@
 package me.lyric.infinity.impl.modules.movement;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.mixin.mixins.accessors.IEntity;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.network.play.client.CPacketEntityAction;
 
 import static net.minecraft.network.play.client.CPacketEntityAction.Action.START_SNEAKING;

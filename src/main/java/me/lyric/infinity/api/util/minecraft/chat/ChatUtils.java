@@ -3,8 +3,6 @@ package me.lyric.infinity.api.util.minecraft.chat;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.util.text.TextComponentString;
-
-
 public class ChatUtils implements IGlobals {
 
     public static void sendMessage(String message) {

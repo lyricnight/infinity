@@ -1,13 +1,13 @@
 package me.lyric.infinity.impl.modules.misc;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import event.bus.EventListener;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.mixin.mixins.accessors.ICPacketPlayer;
-import event.bus.EventListener;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.MathHelper;
 

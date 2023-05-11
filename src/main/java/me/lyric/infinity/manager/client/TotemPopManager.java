@@ -1,6 +1,5 @@
 package me.lyric.infinity.manager.client;
 
-import event.bus.EventBus;
 import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.network.PacketEvent;

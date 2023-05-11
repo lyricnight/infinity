@@ -1,6 +1,6 @@
 package me.lyric.infinity.manager.client;
+
 import me.lyric.infinity.api.util.minecraft.BlockUtil;
-import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;

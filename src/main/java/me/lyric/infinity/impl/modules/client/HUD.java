@@ -1,6 +1,5 @@
 package me.lyric.infinity.impl.modules.client;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
@@ -18,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,14 +1,14 @@
 package me.lyric.infinity.impl.modules.render;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+import event.bus.EventListener;
+import me.lyric.infinity.api.event.events.render.RenderLivingEntityEvent;
 import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPostEvent;
 import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPreEvent;
-import me.lyric.infinity.api.event.events.render.RenderLivingEntityEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
-import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;

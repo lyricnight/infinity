@@ -1,8 +1,8 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.Category;
+import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.MathHelper;

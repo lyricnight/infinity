@@ -8,19 +8,23 @@ import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.CombatUtil;
 import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.Switch;
-import net.minecraft.entity.*;
-import net.minecraftforge.fml.common.gameevent.*;
-import net.minecraft.world.*;
-import net.minecraft.block.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.item.*;
-import net.minecraftforge.fml.common.eventhandler.*;
-import net.minecraft.util.*;
-import net.minecraft.init.*;
-import net.minecraft.util.math.*;
-import java.util.*;
+import net.minecraft.block.BlockAir;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.function.*;
+import java.util.function.ToDoubleFunction;
 
 public class AutoCity extends Module
 {

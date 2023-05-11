@@ -1,5 +1,6 @@
 package me.lyric.infinity.manager.client;
 
+import event.bus.EventListener;
 import event.bus.EventState;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
@@ -7,7 +8,6 @@ import me.lyric.infinity.api.event.events.render.RenderLivingEntityEvent;
 import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
-import event.bus.EventListener;
 import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.BlockPos;

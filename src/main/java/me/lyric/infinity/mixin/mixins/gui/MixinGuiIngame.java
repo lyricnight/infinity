@@ -1,7 +1,7 @@
 package me.lyric.infinity.mixin.mixins.gui;
 
-import me.lyric.infinity.api.event.events.render.crosshair.CrosshairEvent;
 import event.bus.EventBus;
+import me.lyric.infinity.api.event.events.render.crosshair.CrosshairEvent;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
 import org.spongepowered.asm.mixin.Mixin;

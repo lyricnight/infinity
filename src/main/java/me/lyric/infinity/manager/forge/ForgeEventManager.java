@@ -1,5 +1,6 @@
 package me.lyric.infinity.manager.forge;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventBus;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
@@ -8,7 +9,6 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.manager.client.ModuleManager;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;

@@ -11,13 +11,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BlockUtil implements IGlobals {
@@ -28,20 +26,6 @@ public class BlockUtil implements IGlobals {
 
     public static Block getBlock(BlockPos pos) {
         return getState(pos).getBlock();
-    }
-
-    public static BlockPos[] getHorizontalOffsets(BlockPos pos) {
-        return new BlockPos[] {
-                pos.north(),
-                pos.south(),
-                pos.east(),
-                pos.west(),
-                pos.down()
-        };
-    }
-
-    public static int getPlaceAbility(BlockPos pos, boolean raytrace) {
-        return getPlaceAbility(pos, raytrace, true);
     }
 
     public static int getPlaceAbility(BlockPos pos, boolean raytrace, boolean checkForEntities) {
@@ -87,16 +71,6 @@ public class BlockUtil implements IGlobals {
         return getState(pos).getMaterial().isReplaceable();
     }
 
-    public static boolean canPlaceCrystal(BlockPos pos) {
-        BlockPos boost = pos.add(0, 1, 0);
-        BlockPos boost2 = pos.add(0, 2, 0);
-
-        try {
-            return (getBlock(pos) == Blocks.BEDROCK || getBlock(pos) == Blocks.OBSIDIAN) && getBlock(boost) == Blocks.AIR && getBlock(boost2) == Blocks.AIR && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost)).isEmpty() && mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(boost2)).isEmpty();
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     public static boolean canBeClicked(BlockPos pos) {
         return getBlock(pos).canCollideCheck(getState(pos), false);

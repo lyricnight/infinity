@@ -3,7 +3,6 @@ package me.lyric.infinity.api.util.minecraft;
 import me.lyric.infinity.api.event.events.player.MoveEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.util.MovementInput;
 

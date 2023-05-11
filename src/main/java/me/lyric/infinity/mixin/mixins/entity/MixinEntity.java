@@ -2,8 +2,6 @@ package me.lyric.infinity.mixin.mixins.entity;
 
 import event.bus.EventBus;
 import me.lyric.infinity.api.event.events.player.TurnEvent;
-import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.impl.modules.player.NoInterpolation;
 import me.lyric.infinity.impl.modules.render.NoRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

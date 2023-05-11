@@ -1,11 +1,11 @@
 package me.lyric.infinity.impl.modules.combat;
 
-import me.lyric.infinity.api.event.events.network.PacketEvent;
-import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.module.Category;
-import me.lyric.infinity.api.setting.Setting;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventListener;
+import me.lyric.infinity.api.event.events.network.PacketEvent;
+import me.lyric.infinity.api.module.Category;
+import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;

@@ -1,9 +1,9 @@
 package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.api.command.Command;
+import me.lyric.infinity.impl.commands.ConfigCommand;
 import me.lyric.infinity.impl.commands.FriendCommand;
 import me.lyric.infinity.impl.commands.PrefixCommand;
-import me.lyric.infinity.impl.commands.ConfigCommand;
 import me.lyric.infinity.impl.commands.ToggleCommand;
 
 import java.util.HashSet;

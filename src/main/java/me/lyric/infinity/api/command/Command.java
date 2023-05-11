@@ -1,8 +1,8 @@
 package me.lyric.infinity.api.command;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import com.mojang.realmsclient.gui.ChatFormatting;
 
 /**
  * @author lyric -_-

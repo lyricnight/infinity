@@ -1,7 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -9,8 +8,6 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.api.util.string.StringUtils;
-import me.lyric.infinity.manager.client.FriendManager;
 import me.lyric.infinity.manager.client.InteractionManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
@@ -22,10 +19,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import static net.minecraft.util.EnumHand.MAIN_HAND;
 
 

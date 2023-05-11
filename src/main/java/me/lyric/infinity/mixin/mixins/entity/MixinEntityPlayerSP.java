@@ -1,11 +1,10 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
-import event.bus.EventState;
-import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.entity.LivingUpdateEvent;
-import me.lyric.infinity.api.event.events.player.MotionEvent;
 import com.mojang.authlib.GameProfile;
 import event.bus.EventBus;
+import event.bus.EventState;
+import me.lyric.infinity.api.event.events.entity.LivingUpdateEvent;
+import me.lyric.infinity.api.event.events.player.MotionEvent;
 import me.lyric.infinity.api.event.events.player.MoveEvent;
 import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
 import me.lyric.infinity.impl.modules.render.Swing;
@@ -16,7 +15,6 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

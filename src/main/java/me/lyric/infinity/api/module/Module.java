@@ -1,5 +1,7 @@
 package me.lyric.infinity.api.module;
 
+import com.google.gson.*;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.setting.Register;
 import me.lyric.infinity.api.setting.Setting;
@@ -9,10 +11,7 @@ import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.impl.modules.client.Notifications;
 import me.lyric.infinity.manager.client.AnimationManager;
-import me.lyric.infinity.manager.client.CommandManager;
 import me.lyric.infinity.manager.client.ConfigManager;
-import com.google.gson.*;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 

@@ -1,8 +1,8 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
+import com.mojang.authlib.GameProfile;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.impl.modules.player.NoInterpolation;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.util.math.MathHelper;

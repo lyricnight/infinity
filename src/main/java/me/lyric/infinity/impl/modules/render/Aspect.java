@@ -1,11 +1,11 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import event.bus.EventListener;
 import me.lyric.infinity.api.event.events.render.AspectEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import event.bus.EventListener;
 
 import java.text.DecimalFormat;
 

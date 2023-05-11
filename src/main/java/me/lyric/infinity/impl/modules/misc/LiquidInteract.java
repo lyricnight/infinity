@@ -1,9 +1,9 @@
 package me.lyric.infinity.impl.modules.misc;
 
+import event.bus.EventListener;
 import me.lyric.infinity.api.event.events.blocks.CanCollideCheckEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import event.bus.EventListener;
 
 /**
  * @author lyric

@@ -1,12 +1,12 @@
 package me.lyric.infinity.manager.client;
 
+import com.google.gson.*;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.config.Config;
 import me.lyric.infinity.api.util.bytes.ByteChanger;
+import me.lyric.infinity.api.util.metadata.MetaDataUtils;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.time.DateTimeUtils;
-import me.lyric.infinity.api.util.metadata.MetaDataUtils;
-import com.google.gson.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;

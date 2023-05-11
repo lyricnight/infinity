@@ -1,6 +1,7 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import event.bus.EventListener;
 import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -9,7 +10,6 @@ import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.shader.FramebufferShader;
 import me.lyric.infinity.api.util.gl.shader.shaders.OutlineShader;
 import me.lyric.infinity.api.util.gl.shader.shaders.SpaceShader;
-import event.bus.EventListener;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.item.EntityItem;

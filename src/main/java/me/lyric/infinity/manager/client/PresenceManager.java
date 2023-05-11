@@ -1,11 +1,11 @@
 package me.lyric.infinity.manager.client;
 
-import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.impl.modules.client.RPC;
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
+import me.lyric.infinity.Infinity;
+import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.impl.modules.client.RPC;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.GuiConnecting;
 

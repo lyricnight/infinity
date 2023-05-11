@@ -1,7 +1,7 @@
 package me.lyric.infinity.mixin.mixins.blocks;
 
-import me.lyric.infinity.api.event.events.blocks.CanCollideCheckEvent;
 import event.bus.EventBus;
+import me.lyric.infinity.api.event.events.blocks.CanCollideCheckEvent;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import org.spongepowered.asm.mixin.Mixin;

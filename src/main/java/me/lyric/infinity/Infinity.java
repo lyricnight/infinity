@@ -1,10 +1,9 @@
 package me.lyric.infinity;
 
-import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import event.bus.EventBus;
 import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
-import event.bus.EventBus;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

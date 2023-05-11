@@ -1,11 +1,11 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
+import event.bus.EventBus;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.render.AspectEvent;
 import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
 import me.lyric.infinity.impl.modules.render.CameraClip;
 import me.lyric.infinity.mixin.transformer.IEntityRenderer;
-import event.bus.EventBus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.EntityRenderer;

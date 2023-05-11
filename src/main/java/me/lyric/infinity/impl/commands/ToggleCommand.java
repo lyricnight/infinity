@@ -1,11 +1,11 @@
 package me.lyric.infinity.impl.commands;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import com.mojang.realmsclient.gui.ChatFormatting;
 
 /**
  * @author lyric

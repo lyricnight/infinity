@@ -72,7 +72,7 @@ public class HoleSnap
             this.toggle();
             return;
         }
-        if (this.timer.passedMs(500L) && MovementUtil.anyMovementKeys()) {
+        if (this.timer.passedMs(500L)) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "HoleSnap timed out, disabling...");
             this.toggle();
             return;

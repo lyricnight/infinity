@@ -1,10 +1,10 @@
 package me.lyric.infinity.impl.modules.misc;
 
+import event.bus.EventListener;
+import io.netty.buffer.Unpooled;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import event.bus.EventListener;
-import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;

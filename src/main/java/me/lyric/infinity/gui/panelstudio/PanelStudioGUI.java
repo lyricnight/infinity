@@ -1,13 +1,5 @@
 package me.lyric.infinity.gui.panelstudio;
 
-import me.lyric.infinity.api.module.Category;
-import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.Bind;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
-import me.lyric.infinity.gui.theme.InfinityTheme;
-import me.lyric.infinity.impl.modules.client.ClickGUI;
-import me.lyric.infinity.manager.client.ModuleManager;
 import com.lukflug.panelstudio.base.*;
 import com.lukflug.panelstudio.component.IComponent;
 import com.lukflug.panelstudio.component.IResizable;
@@ -26,6 +18,14 @@ import com.lukflug.panelstudio.theme.ITheme;
 import com.lukflug.panelstudio.theme.OptimizedTheme;
 import com.lukflug.panelstudio.theme.ThemeTuple;
 import com.lukflug.panelstudio.widget.*;
+import me.lyric.infinity.api.module.Category;
+import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.Bind;
+import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.gui.theme.InfinityTheme;
+import me.lyric.infinity.impl.modules.client.ClickGUI;
+import me.lyric.infinity.manager.client.ModuleManager;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
