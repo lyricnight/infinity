@@ -30,7 +30,7 @@ public class WebBypass extends Module {
             return;
         }
         boolean sneaking = mc.player.isSneaking();
-        if (((IEntity) mc.player).isInWeb()) {
+        if (((IEntity) (me.lyric.infinity.mixin.transformer.IEntity) mc.player).isInWeb()) {
             switch (mode.getValue()) {
                 case STRICT:
                     for (int i = 0; i < 10; i++)
@@ -47,7 +47,6 @@ public class WebBypass extends Module {
                     }
                     break;
                 case VANILLA:
-                    mc.player.isInWeb = false;
                     break;
             }
         }
