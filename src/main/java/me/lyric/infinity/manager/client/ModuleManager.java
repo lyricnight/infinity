@@ -5,10 +5,7 @@ import me.lyric.infinity.impl.modules.client.ClickGUI;
 import me.lyric.infinity.impl.modules.client.HUD;
 import me.lyric.infinity.impl.modules.client.Notifications;
 import me.lyric.infinity.impl.modules.client.RPC;
-import me.lyric.infinity.impl.modules.combat.AutoCity;
-import me.lyric.infinity.impl.modules.combat.Clip;
-import me.lyric.infinity.impl.modules.combat.Criticals;
-import me.lyric.infinity.impl.modules.combat.HoleFiller;
+import me.lyric.infinity.impl.modules.combat.*;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
 import me.lyric.infinity.impl.modules.player.AutoReply;
@@ -108,6 +105,7 @@ public class ModuleManager {
         this.modules.add(new Criticals());
         this.modules.add(new HoleFiller());
         this.modules.add(new Clip());
+        this.modules.add(new ClipTest());
         this.modules.add(new AutoCity());
     }
 

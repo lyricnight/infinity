@@ -108,11 +108,11 @@ public class HoleESP extends Module {
     {
         if (animation.getValue() == Mode.GROW)
         {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.WHITE + "grow" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.WHITE + "grow, " + holePosLongHashMap.size() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         if (animation.getValue() == Mode.FADE)
         {
-            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.WHITE  + "fade" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" +ChatFormatting.RESET + ChatFormatting.WHITE  + "fade, " + holePosLongHashMap.size() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         return ChatFormatting.GRAY + "[" +ChatFormatting.RESET  + ChatFormatting.WHITE + holePosLongHashMap.size() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 

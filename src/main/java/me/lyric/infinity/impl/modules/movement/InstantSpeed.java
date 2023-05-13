@@ -15,14 +15,6 @@ public class InstantSpeed extends Module {
         super("InstantSpeed", "Makes you accelerate instantly - don't use on strict with speed arrows!", Category.MOVEMENT);
     }
     public Setting<Boolean> noLiquid = register(new Setting<>("NoLiquid","Disables module in liquid",  true));
-
-
-    @Override
-    public void onEnable() {
-        if (mc.player == null) {
-            return;
-        }
-    }
     @Override
     public String getDisplayInfo()
     {
@@ -36,7 +28,7 @@ public class InstantSpeed extends Module {
 
     @EventListener
     public void onMove(MoveEvent e) {
-        if (this.isDisabled() || mc.player.isElytraFlying()) {
+        if (mc.player.isElytraFlying()) {
             return;
         }
         if (this.noLiquid.getValue() && EntityUtil.isInLiquid() || mc.player.capabilities.isFlying) {
