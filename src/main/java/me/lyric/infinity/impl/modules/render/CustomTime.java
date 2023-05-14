@@ -6,6 +6,10 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 
+/**
+ * @author lyrrrric
+ */
+
 public class CustomTime extends Module {
     public CustomTime()
     {

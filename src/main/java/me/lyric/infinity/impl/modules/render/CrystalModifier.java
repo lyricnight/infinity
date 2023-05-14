@@ -1,16 +1,16 @@
 package me.lyric.infinity.impl.modules.render;
 
 import event.bus.EventListener;
-import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPostEvent;
 import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPreEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.glPopAttrib;
 
-
+/**
+ * @author lyricccc
+ */
 public class CrystalModifier extends Module {
 
     public CrystalModifier(){

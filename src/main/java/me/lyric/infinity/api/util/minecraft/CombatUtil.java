@@ -1,13 +1,18 @@
 package me.lyric.infinity.api.util.minecraft;
 
 import me.lyric.infinity.Infinity;
+import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public class CombatUtil implements IGlobals {
@@ -27,4 +32,14 @@ public class CombatUtil implements IGlobals {
         final double decimalPoint = player.posY - Math.floor(player.posY);
         return new BlockPos(player.posX, (decimalPoint > 0.8) ? (Math.floor(player.posY) + 1.0) : Math.floor(player.posY), player.posZ);
     }
+    public static boolean isBlockAbovePlayerHead()
+    {
+        BlockPos head = new BlockPos(mc.player.posX, mc.player.posY + 1, mc.player.posZ);
+        return mc.world.getBlockState(head).getBlock() == Blocks.OBSIDIAN;
+    }
+    public static BlockPos getAntiCevPlacement()
+    {
+        return new BlockPos(mc.player.posX, mc.player.posY + 2, mc.player.posZ);
+    }
+
 }

@@ -7,6 +7,10 @@ import net.minecraft.network.play.client.CPacketPlayer;
 
 import java.util.Objects;
 
+/**
+ * @author lyric
+ * this is weird
+ */
 public class ClipTest extends Module {
 
     public int packets = 0;
