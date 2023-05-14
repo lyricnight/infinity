@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * @author lyric
- * this is weird
+ * this is weird, like really weird
  */
 public class ClipTest extends Module {
 
@@ -23,7 +23,7 @@ public class ClipTest extends Module {
     {
         packets = 0;
     }
-
+    //TODO: What the hell is this?
     @Override
     public void onUpdate() {
         double rad = Math.toRadians(mc.player.rotationYaw);

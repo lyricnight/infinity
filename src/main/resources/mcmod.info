@@ -10,7 +10,7 @@
     "authorList": [
       "lyric"
     ],
-    "credits": "lyric, CPacketCustomPayload, chloe",
+    "credits": "lyric, CPacketCustomPayload",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []
