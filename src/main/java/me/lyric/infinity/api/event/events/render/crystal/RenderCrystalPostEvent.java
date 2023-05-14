@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.item.EntityEnderCrystal;
 
 /**
- * @author
+ * @author lyric <-_->
  */
 
 public class RenderCrystalPostEvent extends Event {

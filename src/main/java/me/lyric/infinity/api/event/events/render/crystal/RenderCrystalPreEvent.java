@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 
 /**
- * @author
+ * @author lyric :o
  */
 
 public class RenderCrystalPreEvent extends Event {
