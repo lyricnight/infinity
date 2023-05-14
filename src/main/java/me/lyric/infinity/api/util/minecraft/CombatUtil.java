@@ -34,12 +34,17 @@ public class CombatUtil implements IGlobals {
     }
     public static boolean isBlockAbovePlayerHead()
     {
-        BlockPos head = new BlockPos(mc.player.posX, mc.player.posY + 1, mc.player.posZ);
+        BlockPos head = new BlockPos(mc.player.posX, mc.player.posY + 2, mc.player.posZ);
         return mc.world.getBlockState(head).getBlock() == Blocks.OBSIDIAN;
     }
     public static BlockPos getAntiCevPlacement()
     {
-        return new BlockPos(mc.player.posX, mc.player.posY + 2, mc.player.posZ);
+        return new BlockPos(mc.player.posX, mc.player.posY + 3, mc.player.posZ);
+    }
+    public static boolean isAlreadyPrevented()
+    {
+        BlockPos pos = new BlockPos(mc.player.posX, mc.player.posY + 3, mc.player.posZ);
+        return mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN;
     }
 
 }
