@@ -23,7 +23,6 @@ import java.util.Objects;
 
 public class HoleSnap
         extends Module {
-    public boolean speeder;
     public Setting<Float> range = register(new Setting<>("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
     public Setting<Float> factor = register(new Setting<>("Factor","Factor for the holesnap.", 2.5f, 1.0f, 15.0f));
     public Setting<Boolean> debug = register(new Setting<>("Debug", "For testing.", false));
@@ -42,14 +41,7 @@ public class HoleSnap
         }
         this.timer.reset();
         this.holes = null;
-        speeder = Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).isEnabled();
     }
-    @Override
-    public String getDisplayInfo()
-    {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.GREEN + "snapping" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-    }
-
     @Override
     public void onDisable() {
         if (mc.player == null) {
@@ -60,7 +52,7 @@ public class HoleSnap
         if (((ITimer) ((IMinecraft) mc).getTimer()).getTickLength() != 50.0f) {
             Infinity.INSTANCE.tpsManager.reset2();
         }
-        speeder = Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).isEnabled();
+        Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
     }
 
     @Override
@@ -68,9 +60,10 @@ public class HoleSnap
         if (mc.player == null) {
             return;
         }
-        speeder = Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).isEnabled();
+        Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
         if (EntityUtil.isInLiquid()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in liquid! Disabling HoleSnap...");
+            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             this.toggle();
             return;
         }
@@ -81,18 +74,15 @@ public class HoleSnap
         }
         if (this.holes == null || HoleUtil.isObbyHole(RotationManager.getPlayerPos()) || HoleUtil.isBedrockHoles(RotationManager.getPlayerPos())) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
+            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             this.toggle();
             return;
         }
         if (this.timer.passedMs(500L) && MovementUtil.anyMovementKeys()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "HoleSnap timed out, disabling...");
+            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             this.toggle();
             return;
-        }
-        if (speeder)
-        {
-            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).toggle();
-            speeder = false;
         }
         Vec3d playerPos = mc.player.getPositionVector();
         Vec3d targetPos = new Vec3d((double)this.holes.pos1.getX() + 0.5, HoleSnap.mc.player.posY, (double)this.holes.pos1.getZ() + 0.5);
@@ -111,11 +101,6 @@ public class HoleSnap
         Infinity.INSTANCE.tpsManager.set(this.factor.getValue());
         HoleSnap.mc.player.motionX = -Math.sin(yawRad) * speed;
         HoleSnap.mc.player.motionZ = Math.cos(yawRad) * speed;
-        if (!speeder)
-        {
-            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).toggle();
-            speeder = true;
-        }
     }
 
     @EventListener
