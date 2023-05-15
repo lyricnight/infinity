@@ -3,11 +3,11 @@ package me.lyric.infinity.api.setting.settings;
 import java.awt.*;
 
 /**
- * @author
+ * @author CPacketCustomPayload
  */
 
 public class ColorPicker {
-
+    //TODO: add color sync to a colors module in client
     private float saturation;
     private float brightness;
 
@@ -105,4 +105,5 @@ public class ColorPicker {
     public float[] toHSB() {
         return Color.RGBtoHSB(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), null);
     }
+
 }

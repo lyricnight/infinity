@@ -9,6 +9,12 @@ import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.manager.client.InteractionManager;
 import net.minecraft.block.BlockObsidian;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderCrystal;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import static net.minecraft.util.EnumHand.MAIN_HAND;
 
@@ -55,6 +61,12 @@ public class AntiCev extends Module {
             int originalSlot = mc.player.inventory.currentItem;
             mc.player.inventory.currentItem = obbySlot;
             mc.playerController.updateController();
+            for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(CombatUtil.getAntiCevPlacement()))) {
+                if (entity instanceof EntityEnderCrystal) {
+                    mc.player.connection.sendPacket(new CPacketUseEntity(entity));
+                    mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+                }
+            }
             InteractionManager.placeBlock(CombatUtil.getAntiCevPlacement(), rot.getValue(), packet.getValue(), attack.getValue(), false);
             if (mc.player.inventory.currentItem != originalSlot) {
                 mc.player.inventory.currentItem = originalSlot;

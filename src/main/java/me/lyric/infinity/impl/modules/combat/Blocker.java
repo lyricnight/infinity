@@ -9,6 +9,7 @@ import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.manager.client.InteractionManager;
 import me.lyric.infinity.manager.client.RotationManager;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.Entity;
@@ -23,13 +24,14 @@ import net.minecraft.util.math.BlockPos;
 
 /**
  * @author asphyxia - this is pasted for futur5 because he won't fucking stop asking me for it
- * face and extend conflict bug fixed by lyric
+ * face and extend conflict bug fixed by lyric, as well as addition of diagonals
  */
 
 public class Blocker extends Module {
 
     private final Setting<Boolean> extend = register(new Setting<>("Extend","bot",  true));
     private final Setting<Boolean> face = register(new Setting<>("Face","bot", true));
+    private final Setting<Boolean> diag = register(new Setting<>("Diagonals","bot", true));
     private final Setting<Boolean> rotate = register(new Setting<>("Rotate","bot", false));
     private final Setting<Boolean> packet = register(new Setting<>("Packet","bot", true).withParent(rotate));
 
@@ -48,6 +50,20 @@ public class Blocker extends Module {
             BlockPos playerPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
             BlockPos placePos = null;
             BlockPos placePos2 = null;
+            BlockPos placePos3 = null;
+            if (diag.getValue()) {
+                if (pos.equals(playerPos.north()))
+                    placePos3 = (playerPos.north().west());
+
+                if (pos.equals(playerPos.west()))
+                    placePos3 = (playerPos.north().east());
+
+                if (pos.equals(playerPos.east()))
+                    placePos3 = (playerPos.south().east());
+
+                if (pos.equals(playerPos.south()))
+                    placePos3 = (playerPos.south().west());
+            }
 
             if (extend.getValue()) {
                 if (pos.equals(playerPos.north()))
@@ -83,6 +99,10 @@ public class Blocker extends Module {
             if (placePos2 != null)
             {
                 placeBlock(placePos2);
+            }
+            if (placePos3 != null)
+            {
+                placeBlock(placePos3);
             }
         }
     }
