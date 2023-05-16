@@ -1,6 +1,6 @@
 package me.lyric.infinity.impl.modules.misc;
 
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -30,15 +30,13 @@ public class ChorusControl extends Module {
     public Setting<Boolean> spacketplayerposlook = register(new Setting<>("SPacketPlayerPosLook", "Cancels the SPacketPlayerPosLook packet.", true));
 
     public Setting<Boolean> render = register(new Setting<>("Render", "Renders the predicted teleport spot.", true));
-    public Setting<Double> slabHeight = register(new Setting<>("Height", "The height of the slab.", 0.1, -1.0, 1.0)).withParent(render);
+    public Setting<Double> slabHeight = register(new Setting<>("Height", "The height of the slab.", 0.1, -1.0, 1.0).withParent(render));
     public Setting<ColorPicker> color = register(new Setting<>("Color", "The color of the slab.", new ColorPicker(Color.BLUE)));
 
     Queue<CPacketPlayer> packets = new LinkedList<>();
     Queue<CPacketConfirmTeleport> teleportPackets = new LinkedList<>();
 
     SPacketPlayerPosLook sPacketPlayerPosLook;
-
-    //private boolean keyDown;
 
     public ChorusControl() {
         super("ChorusControl", "Lets you control your chorus teleportation.", Category.MISC);

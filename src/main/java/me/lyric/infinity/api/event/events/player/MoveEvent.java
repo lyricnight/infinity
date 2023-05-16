@@ -1,11 +1,7 @@
 package me.lyric.infinity.api.event.events.player;
 
+import me.bush.eventbus.event.Event;
 
-import me.lyric.infinity.api.event.Event;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-
-
-@Cancelable
 public class MoveEvent extends Event {
 
     private double motionX, motionY, motionZ;
@@ -38,6 +34,10 @@ public class MoveEvent extends Event {
 
     public void setMotionZ(double motionZ) {
         this.motionZ = motionZ;
+    }
+    @Override
+    protected boolean isCancellable() {
+        return true;
     }
 
 }

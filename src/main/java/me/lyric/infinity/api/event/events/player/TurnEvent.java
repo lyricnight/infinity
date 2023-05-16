@@ -1,6 +1,6 @@
 package me.lyric.infinity.api.event.events.player;
 
-import event.bus.Event;
+import me.bush.eventbus.event.Event;
 
 public class TurnEvent extends Event {
 
@@ -18,5 +18,9 @@ public class TurnEvent extends Event {
 
     public float getPitch() {
         return pitch;
+    }
+    @Override
+    protected boolean isCancellable() {
+        return true;
     }
 }

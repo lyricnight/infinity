@@ -1,6 +1,6 @@
 package me.lyric.infinity;
 
-import event.bus.EventBus;
+import me.bush.eventbus.bus.EventBus;
 import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
@@ -12,7 +12,7 @@ import java.io.File;
 
 @Mod(
         modid = "infinity",
-        version = "0.0.2"
+        version = "v3-beta"
 )
 
 public class Infinity {
@@ -20,7 +20,7 @@ public class Infinity {
     public static final String PATH = "Infinity/";
     public static final String CONFIG_PATH = PATH + "configs/";
 
-    public static EventBus EVENT_BUS = EventBus.INSTANCE;
+    public EventBus eventBus = new EventBus();
     public static PanelStudioGUI gui;
     public TPSManager tpsManager;
     public ForgeEventManager forgeEventManager;

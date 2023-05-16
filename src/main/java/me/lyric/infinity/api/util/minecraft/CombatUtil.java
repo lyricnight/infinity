@@ -1,18 +1,14 @@
 package me.lyric.infinity.api.util.minecraft;
 
 import me.lyric.infinity.Infinity;
-import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
 public class CombatUtil implements IGlobals {

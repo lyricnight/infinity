@@ -1,6 +1,6 @@
 package me.lyric.infinity.mixin.mixins.render;
 
-import event.bus.EventBus;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.render.crystal.CrystalTextureEvent;
 import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPostEvent;
 import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPreEvent;
@@ -34,8 +34,8 @@ public class MixinRenderEnderCrystal {
     @Redirect(method = {"doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void doRender(ModelBase modelBase, Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         RenderCrystalPreEvent renderCrystalEvent = new RenderCrystalPreEvent(modelBase, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        EventBus.post(renderCrystalEvent);
-        if (!renderCrystalEvent.getCancelled()) {
+        Infinity.INSTANCE.eventBus.post(renderCrystalEvent);
+        if (!renderCrystalEvent.isCancelled()) {
             modelBase.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
         CrystalTextureEvent crystalTextureEvent = new CrystalTextureEvent();
@@ -45,8 +45,8 @@ public class MixinRenderEnderCrystal {
     @Inject(method = {"doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V"}, at = {@At(value = "RETURN")}, cancellable = true)
     public void doRender(EntityEnderCrystal entityEnderCrystal, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
         RenderCrystalPostEvent renderCrystalEvent = new RenderCrystalPostEvent(this.modelEnderCrystal, this.modelEnderCrystalNoBase, entityEnderCrystal, x, y, z, entityYaw, partialTicks);
-        EventBus.post(renderCrystalEvent);
-        if (renderCrystalEvent.getCancelled()) {
+        Infinity.INSTANCE.eventBus.post(renderCrystalEvent);
+        if (renderCrystalEvent.isCancelled()) {
             info.cancel();
         }
     }

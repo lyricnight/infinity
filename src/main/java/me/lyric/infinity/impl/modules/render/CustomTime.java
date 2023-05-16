@@ -1,6 +1,6 @@
 package me.lyric.infinity.impl.modules.render;
 
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.events.network.GameLoopEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;

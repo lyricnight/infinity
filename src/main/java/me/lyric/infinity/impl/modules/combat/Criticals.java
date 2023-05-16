@@ -1,7 +1,7 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;

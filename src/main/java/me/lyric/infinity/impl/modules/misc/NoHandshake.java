@@ -1,7 +1,7 @@
 package me.lyric.infinity.impl.modules.misc;
 
-import event.bus.EventListener;
 import io.netty.buffer.Unpooled;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;

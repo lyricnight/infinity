@@ -1,7 +1,8 @@
 package me.lyric.infinity.impl.modules.movement;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.events.entity.LivingUpdateEvent;
 import me.lyric.infinity.api.event.events.player.MotionEvent;
 import me.lyric.infinity.api.module.Category;
@@ -33,12 +34,12 @@ public class Sprint extends Module {
         }
     }
 
-    @EventListener
+    @EventListener(priority = ListenerPriority.HIGH)
     public void onMotion(MotionEvent event) {
         event.setCancelled(nullSafe() && handleSprint() && isMoving() && mode.getValue().equals(Mode.DIRECTIONAL));
     }
 
-    @EventListener
+    @EventListener(priority = ListenerPriority.HIGH)
     public void onLivingUpdate(LivingUpdateEvent event) {
         event.setCancelled(nullSafe() && handleSprint() && isMoving() && mode.getValue().equals(Mode.DIRECTIONAL));
     }

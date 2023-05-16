@@ -138,13 +138,13 @@ public class Module extends Register implements IGlobals {
     protected void onEnable() {
         animation.setState(true);
         MinecraftForge.EVENT_BUS.register(this);
-        Infinity.EVENT_BUS.register(this);
+        Infinity.INSTANCE.eventBus.subscribe(this);
     }
 
     protected void onDisable() {
         animation.setState(false);
         MinecraftForge.EVENT_BUS.unregister(this);
-        Infinity.EVENT_BUS.unregister(this);
+        Infinity.INSTANCE.eventBus.unsubscribe(this);
     }
     public String getInfo() {
         return null;
@@ -168,7 +168,7 @@ public class Module extends Register implements IGlobals {
         }
         this.bind.getValue().setState(true);
 
-        Infinity.EVENT_BUS.register(this);
+        Infinity.INSTANCE.eventBus.subscribe(this);
         MinecraftForge.EVENT_BUS.register(this);
         this.onEnable();
     }
@@ -179,7 +179,7 @@ public class Module extends Register implements IGlobals {
         }
         this.bind.getValue().setState(false);
 
-        Infinity.EVENT_BUS.unregister(this);
+        Infinity.INSTANCE.eventBus.unsubscribe(this);
         MinecraftForge.EVENT_BUS.unregister(this);
 
         this.onDisable();

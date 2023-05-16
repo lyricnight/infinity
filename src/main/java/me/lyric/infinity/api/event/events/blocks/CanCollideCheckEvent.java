@@ -1,10 +1,16 @@
 package me.lyric.infinity.api.event.events.blocks;
 
-import event.bus.Event;
+import me.bush.eventbus.event.Event;
 
 /**
- * @author
+ * @author lyric
+ * uhh
  */
 
-public class CanCollideCheckEvent extends Event {}
+public class CanCollideCheckEvent extends Event {
+    @Override
+    protected boolean isCancellable() {
+        return true;
+    }
+}
 

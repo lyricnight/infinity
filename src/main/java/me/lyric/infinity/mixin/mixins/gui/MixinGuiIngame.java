@@ -1,6 +1,6 @@
 package me.lyric.infinity.mixin.mixins.gui;
 
-import event.bus.EventBus;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.render.crosshair.CrosshairEvent;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.ScaledResolution;
@@ -19,8 +19,8 @@ public abstract class MixinGuiIngame {
     @Inject(method = "renderAttackIndicator", at = @At("HEAD"), cancellable = true)
     protected void renderAttackIndicator(float partialTicks, ScaledResolution p_184045_2_, CallbackInfo ci) {
         final CrosshairEvent event = new CrosshairEvent();
-        EventBus.post(event);
-        if (event.getCancelled())
+        Infinity.INSTANCE.eventBus.post(event);
+        if (event.isCancelled())
             ci.cancel();
     }
 }

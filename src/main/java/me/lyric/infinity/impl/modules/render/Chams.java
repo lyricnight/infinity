@@ -1,7 +1,7 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.events.render.RenderLivingEntityEvent;
 import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPostEvent;
 import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPreEvent;
@@ -22,7 +22,6 @@ import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -151,11 +150,14 @@ public class Chams extends Module {
         }
     }
 
-    @SubscribeEvent
+    @EventListener
     public void onRenderLivingEntity(RenderLivingEntityEvent event) {
         if (!nullSafe()) return;
         if ((event.getEntityLivingBase() instanceof EntityOtherPlayerMP && players.getValue() || (isPassiveMob(event.getEntityLivingBase()) || isNeutralMob(event.getEntityLivingBase())) && mobs.getValue() != false || isHostileMob(event.getEntityLivingBase()) && monsters.getValue())) {
-            event.setCanceled(!texture.getValue());
+            if (!texture.getValue())
+            {
+             event.setCanceled(true);
+            }
             if (transparent.getValue()) {
                 GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
             }

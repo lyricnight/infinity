@@ -1,9 +1,10 @@
 package me.lyric.infinity.manager.client;
 
-import event.bus.EventListener;
-import event.bus.EventState;
+import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
-import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
+import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEventPost;
+import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEventPre;
 import me.lyric.infinity.api.event.events.render.RenderLivingEntityEvent;
 import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
@@ -79,16 +80,16 @@ public class RotationManager implements IGlobals {
             headPitch = -1;
         }
     }
-    @EventListener
-    public void onUpdateWalkingPlayer(UpdateWalkingPlayerEvent event) {
+    @EventListener(priority = ListenerPriority.HIGH)
+    public void onUpdateWalkingPlayerPre(UpdateWalkingPlayerEventPre e) {
         if (mc.player == null) return;
+        RotationManager.updateRotations();
 
-        if (event.getEventState() == EventState.PRE) {
-            RotationManager.updateRotations();
-        }
-        if (event.getEventState() == EventState.POST) {
-            RotationManager.resetRotations();
-        }
+    }
+    @EventListener(priority = ListenerPriority.HIGH)
+    public void onUpdateWalkingPlayerPost(UpdateWalkingPlayerEventPost e) {
+        if (mc.player == null) return;
+        RotationManager.resetRotations();
     }
     public static void resetRotationsPacket() {
         if (mc.player == null)
@@ -105,7 +106,7 @@ public class RotationManager implements IGlobals {
             serverRotation = new Rotation(((CPacketPlayer) event.getPacket()).getYaw(0), ((CPacketPlayer) event.getPacket()).getPitch(0), Rotation.Rotate.NONE);
     }
 
-    @SubscribeEvent
+    @EventListener(priority = ListenerPriority.HIGHEST)
     public void onRenderLivingEntity(RenderLivingEntityEvent event) {
         if (event.getEntityLivingBase().equals(mc.player)) {
             event.setCanceled(true);

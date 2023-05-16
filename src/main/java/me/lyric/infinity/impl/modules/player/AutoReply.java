@@ -1,15 +1,20 @@
 package me.lyric.infinity.impl.modules.player;
 
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.network.play.server.SPacketChat;
+import net.minecraft.util.math.Vec3d;
 
 
-// @author lyric
+/**
+ * @author lyric
+ * improved version of cascade
+ */
 public class AutoReply extends Module {
     private static AutoReply INSTANCE = new AutoReply();
     public static AutoReply getInstance() {
@@ -26,11 +31,11 @@ public class AutoReply extends Module {
         super("AutoReply","Automatically replies your coords to people you have added.", Category.PLAYER);
     }
 
-    Setting<Boolean> ignoreY = register(new Setting("IgnoreY","Doesn't send your Y coordinate.", true));
+    public Setting<Boolean> ignoreY = register(new Setting("IgnoreY","Doesn't send your Y coordinate.", true));
 
-    @EventListener
+    @EventListener(priority = ListenerPriority.LOW)
     public void onReceivePacket(PacketEvent.Receive e)  {
-        if (!nullSafe() || isDisabled()) {
+        if (!nullSafe()) {
             return;
         }
         if (e.getPacket() instanceof SPacketChat) {
@@ -47,10 +52,8 @@ public class AutoReply extends Module {
                         if (lowerCaseMsg.contains("discord") || lowerCaseMsg.contains("record")) {
                             return;
                         }
-                        int x = (int) mc.player.posX;
-                        int y = (int) mc.player.posY;
-                        int z = (int) mc.player.posZ;
-                        mc.player.sendChatMessage("/msg " + ign + (" " + x + "x " + (ignoreY.getValue() ? "" : y + "y ") + z + "z"));
+                        Vec3d pos = mc.player.getPositionVector();
+                        mc.player.sendChatMessage("/msg " + ign + (" " + pos.x + "x " + (ignoreY.getValue() ? "" : pos.y + "y ") + pos.z + "z"));
                     }
                 }
             }

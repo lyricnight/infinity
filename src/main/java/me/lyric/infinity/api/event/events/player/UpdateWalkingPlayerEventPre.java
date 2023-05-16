@@ -1,23 +1,22 @@
 package me.lyric.infinity.api.event.events.player;
 
-import event.bus.Event;
-import event.bus.EventState;
+import me.bush.eventbus.event.Event;
 
-
-public class UpdateWalkingPlayerEvent extends Event {
-
+public class UpdateWalkingPlayerEventPre extends Event {
     private float yaw, pitch;
     public boolean rotationUsed;
-    public UpdateWalkingPlayerEvent(EventState stage, float yaw, float pitch) {
-        super(stage);
+    public UpdateWalkingPlayerEventPre(float yaw, float pitch) {
         this.yaw = yaw;
         this.pitch = pitch;
     }
-
-    public UpdateWalkingPlayerEvent(EventState stage) {
-        super(stage);
+    @Override
+    protected boolean isCancellable() {
+        return true;
     }
 
+    public UpdateWalkingPlayerEventPre() {
+
+    }
     public void setYaw(float yaw) {
         this.yaw = yaw;
         this.rotationUsed = true;
@@ -36,4 +35,3 @@ public class UpdateWalkingPlayerEvent extends Event {
         return this.pitch;
     }
 }
-

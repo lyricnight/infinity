@@ -18,14 +18,12 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
         classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61"
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'kotlin'
 
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()
@@ -37,7 +35,7 @@ def getGitHash = { ->
 }
 
 group = 'me.lyric.infinity'
-version = '0.0.2-' + getGitHash()
+version = 'v3-beta-' + getGitHash()
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -71,6 +69,7 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:19.0.0'
+    implementation 'com.github.therealbush:eventbus:1.0.2'
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
     compile group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1"
     compile('org.spongepowered:mixin:0.7.4-SNAPSHOT') {
@@ -79,11 +78,6 @@ dependencies {
         exclude module: 'gson'
         exclude module: 'commons-io'
     }
-
-    compile("org.jetbrains.kotlin:kotlin-stdlib:1.3.72")
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72")
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72")
-
     compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
 
@@ -112,10 +106,8 @@ shadowJar {
         include(dependency('org.spongepowered:mixin'))
         include(dependency('club.minnced:java-discord-rpc:2.0.1'))
         include(dependency('net.jodah:typetools'))
+        include(dependency("com.github.therealbush:eventbus:1.0.2"))
         include(dependency('com.googlecode.json-simple:json-simple:1.1.1'))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.3.72"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.72"))
         include(dependency("com.lukflug:panelstudio:0.2.1"))
         include(dependency("com.lukflug:panelstudio-mc12:0.2.0"))
     }
@@ -137,7 +129,7 @@ jar.manifest.attributes(
         'FMLCorePluginContainsFMLMod': true,
         'FMLCorePlugin': 'me.lyric.infinity.mixin.MixinLoader',
         'ForceLoadAsMod': true,
-        'FMLAT': 'solaros_at.cfg'
+        'FMLAT': 'infinity_at.cfg'
 )
 
 reobf {
@@ -150,16 +142,4 @@ reobf {
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
 build.dependsOn(shadowJar)

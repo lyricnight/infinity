@@ -1,6 +1,6 @@
 package me.lyric.infinity.api.event.events.player;
 
-import me.lyric.infinity.api.event.Event;
+import me.bush.eventbus.event.Event;
 import net.minecraft.entity.MoverType;
 
 public class MotionEvent extends Event {
@@ -47,5 +47,9 @@ public class MotionEvent extends Event {
 
     public void setZ(double z) {
         this.z = z;
+    }
+    @Override
+    protected boolean isCancellable() {
+        return true;
     }
 }

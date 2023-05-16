@@ -1,6 +1,6 @@
 package me.lyric.infinity.impl.modules.client;
 
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
@@ -117,7 +117,7 @@ public class HUD extends Module {
         }
 
         if (watermark.getValue()) {
-            mc.fontRenderer.drawStringWithShadow("Infinity" + TextFormatting.WHITE + " " + "0.0.2-beta", waterX.getValue(), waterY.getValue(), color.getValue().getColor().getRGB()); // X & Y can be made custom.
+            mc.fontRenderer.drawStringWithShadow("Infinity" + TextFormatting.WHITE + " " + "v3-beta", waterX.getValue(), waterY.getValue(), color.getValue().getColor().getRGB()); // X & Y can be made custom.
         }
 
         if (speed.getValue()) {

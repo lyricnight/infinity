@@ -6,8 +6,8 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.manager.client.PresenceManager;
 public class RPC extends Module {
 
-    public Setting<String> largeImageText = register(new Setting("Large Image Text", "The large image text for the RPC.", "Infinity 0.0.2"));
-    public Setting<String> details = register(new Setting<>("Details", "The details for the RPC.", "Winning with Infinity!"));
+    public Setting<String> largeImageText = register(new Setting("Large Image Text", "The large image text for the RPC.", "Infinity v3-beta"));
+    public Setting<String> details = register(new Setting<>("Details", "The details for the RPC.", "yung n rich"));
     public Setting<Boolean> showIP = register(new Setting<>("Show IP", "Show the server name you are playing on.", true));
 
     public RPC() {

@@ -1,7 +1,8 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.events.render.AspectEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -22,7 +23,7 @@ public class Aspect extends Module {
     }
     public DecimalFormat format = new DecimalFormat("#.0");
 
-    @EventListener
+    @EventListener(priority = ListenerPriority.LOW)
     public void onAspect(AspectEvent event) {
         if (!nullSafe()) return;
         event.setAspect(aspect.getValue());

@@ -1,6 +1,6 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
-import event.bus.EventBus;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.player.TurnEvent;
 import me.lyric.infinity.impl.modules.render.NoRender;
 import me.lyric.infinity.mixin.transformer.IEntity;
@@ -52,9 +52,9 @@ public abstract class MixinEntity implements IEntity {
     @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
     public void onTurnHook(float yaw, float pitch, CallbackInfo info) {
         TurnEvent event = new TurnEvent(yaw, pitch);
-        EventBus.post(event);
+        Infinity.INSTANCE.eventBus.post(event);
 
-        if (event.getCancelled()) {
+        if (event.isCancelled()) {
             info.cancel();
         }
     }

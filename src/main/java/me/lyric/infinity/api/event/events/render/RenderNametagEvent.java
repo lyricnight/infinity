@@ -1,6 +1,6 @@
 package me.lyric.infinity.api.event.events.render;
 
-import me.lyric.infinity.api.event.Event;
+import me.bush.eventbus.event.Event;
 
 /**
  * @author lyric ;)
@@ -8,4 +8,8 @@ import me.lyric.infinity.api.event.Event;
 
 public class RenderNametagEvent extends Event {
     public RenderNametagEvent() {}
+    @Override
+    protected boolean isCancellable() {
+        return true;
+    }
 }

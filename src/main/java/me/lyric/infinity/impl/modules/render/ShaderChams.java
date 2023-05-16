@@ -1,7 +1,7 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -112,7 +112,6 @@ public class ShaderChams extends Module {
         }
     }
 
-    // Nametags bug fix.
     @EventListener
     public void onRenderNametag(RenderNametagEvent event) {
         if (!nullSafe()) return;

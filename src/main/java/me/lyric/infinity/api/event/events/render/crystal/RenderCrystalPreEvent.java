@@ -1,6 +1,6 @@
 package me.lyric.infinity.api.event.events.render.crystal;
 
-import event.bus.Event;
+import me.bush.eventbus.event.Event;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 
@@ -10,6 +10,10 @@ import net.minecraft.entity.Entity;
 
 public class RenderCrystalPreEvent extends Event {
 
+    @Override
+    protected boolean isCancellable() {
+        return true;
+    }
     private final ModelBase modelBase;
     private final Entity entity;
     private final float limbSwing;

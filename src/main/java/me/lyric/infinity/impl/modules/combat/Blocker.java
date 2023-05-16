@@ -1,6 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -9,7 +9,6 @@ import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.manager.client.InteractionManager;
 import me.lyric.infinity.manager.client.RotationManager;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.Entity;

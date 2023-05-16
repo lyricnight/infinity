@@ -1,16 +1,13 @@
 package me.lyric.infinity.manager.forge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import event.bus.EventBus;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
-import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEvent;
 import me.lyric.infinity.api.event.events.render.Render3DEvent;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.manager.client.ModuleManager;
-import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -38,7 +35,7 @@ public class ForgeEventManager implements IGlobals {
 
     public void init() {
         MinecraftForge.EVENT_BUS.register(this);
-        EventBus.INSTANCE.register(this);
+        Infinity.INSTANCE.eventBus.subscribe(this);
     }
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent event) {
@@ -46,7 +43,7 @@ public class ForgeEventManager implements IGlobals {
             return;
         }
         Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
-        EventBus.post(render3DEvent);
+        Infinity.INSTANCE.eventBus.post(render3DEvent);
 
         for (Module module : ModuleManager.getModuleManager().getModules()) {
             if (module.isEnabled()) {

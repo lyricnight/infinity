@@ -1,6 +1,6 @@
 package me.lyric.infinity.api.event.events.entity;
 
-import me.lyric.infinity.api.event.Event;
+import me.bush.eventbus.event.Event;
 import net.minecraft.client.entity.EntityPlayerSP;
 
 /**
@@ -23,5 +23,9 @@ public class LivingUpdateEvent extends Event {
 
     public boolean isSprinting() {
         return this.sprinting;
+    }
+    @Override
+    protected boolean isCancellable() {
+        return true;
     }
 }

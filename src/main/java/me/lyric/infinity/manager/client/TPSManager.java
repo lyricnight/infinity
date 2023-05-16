@@ -1,6 +1,6 @@
 package me.lyric.infinity.manager.client;
 
-import event.bus.EventListener;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.network.PacketEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
@@ -30,7 +30,7 @@ public class TPSManager
         for (int i = 0; i < len; ++i) {
             this.ticks[i] = 0.0f;
         }
-        Infinity.EVENT_BUS.register(this);
+        Infinity.INSTANCE.eventBus.subscribe(this);
     }
 
     public static void unload()

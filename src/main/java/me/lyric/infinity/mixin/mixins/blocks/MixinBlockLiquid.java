@@ -1,6 +1,6 @@
 package me.lyric.infinity.mixin.mixins.blocks;
 
-import event.bus.EventBus;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.blocks.CanCollideCheckEvent;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +19,7 @@ public class MixinBlockLiquid {
     @Inject(method = "canCollideCheck", at = @At("HEAD"), cancellable = true)
     public void canCollideCheck(final IBlockState blockState, final boolean b, final CallbackInfoReturnable<Boolean> ci) {
         CanCollideCheckEvent event = new CanCollideCheckEvent();
-        EventBus.post(event);
-        ci.setReturnValue(event.getCancelled());
+        Infinity.INSTANCE.eventBus.post(event);
+        ci.setReturnValue(event.isCancelled());
     }
 }

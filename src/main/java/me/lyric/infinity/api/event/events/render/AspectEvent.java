@@ -1,9 +1,10 @@
 package me.lyric.infinity.api.event.events.render;
 
-import event.bus.Event;
+import me.bush.eventbus.event.Event;
 
 /**
- * @author
+ * @author lyric
+ * for aspect module
  */
 
 public class AspectEvent extends Event {
@@ -20,5 +21,9 @@ public class AspectEvent extends Event {
 
     public void setAspect(float aspect) {
         this.aspect = aspect;
+    }
+    @Override
+    protected boolean isCancellable() {
+        return true;
     }
 }
