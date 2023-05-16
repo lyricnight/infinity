@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.render;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import event.bus.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
@@ -361,7 +362,7 @@ public class NameTags extends Module {
             gameModeStr = player.isCreative() ? gameModeStr + "[C] " : (player.isSpectator() || player.isInvisible() ? gameModeStr + "[I] " : gameModeStr + "[S] ");
         }
         name = Math.floor(health) == (double) health ? name + color + " " + (health > 0.0f ? Integer.valueOf((int) Math.floor(health)) : "0 ") : name + color + " " + (health > 0.0f ? Integer.valueOf((int) health) : "0 ");
-        return name +" "+ idString + gameModeStr + pingStr + popStr;
+        return name + ChatFormatting.RESET +" "+ idString + gameModeStr + pingStr + popStr;
     }
 
     private int getDisplayColour(EntityPlayer player) {
