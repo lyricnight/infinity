@@ -1,6 +1,7 @@
 package me.lyric.infinity;
 
 import me.bush.eventbus.bus.EventBus;
+import me.bush.eventbus.handler.handlers.LambdaHandler;
 import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
@@ -20,7 +21,7 @@ public class Infinity {
     public static final String PATH = "Infinity/";
     public static final String CONFIG_PATH = PATH + "configs/";
 
-    public EventBus eventBus = new EventBus();
+    public EventBus eventBus = new EventBus(LambdaHandler.class);
     public static PanelStudioGUI gui;
     public TPSManager tpsManager;
     public ForgeEventManager forgeEventManager;

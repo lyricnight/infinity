@@ -18,7 +18,7 @@ public class ClickGUI extends Module {
     public Setting<Layout> layout = register(new Setting<>("Layout", "The layout of the GUI.", Layout.CSGOCategory));
 
     public ClickGUI() {
-        super("ClickGUI", "Clickable GUI inspired by Skeet.CC.", Category.CLIENT);
+        super("ClickGUI", "Clickable GUI inspired by Skeet.CC - to make Rainbow at top repeat, set 'Title Color' to rainbow.", Category.CLIENT);
 
         this.getBind().setKey(Keyboard.KEY_RSHIFT);
 

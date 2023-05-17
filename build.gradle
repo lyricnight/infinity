@@ -68,7 +68,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains:annotations:19.0.0'
+    implementation 'org.jetbrains:annotations:24.0.1'
     implementation 'com.github.therealbush:eventbus:1.0.2'
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
     compile group: "com.googlecode.json-simple", name: "json-simple", version: "1.1.1"
@@ -80,7 +80,7 @@ dependencies {
     }
     compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
-
+    compile("com.github.therealbush:eventbus:1.0.2")
     compile("com.lukflug:panelstudio:0.2.1")
     compile("com.lukflug:panelstudio-mc12:0.2.0")
 }

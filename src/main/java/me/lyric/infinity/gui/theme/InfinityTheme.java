@@ -60,7 +60,7 @@ public class InfinityTheme extends ThemeBase {
         this.border = border;
         this.scroll = scroll;
         this.gradient = gradient;
-        scheme.createSetting(this, "Title Color", "The color for panel titles.", false, true, new Color(255, 128, 0), true);
+        scheme.createSetting(this, "Title Color", "The color for panel titles.", true, true, new Color(255, 128, 0), true);
         scheme.createSetting(this, "Enabled Color", "The color for enabled modules.", false, true, new Color(136, 180, 52), false);
         scheme.createSetting(this, "Disabled Color", "The color for disabled modules.", false, true, new Color(180, 52, 52), false);
         scheme.createSetting(this, "Inactive Color", "The primary color for modules.", false, true, new Color(72, 72, 72), false);
