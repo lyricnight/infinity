@@ -13,6 +13,7 @@ public class Internals extends Module {
     public Setting<String> commandBracket = register(new Setting<>("Bracket","Symbol to use for the first bracket.", "["));
     public Setting<String> commandBracket2 = register(new Setting<>("Bracket 2","Symbol to use for the 2nd bracket.",  "]"));
 
+
     public Internals()
     {
         super("Internals", "Handles settings that don't fit anywhere else.", Category.CLIENT);
@@ -30,4 +31,6 @@ public class Internals extends Module {
     public String getCommandMessage() {
         return TextColorUtils.coloredString(this.commandBracket.getValue(), this.bracketColor.getValue()) + TextColorUtils.coloredString("Infinity", this.commandColor.getValue()) + TextColorUtils.coloredString(this.commandBracket2.getValue(), this.bracketColor.getValue());
     }
+
+
 }
