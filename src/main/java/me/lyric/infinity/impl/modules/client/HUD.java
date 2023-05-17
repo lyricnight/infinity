@@ -8,11 +8,9 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.RenderUtils;
-import me.lyric.infinity.api.util.string.TextColorUtils;
 import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -54,10 +52,6 @@ public class HUD extends Module {
     public Setting<Boolean> tot = register(new Setting<>("Totem Display", "For impcat because he's retarded and can't press e", false));
     public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
     public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!"));
-    public Setting<TextColorUtils.Color> bracketColor = register(new Setting<>("BracketColor","Color of the brackets.", TextColorUtils.Color.BLUE));
-    public Setting<TextColorUtils.Color> commandColor = register(new Setting<>("NameColor","Color of Infinity's name.", TextColorUtils.Color.BLUE));
-    public Setting<String> commandBracket = register(new Setting<>("Bracket","Symbol to use for the first bracket.", "["));
-    public Setting<String> commandBracket2 = register(new Setting<>("Bracket 2","Symbol to use for the 2nd bracket.",  "]"));
     public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
         public Setting<Integer> fpsX = register(new Setting<>("FPS X", "Position X for FPS.", 2, 1, 1000).withParent(fps));
         public Setting<Integer> fpsY = register(new Setting<>("FPS Y", "Position Y for FPS.", 6, 1, 1000).withParent(fps));
@@ -72,7 +66,6 @@ public class HUD extends Module {
     float offset;
     public Timer packetTimer = new Timer();
     int packets;
-    public RenderItem itemRender = mc.getRenderItem();
 
     private static HUD INSTANCE = new HUD();
     public static HUD getInstance() {
@@ -106,8 +99,6 @@ public class HUD extends Module {
         if (!nullSafe()) return;
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int SCREEN_HEIGHT = new ScaledResolution(mc).getScaledHeight();
-        Infinity.INSTANCE.commandManager.setClientMessage(getCommandMessage());
-
         if (activeModules.getValue()) {
             offset = 0;
             Infinity.INSTANCE.moduleManager.getModules().stream().filter(Module::isDrawn).filter(Module::isEnabled).filter(module -> module.getAnimation().getAnimationFactor() > 0.05).sorted(Comparator.comparing(module -> mc.fontRenderer.getStringWidth(module.getName() + (!module.getDisplayInfo().equals("") ? " " + module.getDisplayInfo() : "")) * -1)).forEach(module -> {
@@ -193,9 +184,6 @@ public class HUD extends Module {
         final int width = new ScaledResolution(mc).getScaledWidth();
         String welcomerString = String.format(textthing.getValue(), mc.player.getName());
         mc.fontRenderer.drawStringWithShadow(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, color.getValue().getColor().getRGB());
-    }
-    public String getCommandMessage() {
-        return TextColorUtils.coloredString(this.commandBracket.getValue(), this.bracketColor.getValue()) + TextColorUtils.coloredString("Infinity", this.commandColor.getValue()) + TextColorUtils.coloredString(this.commandBracket2.getValue(), this.bracketColor.getValue());
     }
 }
 

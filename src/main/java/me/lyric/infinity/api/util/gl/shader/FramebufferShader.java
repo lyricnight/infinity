@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL20;
 import java.awt.*;
 
 /**
- * @author lyric
+ * @author cpacketcustompayload
  */
 
 public abstract class FramebufferShader extends Shader implements IGlobals {

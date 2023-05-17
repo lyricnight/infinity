@@ -7,7 +7,7 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
-import me.lyric.infinity.manager.client.InteractionManager;
+import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
@@ -124,7 +124,7 @@ public class Blocker extends Module {
         }
         mc.player.inventory.currentItem = obbySlot == -1 ? eChestSlot : obbySlot;
         mc.playerController.updateController();
-        InteractionManager.placeBlock(pos, rotate.getValue(), packet.getValue(), true, false);
+        PlacementManager.placeBlock(pos, rotate.getValue(), packet.getValue(), true, false);
         if (mc.player.inventory.currentItem != oldSlot) {
             mc.player.inventory.currentItem = oldSlot;
             mc.playerController.updateController();

@@ -1,10 +1,7 @@
 package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.impl.modules.client.ClickGUI;
-import me.lyric.infinity.impl.modules.client.HUD;
-import me.lyric.infinity.impl.modules.client.Notifications;
-import me.lyric.infinity.impl.modules.client.RPC;
+import me.lyric.infinity.impl.modules.client.*;
 import me.lyric.infinity.impl.modules.combat.*;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
@@ -58,6 +55,7 @@ public class ModuleManager {
         this.modules.add(new ClickGUI());
         this.modules.add(new Notifications());
         this.modules.add(new HUD());
+        this.modules.add(new Internals());
         this.modules.add(new RPC());
 
         // RENDER

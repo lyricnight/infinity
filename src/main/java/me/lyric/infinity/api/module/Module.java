@@ -24,7 +24,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * @author
+ * @author CPacketCustomPayload
+ * stuff added by lyric
  */
 
 public class Module extends Register implements IGlobals {

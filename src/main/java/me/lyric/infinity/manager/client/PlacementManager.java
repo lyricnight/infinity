@@ -30,7 +30,7 @@ import java.util.Optional;
  * @author written by asphyxia and modified by lyric
  */
 
-public class InteractionManager {
+public class PlacementManager {
     private static final Timer attackTimer = new Timer();
     private static final Minecraft mc = Minecraft.getMinecraft();
     public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal, boolean ignoreEntities) {
@@ -38,10 +38,6 @@ public class InteractionManager {
         if (mc.player == null) return;
 
         if (BlockUtil.canReplace(pos)) {
-
-            if (attackCrystal) {
-                attackCrystals(pos, rotate);
-            }
 
             Optional<ClickLocation> posCL = getClickLocation(pos, ignoreEntities, false, attackCrystal);
 
@@ -91,36 +87,6 @@ public class InteractionManager {
         placeBlock(pos, rotate, packet, attackCrystal, false);
     }
 
-    public static void attackCrystals(BlockPos pos, boolean rotate) {
-
-        boolean sprint = mc.player.isSprinting();
-
-        int ping = Objects.requireNonNull(mc.getConnection()).getPlayerInfo(mc.player.getUniqueID()).getResponseTime();
-
-        for (EntityEnderCrystal crystal : mc.world.getEntitiesWithinAABB(EntityEnderCrystal.class, new AxisAlignedBB(pos))) {
-
-            if (attackTimer.passedMs(ping <= 50 ? 75 : 100)) {
-
-                if (rotate) {
-                    RotationManager.lookAtVec3dPacket(crystal.getPositionVector(), false, true);
-                }
-
-                if (sprint) {
-                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SPRINTING));
-                }
-
-                mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
-                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
-
-                if (sprint) {
-                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SPRINTING));
-                }
-
-                attackTimer.reset();
-                break;
-            }
-        }
-    }
 
     public static class ClickLocation {
         public final BlockPos neighbour;

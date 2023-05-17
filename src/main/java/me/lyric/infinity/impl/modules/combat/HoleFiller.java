@@ -8,7 +8,7 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.manager.client.InteractionManager;
+import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
@@ -132,7 +132,7 @@ public class HoleFiller extends Module {
             mc.player.inventory.currentItem = webs.getValue() ? (webSlot == -1 ? (obbySlot == -1 ? eChestSlot : obbySlot) : webSlot) : (obbySlot == -1 ? eChestSlot : obbySlot);
 
             mc.playerController.updateController();
-            InteractionManager.placeBlock(q, rotate.getValue(), packet.getValue(), false);
+            PlacementManager.placeBlock(q, rotate.getValue(), packet.getValue(), false);
 
             if (mc.player.inventory.currentItem != originalSlot) {
                 mc.player.inventory.currentItem = originalSlot;

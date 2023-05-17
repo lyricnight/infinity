@@ -4,7 +4,7 @@ import me.lyric.infinity.api.util.gl.shader.FramebufferShader;
 import org.lwjgl.opengl.GL20;
 
 /**
- * @author lyric
+ * @author cpacketcustompayload
  */
 
 public class OutlineShader extends FramebufferShader {

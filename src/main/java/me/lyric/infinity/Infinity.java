@@ -27,7 +27,7 @@ public class Infinity {
     public ForgeEventManager forgeEventManager;
     public ModuleManager moduleManager;
     public ThreadManager threadManager;
-    public InteractionManager interactionManager;
+    public PlacementManager interactionManager;
     public HoleManager holeManager;
     public CommandManager commandManager;
     public FriendManager friendManager;
