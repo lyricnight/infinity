@@ -2,7 +2,7 @@ package me.lyric.infinity.manager.client;
 
 import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
+import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.mixin.mixins.accessors.ITimer;

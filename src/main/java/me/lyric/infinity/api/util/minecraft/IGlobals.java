@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 
 /**
  * @author lyric
+ * wrapper
  */
 
 public interface IGlobals {

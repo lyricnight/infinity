@@ -3,7 +3,7 @@ package me.lyric.infinity.impl.modules.movement;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
-import me.lyric.infinity.api.event.events.player.MoveEvent;
+import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;

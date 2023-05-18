@@ -2,7 +2,7 @@ package me.lyric.infinity.impl.modules.misc;
 
 import io.netty.buffer.Unpooled;
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
+import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import net.minecraft.network.PacketBuffer;
@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 /**
  * @author lyric
+ * very useful
  */
 
 public class NoHandshake extends Module {

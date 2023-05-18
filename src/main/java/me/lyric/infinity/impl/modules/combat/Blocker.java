@@ -1,7 +1,7 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
+import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -22,7 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * @author asphyxia - this is pasted for futur5 because he won't fucking stop asking me for it
+ * @author asphyxia
  * face and extend conflict bug fixed by lyric, as well as addition of diagonals
  */
 

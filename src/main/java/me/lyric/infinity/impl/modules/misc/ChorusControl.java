@@ -1,7 +1,7 @@
 package me.lyric.infinity.impl.modules.misc;
 
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
+import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.Queue;
 
 /**
- * @author lyric
+ * @author cpacketcustompayload
  */
 
 public class ChorusControl extends Module {

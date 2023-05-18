@@ -12,6 +12,10 @@ import net.minecraft.world.World;
 
 import java.util.Map;
 
+/**
+ * @author lyric
+ * this is weird
+ */
 public class FakePlayer extends Module {
     public Setting<String> username = register(new Setting<Object>("Name","The name of the FakePlayer.", "lyric"));
     public FakePlayer() {

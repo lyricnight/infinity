@@ -1,6 +1,6 @@
 package me.lyric.infinity.api.util.minecraft;
 
-import me.lyric.infinity.api.event.events.player.MoveEvent;
+import me.lyric.infinity.api.event.player.MoveEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.MobEffects;

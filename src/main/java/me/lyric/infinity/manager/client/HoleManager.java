@@ -2,9 +2,8 @@ package me.lyric.infinity.manager.client;
 
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
-import me.bush.eventbus.bus.EventBus;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.render.Render3DEvent;
+import me.lyric.infinity.api.event.render.Render3DEvent;
 import me.lyric.infinity.api.util.minecraft.BlockUtil;
 import me.lyric.infinity.impl.modules.render.HoleESP;
 import net.minecraft.client.Minecraft;

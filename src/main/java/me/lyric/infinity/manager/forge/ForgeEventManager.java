@@ -3,7 +3,7 @@ package me.lyric.infinity.manager.forge;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
-import me.lyric.infinity.api.event.events.render.Render3DEvent;
+import me.lyric.infinity.api.event.render.Render3DEvent;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
@@ -51,6 +51,7 @@ public class ForgeEventManager implements IGlobals {
             }
         }
     }
+
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
