@@ -3,6 +3,7 @@ package me.lyric.infinity.manager.client;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -58,8 +59,15 @@ public class FriendManager {
     }
 
     public void addFriend(String name) {
+        if (isFriend(name))
+        {
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "This user is already a friend!");
+            return;
+        }
+        Friend f = getFriend(name);
+        if (f != null)
+            friends.add(f);
         ChatUtils.sendMessage(ChatFormatting.BOLD + "Added " +ChatFormatting.BLUE + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
-        friends.add(new Friend(name));
     }
 
     public final Friend getFriend(String ign) {
@@ -78,25 +86,12 @@ public class FriendManager {
         return getFriend(ign.getName()) != null;
     }
 
-    public void clearFriends() {
-        int val = friends.size();
-        friends.clear();
-        ChatUtils.sendMessage(ChatFormatting.BOLD + "Successfully cleared " + val + " friends!");
-    }
-
-    public void returnAllFriends()
-    {
-        StringBuilder message = new StringBuilder(ChatFormatting.BOLD +"Friends: ");
-        for (int i = 0; i <= friends.size(); i++)
-        {
-            message.append(friends.get(i).getName()).append(" ");
-        }
-        ChatUtils.sendMessage(String.valueOf(message));
-    }
-
-
-
     public void removeFriend(String name) {
+        if (!isFriend(name))
+        {
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "This user is not a friend!");
+            return;
+        }
         Friend f = getFriend(name);
         if (f != null)
             friends.remove(f);

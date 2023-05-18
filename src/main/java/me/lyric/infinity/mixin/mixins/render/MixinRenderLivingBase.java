@@ -1,6 +1,6 @@
 package me.lyric.infinity.mixin.mixins.render;
 
-import me.lyric.infinity.api.event.events.render.RenderLivingEntityEvent;
+import me.lyric.infinity.api.event.render.RenderLivingEntityEvent;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLivingBase;

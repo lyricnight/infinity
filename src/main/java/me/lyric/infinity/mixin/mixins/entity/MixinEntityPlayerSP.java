@@ -2,11 +2,11 @@ package me.lyric.infinity.mixin.mixins.entity;
 
 import com.mojang.authlib.GameProfile;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.entity.LivingUpdateEvent;
-import me.lyric.infinity.api.event.events.player.MotionEvent;
-import me.lyric.infinity.api.event.events.player.MoveEvent;
-import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEventPost;
-import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEventPre;
+import me.lyric.infinity.api.event.entity.LivingUpdateEvent;
+import me.lyric.infinity.api.event.player.MotionEvent;
+import me.lyric.infinity.api.event.player.MoveEvent;
+import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPost;
+import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPre;
 import me.lyric.infinity.impl.modules.render.Swing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;

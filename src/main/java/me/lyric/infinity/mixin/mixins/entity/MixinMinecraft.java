@@ -1,7 +1,7 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.network.GameLoopEvent;
+import me.lyric.infinity.api.event.network.GameLoopEvent;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Timer;

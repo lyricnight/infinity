@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import java.util.Map;
 
 public class FakePlayer extends Module {
-    public Setting<String> username = register(new Setting<String>("Name","The name of the FakePlayer.", "lyric"));
+    public Setting<String> username = register(new Setting<Object>("Name","The name of the FakePlayer.", "lyric"));
     public FakePlayer() {
         super("FakePlayer","Creates FakePlayer for testing.", Category.MISC);
     }

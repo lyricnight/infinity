@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.event.events.player;
+package me.lyric.infinity.api.event.player;
 
 import me.bush.eventbus.event.Event;
 import net.minecraft.entity.MoverType;

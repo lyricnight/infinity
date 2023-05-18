@@ -9,6 +9,7 @@ import net.minecraft.potion.PotionEffect;
 
 /**
  * @author lyric
+ * fullbright thingy
  */
 
 public class Brightness extends Module {

@@ -1,10 +1,9 @@
-package me.lyric.infinity.api.event.events.render.crosshair;
+package me.lyric.infinity.api.event.render.crosshair;
 
 import me.bush.eventbus.event.Event;
 
 /**
  * @author lyric
- * for crosshair module
  */
 
 public class CrosshairEvent extends Event {

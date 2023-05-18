@@ -122,6 +122,10 @@ public class NameTags extends Module {
     }
 
     private void renderNameTag(EntityPlayer player, double x, double y, double z, float delta) {
+        if(player == mc.player)
+        {
+            return;
+        }
         double tempY = y;
         tempY += player.isSneaking() ? 0.5 : 0.7;
         Entity camera = mc.getRenderViewEntity();
@@ -324,9 +328,6 @@ public class NameTags extends Module {
 
     private String getDisplayTag(EntityPlayer player) {
         String name = player.getDisplayName().getFormattedText();
-        if (name.contains(mc.getSession().getUsername())) {
-            name = "You";
-        }
         if (!this.health.getValue()) {
             return name;
         }

@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.event.events.render;
+package me.lyric.infinity.api.event.render;
 
 import me.bush.eventbus.event.Event;
 

@@ -8,11 +8,11 @@ import net.minecraft.util.MovementInput;
 
 import java.util.Objects;
 
-public class MovementUtil {
+public class SpeedUtil {
     private static final Minecraft mc = Minecraft.getMinecraft();
-    public static void strafe(MoveEvent event, double speed) {
-        if (MovementUtil.isMoving()) {
-            double[] strafe = MovementUtil.strafe(speed);
+    public static void instant(MoveEvent event, double speed) {
+        if (SpeedUtil.isMoving()) {
+            double[] strafe = SpeedUtil.instant(speed);
             event.setMotionX(strafe[0]);
             event.setMotionZ(strafe[1]);
         } else {
@@ -21,15 +21,15 @@ public class MovementUtil {
         }
     }
 
-    public static double[] strafe(double speed) {
-        return MovementUtil.strafe(MovementUtil.mc.player, speed);
+    public static double[] instant(double speed) {
+        return SpeedUtil.instant(SpeedUtil.mc.player, speed);
     }
 
-    public static double[] strafe(Entity entity, double speed) {
-        return MovementUtil.strafe(entity, MovementUtil.mc.player.movementInput, speed);
+    public static double[] instant(Entity entity, double speed) {
+        return SpeedUtil.instant(entity, SpeedUtil.mc.player.movementInput, speed);
     }
 
-    public static double[] strafe(Entity entity, MovementInput movementInput, double speed) {
+    public static double[] instant(Entity entity, MovementInput movementInput, double speed) {
         float moveForward = movementInput.moveForward;
         float moveStrafe = movementInput.moveStrafe;
         float rotationYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * mc.getRenderPartialTicks();
@@ -51,26 +51,26 @@ public class MovementUtil {
         return new double[]{posX, posZ};
     }
     public static boolean isMoving() {
-        return (double)MovementUtil.mc.player.moveForward != 0.0 || (double)MovementUtil.mc.player.moveStrafing != 0.0;
+        return (double) SpeedUtil.mc.player.moveForward != 0.0 || (double) SpeedUtil.mc.player.moveStrafing != 0.0;
     }
     public static double getSpeed() {
-        return MovementUtil.getSpeed(false);
+        return SpeedUtil.getSpeed(false);
     }
 
     public static double getSpeed(boolean slowness) {
         int amplifier;
         double defaultSpeed = 0.2873;
-        if (MovementUtil.mc.player.isPotionActive(MobEffects.SPEED)) {
-            amplifier = Objects.requireNonNull(MovementUtil.mc.player.getActivePotionEffect(MobEffects.SPEED)).getAmplifier();
+        if (SpeedUtil.mc.player.isPotionActive(MobEffects.SPEED)) {
+            amplifier = Objects.requireNonNull(SpeedUtil.mc.player.getActivePotionEffect(MobEffects.SPEED)).getAmplifier();
             defaultSpeed *= 1.0 + 0.2 * (double)(amplifier + 1);
         }
-        if (slowness && MovementUtil.mc.player.isPotionActive(MobEffects.SLOWNESS)) {
-            amplifier = Objects.requireNonNull(MovementUtil.mc.player.getActivePotionEffect(MobEffects.SLOWNESS)).getAmplifier();
+        if (slowness && SpeedUtil.mc.player.isPotionActive(MobEffects.SLOWNESS)) {
+            amplifier = Objects.requireNonNull(SpeedUtil.mc.player.getActivePotionEffect(MobEffects.SLOWNESS)).getAmplifier();
             defaultSpeed /= 1.0 + 0.2 * (double)(amplifier + 1);
         }
         return defaultSpeed;
     }
     public static boolean anyMovementKeys() {
-        return MovementUtil.mc.player.movementInput.forwardKeyDown || MovementUtil.mc.player.movementInput.backKeyDown || MovementUtil.mc.player.movementInput.leftKeyDown || MovementUtil.mc.player.movementInput.rightKeyDown || MovementUtil.mc.player.movementInput.jump || MovementUtil.mc.player.movementInput.sneak;
+        return SpeedUtil.mc.player.movementInput.forwardKeyDown || SpeedUtil.mc.player.movementInput.backKeyDown || SpeedUtil.mc.player.movementInput.leftKeyDown || SpeedUtil.mc.player.movementInput.rightKeyDown || SpeedUtil.mc.player.movementInput.jump || SpeedUtil.mc.player.movementInput.sneak;
     }
 }

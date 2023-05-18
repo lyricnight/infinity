@@ -8,7 +8,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
-import me.lyric.infinity.api.util.minecraft.MovementUtil;
+import me.lyric.infinity.api.util.minecraft.SpeedUtil;
 
 public class InstantSpeed extends Module {
 
@@ -24,7 +24,7 @@ public class InstantSpeed extends Module {
         {
             return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + "noliquid" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + "bypass" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + "normal" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 
     }
 
@@ -40,7 +40,7 @@ public class InstantSpeed extends Module {
         if (this.noLiquid.getValue() && EntityUtil.isInLiquid()) {
             return;
         }
-        MovementUtil.strafe(e, MovementUtil.getSpeed());
+        SpeedUtil.instant(e, SpeedUtil.getSpeed());
     }
 
 

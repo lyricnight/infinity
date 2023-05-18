@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.event.events.network;
+package me.lyric.infinity.api.event.network;
 
 import me.bush.eventbus.event.Event;
 import net.minecraft.network.Packet;

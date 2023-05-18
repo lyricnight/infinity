@@ -2,12 +2,13 @@ package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.api.event.events.render.crosshair.CrosshairEvent;
+import me.lyric.infinity.api.event.render.crosshair.CrosshairEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.RenderUtils;
+import me.lyric.infinity.mixin.mixins.gui.MixinGuiIngame;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -15,6 +16,7 @@ import java.awt.*;
 
 /**
  * @author lyric
+ * {@link MixinGuiIngame}
  */
 
 public class Crosshair extends Module {
@@ -22,7 +24,7 @@ public class Crosshair extends Module {
     public Setting<Boolean> indicator = register(new Setting<>("Indicator", "Renders an attack indicator beneath the crosshair.", true));
 
     public Setting<Boolean> outline = register(new Setting<>("Outline", "Renders an outline on the crosshair.", true));
-    public Setting<ColorPicker> outlineColor = register(new Setting<>("Outline Color", "The outline color of the crosshair.", new ColorPicker(Color.WHITE))).withParent(outline);
+    public Setting<ColorPicker> outlineColor = register(new Setting<>("Outline Color", "The outline color of the crosshair.", new ColorPicker(Color.WHITE)).withParent(outline));
 
     public Setting<GapMode> gapMode = register(new Setting<>("Gap Mode", "The mode of the gap on the crosshair.", GapMode.NORMAL));
     public Setting<Float> gapSize = register(new Setting<>("Gap Size", "The size of the gap on the crosshair.", 2.0f, 0.5f, 20.f));

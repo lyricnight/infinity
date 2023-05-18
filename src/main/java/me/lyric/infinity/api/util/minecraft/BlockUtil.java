@@ -28,29 +28,6 @@ public class BlockUtil implements IGlobals {
         return getState(pos).getBlock();
     }
 
-    public static int getPlaceAbility(BlockPos pos, boolean raytrace, boolean checkForEntities) {
-        Block block = getBlock(pos);
-
-        if (!(block instanceof BlockAir
-                || block instanceof BlockLiquid
-                || block instanceof BlockTallGrass
-                || block instanceof BlockFire
-                || block instanceof BlockDeadBush
-                || block instanceof BlockSnow)) return 0;
-
-        if (raytrace && !raytraceCheck(pos, 0.0f)) return -1;
-
-        if (checkForEntities && checkForEntities(pos)) return 1;
-
-        for (EnumFacing side : getPossibleSides(pos)) {
-
-            if (!canBeClicked(pos.offset(side))) continue;
-            return 3;
-
-        }
-        return 2;
-    }
-
     public static List<EnumFacing> getPossibleSides(BlockPos pos) {
         ArrayList<EnumFacing> facings = new ArrayList<>();
 

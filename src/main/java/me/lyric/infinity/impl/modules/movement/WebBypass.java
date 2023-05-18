@@ -47,6 +47,7 @@ public class WebBypass extends Module {
                     }
                     break;
                 case VANILLA:
+                    //TODO: I removed this because of the stupid AccessTransformer
                     break;
             }
         }

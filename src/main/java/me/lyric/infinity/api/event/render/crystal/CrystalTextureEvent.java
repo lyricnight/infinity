@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.event.events.render.crystal;
+package me.lyric.infinity.api.event.render.crystal;
 
 import net.minecraftforge.fml.common.eventhandler.Event;
 

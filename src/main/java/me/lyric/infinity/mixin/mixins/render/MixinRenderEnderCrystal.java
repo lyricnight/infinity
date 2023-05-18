@@ -1,9 +1,9 @@
 package me.lyric.infinity.mixin.mixins.render;
 
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.render.crystal.CrystalTextureEvent;
-import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPostEvent;
-import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPreEvent;
+import me.lyric.infinity.api.event.render.crystal.CrystalTextureEvent;
+import me.lyric.infinity.api.event.render.crystal.RenderCrystalPostEvent;
+import me.lyric.infinity.api.event.render.crystal.RenderCrystalPreEvent;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderEnderCrystal;
 import net.minecraft.entity.Entity;

@@ -22,14 +22,14 @@ public class Notifications extends Module {
     public Setting<Boolean> totem = register(new Setting<>("Totem Counter" , "Notifies you when a player pops a totem.",true ));
     public Setting<Boolean> potions = register(new Setting<>("Potion Detector", "Detects players potion effects.", true));
 
-    public Setting<Integer> checkrate = register(new Setting<>("Checkrate", "Rate to check potions.", 500,  0, 5000));
+    public Setting<Integer> checkrate = register(new Setting<>("Checkrate", "How often to check potions.", 500,  0, 5000));
 
     public Notifications() {
         super("Notifications", "Handle various notifications.", Category.CLIENT);
     }
     public static HashMap<String, Integer> totemPops = new HashMap<>();
-    private final Set<EntityPlayer> str = Collections.newSetFromMap(new WeakHashMap());
-    private final Set<EntityPlayer> spd = Collections.newSetFromMap(new WeakHashMap());
+    private final Set<EntityPlayer> str = Collections.newSetFromMap(new WeakHashMap<>());
+    private final Set<EntityPlayer> spd = Collections.newSetFromMap(new WeakHashMap<>());
     private boolean last;
 
     Timer weak = new Timer();

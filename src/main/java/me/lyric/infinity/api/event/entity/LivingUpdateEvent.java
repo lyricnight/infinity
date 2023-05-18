@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.event.events.entity;
+package me.lyric.infinity.api.event.entity;
 
 import me.bush.eventbus.event.Event;
 import net.minecraft.client.entity.EntityPlayerSP;

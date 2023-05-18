@@ -1,8 +1,9 @@
 package me.lyric.infinity.impl.modules.client;
 
 import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
+import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -83,7 +84,7 @@ public class HUD extends Module {
     }
 
 
-    @EventListener
+    @EventListener(priority = ListenerPriority.LOWEST)
     public void onPacketSend(PacketEvent.Send event)
     {
         packets++;

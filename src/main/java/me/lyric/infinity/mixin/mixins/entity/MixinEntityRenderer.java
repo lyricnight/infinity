@@ -1,8 +1,8 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.events.render.AspectEvent;
-import me.lyric.infinity.api.event.events.render.RenderNametagEvent;
+import me.lyric.infinity.api.event.render.AspectEvent;
+import me.lyric.infinity.api.event.render.RenderNametagEvent;
 import me.lyric.infinity.impl.modules.render.CameraClip;
 import me.lyric.infinity.mixin.transformer.IEntityRenderer;
 import net.minecraft.client.Minecraft;

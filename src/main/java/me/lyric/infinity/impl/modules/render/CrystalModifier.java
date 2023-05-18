@@ -1,7 +1,7 @@
 package me.lyric.infinity.impl.modules.render;
 
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.api.event.events.render.crystal.RenderCrystalPreEvent;
+import me.lyric.infinity.api.event.render.crystal.RenderCrystalPreEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;

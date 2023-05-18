@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.event.events.render.crystal;
+package me.lyric.infinity.api.event.render.crystal;
 
 import me.bush.eventbus.event.Event;
 import net.minecraft.client.model.ModelBase;

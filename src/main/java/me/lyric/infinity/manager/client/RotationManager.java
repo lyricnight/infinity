@@ -2,10 +2,10 @@ package me.lyric.infinity.manager.client;
 
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
-import me.lyric.infinity.api.event.events.network.PacketEvent;
-import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEventPost;
-import me.lyric.infinity.api.event.events.player.UpdateWalkingPlayerEventPre;
-import me.lyric.infinity.api.event.events.render.RenderLivingEntityEvent;
+import me.lyric.infinity.api.event.network.PacketEvent;
+import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPost;
+import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPre;
+import me.lyric.infinity.api.event.render.RenderLivingEntityEvent;
 import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;

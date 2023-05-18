@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author lyric
+ * what a useful module
  */
 
 public class AutoWalk extends Module {

@@ -7,6 +7,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MovementInput;
 import net.minecraft.world.chunk.EmptyChunk;
 
+/**
+ * @author cpacketcustompayload
+ */
+
 public class EntitySpeed extends Module {
 
     public Setting<Boolean> antiStuck = register(new Setting<>("Anti-Stuck", "Checks empty chunks and stops entity speed.", false));

@@ -11,7 +11,7 @@ import me.lyric.infinity.api.util.string.StringUtils;
 
 public class FriendCommand extends Command {
 
-    //TODO: Why the fuck doesn't clear and list commands work
+    //TODO: Why the fuck don't clear and list commands work
 
     public FriendCommand(){
         super("friend", "adds and removes friends.");
@@ -19,7 +19,7 @@ public class FriendCommand extends Command {
     }
     @Override
     public String theCommand() {
-        return "friend <add/del/list/clearall> <name>";
+        return "friend <add/del> <name>";
     }
     @Override
     public void onCommand(String[] args)
@@ -47,16 +47,6 @@ public class FriendCommand extends Command {
         if (StringUtils.contains(task, "del"))
         {
             Infinity.INSTANCE.friendManager.removeFriend(friend);
-            this.splash(CommandState.PERFORMED);
-        }
-        if (StringUtils.contains(task, "list"))
-        {
-            Infinity.INSTANCE.friendManager.returnAllFriends();
-            this.splash(CommandState.PERFORMED);
-        }
-        if (StringUtils.contains(task, "clearall"))
-        {
-            Infinity.INSTANCE.friendManager.clearFriends();
             this.splash(CommandState.PERFORMED);
         }
 
