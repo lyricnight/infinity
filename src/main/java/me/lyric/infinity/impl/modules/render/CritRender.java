@@ -2,7 +2,6 @@ package me.lyric.infinity.impl.modules.render;
 
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.event.render.crystal.RenderCrystalPreEvent;
 import me.lyric.infinity.api.module.Category;
@@ -19,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 public class CritRender extends Module {
     public CritRender()
     {
-        super("CritRender", "For jaydon.", Category.RENDER);
+        super("CritRender", "Will break if using crystalmodifier.", Category.RENDER);
     }
 
     @EventListener
@@ -50,17 +49,7 @@ public class CritRender extends Module {
     @EventListener(priority = ListenerPriority.HIGHEST)
     public void onRenderCrystalPre(RenderCrystalPreEvent event)
     {
-        if(Infinity.INSTANCE.moduleManager.getModuleByClass(CrystalModifier.class).isEnabled())
-        {
-            event.cancel();
-            event.getModelBase().render(event.getEntity(), event.getLimbSwing(), event.getLimbSwingAmount() * Infinity.INSTANCE.moduleManager.getModuleByClass(CrystalModifier.class).spinSpeed.getValue(), event.getAgeInTicks() * Infinity.INSTANCE.moduleManager.getModuleByClass(CrystalModifier.class).bounceFactor.getValue(), event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor());
-
-        }
-        else
-        {
-            event.cancel();
-            event.getModelBase().render(event.getEntity(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor());
-
-        }
+        event.cancel();
+        event.getModelBase().render(event.getEntity(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor());
     }
 }
