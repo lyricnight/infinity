@@ -384,7 +384,7 @@ public class RenderUtils implements IGlobals {
             else {
                 dmg = itemDurability;
             }
-            mc.fontRenderer.drawStringWithShadow(dmg + "", (float)(x + 8 - mc.fontRenderer.getStringWidth(dmg + "") / 2), (float)(y - 10), ColorUtils.toRGBA((int)(red * 255.0f), (int)(green * 255.0f), 0));
+            mc.fontRenderer.drawStringWithShadow(dmg + "%", (float)(x + 8 - mc.fontRenderer.getStringWidth(dmg + "%") / 2), (float)(y - 10), ColorUtils.toRGBA((int)(red * 255.0f), (int)(green * 255.0f), 0));
         }
         GlStateManager.enableDepth();
         GlStateManager.disableLighting();
