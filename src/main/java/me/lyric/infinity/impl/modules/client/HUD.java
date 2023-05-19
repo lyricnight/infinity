@@ -49,7 +49,6 @@ public class HUD extends Module {
         public Setting<Integer> pingX = register(new Setting<>("Ping X", "Position X for Ping.", 2, 1, 1000).withParent(ping));
         public Setting<Integer> pingY = register(new Setting<>("Ping Y", "Position Y for Ping.", 14, 1, 1000).withParent(ping));
     public Setting<Boolean> armor = register(new Setting<>("Armor", "Draws Armor HUD.", false));
-        public Setting<Boolean> perc = register(new Setting<>("Percentage Display", "Draws armor percentage.", false).withParent(armor));
     public Setting<Boolean> tot = register(new Setting<>("Totem Display", "For impcat because he's retarded and can't press e", false));
     public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
     public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!"));
@@ -129,7 +128,7 @@ public class HUD extends Module {
         }
         if (armor.getValue())
         {
-            RenderUtils.renderArmor(perc.getValue());
+            RenderUtils.renderArmorNew();
         }
         if (tot.getValue())
         {

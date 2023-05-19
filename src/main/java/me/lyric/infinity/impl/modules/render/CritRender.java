@@ -49,7 +49,6 @@ public class CritRender extends Module {
     @EventListener(priority = ListenerPriority.HIGHEST)
     public void onRenderCrystalPre(RenderCrystalPreEvent event)
     {
-        event.cancel();
         event.getModelBase().render(event.getEntity(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor());
     }
 }

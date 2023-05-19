@@ -2,10 +2,12 @@ package me.lyric.infinity.api.util.gl;
 
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.client.HUD;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -384,10 +386,71 @@ public class RenderUtils implements IGlobals {
             else {
                 dmg = itemDurability;
             }
-            mc.fontRenderer.drawStringWithShadow(dmg + "%", (float)(x + 8 - (3 + mc.fontRenderer.getStringWidth(dmg + "%")) / 2), (float)(y - 10), ColorUtils.toRGBA((int)(red * 255.0f), (int)(green * 255.0f), 0));
+            mc.fontRenderer.drawStringWithShadow(dmg + "%", (float)(x + 8 -  mc.fontRenderer.getStringWidth(dmg + "%") / 2), (float)(y - 10), ColorUtils.toRGBA((int)(red * 255.0f), (int)(green * 255.0f), 0));
         }
         GlStateManager.enableDepth();
         GlStateManager.disableLighting();
+    }
+    public static void renderArmorNew() {
+            GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+            ScaledResolution res = new ScaledResolution(mc);
+            int x = 15;
+            RenderHelper.enableGUIStandardItemLighting();
+            for (int i = 3; i >= 0; i--) {
+                ItemStack stack = mc.player.inventory.armorInventory.get(i);
+                if (!stack.isEmpty()) {
+                    int y = getArmorY();
+                    final float percent = getPercent(stack) / 100.0f;
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(0.625F, 0.625F, 0.625F);
+                    GlStateManager.disableDepth();
+                    mc.fontRenderer.drawStringWithShadow(((int) (percent * 100.0f)) + "%", (((res.getScaledWidth() >> 1) + x + 1) * 1.6F), (res.getScaledHeight() - y - 3) * 1.6F, ColorUtils.toColor(percent * 120.0f, 100.0f, 50.0f, 1.0f).getRGB());
+                    GlStateManager.enableDepth();
+                    GlStateManager.scale(1.0f, 1.0f, 1.0f);
+                    GlStateManager.popMatrix();
+                    GlStateManager.pushMatrix();
+                    mc.getRenderItem().renderItemIntoGUI(stack, res.getScaledWidth() / 2 + x, res.getScaledHeight() - y);
+                    mc.getRenderItem().renderItemOverlays(mc.fontRenderer, stack, res.getScaledWidth() / 2 + x, res.getScaledHeight() - y);
+                    GlStateManager.popMatrix();
+                    x += 18;
+                }
+            }
+            RenderHelper.disableStandardItemLighting();
+    }
+    public static int getDamage(ItemStack stack)
+    {
+        return stack.getMaxDamage() - stack.getItemDamage();
+    }
+    public static float getPercent(ItemStack stack)
+    {
+        return (getDamage(stack) / (float) stack.getMaxDamage()) * 100.0f;
+    }
+    public static int getArmorY() {
+        int y;
+        if (mc.player.isInsideOfMaterial(Material.WATER)
+                && mc.player.getAir() > 0
+                && !mc.player.capabilities.isCreativeMode) {
+            y = 65;
+        } else if (mc.player.getRidingEntity() != null
+                && !mc.player.capabilities.isCreativeMode) {
+            if (mc.player.getRidingEntity()
+                    instanceof EntityLivingBase) {
+                EntityLivingBase entity =
+                        (EntityLivingBase) mc.player.getRidingEntity();
+                y = (int) (45
+                        + Math.ceil((entity.getMaxHealth()
+                        - 1.0F)
+                        / 20.0F)
+                        * 10);
+            } else {
+                y = 45;
+            }
+        } else if (mc.player.capabilities.isCreativeMode) {
+            y = mc.player.isRidingHorse() ? 45 : 38;
+        } else {
+            y = 55;
+        }
+        return y;
     }
 
     public static void drawCustomBB(Color color, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
