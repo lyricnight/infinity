@@ -5,7 +5,9 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.util.minecraft.CombatUtil;
 import me.lyric.infinity.api.util.minecraft.EntityUtil;
+import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.manager.client.PlacementManager;
@@ -41,6 +43,7 @@ public class HoleFiller extends Module {
     private final Setting<Boolean> webs =
             register(new Setting<>("Webs","fuck prestige", true));
     public Setting<Boolean> wait = register(new Setting<>("Hole Wait","Waits for a target to leave their hole before holefilling. Recommended.", true));
+    public Setting<Boolean> onlyHole = register(new Setting<>("SelfHoleCheck","Only hf's if ur in a hole. for strict.", true));
 
     private final Setting<Boolean> smart =
             register(new Setting<>("Smart","Robot", false));
@@ -58,11 +61,6 @@ public class HoleFiller extends Module {
     private enum Logic {
         PLAYER,
         HOLE
-    }
-
-    @Override
-    public void onEnable() {
-        super.onEnable();
     }
 
     @Override
@@ -97,6 +95,13 @@ public class HoleFiller extends Module {
         }
         if (smart.getValue()) {
             findClosestTarget();
+        }
+        if(onlyHole.getValue())
+        {
+            if(!HoleUtil.isInHole(getPlayerPos()))
+            {
+                return;
+            }
         }
         List<BlockPos> blocks = getPlacePositions();
         BlockPos q = null;
