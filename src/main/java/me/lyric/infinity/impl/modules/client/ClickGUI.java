@@ -11,7 +11,7 @@ public class ClickGUI extends Module {
 
     public Setting<Integer> rainbowGradient = register(new Setting<>("Rainbow Gradient", "How fast the rainbow should repeat.", 150, 50, 300));
 
-    public Setting<Integer> scrollSpeed = register(new Setting<>("Scroll Speed", "The speed of scrolling.", 10, 0, 20));
+    public Setting<Integer> scrollSpeed = register(new Setting<>("Scroll Speed", "The speed of scrolling.", 10, 0, 200));
 
     public Setting<Integer> animationSpeed = register(new Setting<>("Animation Speed", "The speed of GUI animations.", 200, 0, 1000));
 

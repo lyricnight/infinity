@@ -19,11 +19,6 @@ public class Internals extends Module {
         super("Internals", "Handles settings that don't fit anywhere else.", Category.CLIENT);
     }
     @Override
-    public void onDisable()
-    {
-        toggle();
-    }
-    @Override
     public void onUpdate()
     {
         Infinity.INSTANCE.commandManager.setClientMessage(getCommandMessage());

@@ -32,25 +32,17 @@ import static net.minecraft.util.EnumHand.MAIN_HAND;
 
 public class HoleFiller extends Module {
 
-    private final Setting<Boolean> rotate =
-            register(new Setting<>("Rotate","Rotations to place blocks", false));
-    private final Setting<Boolean> packet =
-            register(new Setting<>("Packet","Packet rotations to prevent glitch blocks, may be slower", false));
-    private final Setting<Boolean> autoDisable =
-            register(new Setting<>("AutoDisable","Disabler", true));
-    private final Setting<Integer> range =
-            register(new Setting<>("Radius","Range to fill", 4, 0, 6));
-    private final Setting<Boolean> webs =
-            register(new Setting<>("Webs","fuck prestige", true));
+    private final Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations to place blocks", false));
+    private final Setting<Boolean> packet = register(new Setting<>("Packet","Packet rotations to prevent glitch blocks, may be slower", false));
+    private final Setting<Boolean> autoDisable = register(new Setting<>("AutoDisable","Disabler", true));
+    private final Setting<Integer> range = register(new Setting<>("Radius","Range to fill", 4, 0, 6));
+    private final Setting<Boolean> webs = register(new Setting<>("Webs","fuck prestige", true));
     public Setting<Boolean> wait = register(new Setting<>("Hole Wait","Waits for a target to leave their hole before holefilling. Recommended.", true));
-    public Setting<Boolean> onlyHole = register(new Setting<>("SelfHoleCheck","Only hf's if ur in a hole. for strict.", true));
+    public Setting<Boolean> onlyHole = register(new Setting<>("SelfHoleCheck","Only hf's if ur in a hole or burrowed. for strict.", true));
 
-    private final Setting<Boolean> smart =
-            register(new Setting<>("Smart","Robot", false));
-    private final Setting<Logic> logic =
-            register(new Setting<>("Logic","Idk what this does lol", Logic.PLAYER));
-    private final Setting<Integer> smartRange =
-            register(new Setting<>("EnemyRange","Range to enemy", 4, 0, 6));
+    private final Setting<Boolean> smart = register(new Setting<>("Smart","Robot", false));
+    private final Setting<Logic> logic = register(new Setting<>("Logic","set to hole when using smart.", Logic.PLAYER));
+    private final Setting<Integer> smartRange = register(new Setting<>("EnemyRange","Range to enemy", 4, 0, 6));
     private EntityPlayer closestTarget;
     private EntityPlayer invalidTarget;
 
@@ -98,7 +90,7 @@ public class HoleFiller extends Module {
         }
         if(onlyHole.getValue())
         {
-            if(!HoleUtil.isInHole(getPlayerPos()))
+            if(!HoleUtil.isInHole(getPlayerPos()) || !isBurrow(mc.player))
             {
                 return;
             }

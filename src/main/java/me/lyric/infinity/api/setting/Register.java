@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author
+ * @author cpacketcustompayload
  */
 
 public class Register {
+    //TODO: figure out why string vals don't save
     private final Map<String, Setting> settings = new HashMap<>();
 
     public Map<String, Setting> getSettings() {

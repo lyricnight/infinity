@@ -15,6 +15,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
@@ -108,7 +109,7 @@ public class HUD extends Module {
         }
 
         if (watermark.getValue()) {
-            mc.fontRenderer.drawStringWithShadow("Infinity" + TextFormatting.WHITE + " " + "v3-beta", waterX.getValue(), waterY.getValue(), color.getValue().getColor().getRGB()); // X & Y can be made custom.
+            mc.fontRenderer.drawStringWithShadow("Infinity" + TextFormatting.WHITE + " " + Infinity.INSTANCE.version, waterX.getValue(), waterY.getValue(), color.getValue().getColor().getRGB()); // X & Y can be made custom.
         }
 
         if (speed.getValue()) {

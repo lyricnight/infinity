@@ -68,7 +68,6 @@ public class Module extends Register implements IGlobals {
 
         animation = new AnimationManager(150, this.isEnabled());
     }
-
     public String getName() {
         return name;
     }
@@ -137,20 +136,16 @@ public class Module extends Register implements IGlobals {
     }
 
     protected void onEnable() {
-        animation.setState(true);
-        MinecraftForge.EVENT_BUS.register(this);
-        Infinity.INSTANCE.eventBus.subscribe(this);
+            animation.setState(true);
+            MinecraftForge.EVENT_BUS.register(this);
+            Infinity.INSTANCE.eventBus.subscribe(this);
     }
 
     protected void onDisable() {
-        animation.setState(false);
-        MinecraftForge.EVENT_BUS.unregister(this);
-        Infinity.INSTANCE.eventBus.unsubscribe(this);
+            animation.setState(false);
+            MinecraftForge.EVENT_BUS.unregister(this);
+            Infinity.INSTANCE.eventBus.unsubscribe(this);
     }
-    public String getInfo() {
-        return null;
-    }
-
     public void toggle() {
         this.setEnabled(!this.isEnabled());
     }
@@ -175,15 +170,13 @@ public class Module extends Register implements IGlobals {
     }
 
     public void unsetListener() {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
-            ChatUtils.sendMessageWithID(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled!", hashCode());
-        }
-        this.bind.getValue().setState(false);
-
-        Infinity.INSTANCE.eventBus.unsubscribe(this);
-        MinecraftForge.EVENT_BUS.unregister(this);
-
-        this.onDisable();
+            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
+                ChatUtils.sendMessageWithID(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled!", hashCode());
+            }
+            this.bind.getValue().setState(false);
+            Infinity.INSTANCE.eventBus.unsubscribe(this);
+            MinecraftForge.EVENT_BUS.unregister(this);
+            this.onDisable();
     }
 
     public void onSave() {
@@ -214,6 +207,9 @@ public class Module extends Register implements IGlobals {
 
                 if (setting.getValue() instanceof Boolean) {
                     jsonSettingList.add(setting.getName(), new JsonPrimitive((Boolean) setting.getValue()));
+                }
+                if (setting.getValue() instanceof String) {
+                    jsonSettingList.add(setting.getName(), new JsonPrimitive((String) setting.getValue()));
                 }
 
                 if (setting.getValue() instanceof Number) {
@@ -288,6 +284,9 @@ public class Module extends Register implements IGlobals {
 
                     if (setting.getValue() instanceof Boolean) {
                         setting.setValue(jsonSettingList.get(setting.getName()).getAsBoolean());
+                    }
+                    if (setting.getValue() instanceof String) {
+                        setting.setValue(jsonSettingList.get(setting.getName()).getAsString());
                     }
 
                     if (setting.getValue() instanceof Number) {

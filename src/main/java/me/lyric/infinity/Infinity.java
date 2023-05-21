@@ -24,6 +24,7 @@ public class Infinity {
     public EventBus eventBus = new EventBus(LambdaHandler.class);
     public static PanelStudioGUI gui;
     public TPSManager tpsManager;
+    public String version = "v3-beta";
     public ForgeEventManager forgeEventManager;
     public ModuleManager moduleManager;
     public ThreadManager threadManager;

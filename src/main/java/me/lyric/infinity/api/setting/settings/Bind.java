@@ -3,7 +3,8 @@ package me.lyric.infinity.api.setting.settings;
 import org.lwjgl.input.Keyboard;
 
 /**
- * @author
+ * @author lyric
+ * meh
  */
 
 public class Bind {

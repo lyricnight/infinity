@@ -19,7 +19,6 @@
     "entity.MixinEntity",
     "entity.MixinMinecraft",
     "entity.MixinEntityRenderer",
-    "entity.MixinPlayerControllerMP",
     "entity.MixinEntityLivingBase",
     "gui.MixinGuiIngame",
     "gui.MixinGuiNewChat",

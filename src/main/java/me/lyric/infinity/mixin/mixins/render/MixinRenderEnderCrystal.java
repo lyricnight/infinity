@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = RenderEnderCrystal.class, priority = 0x7FFFFFFE)
+@Mixin(value = RenderEnderCrystal.class)
 public class MixinRenderEnderCrystal {
 
     @Final
