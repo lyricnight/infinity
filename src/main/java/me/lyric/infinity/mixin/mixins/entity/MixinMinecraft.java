@@ -2,6 +2,7 @@ package me.lyric.infinity.mixin.mixins.entity;
 
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.GameLoopEvent;
+import me.lyric.infinity.api.event.network.TickEvent;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Timer;
@@ -23,4 +24,10 @@ public abstract class MixinMinecraft implements IMinecraft {
     @Override
     @Accessor(value = "timer")
     public abstract Timer getTimer();
+    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;" + "startSection(Ljava/lang/String;)V", ordinal = 0, shift = At.Shift.BEFORE))
+    public void runTickHook(CallbackInfo info)
+    {
+        TickEvent event = new TickEvent();
+        Infinity.INSTANCE.eventBus.post(event);
+    }
 }

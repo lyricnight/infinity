@@ -1,12 +1,15 @@
 package me.lyric.infinity.manager.forge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.event.render.Render3DEvent;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.impl.modules.render.HoleESP;
 import me.lyric.infinity.manager.client.ModuleManager;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraftforge.client.event.ClientChatEvent;
@@ -53,8 +56,8 @@ public class ForgeEventManager implements IGlobals {
     }
 
 
-    @SubscribeEvent
-    public void onClientTick(TickEvent.ClientTickEvent event) {
+    @EventListener(priority = ListenerPriority.HIGHEST)
+    public void onClientTick(TickEvent e) {
         for (Module module : ModuleManager.getModuleManager().getModules()) {
             if (module.isEnabled()) {
                 module.onTick();
@@ -87,21 +90,31 @@ public class ForgeEventManager implements IGlobals {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onUpdate(LivingEvent.LivingUpdateEvent event) {
         if (mc.player != null && mc.world != null && event.getEntity().getEntityWorld().isRemote && event.getEntityLiving().equals(mc.player)) {
             Infinity.INSTANCE.moduleManager.onUpdate();
         }
     }
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void onDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event){
-        Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
+        boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
+        if(isOn)
+        {
+            Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
+
+        }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void onDeath(LivingDeathEvent event){
         if (event.getEntity().equals(mc.player)){
-            Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
+            boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
+            if(isOn)
+            {
+                Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
+
+            }
         }
     }
 

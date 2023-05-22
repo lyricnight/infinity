@@ -20,7 +20,7 @@ public class CritRender extends Module {
     {
         super("CritRender", "Will break if using crystalmodifier.", Category.RENDER);
     }
-
+    //TODO: Super Buggy
     @EventListener
     public void onPacketSend(PacketEvent.Send event)
     {
@@ -45,10 +45,5 @@ public class CritRender extends Module {
                 mc.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);
             }
         }
-    }
-    @EventListener(priority = ListenerPriority.HIGHEST)
-    public void onRenderCrystalPre(RenderCrystalPreEvent event)
-    {
-        event.getModelBase().render(event.getEntity(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor());
     }
 }

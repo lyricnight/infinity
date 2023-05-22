@@ -33,18 +33,15 @@ import static net.minecraft.util.EnumHand.MAIN_HAND;
 public class HoleFiller extends Module {
 
     private final Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations to place blocks", false));
-    private final Setting<Boolean> packet = register(new Setting<>("Packet","Packet rotations to prevent glitch blocks, may be slower", false));
+    private final Setting<Boolean> smart = register(new Setting<>("Smart","Robot", false));
+    private final Setting<Boolean> packet = register(new Setting<>("Packet","Packet rotations to prevent glitch blocks, may be slower", false).withParent(rotate));
     private final Setting<Boolean> autoDisable = register(new Setting<>("AutoDisable","Disabler", true));
     private final Setting<Integer> range = register(new Setting<>("Radius","Range to fill", 4, 0, 6));
     private final Setting<Boolean> webs = register(new Setting<>("Webs","fuck prestige", true));
-    public Setting<Boolean> wait = register(new Setting<>("Hole Wait","Waits for a target to leave their hole before holefilling. Recommended.", true));
-    public Setting<Boolean> onlyHole = register(new Setting<>("SelfHoleCheck","Only hf's if ur in a hole or burrowed. for strict.", true));
-
-    private final Setting<Boolean> smart = register(new Setting<>("Smart","Robot", false));
-    private final Setting<Logic> logic = register(new Setting<>("Logic","set to hole when using smart.", Logic.PLAYER));
-    private final Setting<Integer> smartRange = register(new Setting<>("EnemyRange","Range to enemy", 4, 0, 6));
+    public Setting<Boolean> wait = register(new Setting<>("Hole Wait","Waits for a target to leave their hole before holefilling. Recommended.", true).withParent(smart));
+    private final Setting<Logic> logic = register(new Setting<>("Logic","set to hole when using smart.", Logic.PLAYER).withParent(smart));
+    private final Setting<Integer> smartRange = register(new Setting<>("EnemyRange","Range to enemy", 4, 0, 6).withParent(smart));
     private EntityPlayer closestTarget;
-    private EntityPlayer invalidTarget;
 
     public HoleFiller() {
         super("HoleFiller", "Fills all safe spots in radius.", Category.COMBAT);
@@ -58,7 +55,6 @@ public class HoleFiller extends Module {
     @Override
     public void onDisable() {
         closestTarget = null;
-        invalidTarget = null;
         RotationManager.resetRotationsPacket();
     }
 
@@ -68,14 +64,9 @@ public class HoleFiller extends Module {
         {
             return "";
         }
-        if (invalidTarget != null)
-        {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + invalidTarget.getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-
-        }
         if (closestTarget == null)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "None" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE + closestTarget.getDisplayNameString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
@@ -88,13 +79,6 @@ public class HoleFiller extends Module {
         if (smart.getValue()) {
             findClosestTarget();
         }
-        if(onlyHole.getValue())
-        {
-            if(!HoleUtil.isInHole(getPlayerPos()) || !isBurrow(mc.player))
-            {
-                return;
-            }
-        }
         List<BlockPos> blocks = getPlacePositions();
         BlockPos q = null;
 
@@ -102,9 +86,9 @@ public class HoleFiller extends Module {
         int eChestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
         int webSlot = InventoryUtil.findHotbarBlock(BlockWeb.class);
 
-        if (obbySlot == -1 && eChestSlot == -1)
+        if (obbySlot == -1 && eChestSlot == -1 && webSlot == -1)
         {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "No Obsidian! Disabling HoleFiller...");
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "No Valid Blocks! Disabling HoleFiller...");
             toggle();
             return;
 
@@ -129,7 +113,7 @@ public class HoleFiller extends Module {
             mc.player.inventory.currentItem = webs.getValue() ? (webSlot == -1 ? (obbySlot == -1 ? eChestSlot : obbySlot) : webSlot) : (obbySlot == -1 ? eChestSlot : obbySlot);
 
             mc.playerController.updateController();
-            PlacementManager.placeBlock(q, rotate.getValue(), packet.getValue(), false);
+            PlacementManager.placeBlock(q, rotate.getValue(), packet.getValue(), true);
 
             if (mc.player.inventory.currentItem != originalSlot) {
                 mc.player.inventory.currentItem = originalSlot;
@@ -179,18 +163,15 @@ public class HoleFiller extends Module {
         List<EntityPlayer> playerList = mc.world.playerEntities;
 
         closestTarget = null;
-        invalidTarget = null;
 
         for (EntityPlayer target : playerList) {
             if (target == mc.player || !EntityUtil.isLiving(target) || target.getHealth() <= 0.0f || Infinity.INSTANCE.friendManager.isFriend(target)) continue;
-            if (wait.getValue() && (isHole(getTargetPos(target)) || isBurrow(target))) {
-                invalidTarget = target;
-                continue;
-            }
+            if(wait.getValue() && (isHole(getTargetPos(target)) || isBurrow(target))) continue;
             if (closestTarget == null) {
                 closestTarget = target;
                 continue;
             }
+
 
             if (!(mc.player.getDistance(target) < mc.player.getDistance(closestTarget))) continue;
             closestTarget = target;
