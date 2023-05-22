@@ -13,7 +13,6 @@ import java.util.Map;
  * @author cpacketcustompayload
  */
 
-@SuppressWarnings("deprecated")
 public abstract class Shader {
 
     private int program;
@@ -23,10 +22,10 @@ public abstract class Shader {
         int vertexShaderID;
         int fragmentShaderID;
         try {
-            final InputStream vertexStream = this.getClass().getResourceAsStream("/assets/minecraft/solaros/shader/vertex.vert");
+            final InputStream vertexStream = this.getClass().getResourceAsStream("/assets/minecraft/infinity/shader/vertex.vert");
             vertexShaderID = this.createShader(IOUtils.toString(vertexStream), 35633);
             IOUtils.closeQuietly(vertexStream);
-            final InputStream fragmentStream = this.getClass().getResourceAsStream("/assets/minecraft/solaros/shader/fragment/" + fragmentShader);
+            final InputStream fragmentStream = this.getClass().getResourceAsStream("/assets/minecraft/infinity/shader/fragment/" + fragmentShader);
             fragmentShaderID = this.createShader(IOUtils.toString(fragmentStream), 35632);
             IOUtils.closeQuietly(fragmentStream);
         } catch (Exception e) {
