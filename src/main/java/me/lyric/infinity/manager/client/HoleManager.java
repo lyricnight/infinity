@@ -10,9 +10,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class HoleManager {
@@ -21,7 +21,6 @@ public class HoleManager {
 
     public void init()
     {
-        MinecraftForge.EVENT_BUS.register(this);
         Infinity.INSTANCE.eventBus.subscribe(this);
     }
     public Vec3i[] Hole = {
@@ -62,67 +61,73 @@ public class HoleManager {
     }
 
     public ArrayList<HolePos> getHoles() {
-        ArrayList<HolePos> holes = new ArrayList<>();
-        for (BlockPos pos : BlockUtil.getSphere(50, BlockUtil.AirType.OnlyAir, mc.player).stream().filter(blockPos -> mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)).collect(Collectors.toList())) {
-            if (isEnterable(pos)) {
+        final ArrayList<HolePos> holes = new ArrayList<>();
+        for (final BlockPos pos : BlockUtil.getBlocksInRadius(Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).radius.getValue().intValue(), false, 0).stream().filter(blockPos -> this.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)).collect(Collectors.toList())) {
+            if (this.isEnterable(pos)) {
                 boolean isSafe = true;
-                for (Vec3i vec3i : Hole) {
-                    if (isntSafe(pos.add(vec3i))) {
+                for (final Vec3i vec3i : this.Hole) {
+                    if (this.isntSafe(pos.add(vec3i))) {
                         isSafe = false;
                     }
                 }
                 if (isSafe) {
                     holes.add(new HolePos(pos, Type.Bedrock));
-                    continue;
                 }
-                boolean isUnsafe = true;
-                for (Vec3i vec3i : Hole) {
-                    if (isntUnsafe(pos.add(vec3i))) {
-                        isUnsafe = false;
+                else {
+                    boolean isUnsafe = true;
+                    for (final Vec3i vec3i2 : this.Hole) {
+                        if (this.isntUnsafe(pos.add(vec3i2))) {
+                            isUnsafe = false;
+                        }
                     }
-                }
-                if (isUnsafe) {
-                    holes.add(new HolePos(pos, Type.Obsidian));
-                    continue;
-                }
-                boolean isSafeDoubleNorth = true;
-                for (Vec3i vec3i : DoubleHoleNorth) {
-                    if (isntSafe(pos.add(vec3i))) {
-                        isSafeDoubleNorth = false;
+                    if (isUnsafe) {
+                        holes.add(new HolePos(pos, Type.Obsidian));
                     }
-                }
-                if (isSafeDoubleNorth) {
-                    holes.add(new HolePos(pos, Type.DoubleBedrockNorth));
-                    continue;
-                }
-                boolean isUnSafeDoubleNorth = true;
-                for (Vec3i vec3i : DoubleHoleNorth) {
-                    if (isntUnsafe(pos.add(vec3i))) {
-                        isUnSafeDoubleNorth = false;
+                    else {
+                        boolean isSafeDoubleNorth = true;
+                        for (final Vec3i vec3i3 : this.DoubleHoleNorth) {
+                            if (this.isntSafe(pos.add(vec3i3))) {
+                                isSafeDoubleNorth = false;
+                            }
+                        }
+                        if (isSafeDoubleNorth) {
+                            holes.add(new HolePos(pos, Type.DoubleBedrockNorth));
+                        }
+                        else {
+                            boolean isUnSafeDoubleNorth = true;
+                            for (final Vec3i vec3i4 : this.DoubleHoleNorth) {
+                                if (this.isntUnsafe(pos.add(vec3i4))) {
+                                    isUnSafeDoubleNorth = false;
+                                }
+                            }
+                            if (isUnSafeDoubleNorth) {
+                                holes.add(new HolePos(pos, Type.DoubleObsidianNorth));
+                            }
+                            else {
+                                boolean isSafeDoubleWest = true;
+                                for (final Vec3i vec3i5 : this.DoubleHoleWest) {
+                                    if (this.isntUnsafe(pos.add(vec3i5))) {
+                                        isSafeDoubleWest = false;
+                                    }
+                                }
+                                if (isSafeDoubleWest) {
+                                    holes.add(new HolePos(pos, Type.DoubleBedrockWest));
+                                }
+                                else {
+                                    boolean isUnSafeDoubleWest = true;
+                                    for (final Vec3i vec3i6 : this.DoubleHoleWest) {
+                                        if (this.isntUnsafe(pos.add(vec3i6))) {
+                                            isUnSafeDoubleWest = false;
+                                        }
+                                    }
+                                    if (!isUnSafeDoubleWest) {
+                                        continue;
+                                    }
+                                    holes.add(new HolePos(pos, Type.DoubleObsidianWest));
+                                }
+                            }
+                        }
                     }
-                }
-                if (isUnSafeDoubleNorth) {
-                    holes.add(new HolePos(pos, Type.DoubleObsidianNorth));
-                    continue;
-                }
-                boolean isSafeDoubleWest = true;
-                for (Vec3i vec3i : DoubleHoleWest) {
-                    if (isntUnsafe(pos.add(vec3i))) {
-                        isSafeDoubleWest = false;
-                    }
-                }
-                if (isSafeDoubleWest) {
-                    holes.add(new HolePos(pos, Type.DoubleBedrockWest));
-                    continue;
-                }
-                boolean isUnSafeDoubleWest = true;
-                for (Vec3i vec3i : DoubleHoleWest) {
-                    if (isntUnsafe(pos.add(vec3i))) {
-                        isUnSafeDoubleWest = false;
-                    }
-                }
-                if (isUnSafeDoubleWest) {
-                    holes.add(new HolePos(pos, Type.DoubleObsidianWest));
                 }
             }
         }

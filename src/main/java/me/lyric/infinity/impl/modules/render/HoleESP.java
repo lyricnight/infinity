@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class HoleESP extends Module {
-    protected final Setting<Float> radius = register((new Setting<>("Radius", "Radius to render holes.", 8f, 0f, 50f)));
+    public Setting<Float> radius = register((new Setting<>("Radius", "Radius to render (and calculate) holes.", 8f, 0f, 50f)));
     protected final Setting<Float> lineWidth = register((new Setting<>("LineWidth", "Width of lines.", 0.1f, 0f, 5f)));
     protected final Setting<Float> height = register((new Setting<>("Height", "Height of box esp.", 0f, 0f, 2f)));
     public Setting<Boolean> doubles = register(new Setting<>("Doubles", "Renders double holes.", true));
