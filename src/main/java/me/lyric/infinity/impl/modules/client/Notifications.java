@@ -43,7 +43,7 @@ public class Notifications extends Module {
 
 
     @Override
-    public void onTick()
+    public void onUpdate()
     {
         if(mc.player == null || mc.world == null)
         {

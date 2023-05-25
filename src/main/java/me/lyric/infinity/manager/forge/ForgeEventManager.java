@@ -55,15 +55,6 @@ public class ForgeEventManager implements IGlobals {
         }
     }
 
-
-    @EventListener(priority = ListenerPriority.HIGHEST)
-    public void onClientTick(TickEvent e) {
-        for (Module module : ModuleManager.getModuleManager().getModules()) {
-            if (module.isEnabled()) {
-                module.onTick();
-            }
-        }
-    }
     @SubscribeEvent
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         Infinity.INSTANCE.moduleManager.onLogout();

@@ -126,9 +126,6 @@ public class Module extends Register implements IGlobals {
     public void onRender3D(float partialTicks) {
     }
 
-    public void onTick() {
-    }
-
     public void onLogout() {
     }
 

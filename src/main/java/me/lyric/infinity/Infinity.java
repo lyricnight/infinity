@@ -79,6 +79,7 @@ public class Infinity {
         friendManager.setDirectory(new File(CONFIG_PATH, "friends.json"));
         friendManager.init();
         this.threadManager = new ThreadManager();
+        threadManager.init();
         this.holeManager = new HoleManager();
         this.holeManager.init();
         gui = new PanelStudioGUI();
