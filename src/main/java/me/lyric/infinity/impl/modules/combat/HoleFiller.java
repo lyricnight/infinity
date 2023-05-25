@@ -10,6 +10,7 @@ import me.lyric.infinity.api.util.minecraft.EntityUtil;
 import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.manager.client.FriendManager;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
@@ -165,7 +166,7 @@ public class HoleFiller extends Module {
         closestTarget = null;
 
         for (EntityPlayer target : playerList) {
-            if (target == mc.player || !EntityUtil.isLiving(target) || target.getHealth() <= 0.0f || Infinity.INSTANCE.friendManager.isFriend(target)) continue;
+            if (target == mc.player || !EntityUtil.isLiving(target) || target.getHealth() <= 0.0f || Infinity.INSTANCE.friendManager.isFriend(String.valueOf(target))) continue;
             if(wait.getValue() && (isHole(getTargetPos(target)) || isBurrow(target))) continue;
             if (closestTarget == null) {
                 closestTarget = target;

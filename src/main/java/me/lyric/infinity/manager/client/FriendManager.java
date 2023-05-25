@@ -3,7 +3,6 @@ package me.lyric.infinity.manager.client;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -35,9 +34,6 @@ public class FriendManager {
     public void setDirectory(File directory) {
         FriendManager.directory = directory;
     }
-
-
-
     public static void saveFriends() {
         if (directory.exists()) {
             try (final Writer writer = new FileWriter(directory)) {
@@ -64,9 +60,8 @@ public class FriendManager {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "This user is already a friend!");
             return;
         }
-        Friend f = getFriend(name);
-        if (f != null)
-            friends.add(f);
+        Friend f = new Friend(name);
+        friends.add(f);
         ChatUtils.sendMessage(ChatFormatting.BOLD + "Added " +ChatFormatting.BLUE + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
     }
 
