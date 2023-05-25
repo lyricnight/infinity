@@ -10,6 +10,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.lyric.infinity.Infinity.CONFIG_PATH;
+
 public class FriendManager {
 
     private static List<Friend> friends = new ArrayList<>();
@@ -63,6 +65,7 @@ public class FriendManager {
         Friend f = new Friend(name);
         friends.add(f);
         ChatUtils.sendMessage(ChatFormatting.BOLD + "Added " +ChatFormatting.BLUE + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
+        reload();
     }
 
     public final Friend getFriend(String ign) {
@@ -80,6 +83,13 @@ public class FriendManager {
     public boolean isFriend(EntityPlayer ign) {
         return getFriend(ign.getName()) != null;
     }
+    public void reload()
+    {
+        setDirectory(new File(CONFIG_PATH, "friends.json"));
+        saveFriends();
+        loadFriends();
+
+    }
 
     public void removeFriend(String name) {
         if (!isFriend(name))
@@ -91,6 +101,7 @@ public class FriendManager {
         if (f != null)
             friends.remove(f);
         ChatUtils.sendMessage(ChatFormatting.BOLD + "Removed " +ChatFormatting.RED + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
+        reload();
     }
 
     public static final class Friend  {
