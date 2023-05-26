@@ -58,6 +58,10 @@ public class Swing extends Module {
         {
             return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "offhand" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
+        if (swing.getValue() == SwingHand.NONE)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
         return "";
     }
 }

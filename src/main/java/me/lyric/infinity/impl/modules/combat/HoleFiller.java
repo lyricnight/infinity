@@ -33,12 +33,12 @@ import static net.minecraft.util.EnumHand.MAIN_HAND;
 
 public class HoleFiller extends Module {
 
-    private final Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations to place blocks", false));
-    private final Setting<Boolean> smart = register(new Setting<>("Smart","Robot", false));
-    private final Setting<Boolean> packet = register(new Setting<>("Packet","Packet rotations to prevent glitch blocks, may be slower", false).withParent(rotate));
-    private final Setting<Boolean> autoDisable = register(new Setting<>("AutoDisable","Disabler", true));
-    private final Setting<Integer> range = register(new Setting<>("Radius","Range to fill", 4, 0, 6));
-    private final Setting<Boolean> webs = register(new Setting<>("Webs","fuck prestige", true));
+    public Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations to place blocks", false));
+    public Setting<Boolean> smart = register(new Setting<>("Smart","Robot", false));
+    public Setting<Boolean> packet = register(new Setting<>("Packet","Packet rotations to prevent glitch blocks, may be slower", false).withParent(rotate));
+    public Setting<Boolean> autoDisable = register(new Setting<>("AutoDisable","Disabler", true));
+    public Setting<Integer> range = register(new Setting<>("Radius","Range to fill", 4, 0, 6));
+    public Setting<Boolean> webs = register(new Setting<>("Webs","fuck prestige", true));
     public Setting<Boolean> wait = register(new Setting<>("Hole Wait","Waits for a target to leave their hole before holefilling. Recommended.", true).withParent(smart));
 
     private final Setting<Logic> logic = register(new Setting<>("Logic","set to hole when using smart.", Logic.PLAYER).withParent(smart));
@@ -117,7 +117,6 @@ public class HoleFiller extends Module {
 
 
         if (q != null && mc.player.onGround) {
-
             mc.player.inventory.currentItem = webs.getValue() ? (webSlot == -1 ? (obbySlot == -1 ? eChestSlot : obbySlot) : webSlot) : (obbySlot == -1 ? eChestSlot : obbySlot);
 
             mc.playerController.updateController();

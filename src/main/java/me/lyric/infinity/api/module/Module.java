@@ -131,6 +131,10 @@ public class Module extends Register implements IGlobals {
 
     public void onUpdate() {
     }
+    public void onTick()
+    {
+
+    }
 
     protected void onEnable() {
             animation.setState(true);

@@ -1,11 +1,13 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.CombatUtil;
+import me.lyric.infinity.api.util.minecraft.EntityUtil;
 import me.lyric.infinity.api.util.minecraft.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.Switch;
 import net.minecraft.block.BlockAir;
@@ -17,9 +19,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,7 +29,7 @@ public class AutoCity extends Module
 {
     public Setting<Integer> targetRange = register(new Setting<>("Target Range", "Range to target.", 10, 2, 15));
     public Setting<Integer> range = register(new Setting<>("Break Range", "Range to break.", 4, 1, 9));
-
+    public Setting<Boolean> burrow = register(new Setting<>("Burrow", "Whether to mine player's burrow or not.", false));
     public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
     public Setting<Boolean> autoBreak = register(new Setting<>("Pick","If you want to silently swap to a pick to click the block, or not. This may desync you.", true));
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
@@ -64,20 +63,20 @@ public class AutoCity extends Module
         return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 
     }
-    @SubscribeEvent
-    public void onUpdate(TickEvent.ClientTickEvent e) {
+    @EventListener
+    public void onUpdate() {
         if (mc.player == null) {
             return;
         }
-        if ((this.target = (Entity) CombatUtil.getTarget(((Number)this.targetRange.getValue()).doubleValue())) == null) {
+        if ((this.target = CombatUtil.getTarget(((Number)this.targetRange.getValue()).doubleValue())) == null) {
             return;
         }
-        if ((boolean)this.autoBreak.getValue() && this.swapBack) {
+        if (this.autoBreak.getValue() && this.swapBack) {
             Switch.switchToSlotGhost(AutoCity.mc.player.inventory.currentItem);
             this.swapBack = false;
         }
-        if ((boolean)this.autoBreak.getValue() && this.mining != null && this.getPickSlot() != -1) {
-            final float breakTime = AutoCity.mc.world.getBlockState(this.mining).getBlockHardness((World)AutoCity.mc.world, this.mining) * 20.0f * 2.0f;
+        if (this.autoBreak.getValue() && this.mining != null && this.getPickSlot() != -1) {
+            final float breakTime = AutoCity.mc.world.getBlockState(this.mining).getBlockHardness(AutoCity.mc.world, this.mining) * 20.0f * 2.0f;
             final double shrinkFactor = MathUtils.normalize((double)(System.currentTimeMillis() - this.startTime), 0.0, (double)breakTime);
             if (this.mining != null && shrinkFactor > 1.2 && !this.swapBack) {
                 Switch.switchToSlotGhost(this.getPickSlot());
@@ -88,17 +87,26 @@ public class AutoCity extends Module
             if (AutoCity.mc.world.getBlockState(this.mining).getBlock() instanceof BlockAir) {
                 this.mining = null;
             }
-            if ((boolean)this.holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target))) {
+            if (this.holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && !isBurrow(target)) {
                 this.mining = null;
             }
         }
         if (this.cityMode.getValue() == Mode2.REQUIRE_PICK) {
-            if (this.mining == null && AutoCity.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && getCityBlock((EntityPlayer)this.target) != null) {
-                this.mine(getCityBlock((EntityPlayer)this.target));
+            if(this.mining == null && AutoCity.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && getBurrowBlock((EntityPlayer)this.target) != null && burrow.getValue())
+            {
+                this.mine(getBurrowBlock((EntityPlayer) target));
             }
+            if (this.mining == null && AutoCity.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && getCityBlockSurround((EntityPlayer)this.target) != null) {
+                this.mine(getCityBlockSurround((EntityPlayer)this.target));
+            }
+
         }
-        else if (this.mining == null && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && getCityBlock((EntityPlayer)this.target) != null) {
-            this.mine(getCityBlock((EntityPlayer)this.target));
+        else if (this.mining == null && getBurrowBlock((EntityPlayer)this.target) != null && burrow.getValue())
+        {
+            this.mine(getBurrowBlock((EntityPlayer) target));
+        }
+        else if (this.mining == null && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && getCityBlockSurround((EntityPlayer)this.target) != null) {
+            this.mine(getCityBlockSurround((EntityPlayer)this.target));
         }
     }
 
@@ -135,8 +143,28 @@ public class AutoCity extends Module
         }
         return positions;
     }
+    public static boolean isBurrow(final Entity target) {
+        final BlockPos blockPos = new BlockPos(target.posX, target.posY, target.posZ);
+        return EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
+    }
+    public static BlockPos getBurrowBlock(final EntityPlayer player)
+    {
+        if (player == null)
+        {
+            return null;
+        }
+        final BlockPos blockPos = new BlockPos(player.posX, player.posY, player.posZ);
+        if (EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST))
+        {
+            return blockPos;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-    public static BlockPos getCityBlock(final EntityPlayer player) {
+    public static BlockPos getCityBlockSurround(final EntityPlayer player) {
         final List<BlockPos> posList = getSurroundBlocks(player);
         posList.sort(Comparator.comparingDouble((ToDoubleFunction<? super BlockPos>)MathUtils::distanceTo));
         return posList.isEmpty() ? null : posList.get(0);
