@@ -9,6 +9,7 @@ import me.lyric.infinity.api.event.render.Render3DEvent;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.impl.modules.client.Internals;
 import me.lyric.infinity.impl.modules.render.HoleESP;
 import me.lyric.infinity.manager.client.ModuleManager;
 import net.minecraft.entity.passive.AbstractHorse;
@@ -92,7 +93,7 @@ public class ForgeEventManager implements IGlobals {
         boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
         if(isOn)
         {
-            Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
+            Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).threadCount.getValue()));
 
         }
     }
@@ -103,8 +104,7 @@ public class ForgeEventManager implements IGlobals {
             boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
             if(isOn)
             {
-                Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
-
+                Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).threadCount.getValue()));
             }
         }
     }

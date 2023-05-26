@@ -24,7 +24,8 @@ public class Swing extends Module {
     }
     public enum SwingHand {
         MAINHAND,
-        OFFHAND
+        OFFHAND,
+        NONE
     }
 
     @Override

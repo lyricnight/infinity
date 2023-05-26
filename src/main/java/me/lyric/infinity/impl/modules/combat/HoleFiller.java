@@ -40,8 +40,11 @@ public class HoleFiller extends Module {
     private final Setting<Integer> range = register(new Setting<>("Radius","Range to fill", 4, 0, 6));
     private final Setting<Boolean> webs = register(new Setting<>("Webs","fuck prestige", true));
     public Setting<Boolean> wait = register(new Setting<>("Hole Wait","Waits for a target to leave their hole before holefilling. Recommended.", true).withParent(smart));
+
     private final Setting<Logic> logic = register(new Setting<>("Logic","set to hole when using smart.", Logic.PLAYER).withParent(smart));
     private final Setting<Integer> smartRange = register(new Setting<>("EnemyRange","Range to enemy", 4, 0, 6).withParent(smart));
+    public Setting<Boolean> self = register(new Setting<>("SelfHoleCheck","Only fills if you are in a hole.", false));
+
     private EntityPlayer closestTarget;
 
     public HoleFiller() {
@@ -94,8 +97,11 @@ public class HoleFiller extends Module {
             return;
 
         }
-
         int originalSlot = mc.player.inventory.currentItem;
+        if(self.getValue() && (!isHole(getPlayerPos()) && !isBurrow(mc.player)))
+        {
+            return;
+        }
 
         for (BlockPos blockPos : blocks) {
             if (!mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(blockPos)).isEmpty()) continue;
@@ -108,6 +114,7 @@ public class HoleFiller extends Module {
             }
             q = blockPos;
         }
+
 
         if (q != null && mc.player.onGround) {
 

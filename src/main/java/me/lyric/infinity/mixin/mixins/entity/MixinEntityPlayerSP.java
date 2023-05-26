@@ -83,7 +83,7 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         UpdateWalkingPlayerEventPost event = new UpdateWalkingPlayerEventPost();
         Infinity.INSTANCE.eventBus.post(event);
     }
-    @Inject(method = { "swingArm" }, at = { @At("HEAD") }, cancellable = true)
+    @Inject(method = "swingArm" , at =  @At("HEAD") , cancellable = true)
     public void swingArm(EnumHand enumHand, CallbackInfo info) {
         if (Swing.INSTANCE.isEnabled()) {
             if (Swing.INSTANCE.swing.getValue() == Swing.SwingHand.MAINHAND)
@@ -93,6 +93,10 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
             if (Swing.INSTANCE.swing.getValue() == Swing.SwingHand.OFFHAND)
             {
                 super.swingArm(EnumHand.OFF_HAND);
+            }
+            if(Swing.INSTANCE.swing.getValue() == Swing.SwingHand.NONE)
+            {
+                info.cancel();
             }
             Objects.requireNonNull(mc.getConnection()).sendPacket(new CPacketAnimation(enumHand));
             info.cancel();
