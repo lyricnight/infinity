@@ -106,7 +106,6 @@ public class ModuleManager {
         this.modules.add(new Clip());
         this.modules.add(new AntiCev());
         //this.modules.add(new Burrow());
-        this.modules.add(new ClipTest());
         this.modules.add(new Blocker());
         this.modules.add(new AutoCity());
     }

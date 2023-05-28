@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.util.minecraft;
+package me.lyric.infinity.api.util.client;
 
 import me.lyric.infinity.api.event.player.MoveEvent;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,6 @@ public class SpeedUtil {
             event.setMotionZ(0.0);
         }
     }
-
     public static double[] instant(double speed) {
         return SpeedUtil.instant(SpeedUtil.mc.player, speed);
     }
@@ -28,7 +27,6 @@ public class SpeedUtil {
     public static double[] instant(Entity entity, double speed) {
         return SpeedUtil.instant(entity, SpeedUtil.mc.player.movementInput, speed);
     }
-
     public static double[] instant(Entity entity, MovementInput movementInput, double speed) {
         float moveForward = movementInput.moveForward;
         float moveStrafe = movementInput.moveStrafe;

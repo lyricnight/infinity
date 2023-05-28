@@ -1,5 +1,6 @@
-package me.lyric.infinity.api.util.minecraft;
+package me.lyric.infinity.api.util.client;
 
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 public class InventoryUtil implements IGlobals {
@@ -16,4 +17,5 @@ public class InventoryUtil implements IGlobals {
         }
         return -1;
     }
+
 }

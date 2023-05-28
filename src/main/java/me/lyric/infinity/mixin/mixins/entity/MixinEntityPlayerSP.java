@@ -3,7 +3,6 @@ package me.lyric.infinity.mixin.mixins.entity;
 import com.mojang.authlib.GameProfile;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.entity.LivingUpdateEvent;
-import me.lyric.infinity.api.event.player.MotionEvent;
 import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPost;
 import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPre;
@@ -33,16 +32,6 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     public MixinEntityPlayerSP(World worldIn, GameProfile playerProfile) {
         super(worldIn, playerProfile);
-    }
-
-    @Inject(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/AbstractClientPlayer;move(Lnet/minecraft/entity/MoverType;DDD)V"), cancellable = true)
-    public void move(MoverType type, double x, double y, double z, CallbackInfo info) {
-        MotionEvent motionEvent = new MotionEvent(type, x, y, z);
-        Infinity.INSTANCE.eventBus.post(motionEvent);
-        if (motionEvent.isCancelled()) {
-            super.move(type, motionEvent.getX(), motionEvent.getY(), motionEvent.getZ());
-            info.cancel();
-        }
     }
     @Override
     public void move(MoverType type, double x, double y, double z) {

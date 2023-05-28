@@ -6,7 +6,7 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPost;
 import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPre;
 import me.lyric.infinity.api.event.render.RenderLivingEntityEvent;
-import me.lyric.infinity.api.util.minecraft.HoleUtil;
+import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;

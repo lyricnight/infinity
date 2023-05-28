@@ -74,7 +74,7 @@ public class Notifications extends Module {
                 if (!this.strgh.passedMs(this.checkrate.getValue())) {
                     return;
                 }
-                if (entityPlayer.equals((Object)Notifications.mc.player))
+                if (entityPlayer.equals(Notifications.mc.player))
                 {
                     if (entityPlayer.isPotionActive(MobEffects.STRENGTH) && !this.str.contains(entityPlayer)) {
                         ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " have"  + ChatFormatting.RED + " strength" + ChatFormatting.BOLD + "!");
@@ -104,7 +104,7 @@ public class Notifications extends Module {
                 if (!this.speed.passedMs(this.checkrate.getValue())) {
                     return;
                 }
-                if (entityPlayer.equals((Object)Notifications.mc.player))
+                if (entityPlayer.equals(Notifications.mc.player))
                 {
                     if (entityPlayer.isPotionActive(MobEffects.SPEED) && !this.spd.contains(entityPlayer)) {
                         ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " have" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
@@ -148,7 +148,7 @@ public class Notifications extends Module {
 
             if (packet.getOpCode() == 35 && packet.getEntity(mc.world) instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) packet.getEntity(mc.world);
-                this.onTotemPop(player);
+                onTotemPop(player);
 
             }
         }

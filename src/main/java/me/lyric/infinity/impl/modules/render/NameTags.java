@@ -8,9 +8,8 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
-import me.lyric.infinity.api.util.minecraft.EntityUtil;
+import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.impl.modules.client.Notifications;
-import me.lyric.infinity.manager.client.FriendManager;
 import me.lyric.infinity.mixin.mixins.accessors.IRenderManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -160,7 +159,7 @@ public class NameTags extends Module {
         GlStateManager.enableBlend();
 
         if (this.rect.getValue()) {
-            drawRect(-width - 2, -(mc.fontRenderer.FONT_HEIGHT + 1), (float) width + 2.0f, 1.5f, Infinity.INSTANCE.friendManager.isFriend(String.valueOf(player)) ? friendtextColor.getValue().getColor().getRGB() : mainColor.getValue().getColor().getRGB());
+            drawRect(-width - 2, -(mc.fontRenderer.FONT_HEIGHT + 1), (float) width + 2.0f, 1.5f, Infinity.INSTANCE.friendManager.isFriend(player) ? friendtextColor.getValue().getColor().getRGB() : mainColor.getValue().getColor().getRGB());
             if (this.outline.getValue()) {
                 this.drawOutlineRect((float) (-width - 2), (float) (-(mc.fontRenderer.FONT_HEIGHT + 1)), width + 2.0f, 1.5f, outlineColor.getValue().getColor().getRGB());
             }

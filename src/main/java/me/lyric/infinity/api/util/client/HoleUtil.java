@@ -1,5 +1,6 @@
-package me.lyric.infinity.api.util.minecraft;
+package me.lyric.infinity.api.util.client;
 
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;

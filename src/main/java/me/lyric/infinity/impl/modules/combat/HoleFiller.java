@@ -5,12 +5,10 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.util.minecraft.CombatUtil;
-import me.lyric.infinity.api.util.minecraft.EntityUtil;
-import me.lyric.infinity.api.util.minecraft.HoleUtil;
-import me.lyric.infinity.api.util.minecraft.InventoryUtil;
+import me.lyric.infinity.api.util.client.EntityUtil;
+import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.manager.client.FriendManager;
+import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
@@ -97,7 +95,6 @@ public class HoleFiller extends Module {
             return;
 
         }
-        int originalSlot = mc.player.inventory.currentItem;
         if(self.getValue() && (!isHole(getPlayerPos()) && !isBurrow(mc.player)))
         {
             return;
@@ -117,17 +114,7 @@ public class HoleFiller extends Module {
 
 
         if (q != null && mc.player.onGround) {
-            mc.player.inventory.currentItem = webs.getValue() ? (webSlot == -1 ? (obbySlot == -1 ? eChestSlot : obbySlot) : webSlot) : (obbySlot == -1 ? eChestSlot : obbySlot);
-
-            mc.playerController.updateController();
-            PlacementManager.placeBlock(q, rotate.getValue(), packet.getValue(), true);
-
-            if (mc.player.inventory.currentItem != originalSlot) {
-                mc.player.inventory.currentItem = originalSlot;
-                mc.playerController.updateController();
-            }
-            mc.player.swingArm(MAIN_HAND);
-            mc.player.inventory.currentItem = originalSlot;
+            Switch.placeBlockWithSwitch(webs.getValue() ? (webSlot == -1 ? (obbySlot == -1 ? eChestSlot : obbySlot) : webSlot) : (obbySlot == -1 ? eChestSlot : obbySlot), rotate.getValue(), packet.getValue(), q, true);
         }
         if (q == null && autoDisable.getValue() && !smart.getValue()) {
             toggle();

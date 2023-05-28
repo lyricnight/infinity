@@ -1,5 +1,6 @@
-package me.lyric.infinity.api.util.minecraft;
+package me.lyric.infinity.api.util.client;
 
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -22,6 +23,10 @@ public class BlockUtil implements IGlobals {
         return BlockUtil.mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
     }
     public static boolean isABlock(BlockPos pos, Block block) {
+        if (mc.world == null)
+        {
+            return false;
+        }
         return mc.world.getBlockState(pos).getBlock().equals(block);
     }
     public static List<BlockPos> getBlocksInRadius(final double range, final boolean movePredict, final int predictTicks) {

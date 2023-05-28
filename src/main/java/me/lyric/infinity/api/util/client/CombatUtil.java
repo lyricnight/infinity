@@ -1,7 +1,7 @@
-package me.lyric.infinity.api.util.minecraft;
+package me.lyric.infinity.api.util.client;
 
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.manager.client.FriendManager;
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

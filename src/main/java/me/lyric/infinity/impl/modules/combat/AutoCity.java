@@ -5,11 +5,11 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.util.client.CombatUtil;
+import me.lyric.infinity.api.util.client.EntityUtil;
+import me.lyric.infinity.api.util.client.HoleUtil;
+import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
-import me.lyric.infinity.api.util.minecraft.CombatUtil;
-import me.lyric.infinity.api.util.minecraft.EntityUtil;
-import me.lyric.infinity.api.util.minecraft.HoleUtil;
-import me.lyric.infinity.api.util.minecraft.Switch;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +17,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -31,8 +30,8 @@ public class AutoCity extends Module
     public Setting<Integer> range = register(new Setting<>("Break Range", "Range to break.", 4, 1, 9));
     public Setting<Boolean> burrow = register(new Setting<>("Burrow", "Whether to mine player's burrow or not.", false));
     public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
-    public Setting<Boolean> autoBreak = register(new Setting<>("Pick","If you want to silently swap to a pick to click the block, or not. This may desync you.", true));
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
+    public Setting<Boolean> move = register(new Setting<>("MovementCheck", "Leave on if you want autocity to only city when stationary.", false));
 
     public Setting<Boolean> holeCheck = register(new Setting<>("Hole Check","Checks if the target is in a hole.", true));
 
@@ -68,20 +67,12 @@ public class AutoCity extends Module
         if (mc.player == null) {
             return;
         }
-        if ((this.target = CombatUtil.getTarget(((Number)this.targetRange.getValue()).doubleValue())) == null) {
+        if(move.getValue() && SpeedUtil.anyMovementKeys())
+        {
             return;
         }
-        if (this.autoBreak.getValue() && this.swapBack) {
-            Switch.switchToSlotGhost(AutoCity.mc.player.inventory.currentItem);
-            this.swapBack = false;
-        }
-        if (this.autoBreak.getValue() && this.mining != null && this.getPickSlot() != -1) {
-            final float breakTime = AutoCity.mc.world.getBlockState(this.mining).getBlockHardness(AutoCity.mc.world, this.mining) * 20.0f * 2.0f;
-            final double shrinkFactor = MathUtils.normalize((double)(System.currentTimeMillis() - this.startTime), 0.0, (double)breakTime);
-            if (this.mining != null && shrinkFactor > 1.2 && !this.swapBack) {
-                Switch.switchToSlotGhost(this.getPickSlot());
-                this.swapBack = true;
-            }
+        if ((this.target = CombatUtil.getTarget((this.targetRange.getValue()).doubleValue())) == null) {
+            return;
         }
         if (this.mining != null) {
             if (AutoCity.mc.world.getBlockState(this.mining).getBlock() instanceof BlockAir) {
@@ -112,7 +103,7 @@ public class AutoCity extends Module
 
     private void mine(final BlockPos blockPos) {
         mc.playerController.onPlayerDamageBlock(blockPos, EnumFacing.UP);
-        if (!(boolean)this.NoSwing.getValue()) {
+        if (!this.NoSwing.getValue()) {
             AutoCity.mc.player.swingArm(EnumHand.MAIN_HAND);
         }
         this.mining = blockPos;
@@ -169,11 +160,9 @@ public class AutoCity extends Module
         posList.sort(Comparator.comparingDouble((ToDoubleFunction<? super BlockPos>)MathUtils::distanceTo));
         return posList.isEmpty() ? null : posList.get(0);
     }
-
     public static boolean canCityBlock(final BlockPos blockPos, final EnumFacing direction) {
         return AutoCity.mc.world.getBlockState(blockPos.up()).getBlock() == Blocks.AIR || (AutoCity.mc.world.getBlockState(blockPos.offset(direction)).getBlock() == Blocks.AIR && AutoCity.mc.world.getBlockState(blockPos.offset(direction).up()).getBlock() == Blocks.AIR && (AutoCity.mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.OBSIDIAN || AutoCity.mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.BEDROCK));
     }
-
     int getPickSlot() {
         int pickSlot = -1;
         for (int i = 0; i < 9; ++i) {
@@ -183,10 +172,6 @@ public class AutoCity extends Module
             }
         }
         return pickSlot;
-    }
-
-    public AxisAlignedBB AxisAlignedBB(final BlockPos poslel) {
-        return new AxisAlignedBB(poslel.getX() + 0.5, poslel.getY() + 0.5, poslel.getZ() + 0.5, poslel.getX() + 0.5, poslel.getY() + 0.5, poslel.getZ() + 0.5);
     }
     public enum Mode2
     {

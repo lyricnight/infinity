@@ -1,7 +1,5 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
-import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.player.TurnEvent;
 import me.lyric.infinity.impl.modules.render.NoRender;
 import me.lyric.infinity.mixin.transformer.IEntity;
 import net.minecraft.client.Minecraft;
@@ -12,7 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
@@ -49,15 +46,6 @@ public abstract class MixinEntity implements IEntity {
     public abstract boolean equals(Object paramObject);
 
     @Shadow public abstract int getEntityId();
-    @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
-    public void onTurnHook(float yaw, float pitch, CallbackInfo info) {
-        TurnEvent event = new TurnEvent(yaw, pitch);
-        Infinity.INSTANCE.eventBus.post(event);
-
-        if (event.isCancelled()) {
-            info.cancel();
-        }
-    }
     @Inject(method = "isSneaking", at = @At(value = "RETURN"), cancellable = true)
     private void isSneaking(CallbackInfoReturnable<Boolean> cir)
     {

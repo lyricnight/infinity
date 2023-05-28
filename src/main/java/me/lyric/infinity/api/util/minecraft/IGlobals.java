@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 /**
  * @author lyric
  * wrapper
+ * {@link Minecraft}
  */
 
 public interface IGlobals {

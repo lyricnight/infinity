@@ -19,7 +19,4 @@ public class StringUtils {
 
         return flag;
     }
-    public static String normalizeCases(Object o) {
-        return Character.toUpperCase(o.toString().charAt(0)) + o.toString().toLowerCase().substring(1);
-    }
 }

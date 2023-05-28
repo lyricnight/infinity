@@ -4,7 +4,7 @@ import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.Render3DEvent;
-import me.lyric.infinity.api.util.minecraft.BlockUtil;
+import me.lyric.infinity.api.util.client.BlockUtil;
 import me.lyric.infinity.impl.modules.render.HoleESP;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class HoleManager {

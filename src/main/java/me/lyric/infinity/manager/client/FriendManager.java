@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static me.lyric.infinity.Infinity.CONFIG_PATH;
 
@@ -75,13 +76,21 @@ public class FriendManager {
         }
         return null;
     }
+    public final Friend getFriend(EntityPlayer ign) {
+        for (Friend friend : friends) {
+            if (Objects.equals(friend.getName(), ign.getDisplayNameString()))
+                return friend;
+        }
+        return null;
+    }
+
 
     public final boolean isFriend(String ign) {
         return getFriend(ign) != null;
     }
 
     public boolean isFriend(EntityPlayer ign) {
-        return getFriend(ign.getName()) != null;
+        return getFriend(ign) != null;
     }
     public void reload()
     {

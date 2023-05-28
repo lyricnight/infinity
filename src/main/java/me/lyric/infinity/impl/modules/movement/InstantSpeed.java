@@ -7,8 +7,8 @@ import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.util.minecraft.EntityUtil;
-import me.lyric.infinity.api.util.minecraft.SpeedUtil;
+import me.lyric.infinity.api.util.client.EntityUtil;
+import me.lyric.infinity.api.util.client.SpeedUtil;
 
 public class InstantSpeed extends Module {
 

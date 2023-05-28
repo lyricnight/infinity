@@ -2,10 +2,11 @@ package me.lyric.infinity.api.util.string;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import java.util.Random;
-import java.util.regex.Pattern;
-
-public class TextColorUtils {
+/**
+ * for changing watermark in chat thing
+ * huh
+ */
+public class ChatFormat {
     public static final String BLACK = String.valueOf(ChatFormatting.BLACK);
     public static final String DARK_BLUE = String.valueOf(ChatFormatting.DARK_BLUE);
     public static final String DARK_GREEN = String.valueOf(ChatFormatting.DARK_GREEN);
@@ -28,14 +29,7 @@ public class TextColorUtils {
     public static final String UNDERLINE = String.valueOf(ChatFormatting.UNDERLINE);
     public static final String ITALIC = String.valueOf(ChatFormatting.ITALIC);
     public static final String RESET = String.valueOf(ChatFormatting.RESET);
-    private static final Random rand = new Random();
 
-    public static String stripColor(String input) {
-        if (input != null) {
-            return Pattern.compile("(?i)\u00a7[0-9A-FK-OR]").matcher(input).replaceAll("");
-        }
-        return "";
-    }
 
     public static String coloredString(String string, Color color) {
         String coloredString = string;
@@ -105,14 +99,6 @@ public class TextColorUtils {
             }
         }
         return coloredString;
-    }
-
-    public static String cropMaxLengthMessage(String s, int i) {
-        String output = "";
-        if (s.length() >= 256 - i) {
-            output = s.substring(0, 256 - i);
-        }
-        return output;
     }
 
     public enum Color {
