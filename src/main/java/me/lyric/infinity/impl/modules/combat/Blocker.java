@@ -1,13 +1,16 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
@@ -25,7 +28,7 @@ import net.minecraft.util.math.BlockPos;
 
 /**
  * @author asphyxia
- * face and extend conflict bug fixed by lyric, as well as addition of diagonals
+ * face and extend conflict bug fixed by lyric, as well as addition of diagonals, also making it place on blockchange
  */
 
 public class Blocker extends Module {
@@ -40,7 +43,7 @@ public class Blocker extends Module {
         super("Blocker", "bot", Category.COMBAT);
     }
 
-    @EventListener
+    @EventListener(priority = ListenerPriority.HIGH)
     public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketBlockBreakAnim && HoleUtil.isInHole(RotationManager.getPlayerPos())) {
             SPacketBlockBreakAnim packet = (SPacketBlockBreakAnim) event.getPacket();
@@ -108,7 +111,9 @@ public class Blocker extends Module {
         }
 
     }
-    @EventListener
+    //TODO: THIS IS horrible
+    //why did asphy do it like this in the first place
+    @EventListener(priority = ListenerPriority.HIGH)
     public void onPacketReceive2(PacketEvent.Receive event)
     {
         if (event.getPacket() instanceof SPacketBlockChange && HoleUtil.isInHole(RotationManager.getPlayerPos())) {
@@ -195,24 +200,9 @@ public class Blocker extends Module {
 
     private void placeBlock(BlockPos pos){
         if (!mc.world.isAirBlock(pos)) return;
-
-        int oldSlot = mc.player.inventory.currentItem;
-
         int obbySlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
         int eChestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
-        for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos))) {
-            if (entity instanceof EntityEnderCrystal) {
-                mc.player.connection.sendPacket(new CPacketUseEntity(entity));
-                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
-            }
-        }
-        mc.player.inventory.currentItem = obbySlot == -1 ? eChestSlot : obbySlot;
-        mc.playerController.updateController();
-        PlacementManager.placeBlock(pos, rotate.getValue(), packet.getValue(), true, false);
-        if (mc.player.inventory.currentItem != oldSlot) {
-            mc.player.inventory.currentItem = oldSlot;
-            mc.playerController.updateController();
-        }
-        mc.player.inventory.currentItem = oldSlot;
+        CombatUtil.attack(pos);
+        Switch.placeBlockWithSwitch(obbySlot == -1 ? eChestSlot : obbySlot, rotate.getValue(), packet.getValue(), pos, true);
     }
 }

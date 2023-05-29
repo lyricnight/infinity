@@ -141,6 +141,7 @@ public class HoleManager {
         return !mc.world.getBlockState(pos).getBlock().equals(Blocks.BEDROCK) && !mc.world.getBlockState(pos).getBlock().equals(Blocks.OBSIDIAN);
     }
 
+
     public boolean isntSafe(BlockPos pos) {
         return !mc.world.getBlockState(pos).getBlock().equals(Blocks.BEDROCK);
     }

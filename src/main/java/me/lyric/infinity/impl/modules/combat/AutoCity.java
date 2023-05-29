@@ -163,16 +163,6 @@ public class AutoCity extends Module
     public static boolean canCityBlock(final BlockPos blockPos, final EnumFacing direction) {
         return AutoCity.mc.world.getBlockState(blockPos.up()).getBlock() == Blocks.AIR || (AutoCity.mc.world.getBlockState(blockPos.offset(direction)).getBlock() == Blocks.AIR && AutoCity.mc.world.getBlockState(blockPos.offset(direction).up()).getBlock() == Blocks.AIR && (AutoCity.mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.OBSIDIAN || AutoCity.mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.BEDROCK));
     }
-    int getPickSlot() {
-        int pickSlot = -1;
-        for (int i = 0; i < 9; ++i) {
-            if (AutoCity.mc.player.inventory.getStackInSlot(i).getItem() instanceof ItemPickaxe) {
-                pickSlot = i;
-                break;
-            }
-        }
-        return pickSlot;
-    }
     public enum Mode2
     {
         REQUIRE_PICK,

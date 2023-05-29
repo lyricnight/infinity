@@ -5,8 +5,13 @@ import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.play.client.CPacketAnimation;
+import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Comparator;
@@ -42,6 +47,15 @@ public class CombatUtil implements IGlobals {
     {
         BlockPos pos = new BlockPos(mc.player.posX, mc.player.posY + 3, mc.player.posZ);
         return mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN;
+    }
+    public static void attack(BlockPos pos)
+    {
+        for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos))) {
+            if (entity instanceof EntityEnderCrystal) {
+                mc.player.connection.sendPacket(new CPacketUseEntity(entity));
+                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+            }
+        }
     }
 
 }
