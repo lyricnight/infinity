@@ -5,6 +5,7 @@ import me.bush.eventbus.handler.handlers.LambdaHandler;
 import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -20,7 +21,7 @@ public class Infinity {
 
     public static final String PATH = "Infinity/";
     public static final String CONFIG_PATH = PATH + "configs/";
-
+    File directory = new File(Minecraft.getMinecraft().gameDir, "Infinity");
     public EventBus eventBus = new EventBus(LambdaHandler.class);
     public static PanelStudioGUI gui;
     public TPSManager tpsManager;
@@ -76,7 +77,7 @@ public class Infinity {
         this.tpsManager = new TPSManager();
         this.tpsManager.load();
         this.friendManager = new FriendManager();
-        friendManager.setDirectory(new File(CONFIG_PATH, "friends.json"));
+        friendManager.setDirectory(new File(this.directory, "friends.json"));
         friendManager.init();
         this.threadManager = new ThreadManager();
         threadManager.init();

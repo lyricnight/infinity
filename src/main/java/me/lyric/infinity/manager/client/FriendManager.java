@@ -9,9 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import static me.lyric.infinity.Infinity.CONFIG_PATH;
 
 public class FriendManager {
 
@@ -37,6 +34,7 @@ public class FriendManager {
     public void setDirectory(File directory) {
         FriendManager.directory = directory;
     }
+
     public static void saveFriends() {
         if (directory.exists()) {
             try (final Writer writer = new FileWriter(directory)) {
@@ -60,13 +58,10 @@ public class FriendManager {
     public void addFriend(String name) {
         if (isFriend(name))
         {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "This user is already a friend!");
-            return;
+            ChatUtils.sendMessage(ChatFormatting.BOLD + name + " is already a friend!");
         }
-        Friend f = new Friend(name);
-        friends.add(f);
-        ChatUtils.sendMessage(ChatFormatting.BOLD + "Added " +ChatFormatting.BLUE + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
-        reload();
+        ChatUtils.sendMessage(ChatFormatting.BOLD + "Added " + name + " as a friend!");
+        friends.add(new Friend(name));
     }
 
     public final Friend getFriend(String ign) {
@@ -76,41 +71,23 @@ public class FriendManager {
         }
         return null;
     }
-    public final Friend getFriend(EntityPlayer ign) {
-        for (Friend friend : friends) {
-            if (Objects.equals(friend.getName(), ign.getDisplayNameString()))
-                return friend;
-        }
-        return null;
-    }
-
 
     public final boolean isFriend(String ign) {
         return getFriend(ign) != null;
     }
 
     public boolean isFriend(EntityPlayer ign) {
-        return getFriend(ign) != null;
+        return getFriend(ign.getName()) != null;
     }
-    public void reload()
-    {
-        setDirectory(new File(CONFIG_PATH, "friends.json"));
-        saveFriends();
-        loadFriends();
 
+    public void clearFriends() {
+        friends.clear();
     }
 
     public void removeFriend(String name) {
-        if (!isFriend(name))
-        {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "This user is not a friend!");
-            return;
-        }
         Friend f = getFriend(name);
         if (f != null)
             friends.remove(f);
-        ChatUtils.sendMessage(ChatFormatting.BOLD + "Removed " +ChatFormatting.RED + name + ChatFormatting.RESET + ChatFormatting.BOLD + " as a friend!");
-        reload();
     }
 
     public static final class Friend  {
