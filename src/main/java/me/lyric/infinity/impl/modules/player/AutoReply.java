@@ -13,7 +13,6 @@ import net.minecraft.util.math.Vec3d;
 
 /**
  * @author lyric
- * improved version of cascade
  */
 public class AutoReply extends Module {
     private static AutoReply INSTANCE = new AutoReply();

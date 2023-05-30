@@ -95,7 +95,6 @@ public class ModuleManager {
         this.modules.add(new AutoWalk());
         this.modules.add(new EntitySpeed());
         this.modules.add(new HoleSnap());
-        this.modules.add(new AntiLevitation());
         this.modules.add(new InstantSpeed());
         this.modules.add(new Sprint());
         this.modules.add(new WebBypass());

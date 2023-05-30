@@ -50,7 +50,7 @@ public class BetterChat
         String date = new SimpleDateFormat("k:mm").format(new Date());
         final String bracket = "<";
         final String bracket2 = ">";
-        return ChatFormat.coloredString(bracket, this.bracketColor.getValue()) + ChatFormat.coloredString("Infinity", this.commandColor.getValue()) + ChatFormat.coloredString(bracket2, this.bracketColor.getValue());
+        return ChatFormat.coloredString(bracket, this.bracketColor.getValue()) + ChatFormat.coloredString(date, this.commandColor.getValue()) + ChatFormat.coloredString(bracket2, this.bracketColor.getValue());
     }
 
 }

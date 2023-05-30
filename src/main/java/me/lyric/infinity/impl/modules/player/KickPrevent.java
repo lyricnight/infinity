@@ -5,16 +5,9 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 
 public class KickPrevent extends Module {
-    public static KickPrevent INSTANCE = new KickPrevent();
     public KickPrevent ()
     {
-        super("KickPrevent", "Prevents packet kicks.", Category.PLAYER);
-    }
-    public static KickPrevent getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new KickPrevent();
-        }
-        return INSTANCE;
+        super("KickPrevent", "Prevents packet kicks, by cancelling IOException.", Category.PLAYER);
     }
 
     @Override

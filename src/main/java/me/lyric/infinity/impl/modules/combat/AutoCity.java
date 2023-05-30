@@ -32,7 +32,6 @@ public class AutoCity extends Module
     public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
     public Setting<Boolean> move = register(new Setting<>("MovementCheck", "Leave on if you want autocity to only city when stationary.", false));
-
     public Setting<Boolean> holeCheck = register(new Setting<>("Hole Check","Checks if the target is in a hole.", true));
 
     BlockPos mining;
@@ -43,9 +42,13 @@ public class AutoCity extends Module
 
     public AutoCity() {
         super("AutoCity", "Automatically cities opp", Category.COMBAT);
-        this.startTime = 0L;
-        this.old = 1;
-        this.swapBack = false;
+    }
+    @Override
+    public void onEnable()
+    {
+        startTime = 0L;
+        old = 1;
+        swapBack = false;
     }
 
     @Override
@@ -71,50 +74,50 @@ public class AutoCity extends Module
         {
             return;
         }
-        if ((this.target = CombatUtil.getTarget((this.targetRange.getValue()).doubleValue())) == null) {
+        if ((target = CombatUtil.getTarget((targetRange.getValue()).doubleValue())) == null) {
             return;
         }
-        if (this.mining != null) {
-            if (AutoCity.mc.world.getBlockState(this.mining).getBlock() instanceof BlockAir) {
-                this.mining = null;
+        if (mining != null) {
+            if (mc.world.getBlockState(mining).getBlock() instanceof BlockAir) {
+                mining = null;
             }
-            if (this.holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && !isBurrow(target)) {
-                this.mining = null;
+            if (holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && !isBurrow(target)) {
+                mining = null;
             }
         }
-        if (this.cityMode.getValue() == Mode2.REQUIRE_PICK) {
-            if(this.mining == null && AutoCity.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && getBurrowBlock((EntityPlayer)this.target) != null && burrow.getValue())
+        if (cityMode.getValue() == Mode2.REQUIRE_PICK) {
+            if(mining == null && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && getBurrowBlock((EntityPlayer)target) != null && burrow.getValue())
             {
-                this.mine(getBurrowBlock((EntityPlayer) target));
+                mine(getBurrowBlock((EntityPlayer) target));
             }
-            if (this.mining == null && AutoCity.mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && getCityBlockSurround((EntityPlayer)this.target) != null) {
-                this.mine(getCityBlockSurround((EntityPlayer)this.target));
+            if (mining == null && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && getCityBlockSurround((EntityPlayer)target) != null) {
+                mine(getCityBlockSurround((EntityPlayer)target));
             }
 
         }
-        else if (this.mining == null && getBurrowBlock((EntityPlayer)this.target) != null && burrow.getValue())
+        else if (mining == null && getBurrowBlock((EntityPlayer)target) != null && burrow.getValue())
         {
-            this.mine(getBurrowBlock((EntityPlayer) target));
+            mine(getBurrowBlock((EntityPlayer) target));
         }
-        else if (this.mining == null && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)this.target)) && getCityBlockSurround((EntityPlayer)this.target) != null) {
-            this.mine(getCityBlockSurround((EntityPlayer)this.target));
+        else if (mining == null && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && getCityBlockSurround((EntityPlayer)target) != null) {
+            mine(getCityBlockSurround((EntityPlayer)target));
         }
     }
 
     private void mine(final BlockPos blockPos) {
         mc.playerController.onPlayerDamageBlock(blockPos, EnumFacing.UP);
-        if (!this.NoSwing.getValue()) {
-            AutoCity.mc.player.swingArm(EnumHand.MAIN_HAND);
+        if (!NoSwing.getValue()) {
+            mc.player.swingArm(EnumHand.MAIN_HAND);
         }
-        this.mining = blockPos;
-        this.startTime = System.currentTimeMillis();
+        mining = blockPos;
+        startTime = System.currentTimeMillis();
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
-        this.mining = null;
-        this.swapBack = false;
+        mining = null;
+        swapBack = false;
     }
 
     public static List<BlockPos> getSurroundBlocks(final EntityPlayer player) {
@@ -126,7 +129,7 @@ public class AutoCity extends Module
             if (direction != EnumFacing.UP) {
                 if (direction != EnumFacing.DOWN) {
                     final BlockPos pos = CombatUtil.getOtherPlayerPos(player).offset(direction);
-                    if (AutoCity.mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN && canCityBlock(pos, direction)) {
+                    if (mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN && canCityBlock(pos, direction)) {
                         positions.add(pos);
                     }
                 }
@@ -136,7 +139,7 @@ public class AutoCity extends Module
     }
     public static boolean isBurrow(final Entity target) {
         final BlockPos blockPos = new BlockPos(target.posX, target.posY, target.posZ);
-        return EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
+        return mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
     }
     public static BlockPos getBurrowBlock(final EntityPlayer player)
     {
@@ -145,7 +148,7 @@ public class AutoCity extends Module
             return null;
         }
         final BlockPos blockPos = new BlockPos(player.posX, player.posY, player.posZ);
-        if (EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST))
+        if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST))
         {
             return blockPos;
         }
@@ -161,7 +164,7 @@ public class AutoCity extends Module
         return posList.isEmpty() ? null : posList.get(0);
     }
     public static boolean canCityBlock(final BlockPos blockPos, final EnumFacing direction) {
-        return AutoCity.mc.world.getBlockState(blockPos.up()).getBlock() == Blocks.AIR || (AutoCity.mc.world.getBlockState(blockPos.offset(direction)).getBlock() == Blocks.AIR && AutoCity.mc.world.getBlockState(blockPos.offset(direction).up()).getBlock() == Blocks.AIR && (AutoCity.mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.OBSIDIAN || AutoCity.mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.BEDROCK));
+        return mc.world.getBlockState(blockPos.up()).getBlock() == Blocks.AIR || (mc.world.getBlockState(blockPos.offset(direction)).getBlock() == Blocks.AIR && mc.world.getBlockState(blockPos.offset(direction).up()).getBlock() == Blocks.AIR && (mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.BEDROCK));
     }
     public enum Mode2
     {

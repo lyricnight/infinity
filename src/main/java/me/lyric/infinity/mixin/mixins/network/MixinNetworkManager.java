@@ -39,7 +39,7 @@ public class MixinNetworkManager {
     }
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void exceptionCaught(ChannelHandlerContext p_exceptionCaught_1_, Throwable p_exceptionCaught_2_, CallbackInfo callback) {
-        if (p_exceptionCaught_2_ instanceof IOException && KickPrevent.INSTANCE.isEnabled()) {
+        if (p_exceptionCaught_2_ instanceof IOException && Infinity.INSTANCE.moduleManager.getModuleByClass(KickPrevent.class).isEnabled()) {
             callback.cancel();
         }
     }
