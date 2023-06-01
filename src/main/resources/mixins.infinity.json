@@ -2,7 +2,7 @@
   "required": true,
   "compatibilityLevel": "JAVA_8",
   "package": "me.lyric.infinity.mixin.mixins",
-  "refmap": "mixins.solaros.refmap.json",
+  "refmap": "mixins.infinity.refmap.json",
   "mixins": [
     "accessors.ICPacketPlayer",
     "accessors.IEntityPlayerSP",
