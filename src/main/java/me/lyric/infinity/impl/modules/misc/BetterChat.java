@@ -1,6 +1,7 @@
 package me.lyric.infinity.impl.modules.misc;
 
 import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -19,29 +20,20 @@ import java.util.Date;
 public class BetterChat
         extends Module {
     public final Setting<Boolean> timeStamps = register(new Setting<>("Timestamps","Does what it says on the tin lad",  true));
-    public final Setting<Boolean> giantBeetleSoundsLikeJackhammer = register(new Setting<>("NoRect","Removes rectangle", true));
+    public final Setting<Boolean> rect = register(new Setting<>("NoRect","Removes rectangle", true));
     public Setting<ChatFormat.Color> bracketColor = register(new Setting<>("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));
     public Setting<ChatFormat.Color> commandColor = register(new Setting<>("NameColor","Colour of timestamps", ChatFormat.Color.LIGHT_PURPLE));
-    private static BetterChat INSTANCE = new BetterChat();
 
     public BetterChat() {
         super("BetterChat", "Improves Minecraft's chat", Category.MISC);
-        INSTANCE = this;
     }
 
-    public static BetterChat getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BetterChat();
-        }
-        return INSTANCE;
-    }
-
-    @EventListener
+    @EventListener(priority = ListenerPriority.LOW)
     public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketChat) {
             SPacketChat packet = (SPacketChat)event.getPacket();
             if (this.timeStamps.getValue()) {
-                ((ISPacketChat)packet).setChatComponent(new TextComponentString(getTimeString() + packet.getChatComponent().getFormattedText()));
+                ((ISPacketChat)packet).setChatComponent(new TextComponentString(getTimeString() +" "+  packet.getChatComponent().getFormattedText()));
             }
         }
     }

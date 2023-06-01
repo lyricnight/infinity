@@ -6,7 +6,6 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
-import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
