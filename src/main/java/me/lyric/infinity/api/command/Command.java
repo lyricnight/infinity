@@ -30,24 +30,6 @@ public class Command {
         return "";
     }
 
-    /*public List<String> listArguments(String[] args, int indexLimit) {
-        final List<String> list = new ArrayList<>();
-
-        if (args.length > 0 && indexLimit != 0) {
-            return list;
-        }
-
-        list.addAll(Arrays.asList(args).subList(1, args.length));
-
-        if (list.size() != indexLimit) {
-            this.splash(CommandState.ERROR);
-
-            return null;
-        }
-
-        return list;
-    }*/
-
     public void splash(CommandState state) {
         switch (state) {
             case ERROR: {

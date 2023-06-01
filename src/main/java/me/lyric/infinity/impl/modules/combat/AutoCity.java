@@ -59,7 +59,7 @@ public class AutoCity extends Module
         }
         if (target != null)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ((EntityPlayer)target).getDisplayNameString() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + ((EntityPlayer)target).getDisplayNameString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
         }
         return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 

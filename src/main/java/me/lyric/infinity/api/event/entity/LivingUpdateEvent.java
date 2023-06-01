@@ -5,6 +5,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 
 /**
  * author lyric ;)
+ *
  */
 
 public class LivingUpdateEvent extends Event {

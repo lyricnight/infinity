@@ -97,7 +97,7 @@ public class ForgeEventManager implements IGlobals {
 
         }
     }
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent()
     public void onTick(TickEvent.ClientTickEvent e)
     {
         Infinity.INSTANCE.moduleManager.onTick();
