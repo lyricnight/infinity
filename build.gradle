@@ -119,7 +119,7 @@ shadowJar {
 
 mixin {
     defaultObfuscationEnv searge
-    add sourceSets.main, 'mixins.solaros.refmap.json'
+    add sourceSets.main, 'mixins.infinity.refmap.json'
 }
 
 jar.manifest.attributes(
