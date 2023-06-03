@@ -2,6 +2,7 @@ package me.lyric.infinity.api.util.minecraft.rotation;
 
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * @author lyric
@@ -35,6 +36,9 @@ public class Rotation implements IGlobals {
                     break;
             }
         }
+    }
+    public static Vec3d getEyesPos() {
+        return new Vec3d(mc.player.posX, mc.player.posY + mc.player.getEyeHeight(), mc.player.posZ);
     }
 
 

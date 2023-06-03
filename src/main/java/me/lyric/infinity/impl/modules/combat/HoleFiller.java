@@ -1,195 +1,164 @@
 package me.lyric.infinity.impl.modules.combat;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
-import me.lyric.infinity.Infinity;
+import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.util.client.EntityUtil;
+import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
-import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
-import me.lyric.infinity.manager.client.RotationManager;
-import net.minecraft.block.BlockEnderChest;
+import me.lyric.infinity.api.util.time.Timer;
+import me.lyric.infinity.manager.client.PlacementManager;
 import net.minecraft.block.BlockObsidian;
-import net.minecraft.block.BlockWeb;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-
+import net.minecraft.entity.*;
+import net.minecraft.util.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
+import java.util.*;
 import java.util.List;
+import java.util.stream.*;
+import net.minecraft.util.math.*;
 
 /**
  * @author lyric
- * base is mio but heavily modified with double support and doesn't holefill yourself like mio does
+ * much better than before
  */
 
-public class HoleFiller extends Module {
+public class HoleFiller extends Module
+{
+    public Setting<Mode> switchMode = register(new Setting<>("Mode", "Mode for switch", Mode.SILENT));
+    public Setting<Float> range = register(new Setting<>("Range", "Range for placing.", 5.0f, 1.0f, 10.0f));
+    public Setting<Float> wallRange = register(new Setting<>("WallRange", "Range for placing through walls.", 3f, 1f, 10f));
+    public Setting<Integer> delay = register(new Setting<>("Delay", "Delay of blockplacement",1, 0, 1000));
+    public Setting<Integer> blocksPerTick = register(new Setting<>("BPT", "this", 5, 1, 10));
+    public Setting<Boolean> disableAfter = register(new Setting<>("Disable", "for dumb hf", false));
+    public Setting<Boolean> onground = register(new Setting<>("OnGround", "only fills if you are on the ground.", true));
+    public Setting<Boolean> self = register(new Setting<>("SelfHoleCheck", "only fills if you are in a hole.", false));
+    public Setting<Boolean> rotate = register(new Setting<>("Rotate", "rots", true));
+    public Setting<Boolean> doubles = register(new Setting<>("Doubles", "double holes!!", true));
+    public Setting<Boolean> smart = register(new Setting<>("smart", "smartypants", true));
+    public Setting<Float> smartTargetRange = register(new Setting<>("SmartTargetRange","Range for smart to find a target.",5.0f, 1.0f, 10.0f));
+    public Setting<Float> smartBlockRange = register(new Setting<>("SmartBlockRange","Range for smart fill.",1.0f, 0.3f, 5.0f));
+    public Setting<Boolean> noSelfFill = register(new Setting<>("NoSelfFill", "dummy setting for time being", true));
+    public Setting<Float> selfDist = register(new Setting<>("SelfDist","Range for blocking fill from your loc.",1.0f, 0f, 3f).withParent(noSelfFill));
 
-    public Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations to place blocks", false));
-    public Setting<Boolean> smart = register(new Setting<>("Smart","Robot", false));
-    public Setting<Boolean> packet = register(new Setting<>("Packet","Packet rotations to prevent glitch blocks, may be slower", false).withParent(rotate));
-    public Setting<Boolean> autoDisable = register(new Setting<>("AutoDisable","Disabler", true));
-    public Setting<Integer> range = register(new Setting<>("Radius","Range to fill", 4, 0, 6));
-    public Setting<Boolean> webs = register(new Setting<>("Webs","fuck prestige", true));
-    public Setting<Boolean> wait = register(new Setting<>("HoleWait","Waits for a target to leave their hole before holefilling. Recommended.", true).withParent(smart));
-
-    private final Setting<Logic> logic = register(new Setting<>("Logic","set to hole when using smart.", Logic.PLAYER).withParent(smart));
-    private final Setting<Integer> smartRange = register(new Setting<>("EnemyRange","Range to enemy", 4, 0, 6).withParent(smart));
-    public Setting<Boolean> self = register(new Setting<>("SelfHoleCheck","Only fills if you are in a hole.", false));
-
-    private EntityPlayer closestTarget;
+    private Timer timer;
+    List<HoleUtil.Hole> holes;
+    Entity target;
 
     public HoleFiller() {
-        super("HoleFiller", "Fills all safe spots in radius.", Category.COMBAT);
-    }
-
-    private enum Logic {
-        PLAYER,
-        HOLE
+        super("HoleFiller","very good for strict and other servers.", Category.COMBAT);
+        timer = new Timer();
+        holes = new ArrayList<HoleUtil.Hole>();
     }
 
     @Override
-    public void onDisable() {
-        closestTarget = null;
-        RotationManager.resetRotationsPacket();
+    public void onEnable() {
+        timer.reset();
     }
 
-    @Override
-    public String getDisplayInfo() {
-        if (mc.player == null)
-        {
-            return "";
-        }
-        if (closestTarget == null)
-        {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-        }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET +ChatFormatting.WHITE + closestTarget.getDisplayNameString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-    }
-
-    @Override
+    @EventListener
     public void onUpdate() {
-        if (mc.world == null) {
+        if (mc.player == null) {
             return;
         }
-        if (smart.getValue()) {
-            findClosestTarget();
-        }
-        if (closestTarget == null)
+        if(onground.getValue() && !mc.player.onGround)
         {
             return;
         }
-        List<HoleUtil.Hole> holes = HoleUtil.getHoles(range.getValue(), getTargetPos(closestTarget), true);
-        BlockPos q = null;
-        BlockPos r = null;
-
-        int obbySlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
-        int eChestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
-        int webSlot = InventoryUtil.findHotbarBlock(BlockWeb.class);
-
-        if (obbySlot == -1 && eChestSlot == -1 && webSlot == -1)
-        {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "No Valid Blocks! Disabling HoleFiller...");
-            toggle();
-            return;
-
-        }
-        if(self.getValue() && (!HoleUtil.isHole(getPlayerPos()) && !isBurrow(mc.player)))
+        if (self.getValue() && (!HoleUtil.isHole(mc.player.getPosition()) && !isBurrow(mc.player)))
         {
             return;
         }
-
-        for (HoleUtil.Hole pos : holes) {
-            if (!mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos.pos1)).isEmpty()) continue;
-            if (smart.getValue()) {
-                if (pos.doubleHole)
-                {
-                    q = pos.pos1;
-                    r = pos.pos2;
+        target = CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
+        int blocksPlaced = 0;
+        if (timer.passedMs(delay.getValue())) {
+            getHoles();
+            if (holes == null || holes.size() == 0) {
+                if (disableAfter.getValue()) {
+                    setEnabled(false);
                 }
-                else
-                {
-                    q = pos.pos1;
+                return;
+            }
+            if (switchMode.getValue() == Mode.REQUIRE && mc.player.getHeldItem(EnumHand.MAIN_HAND).getItem() != Item.getItemFromBlock(Blocks.OBSIDIAN)) {
+                return;
+            }
+            final int oldSlot = mc.player.inventory.currentItem;
+            final int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
+            if (blockSlot == -1) {
+                return;
+            }
+            boolean switched = false;
+            for (final HoleUtil.Hole hole : holes) {
+                if (!switched) {
+                    doSwitch(blockSlot);
+                    switched = true;
                 }
-                continue;
-            } else if (smart.getValue() && logic.getValue() == Logic.HOLE && closestTarget.getDistanceSq(pos.pos1) <= smartRange.getValue()) {
-                if (pos.doubleHole)
-                {
-                    q = pos.pos1;
-                    r = pos.pos2;
+                if (hole.doubleHole) {
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(), false);
+                    PlacementManager.placeBlock(hole.pos2, rotate.getValue(), rotate.getValue(), false);
                 }
-                else
-                {
-                    q = pos.pos1;
+                else {
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(), false);
                 }
-                continue;
+                if (++blocksPlaced >= ((Number)blocksPerTick.getValue()).intValue()) {
+                    break;
+                }
             }
-            if (pos.doubleHole)
-            {
-                q = pos.pos1;
-                r = pos.pos2;
+            if (switchMode.getValue() == Mode.SILENT && switched) {
+                doSwitch(oldSlot);
             }
-            else
-            {
-                q = pos.pos1;
-            }
-        }
-        int slot = webSlot == -1 ? (obbySlot == -1 ? eChestSlot : obbySlot) : webSlot;
-        if (r == null)
-        {
-            if (q != null && mc.player.onGround) {
-                Switch.placeBlockWithSwitch(webs.getValue() ? slot : (obbySlot == -1 ? eChestSlot : obbySlot), rotate.getValue(), packet.getValue(), q, true);
-            }
-            if (q == null && autoDisable.getValue() && !smart.getValue()) {
-                toggle();
-            }
-        }
-        else
-        {
-            if (q != null && mc.player.onGround) {
-                Switch.placeBlockWithSwitch(webs.getValue() ? slot : (obbySlot == -1 ? eChestSlot : obbySlot), rotate.getValue(), packet.getValue(), q, true);
-                Switch.placeBlockWithSwitch(webs.getValue() ? slot : (obbySlot == -1 ? eChestSlot : obbySlot), rotate.getValue(), packet.getValue(), r, true);
-            }
-            if (q == null && autoDisable.getValue() && !smart.getValue()) {
-                toggle();
-            }
+            timer.reset();
         }
     }
 
+    public void getHoles() {
+        loadHoles();
+    }
     public static boolean isBurrow(final Entity target) {
         final BlockPos blockPos = new BlockPos(target.posX, target.posY, target.posZ);
-        return EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || EntityUtil.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
+        return mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
     }
 
-    private BlockPos getPlayerPos() {
-        return new BlockPos(Math.floor(mc.player.posX), Math.floor(mc.player.posY), Math.floor(mc.player.posZ));
-    }
-
-    private BlockPos getTargetPos(EntityPlayer target)
-    {
-        return new BlockPos(Math.floor(target.posX), Math.floor(target.posY), Math.floor(target.posZ));
-    }
-
-    private void findClosestTarget() {
-        List<EntityPlayer> playerList = mc.world.playerEntities;
-
-        closestTarget = null;
-
-        for (EntityPlayer target : playerList) {
-            if (target == mc.player || !EntityUtil.isLiving(target) || target.getHealth() <= 0.0f || Infinity.INSTANCE.friendManager.isFriend(String.valueOf(target))) continue;
-            if(wait.getValue() && (HoleUtil.isHole(getTargetPos(target)) || isBurrow(target))) continue;
-            if (closestTarget == null) {
-                closestTarget = target;
-                continue;
+    public void loadHoles() {
+        holes = HoleUtil.getHoles(range.getValue().doubleValue(), mc.player.getPosition(), doubles.getValue()).stream().filter(hole -> {
+            boolean isAllowedHole = true;
+            AxisAlignedBB bb = hole.doubleHole ? new AxisAlignedBB(hole.pos1.getX(), hole.pos1.getY(), hole.pos1.getZ(), (hole.pos2.getX() + 1), (hole.pos2.getY() + 1), (hole.pos2.getZ() + 1)) : new AxisAlignedBB(hole.pos1);
+            for (Entity e : mc.world.getEntitiesWithinAABB(Entity.class, bb)) {
+                isAllowedHole = false;
             }
+            return isAllowedHole;
+        }).filter(hole -> {
+            boolean isAllowedSmart = false;
+            if (smart.getValue()) {
+                if (target != null && target.getDistance((double)hole.pos1.getX() + 0.5, (hole.pos1.getY() + 1), (double)hole.pos1.getZ() + 0.5) < smartBlockRange.getValue().doubleValue()) {
+                    isAllowedSmart = true;
+                }
+            } else {
+                isAllowedSmart = true;
+            }
+            return isAllowedSmart;
+        }).filter(hole -> {
+            BlockPos pos = hole.pos1.add(0, 1, 0);
+            boolean raytrace = mc.world.rayTraceBlocks(Rotation.getEyesPos(), new Vec3d((Vec3i)pos)) != null;
+            return !raytrace || mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= wallRange.getValue().doubleValue();
+        }).collect(Collectors.toList());
+    }
 
-
-            if (!(mc.player.getDistance(target) < mc.player.getDistance(closestTarget))) continue;
-            closestTarget = target;
+    public void doSwitch(final int i) {
+        if (switchMode.getValue() == Mode.NORMAL) {
+            Switch.switchToSlot(i);
         }
+        if (switchMode.getValue() == Mode.SILENT) {
+            Switch.switchToSlotGhost(i);
+        }
+    }
+    public enum Mode
+    {
+        NORMAL,
+        REQUIRE,
+        SILENT
     }
 }

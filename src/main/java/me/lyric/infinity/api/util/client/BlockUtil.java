@@ -22,13 +22,6 @@ public class BlockUtil implements IGlobals {
     public static boolean isAir(BlockPos pos) {
         return BlockUtil.mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
     }
-    public static boolean isABlock(BlockPos pos, Block block) {
-        if (mc.world == null)
-        {
-            return false;
-        }
-        return mc.world.getBlockState(pos).getBlock().equals(block);
-    }
     public static List<BlockPos> getBlocksInRadius(final double range, final boolean movePredict, final int predictTicks) {
         final List<BlockPos> posses = new ArrayList<>();
         float xRange = (float)Math.round(range);
