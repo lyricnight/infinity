@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ThreadManager {
-    ExecutorService executorService;
+    public ExecutorService executorService;
     public int num = 2;
 
     public void init()

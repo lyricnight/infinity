@@ -15,7 +15,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
@@ -26,6 +25,9 @@ import java.util.Objects;
 
 /**
  * @author lyric - thanks to CPacketCustomPayload
+ * for Catuquei - hud pvp elements are rendered by functions in RenderUtil, except for ArrayList and watermark.
+ * The ArrayList's animations are handled by AnimationManager - look when a module is enabled in {Module.class}
+ * This all can be rewritten except the render stuff in RenderUtil
  */
 
 public class HUD extends Module {
@@ -137,7 +139,7 @@ public class HUD extends Module {
         }
         if (welcomer.getValue())
         {
-            renderGreeter();
+            RenderUtils.renderGreeter();
         }
         if (fps.getValue()) {
         String fpsDisplay = "FPS: " + TextFormatting.WHITE + Minecraft.getDebugFPS();
@@ -180,11 +182,6 @@ public class HUD extends Module {
         BigDecimal bd = BigDecimal.valueOf(number);
         bd = bd.setScale(scale, RoundingMode.FLOOR);
         return bd.floatValue();
-    }
-    public void renderGreeter() {
-        final int width = new ScaledResolution(mc).getScaledWidth();
-        String welcomerString = String.format(textthing.getValue(), mc.player.getName());
-        mc.fontRenderer.drawStringWithShadow(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, color.getValue().getColor().getRGB());
     }
 }
 

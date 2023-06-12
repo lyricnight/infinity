@@ -20,6 +20,10 @@ public class HoleUtil
     static final Block[] NO_BLAST = new Block[]{Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.ANVIL, Blocks.ENDER_CHEST};
 
     public static boolean isHole(BlockPos pos) {
+        if(pos == null)
+        {
+            return false;
+        }
         boolean isHole = false;
         int amount = 0;
         BlockPos check = pos;

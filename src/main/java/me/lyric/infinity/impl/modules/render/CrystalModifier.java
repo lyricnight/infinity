@@ -24,6 +24,5 @@ public class CrystalModifier extends Module {
     {
         e.cancel();
         e.getModelBase().render(e.getEntity(), e.getLimbSwing(), e.getLimbSwingAmount() * spinSpeed.getValue(), e.getAgeInTicks() * bounceFactor.getValue(), e.getNetHeadYaw(), e.getHeadPitch(), e.getScaleFactor());
-        glPopAttrib();
     }
 }

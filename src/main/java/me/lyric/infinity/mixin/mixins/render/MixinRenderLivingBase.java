@@ -1,10 +1,13 @@
 package me.lyric.infinity.mixin.mixins.render;
 
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.RenderLivingEntityEvent;
+import me.lyric.infinity.impl.modules.render.PlayerChams;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.common.MinecraftForge;
+import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,6 +26,21 @@ public class MixinRenderLivingBase {
         MinecraftForge.EVENT_BUS.post(renderLivingEntityEvent);
         if (renderLivingEntityEvent.isCanceled()) {
             info.cancel();
+        }
+    }
+    @Inject(method = {"doRender"}, at = @At("HEAD"))
+    public void doRenderPre(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(PlayerChams.class).isValid(entity) && Infinity.INSTANCE.moduleManager.getModuleByClass(PlayerChams.class).isEnabled()) {
+            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+            GL11.glPolygonOffset(1.0f, -1100000.0f);
+        }
+    }
+
+    @Inject(method = {"doRender"}, at = @At("RETURN"))
+    public void doRenderPost(EntityLivingBase entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(PlayerChams.class).isValid(entity) && Infinity.INSTANCE.moduleManager.getModuleByClass(PlayerChams.class).isEnabled()) {
+            GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+            GL11.glPolygonOffset(1.0f, 1100000.0f);
         }
     }
 }

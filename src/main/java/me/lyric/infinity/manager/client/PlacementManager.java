@@ -47,17 +47,14 @@ public class PlacementManager {
                     mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
                 }
 
-                Vec3d hitVec = new Vec3d(currentPos)
-                        .add(0.5, 0.5, 0.5)
-                        .add(new Vec3d(currentFace.getDirectionVec()).scale(0.5));
+                Vec3d hitVec = new Vec3d(currentPos).add(0.5, 0.5, 0.5).add(new Vec3d(currentFace.getDirectionVec()).scale(0.5));
 
                 if (rotate) {
                     RotationManager.lookAtVec3dPacket(hitVec, false, true);
                 }
 
                 if (packet) {
-                    Vec3d extendedVec = new Vec3d(currentPos)
-                            .add(0.5, 0.5, 0.5);
+                    Vec3d extendedVec = new Vec3d(currentPos).add(0.5, 0.5, 0.5);
 
                     float x = (float) (extendedVec.x - currentPos.getX());
                     float y = (float) (extendedVec.y - currentPos.getY());

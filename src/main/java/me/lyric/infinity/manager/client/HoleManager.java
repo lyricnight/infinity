@@ -5,8 +5,8 @@ import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.Render3DEvent;
 import me.lyric.infinity.api.util.client.BlockUtil;
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.render.HoleESP;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -14,8 +14,7 @@ import net.minecraft.util.math.Vec3i;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class HoleManager {
-    public Minecraft mc = Minecraft.getMinecraft();
+public class HoleManager implements IGlobals {
     public ArrayList<HolePos> holes = new ArrayList<>();
 
     public void init()
@@ -51,7 +50,7 @@ public class HoleManager {
     };
 
     @EventListener(priority = ListenerPriority.HIGH)
-    public void onRender3D(Render3DEvent ignored) {
+    public void onRender3D(Render3DEvent event) {
         boolean enable = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
         if (enable)
         {

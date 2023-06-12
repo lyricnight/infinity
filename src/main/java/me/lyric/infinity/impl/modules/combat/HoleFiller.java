@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -7,6 +8,7 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
+import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.time.Timer;
@@ -41,8 +43,6 @@ public class HoleFiller extends Module
     public Setting<Boolean> smart = register(new Setting<>("smart", "smartypants", true));
     public Setting<Float> smartTargetRange = register(new Setting<>("SmartTargetRange","Range for smart to find a target.",5.0f, 1.0f, 10.0f));
     public Setting<Float> smartBlockRange = register(new Setting<>("SmartBlockRange","Range for smart fill.",1.0f, 0.3f, 5.0f));
-    public Setting<Boolean> noSelfFill = register(new Setting<>("NoSelfFill", "dummy setting for time being", true));
-    public Setting<Float> selfDist = register(new Setting<>("SelfDist","Range for blocking fill from your loc.",1.0f, 0f, 3f).withParent(noSelfFill));
 
     private Timer timer;
     List<HoleUtil.Hole> holes;
@@ -50,16 +50,34 @@ public class HoleFiller extends Module
 
     public HoleFiller() {
         super("HoleFiller","very good for strict and other servers.", Category.COMBAT);
-        timer = new Timer();
-        holes = new ArrayList<HoleUtil.Hole>();
+    }
+    @Override
+    public String getDisplayInfo()
+    {
+        if (target != null)
+        {
+            if (holes == null)
+            {
+                return ChatFormatting.GRAY + "[" + ChatFormatting.RED + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
+            }
+            else {
+                return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
+            }
+        }
+        return " ";
+
     }
 
     @Override
     public void onEnable() {
         timer.reset();
+        timer = new Timer();
+        holes = new ArrayList<HoleUtil.Hole>();
     }
 
-    @EventListener
+    @Override
     public void onUpdate() {
         if (mc.player == null) {
             return;
@@ -78,7 +96,8 @@ public class HoleFiller extends Module
             getHoles();
             if (holes == null || holes.size() == 0) {
                 if (disableAfter.getValue()) {
-                    setEnabled(false);
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + "All holes filled, disabling HoleFiller...");
+                    toggle();
                 }
                 return;
             }
@@ -118,6 +137,10 @@ public class HoleFiller extends Module
         loadHoles();
     }
     public static boolean isBurrow(final Entity target) {
+        if(mc.world == null || mc.player == null)
+        {
+            return false;
+        }
         final BlockPos blockPos = new BlockPos(target.posX, target.posY, target.posZ);
         return mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
     }

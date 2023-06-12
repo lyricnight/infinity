@@ -26,9 +26,6 @@ public abstract class MixinEntity implements IEntity {
     protected boolean isInWeb;
 
     @Shadow
-    public void move(MoverType type, double x, double y, double z) {}
-
-    @Shadow
     public double motionX;
 
     @Override

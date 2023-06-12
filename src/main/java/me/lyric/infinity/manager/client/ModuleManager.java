@@ -6,6 +6,7 @@ import me.lyric.infinity.impl.modules.combat.*;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
 import me.lyric.infinity.impl.modules.player.AutoReply;
+import me.lyric.infinity.impl.modules.player.HitboxDesync;
 import me.lyric.infinity.impl.modules.player.KickPrevent;
 import me.lyric.infinity.impl.modules.player.NoInterpolation;
 import me.lyric.infinity.impl.modules.render.*;
@@ -63,6 +64,7 @@ public class ModuleManager {
         this.modules.add(new BlockHighlight());
         this.modules.add(new Chams());
         this.modules.add(new Crosshair());
+        this.modules.add(new PlayerChams());
         this.modules.add(new ShaderChams());
         this.modules.add(new Brightness());
         this.modules.add(new CustomTime());
@@ -77,6 +79,7 @@ public class ModuleManager {
         // PLAYER
         this.modules.add(new NoInterpolation());
         this.modules.add(new AutoReply());
+        this.modules.add(new HitboxDesync());
         this.modules.add(new KickPrevent());
 
 
@@ -104,7 +107,6 @@ public class ModuleManager {
         this.modules.add(new HoleFiller());
         this.modules.add(new Clip());
         this.modules.add(new AntiCev());
-        //this.modules.add(new Burrow());
         this.modules.add(new Blocker());
         this.modules.add(new AutoCity());
     }
