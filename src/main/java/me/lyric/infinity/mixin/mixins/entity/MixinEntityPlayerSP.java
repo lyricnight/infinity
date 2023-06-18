@@ -25,7 +25,6 @@ import java.util.Objects;
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
     private Minecraft mc = Minecraft.getMinecraft();
-    private UpdateWalkingPlayerEventPre eventUpdateWalkingPlayer;
 
     public MixinEntityPlayerSP(World worldIn, GameProfile playerProfile) {
         super(worldIn, playerProfile);
@@ -47,25 +46,14 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         else
             entityPlayerSP.setSprinting(sprinting);
     }
-
-    @Inject(method = "onUpdateWalkingPlayer", at = @At("HEAD"))
-    private void onUpdateWalkingPlayerPre(CallbackInfo callbackInfo) {
-        UpdateWalkingPlayerEventPre updateWalkingPlayerEventPre = new UpdateWalkingPlayerEventPre(Minecraft.getMinecraft().player.rotationYaw, Minecraft.getMinecraft().player.rotationPitch);
-        Infinity.INSTANCE.eventBus.post(updateWalkingPlayerEventPre);
+    @Inject(method = {"onUpdateWalkingPlayer"}, at = {@At(value = "HEAD")})
+    private void preMotion(CallbackInfo info) {
+        UpdateWalkingPlayerEventPre event = new UpdateWalkingPlayerEventPre();
+        Infinity.INSTANCE.eventBus.post(event);
     }
 
-    @Redirect(method = "onUpdateWalkingPlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/client/entity/EntityPlayerSP;rotationYaw:F"))
-    private float onUpdateWalkingPlayerRotationYaw(EntityPlayerSP player) {
-        return eventUpdateWalkingPlayer.getYaw();
-    }
-
-    @Redirect(method = "onUpdateWalkingPlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/client/entity/EntityPlayerSP;rotationPitch:F"))
-    private float onUpdateWalkingPlayerRotationPitch(EntityPlayerSP player) {
-        return eventUpdateWalkingPlayer.getPitch();
-    }
-
-    @Inject(method = "onUpdateWalkingPlayer", at = @At("RETURN"))
-    private void onUpdateWalkingPlayerPost(CallbackInfo callbackInfo) {
+    @Inject(method = {"onUpdateWalkingPlayer"}, at = {@At(value = "RETURN")})
+    private void postMotion(CallbackInfo info) {
         UpdateWalkingPlayerEventPost event = new UpdateWalkingPlayerEventPost();
         Infinity.INSTANCE.eventBus.post(event);
     }
