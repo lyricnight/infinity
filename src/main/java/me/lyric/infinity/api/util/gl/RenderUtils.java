@@ -1,5 +1,6 @@
 package me.lyric.infinity.api.util.gl;
 
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.client.HUD;
 import net.minecraft.block.material.Material;
@@ -350,46 +351,10 @@ public class RenderUtils implements IGlobals {
             GlStateManager.disableLighting();
         }
     }
-    public static void renderArmor(final boolean percent) {
+    public static void renderGreeter() {
         final int width = new ScaledResolution(mc).getScaledWidth();
-        final int height = new ScaledResolution(mc).getScaledHeight();
-        GlStateManager.enableTexture2D();
-        final int i = width / 2;
-        int iteration = 0;
-        final int y = height - 55 - ((HUD.mc.player.isInWater() && HUD.mc.playerController.gameIsSurvivalOrAdventure()) ? 10 : 0);
-        for (final ItemStack is : HUD.mc.player.inventory.armorInventory) {
-            ++iteration;
-            if (is.isEmpty()) {
-                continue;
-            }
-            final int x = i - 90 + (9 - iteration) * 20 + 2;
-            GlStateManager.enableDepth();
-            itemRender.zLevel = 200.0f;
-            itemRender.renderItemAndEffectIntoGUI(is, x, y);
-            itemRender.renderItemOverlayIntoGUI(HUD.mc.fontRenderer, is, x, y, "");
-            itemRender.zLevel = 0.0f;
-            GlStateManager.enableTexture2D();
-            GlStateManager.disableLighting();
-            GlStateManager.disableDepth();
-            final String s = (is.getCount() > 1) ? (is.getCount() + "") : "";
-            mc.fontRenderer.drawStringWithShadow(s, (float)(x + 19 - 2 - mc.fontRenderer.getStringWidth(s)), (float)(y + 9), 16777215);
-            if (!percent) {
-                continue;
-            }
-            int dmg = 0;
-            final int itemDurability = is.getMaxDamage() - is.getItemDamage();
-            final float green = (is.getMaxDamage() - (float)is.getItemDamage()) / is.getMaxDamage();
-            final float red = 1.0f - green;
-            if (percent) {
-                dmg = 100 - (int)(red * 100.0f);
-            }
-            else {
-                dmg = itemDurability;
-            }
-            mc.fontRenderer.drawStringWithShadow(dmg + "%", (float)(x + 8 -  mc.fontRenderer.getStringWidth(dmg + "%") / 2), (float)(y - 10), ColorUtils.toRGBA((int)(red * 255.0f), (int)(green * 255.0f), 0));
-        }
-        GlStateManager.enableDepth();
-        GlStateManager.disableLighting();
+        String welcomerString = String.format(Infinity.INSTANCE.moduleManager.getModuleByClass(HUD.class).textthing.getValue(), mc.player.getName());
+        mc.fontRenderer.drawStringWithShadow(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, Infinity.INSTANCE.moduleManager.getModuleByClass(HUD.class).color.getValue().getColor().getRGB());
     }
     public static void renderArmorNew() {
             GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
