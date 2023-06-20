@@ -1,6 +1,8 @@
 package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.api.util.client.BlockUtil;
+import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -13,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketEntityAction;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
+import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -23,16 +26,23 @@ import java.util.Optional;
 
 /**
  * interactions
- * @author written by asphyxia and modified by lyric
+ * @author written by asphyxia
  */
 
-public class PlacementManager {
-    private static final Minecraft mc = Minecraft.getMinecraft();
-    public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal, boolean ignoreEntities) {
+public class PlacementManager implements IGlobals {
+    private static final Timer attackTimer = new Timer();
 
-        if (mc.player == null) return;
+    //Block placements
+
+    public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal, boolean ignoreEntities, boolean swing) {
+
+        if (mc.player == null || mc.world == null) return;
 
         if (BlockUtil.canReplace(pos)) {
+
+            if (attackCrystal) {
+                attackCrystals(pos, rotate);
+            }
 
             Optional<ClickLocation> posCL = getClickLocation(pos, ignoreEntities, false, attackCrystal);
 
@@ -75,10 +85,44 @@ public class PlacementManager {
         }
     }
 
-    public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal) {
-        placeBlock(pos, rotate, packet, attackCrystal, false);
+    public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal, boolean swing) {
+        placeBlock(pos, rotate, packet, attackCrystal,false,  swing);
     }
 
+    //Entity interactions
+
+    public static void attackCrystals(BlockPos pos, boolean rotate) {
+
+        boolean sprint = mc.player.isSprinting();
+
+        int ping = TPSManager.getPing();
+
+        for (EntityEnderCrystal crystal : mc.world.getEntitiesWithinAABB(EntityEnderCrystal.class, new AxisAlignedBB(pos))) {
+
+            if (attackTimer.passedMs(ping <= 50 ? 75 : 100)) {
+
+                if (rotate) {
+                    RotationManager.lookAtVec3dPacket(crystal.getPositionVector(), false, true);
+                }
+
+                if (sprint) {
+                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SPRINTING));
+                }
+
+                mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
+                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+
+                if (sprint) {
+                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SPRINTING));
+                }
+
+                attackTimer.reset();
+                break;
+            }
+        }
+    }
+
+    //Getters & variable methods
 
     public static class ClickLocation {
         public final BlockPos neighbour;
@@ -148,3 +192,4 @@ public class PlacementManager {
         return tileEntity != null || block instanceof BlockBed || block instanceof BlockContainer || block instanceof BlockDoor || block instanceof BlockTrapDoor || block instanceof BlockFenceGate || block instanceof BlockButton || block instanceof BlockAnvil || block instanceof BlockWorkbench || block instanceof BlockCake || block instanceof BlockRedstoneDiode;
     }
 }
+

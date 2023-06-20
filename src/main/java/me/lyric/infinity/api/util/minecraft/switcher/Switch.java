@@ -14,7 +14,7 @@ public class Switch implements IGlobals {
         mc.player.inventory.currentItem = slot;
 
         mc.playerController.updateController();
-        PlacementManager.placeBlock(pos, rotate, packet, false);
+        PlacementManager.placeBlock(pos, rotate, packet, true, swing);
 
         if (mc.player.inventory.currentItem != originalSlot) {
             mc.player.inventory.currentItem = originalSlot;

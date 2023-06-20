@@ -2,6 +2,7 @@ package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -13,6 +14,7 @@ import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.manager.client.PlacementManager;
+import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
@@ -76,6 +78,11 @@ public class HoleFiller extends Module
         timer = new Timer();
         holes = new ArrayList<HoleUtil.Hole>();
     }
+    @Override
+    public void onDisable()
+    {
+        RotationManager.resetRotationsPacket();
+    }
 
     @Override
     public void onUpdate() {
@@ -116,11 +123,11 @@ public class HoleFiller extends Module
                     switched = true;
                 }
                 if (hole.doubleHole) {
-                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(), false);
-                    PlacementManager.placeBlock(hole.pos2, rotate.getValue(), rotate.getValue(), false);
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(),false , false);
+                    PlacementManager.placeBlock(hole.pos2, rotate.getValue(), rotate.getValue(),false, false);
                 }
                 else {
-                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(), false);
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(),false, false);
                 }
                 if (++blocksPlaced >= ((Number)blocksPerTick.getValue()).intValue()) {
                     break;

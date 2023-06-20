@@ -9,6 +9,7 @@ import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
+import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

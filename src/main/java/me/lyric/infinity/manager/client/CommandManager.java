@@ -14,22 +14,16 @@ import java.util.Set;
  */
 
 public class CommandManager {
-
-    private static CommandManager commandManager;
     private String clientMessage = "[Infinity]";
 
-    private final Set<Command> commands = new HashSet<>();
+    private static final Set<Command> commands = new HashSet<>();
 
     private String prefix = "-";
-
-    public static CommandManager getCommandManager() {
-        return commandManager;
-    }
 
     public static Command get(final String commandStr) {
         Command command = null;
 
-        for (Command commands : commandManager.getCommands()) {
+        for (Command commands : getCommands()) {
             if (commands.getCommand().equalsIgnoreCase(commandStr)) {
                 command = commands;
 
@@ -41,10 +35,10 @@ public class CommandManager {
     }
 
     public void init() {
-        this.commands.add(new PrefixCommand());
-        this.commands.add(new ConfigCommand());
-        this.commands.add(new FriendCommand());
-        this.commands.add(new ToggleCommand());
+        commands.add(new PrefixCommand());
+        commands.add(new ConfigCommand());
+        commands.add(new FriendCommand());
+        commands.add(new ToggleCommand());
     }
 
     public String getPrefix() {
@@ -55,7 +49,7 @@ public class CommandManager {
         this.prefix = prefix;
     }
 
-    public Set<Command> getCommands() {
+    public static Set<Command> getCommands() {
         return commands;
     }
 

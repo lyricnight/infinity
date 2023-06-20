@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.SPacketTimeUpdate;
 import net.minecraft.util.math.MathHelper;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class TPSManager
         implements IGlobals {
@@ -107,6 +108,16 @@ public class TPSManager
                 ++this.currentTick;
             }
             this.prevTime = System.currentTimeMillis();
+        }
+    }
+    public static int getPing() {
+        if (mc.player == null || mc.world == null) {
+            return 0;
+        }
+        try {
+            return Objects.requireNonNull(mc.getConnection()).getPlayerInfo(mc.getConnection().getGameProfile().getId()).getResponseTime();
+        } catch (Exception e) {
+            return 0;
         }
     }
     public void set(float timer) {

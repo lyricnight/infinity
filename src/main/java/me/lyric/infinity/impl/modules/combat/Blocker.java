@@ -199,10 +199,8 @@ public class Blocker extends Module {
     }
 
     private void placeBlock(BlockPos pos){
-        if (!mc.world.isAirBlock(pos)) return;
         int obbySlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
         int eChestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
-        CombatUtil.attack(pos);
         Switch.placeBlockWithSwitch(obbySlot == -1 ? eChestSlot : obbySlot, rotate.getValue(), packet.getValue(), pos, true);
     }
 }

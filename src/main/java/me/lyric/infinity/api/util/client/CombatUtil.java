@@ -48,14 +48,5 @@ public class CombatUtil implements IGlobals {
         BlockPos pos = new BlockPos(mc.player.posX, mc.player.posY + 3, mc.player.posZ);
         return mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN;
     }
-    public static void attack(BlockPos pos)
-    {
-        for (Entity entity : mc.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos))) {
-            if (entity instanceof EntityEnderCrystal) {
-                mc.player.connection.sendPacket(new CPacketUseEntity(entity));
-                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
-            }
-        }
-    }
 
 }

@@ -56,7 +56,6 @@ public class AntiCev extends Module {
                 toggle();
                 return;
             }
-            CombatUtil.attack(CombatUtil.getAntiCevPlacement());
             Switch.placeBlockWithSwitch(obbySlot, rot.getValue(), packet.getValue(), CombatUtil.getAntiCevPlacement(), true);
         }
     }

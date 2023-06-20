@@ -28,7 +28,7 @@ import java.util.Objects;
 public class HoleSnap
         extends Module {
     public Setting<Float> range = register(new Setting<>("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
-    public Setting<Float> factor = register(new Setting<>("Factor","Factor for the holesnap.", 2.5f, 1.0f, 15.0f));
+    public Setting<Float> factor = register(new Setting<>("Factor","Factor for the ", 2.5f, 1.0f, 15.0f));
     public Setting<Boolean> debug = register(new Setting<>("Debug", "For testing.", false));
 
     Timer timer = new Timer();
@@ -43,16 +43,16 @@ public class HoleSnap
         if (mc.player == null) {
             return;
         }
-        this.timer.reset();
-        this.holes = null;
+        timer.reset();
+        holes = null;
     }
     @Override
     public void onDisable() {
         if (mc.player == null) {
             return;
         }
-        this.timer.reset();
-        this.holes = null;
+        timer.reset();
+        holes = null;
         if (((ITimer) ((IMinecraft) mc).getTimer()).getTickLength() != 50.0f) {
             Infinity.INSTANCE.tpsManager.reset2();
         }
@@ -66,33 +66,33 @@ public class HoleSnap
         }
         Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
         if (EntityUtil.isInLiquid()) {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in liquid! Disabling HoleSnap...");
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in liquid! Disabling ..");
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
-            this.toggle();
+            toggle();
             return;
         }
-        this.holes = RotationManager.getTargetHoleVec3D(this.range.getValue());
+        holes = RotationManager.getTargetHoleVec3D(range.getValue());
         if (debug.getValue())
         {
             ChatUtils.sendMessage("Reached holegetter!");
         }
-        if (this.holes == null || HoleUtil.isObbyHole(RotationManager.getPlayerPos()) || HoleUtil.isBedrockHoles(RotationManager.getPlayerPos())) {
+        if (holes == null || HoleUtil.isObbyHole(RotationManager.getPlayerPos()) || HoleUtil.isBedrockHoles(RotationManager.getPlayerPos())) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
-            this.toggle();
+            toggle();
             return;
         }
-        if (this.timer.passedMs(500L) && SpeedUtil.anyMovementKeys()) {
+        if (timer.passedMs(500L) && SpeedUtil.anyMovementKeys()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "HoleSnap timed out, disabling...");
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
-            this.toggle();
+            toggle();
             return;
         }
         Vec3d playerPos = mc.player.getPositionVector();
-        Vec3d targetPos = new Vec3d((double)this.holes.pos1.getX() + 0.5, HoleSnap.mc.player.posY, (double)this.holes.pos1.getZ() + 0.5);
-        double yawRad = Math.toRadians(RotationManager.getRotationTo((Vec3d)playerPos, (Vec3d)targetPos).x);
+        Vec3d targetPos = new Vec3d((double)holes.pos1.getX() + 0.5, mc.player.posY, (double)holes.pos1.getZ() + 0.5);
+        double yawRad = Math.toRadians(RotationManager.getRotationTo(playerPos, targetPos).x);
         double dist = playerPos.distanceTo(targetPos);
-        double speed = HoleSnap.mc.player.onGround ? -Math.min(0.2805, dist / 2.0) : -SpeedUtil.getSpeed() + 0.02;
+        double speed = mc.player.onGround ? -Math.min(0.2805, dist / 2.0) : -SpeedUtil.getSpeed() + 0.02;
         if (debug.getValue())
         {
             String cout = Objects.requireNonNull(String.valueOf(yawRad));
@@ -102,9 +102,9 @@ public class HoleSnap
             ChatUtils.sendMessage(cout2);
             ChatUtils.sendMessage(cout3);
         }
-        Infinity.INSTANCE.tpsManager.set(this.factor.getValue());
-        HoleSnap.mc.player.motionX = -Math.sin(yawRad) * speed;
-        HoleSnap.mc.player.motionZ = Math.cos(yawRad) * speed;
+        Infinity.INSTANCE.tpsManager.set(factor.getValue());
+        mc.player.motionX = -Math.sin(yawRad) * speed;
+        mc.player.motionZ = Math.cos(yawRad) * speed;
     }
 
     @EventListener
