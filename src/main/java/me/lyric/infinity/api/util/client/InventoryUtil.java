@@ -1,6 +1,10 @@
 package me.lyric.infinity.api.util.client;
 
+import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import net.minecraft.block.BlockEnderChest;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 public class InventoryUtil implements IGlobals {
@@ -16,6 +20,21 @@ public class InventoryUtil implements IGlobals {
             return i;
         }
         return -1;
+    }
+    public static void check(Module module)
+    {
+        if(mc.player == null)
+        {
+            return;
+        }
+        int obbySlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
+        int eChestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
+
+        if (obbySlot == -1 && eChestSlot == -1)
+        {
+            ChatUtils.sendMessage("No Obsidian or EChests! Disabling " + module.getName());
+            module.toggle();
+        }
     }
 
 }

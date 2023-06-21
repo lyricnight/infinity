@@ -6,32 +6,26 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
-import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
-import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.init.Blocks;
-import net.minecraft.network.play.client.CPacketAnimation;
-import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketBlockBreakAnim;
 import net.minecraft.network.play.server.SPacketBlockChange;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 /**
- * @author asphyxia
- * face and extend conflict bug fixed by lyric, as well as addition of diagonals, also making it place on blockchange
+ * @author lyric
  */
+//TODO: THIS IS UTTER TRASH
+    //TODO: Add displayinfo
 
 public class Blocker extends Module {
+
+    public Setting<Mode> switchMode = register(new Setting<>("Mode", "Mode for switch", Mode.SILENT));
 
     private final Setting<Boolean> extend = register(new Setting<>("Extend","bot",  true));
     private final Setting<Boolean> face = register(new Setting<>("Face","bot", true));
@@ -42,7 +36,18 @@ public class Blocker extends Module {
     public Blocker() {
         super("Blocker", "bot", Category.COMBAT);
     }
-
+    BlockPos placePos = null;
+    BlockPos placePos2 = null;
+    BlockPos placePos3 = null;
+    boolean switched = false;
+    @Override
+    public void onDisable()
+    {
+        placePos = null;
+        placePos2 = null;
+        placePos3 = null;
+        switched = false;
+    }
     @EventListener(priority = ListenerPriority.HIGH)
     public void onPacketReceive(PacketEvent.Receive event) {
         if (event.getPacket() instanceof SPacketBlockBreakAnim && HoleUtil.isInHole(RotationManager.getPlayerPos())) {
@@ -50,11 +55,7 @@ public class Blocker extends Module {
             BlockPos pos = packet.getPosition();
 
             if (mc.world.getBlockState(pos).getBlock() == (Blocks.BEDROCK) || mc.world.getBlockState(pos).getBlock() == (Blocks.AIR)) return;
-
-            BlockPos playerPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
-            BlockPos placePos = null;
-            BlockPos placePos2 = null;
-            BlockPos placePos3 = null;
+            BlockPos playerPos = RotationManager.getPlayerPos();;
             if (diag.getValue()) {
                 if (pos.equals(playerPos.north()))
                     placePos3 = (playerPos.north().west());
@@ -109,23 +110,13 @@ public class Blocker extends Module {
                 placeBlock(placePos3);
             }
         }
-
-    }
-    //TODO: THIS IS horrible
-    //why did asphy do it like this in the first place
-    @EventListener(priority = ListenerPriority.HIGH)
-    public void onPacketReceive2(PacketEvent.Receive event)
-    {
-        if (event.getPacket() instanceof SPacketBlockChange && HoleUtil.isInHole(RotationManager.getPlayerPos())) {
+        else if (event.getPacket() instanceof SPacketBlockChange && HoleUtil.isInHole(RotationManager.getPlayerPos())) {
             SPacketBlockChange packet = (SPacketBlockChange) event.getPacket();
             BlockPos pos = packet.getBlockPosition();
 
             if (mc.world.getBlockState(pos).getBlock() == (Blocks.BEDROCK) || mc.world.getBlockState(pos).getBlock() == (Blocks.AIR)) return;
 
-            BlockPos playerPos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
-            BlockPos placePos = null;
-            BlockPos placePos2 = null;
-            BlockPos placePos3 = null;
+            BlockPos playerPos = RotationManager.getPlayerPos();
             if (diag.getValue()) {
                 if (pos.equals(playerPos.north()))
                     placePos3 = (playerPos.north().west());
@@ -180,27 +171,38 @@ public class Blocker extends Module {
                 placeBlock(placePos3);
             }
         }
+
     }
     @Override
     public void onUpdate()
     {
-        if(mc.player == null)
-        {
-            return;
-        }
-        int obbySlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
-        int eChestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
-
-        if (obbySlot == -1 && eChestSlot == -1)
-        {
-            ChatUtils.sendMessage("No Obsidian or EChests! Disabling Blocker...");
-            toggle();
-        }
+        InventoryUtil.check(this);
     }
 
     private void placeBlock(BlockPos pos){
-        int obbySlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
-        int eChestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
-        Switch.placeBlockWithSwitch(obbySlot == -1 ? eChestSlot : obbySlot, rotate.getValue(), packet.getValue(), pos, true);
+        int old = mc.player.inventory.currentItem;
+        if (!switched)
+        {
+            doSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class));
+            switched = true;
+        }
+        PlacementManager.placeBlock(pos, rotate.getValue(), packet.getValue(), true, false, true);
+        if (placePos == null && placePos2 == null && placePos3 == null && (switched && switchMode.getValue() == Mode.SILENT))
+        {
+            doSwitch(old);
+        }
+    }
+    public void doSwitch(final int i) {
+        if (switchMode.getValue() == Mode.NORMAL) {
+            Switch.switchToSlot(i);
+        }
+        if (switchMode.getValue() == Mode.SILENT) {
+            Switch.switchToSlotGhost(i);
+        }
+    }
+    public enum Mode
+    {
+        NORMAL,
+        SILENT
     }
 }

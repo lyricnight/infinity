@@ -68,7 +68,8 @@ public class HoleFiller extends Module
 
             }
         }
-        return " ";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RED +"none"+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
 
     }
 
@@ -113,9 +114,6 @@ public class HoleFiller extends Module
             }
             final int oldSlot = mc.player.inventory.currentItem;
             final int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
-            if (blockSlot == -1) {
-                return;
-            }
             boolean switched = false;
             for (final HoleUtil.Hole hole : holes) {
                 if (!switched) {

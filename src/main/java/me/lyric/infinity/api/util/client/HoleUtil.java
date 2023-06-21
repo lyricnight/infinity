@@ -26,7 +26,6 @@ public class HoleUtil
         }
         boolean isHole = false;
         int amount = 0;
-        BlockPos check = pos;
         for (BlockPos p : holeOffsets) {
             if (HoleUtil.mc.world.getBlockState(pos.add((Vec3i)p)).getMaterial().isReplaceable()) continue;
             ++amount;
@@ -62,7 +61,7 @@ public class HoleUtil
         boolean isHole = true;
         for (BlockPos off : holeOffsets) {
             Block b = HoleUtil.mc.world.getBlockState(pos.add((Vec3i)off)).getBlock();
-            if (b == Blocks.BEDROCK || b == Blocks.BEACON || b == Blocks.OBSIDIAN || b == Blocks.ENDER_CHEST) continue;
+            if (b == Blocks.BEDROCK || b == Blocks.OBSIDIAN || b == Blocks.ENDER_CHEST) continue;
             isHole = false;
         }
         if (HoleUtil.mc.world.getBlockState(pos.add(0, 2, 0)).getBlock() != Blocks.AIR || HoleUtil.mc.world.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.AIR) {

@@ -6,7 +6,6 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
-import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import net.minecraft.block.BlockObsidian;
 
@@ -39,6 +38,7 @@ public class AntiCev extends Module {
     @Override
     public void onUpdate()
     {
+        InventoryUtil.check(this);
         if (mc.player == null)
         {
             return;
@@ -49,14 +49,7 @@ public class AntiCev extends Module {
         }
         if (CombatUtil.isBlockAbovePlayerHead() && !CombatUtil.isAlreadyPrevented())
         {
-            int obbySlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
-            if (obbySlot == -1)
-            {
-                ChatUtils.sendMessage(ChatFormatting.BOLD + "No Obsidian! Disabling AntiCev...");
-                toggle();
-                return;
-            }
-            Switch.placeBlockWithSwitch(obbySlot, rot.getValue(), packet.getValue(), CombatUtil.getAntiCevPlacement(), true);
+            Switch.placeBlockWithSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class), rot.getValue(), packet.getValue(), CombatUtil.getAntiCevPlacement(), true);
         }
     }
 }
