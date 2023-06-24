@@ -13,6 +13,7 @@
     "accessors.ITimer",
     "accessors.IEntity",
     "accessors.IEntityPlayer",
+    "accessors.ISPacketPlayerPosLook",
     "blocks.MixinBlockLiquid",
     "entity.MixinEntityOtherPlayerMP",
     "entity.MixinEntityPlayerSP",

@@ -14,6 +14,7 @@ import static net.minecraft.util.math.MathHelper.abs;
 /**
  * @author cattyn and mironov ig?
     idek if this works
+    update - it does
  */
 
 public class HitboxDesync extends Module {

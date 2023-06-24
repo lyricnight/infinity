@@ -1,8 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -17,6 +15,7 @@ import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.*;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.*;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
@@ -46,38 +45,17 @@ public class HoleFiller extends Module
     public Setting<Float> smartTargetRange = register(new Setting<>("SmartTargetRange","Range for smart to find a target.",5.0f, 1.0f, 10.0f));
     public Setting<Float> smartBlockRange = register(new Setting<>("SmartBlockRange","Range for smart fill.",1.0f, 0.3f, 5.0f));
 
-    private Timer timer;
-    List<HoleUtil.Hole> holes;
-    Entity target;
+    private Timer timer = new Timer();
+    List<HoleUtil.Hole> holes = new ArrayList<HoleUtil.Hole>();
+    EntityPlayer target = null;
 
     public HoleFiller() {
         super("HoleFiller","very good for strict and other servers.", Category.COMBAT);
-    }
-    @Override
-    public String getDisplayInfo()
-    {
-        if (target != null)
-        {
-            if (holes == null)
-            {
-                return ChatFormatting.GRAY + "[" + ChatFormatting.RED + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-
-            }
-            else {
-                return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-
-            }
-        }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RED +"none"+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
-
-
     }
 
     @Override
     public void onEnable() {
         timer.reset();
-        timer = new Timer();
-        holes = new ArrayList<HoleUtil.Hole>();
     }
     @Override
     public void onDisable()
@@ -87,6 +65,7 @@ public class HoleFiller extends Module
 
     @Override
     public void onUpdate() {
+        InventoryUtil.check(this);
         if (mc.player == null) {
             return;
         }
@@ -98,7 +77,14 @@ public class HoleFiller extends Module
         {
             return;
         }
-        target = CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
+        target = (EntityPlayer) CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
+        if (target != null)
+        {
+            if (HoleUtil.isHole(target.getPosition()))
+            {
+                return;
+            }
+        }
         int blocksPlaced = 0;
         if (timer.passedMs(delay.getValue())) {
             getHoles();
@@ -141,8 +127,8 @@ public class HoleFiller extends Module
     public void getHoles() {
         loadHoles();
     }
-    public static boolean isBurrow(final Entity target) {
-        if(mc.world == null || mc.player == null)
+    public static boolean isBurrow(EntityPlayer target) {
+        if(mc.world == null || mc.player == null || target == null)
         {
             return false;
         }
@@ -188,5 +174,23 @@ public class HoleFiller extends Module
         NORMAL,
         REQUIRE,
         SILENT
+    }
+    @Override
+    public String getDisplayInfo()
+    {
+        if (mc.player == null || mc.world == null) return "";
+        if (target != null)
+        {
+            if (holes == null)
+            {
+                return ChatFormatting.GRAY + "[" + ChatFormatting.RED + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
+            }
+            else {
+                return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+
+            }
+        }
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RED +"none"+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
     }
 }

@@ -9,6 +9,8 @@ import me.lyric.infinity.impl.modules.client.RPC;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.GuiConnecting;
 
+import java.util.Objects;
+
 public class PresenceManager implements IGlobals {
 
     final private static DiscordRPC lib = DiscordRPC.INSTANCE;
@@ -65,7 +67,7 @@ public class PresenceManager implements IGlobals {
                             presence.details = "Playing singleplayer";
                         } else if (!mc.isIntegratedServerRunning()) {
                             if (Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).showIP.getValue()) {
-                                presence.details = "Playing on " + mc.getCurrentServerData().serverIP;
+                                presence.details = "Playing on " + Objects.requireNonNull(mc.getCurrentServerData()).serverIP;
                             }
                         }
                     }

@@ -34,11 +34,9 @@ public class NameTags extends Module {
 
     private final Setting<Boolean> health = this.register(new Setting<>("Health","Renders health.", true));
     private final Setting<Boolean> armor = this.register(new Setting<>("Armor","Renders armor.", true));
-     private final Setting<Boolean> reversedArmour = this.register(new Setting<>("ReversedArmour","Reverses the render for armour.", true).withParent(armor));
-
+    private final Setting<Boolean> reversedArmour = this.register(new Setting<>("ReversedArmour","Reverses the render for armour.", true).withParent(armor));
     private final Setting<Boolean> scaleing = this.register(new Setting<>("Scale","Whether to modify scale or not.", false));
     private final Setting<Float> scaling = this.register(new Setting<>("Scaler","Scale for the nametags.", 0.3f, 0.1f, 20.0f).withParent(scaleing));
-    private final Setting<Boolean> invisibles = this.register(new Setting<>("Invisibles","Whether to render invis entities or not.", false));
     private final Setting<Boolean> ping = this.register(new Setting<>("Ping","Whether to render ping or not.", true));
     private final Setting<Boolean> totemPops = this.register(new Setting<>("TotemPops","Displays totem pops.", true));
     private final Setting<Boolean> gamemode = this.register(new Setting<>("Gamemode","Displays gamemode.", false));

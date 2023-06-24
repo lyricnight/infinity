@@ -1,18 +1,24 @@
 package me.lyric.infinity.impl.modules.player;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+
+/**
+ * @author lyric
+ * @link {MixinEntityOtherPlayerMP}
+ */
 
 public class NoInterpolation extends Module {
 
     public NoInterpolation() {
         super("Resolver", "Renders server-side player positions.", Category.PLAYER);
     }
-    public static NoInterpolation INSTANCE = new NoInterpolation();
-    public static NoInterpolation getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new NoInterpolation();
-        }
-        return INSTANCE;
+
+    @Override
+    public String getDisplayInfo()
+    {
+        if (mc.world == null || mc.player == null) return "";
+        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + mc.world.playerEntities.size() + ChatFormatting.RESET + ChatFormatting.GRAY +"]";
     }
 }

@@ -24,6 +24,7 @@ public class BlockHighlight extends Module {
     public Setting<Float> renderWidth = register(new Setting<>("Width", "The line width.", 0.5f, 0.1f, 3.0f));
 
     // I wanted to make this depend on a certain option from a setting. TODO: this.
+    //TODO: Fade?
     public Setting<Float> clawHeight = register(new Setting<>("Claw Height", "The height of the claw.", 0.3f, 0.1f, 1.0f));
 
     public Setting<ColorPicker> primaryColor = register(new Setting<>("Gradient Color 1", "The first color of the gradient.", new ColorPicker(Color.BLUE)));

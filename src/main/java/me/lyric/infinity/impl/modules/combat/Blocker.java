@@ -50,7 +50,7 @@ public class Blocker extends Module {
     }
     @EventListener(priority = ListenerPriority.HIGH)
     public void onPacketReceive(PacketEvent.Receive event) {
-        if (event.getPacket() instanceof SPacketBlockBreakAnim && HoleUtil.isInHole(RotationManager.getPlayerPos())) {
+        if (event.getPacket() instanceof SPacketBlockBreakAnim && HoleUtil.isHole(RotationManager.getPlayerPos())) {
             SPacketBlockBreakAnim packet = (SPacketBlockBreakAnim) event.getPacket();
             BlockPos pos = packet.getPosition();
 
@@ -110,7 +110,7 @@ public class Blocker extends Module {
                 placeBlock(placePos3);
             }
         }
-        else if (event.getPacket() instanceof SPacketBlockChange && HoleUtil.isInHole(RotationManager.getPlayerPos())) {
+        else if (event.getPacket() instanceof SPacketBlockChange && HoleUtil.isHole(RotationManager.getPlayerPos())) {
             SPacketBlockChange packet = (SPacketBlockChange) event.getPacket();
             BlockPos pos = packet.getBlockPosition();
 

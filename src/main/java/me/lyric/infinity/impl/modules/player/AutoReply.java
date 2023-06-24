@@ -15,16 +15,6 @@ import net.minecraft.util.math.Vec3d;
  * @author lyric
  */
 public class AutoReply extends Module {
-    private static AutoReply INSTANCE = new AutoReply();
-    public static AutoReply getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new AutoReply();
-        }
-        return INSTANCE;
-    }
-    private void setInstance() {
-        INSTANCE = this;
-    }
     public AutoReply()
     {
         super("AutoReply","Automatically replies your coords to people you have added.", Category.PLAYER);

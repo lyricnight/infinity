@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.render;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.network.GameLoopEvent;
 import me.lyric.infinity.api.module.Category;
@@ -17,6 +18,20 @@ public class CustomTime extends Module {
     }
     public Setting<Integer> time = register(new Setting<>("Time", "The time to set to - set to 0 for time to progress normally.",0,0, 24000));
 
+    @Override
+    public String getDisplayInfo()
+    {
+        if(mc.world == null || mc.player == null) return "";
+        if (time.getValue() >= 12000) return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "night" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        if (time.getValue() > 0)
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "day" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+        else
+        {
+            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "natural" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        }
+    }
 
     @EventListener
     public void onGameLoop(GameLoopEvent event)

@@ -18,8 +18,6 @@ public class AntiCev extends Module {
     public AntiCev() {
         super("AntiCev", "Prevents cevbreaker.", Category.COMBAT);
     }
-
-    public Setting<Boolean> attack = register(new Setting<>("Attack","Attacks crystals to place.", true));
     public Setting<Boolean> rot = register(new Setting<>("Rotate", "Rotations.", false));
     public Setting<Boolean> jump = register(new Setting<>("JumpCheck", "doesnt place when in the air.", false));
     public Setting<Boolean> packet = register(new Setting<>("Packet Rotations", "Uses packet rotations.", true).withParent(rot));

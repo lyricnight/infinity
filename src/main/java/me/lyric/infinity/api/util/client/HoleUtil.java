@@ -57,19 +57,6 @@ public class HoleUtil
         return isHole;
     }
 
-    public static boolean isInHole(BlockPos pos) {
-        boolean isHole = true;
-        for (BlockPos off : holeOffsets) {
-            Block b = HoleUtil.mc.world.getBlockState(pos.add((Vec3i)off)).getBlock();
-            if (b == Blocks.BEDROCK || b == Blocks.OBSIDIAN || b == Blocks.ENDER_CHEST) continue;
-            isHole = false;
-        }
-        if (HoleUtil.mc.world.getBlockState(pos.add(0, 2, 0)).getBlock() != Blocks.AIR || HoleUtil.mc.world.getBlockState(pos.add(0, 1, 0)).getBlock() != Blocks.AIR) {
-            isHole = false;
-        }
-        return isHole;
-    }
-
     public static boolean isBedrockHoles(BlockPos pos) {
         boolean isHole = true;
         for (BlockPos off : holeOffsets) {
