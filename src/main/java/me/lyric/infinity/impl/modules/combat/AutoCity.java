@@ -1,7 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -9,7 +8,6 @@ import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
-import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +25,7 @@ import java.util.function.ToDoubleFunction;
 public class AutoCity extends Module
 {
     public Setting<Integer> targetRange = register(new Setting<>("Target Range", "Range to target.", 10, 2, 15));
-    public Setting<Integer> range = register(new Setting<>("Break Range", "Range to break.", 4, 1, 9));
+    public Setting<Integer> resetRange = register(new Setting<>("Reset Range", "Range at which to reset the block we are attempting to mine. Set this to your SpeedMine's range.", 1, 4, 6));
     public Setting<Boolean> burrow = register(new Setting<>("Burrow", "Whether to mine player's burrow or not.", false));
     public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
@@ -65,9 +63,9 @@ public class AutoCity extends Module
         return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.RED + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
 
     }
-    @EventListener
+    @Override
     public void onUpdate() {
-        if (mc.player == null) {
+        if (mc.player == null || mc.world == null) {
             return;
         }
         if(move.getValue() && SpeedUtil.anyMovementKeys())
@@ -80,9 +78,16 @@ public class AutoCity extends Module
         if (mining != null) {
             if (mc.world.getBlockState(mining).getBlock() instanceof BlockAir) {
                 mining = null;
+                return;
             }
             if (holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && !isBurrow(target)) {
                 mining = null;
+                return;
+            }
+            if (mc.player.getDistanceSq(mining) > MathUtils.square(resetRange.getValue()))
+            {
+                mining = null;
+                return;
             }
         }
         if (cityMode.getValue() == Mode2.REQUIRE_PICK) {
@@ -105,6 +110,7 @@ public class AutoCity extends Module
     }
 
     private void mine(final BlockPos blockPos) {
+
         mc.playerController.onPlayerDamageBlock(blockPos, EnumFacing.UP);
         if (!NoSwing.getValue()) {
             mc.player.swingArm(EnumHand.MAIN_HAND);

@@ -13,6 +13,7 @@ import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.impl.modules.client.Internals;
 import me.lyric.infinity.impl.modules.render.HoleESP;
+import me.lyric.infinity.manager.client.CommandManager;
 import me.lyric.infinity.manager.client.ModuleManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.entity.passive.AbstractHorse;
@@ -139,7 +140,6 @@ public class ForgeEventManager implements IGlobals {
             }
         }
     }
-
     @SubscribeEvent
     public void onChat(ClientChatEvent event) {
         String message = event.getMessage();
@@ -153,7 +153,7 @@ public class ForgeEventManager implements IGlobals {
 
             boolean isCommand = false;
 
-            for (Command commands : Infinity.INSTANCE.commandManager.getCommands()) {
+            for (Command commands : CommandManager.getCommands()) {
                 if (commands.getCommand().equals(arguments[0])) {
                     commands.onCommand(arguments);
 

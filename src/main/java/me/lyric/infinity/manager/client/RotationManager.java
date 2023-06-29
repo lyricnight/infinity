@@ -88,7 +88,7 @@ public class RotationManager implements IGlobals {
     @EventListener(priority = ListenerPriority.HIGHEST)
     public void onRenderLivingEntity(RenderLivingEntityEvent event) {
         if (event.getEntityLivingBase().equals(mc.player)) {
-            event.setCanceled(true);
+            event.setCancelled(true);
             event.getModelBase().render(event.getEntityLivingBase(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), headPitch == -1 ? mc.player.rotationPitch : headPitch, event.getScaleFactor());
         }
     }
@@ -107,7 +107,6 @@ public class RotationManager implements IGlobals {
     public static Vec2f getRotationTo(Vec3d posTo, Vec3d posFrom) {
         return RotationManager.getRotationFromVec(posTo.subtract(posFrom));
     }
-
     public static Vec2f getRotationFromVec(Vec3d vec) {
         double xz = Math.hypot(vec.x, vec.z);
         float yaw = (float)RotationManager.normalizeAngle(Math.toDegrees(Math.atan2(vec.z, vec.x)) - 90.0);

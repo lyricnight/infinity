@@ -25,8 +25,7 @@ import java.util.Objects;
  * better version of cascade holesnap
  */
 
-public class HoleSnap
-        extends Module {
+public class HoleSnap extends Module {
     public Setting<Float> range = register(new Setting<>("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
     public Setting<Float> factor = register(new Setting<>("Factor","Factor for the ", 2.5f, 1.0f, 15.0f));
     public Setting<Boolean> debug = register(new Setting<>("Debug", "For testing.", false));

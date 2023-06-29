@@ -1,13 +1,12 @@
 package me.lyric.infinity.api.util.metadata;
 
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class MathUtils
+public class MathUtils implements IGlobals
 {
-    private static final Minecraft mc = Minecraft.getMinecraft();
-
     public static double distanceTo(final BlockPos blockPos) {
         return distanceTo(blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
@@ -31,5 +30,19 @@ public class MathUtils
         } else {
             return high;
         }
+    }
+    public static int square(int i)
+    {
+        return i * i;
+    }
+
+    public static float square(float i)
+    {
+        return i * i;
+    }
+
+    public static double square(double i)
+    {
+        return i * i;
     }
 }

@@ -11,6 +11,7 @@ import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
+import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.server.SPacketBlockBreakAnim;
@@ -181,9 +182,11 @@ public class Blocker extends Module {
 
     private void placeBlock(BlockPos pos){
         int old = mc.player.inventory.currentItem;
+        int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
+        int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
         if (!switched)
         {
-            doSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class));
+            doSwitch(blockSlot == -1 ? chestSlot : blockSlot);
             switched = true;
         }
         PlacementManager.placeBlock(pos, rotate.getValue(), packet.getValue(), true, false, true);

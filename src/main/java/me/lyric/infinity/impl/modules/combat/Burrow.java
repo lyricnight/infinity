@@ -2,7 +2,6 @@ package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.api.event.blocks.BlockPushOutEvent;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -11,17 +10,22 @@ import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.time.Timer;
-import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketPlayerPosLook;
 import net.minecraft.block.*;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.init.Blocks;
+import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayer;
+import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.client.event.PlayerSPPushOutOfBlocksEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author lyric !!
@@ -30,9 +34,9 @@ import net.minecraft.util.math.Vec3d;
 public class Burrow extends Module {
     public Setting<Mode> switchMode = register(new Setting<>("Mode", "Mode for switch", Mode.SILENT));
 
-    private Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations for placing.", true));
-    private Setting<Boolean> swing = register(new Setting<>("Swing","Swing to place the block.", true));
-    private Setting<Boolean> strict = new Setting<>("Strict","For stricter anticheats.", false);
+    public Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations for placing.", true));
+    public Setting<Boolean> swing = register(new Setting<>("Swing","Swing to place the block.", true));
+    public Setting<Boolean> strict = register(new Setting<>("Strict","For stricter anticheats.", false));
 
     public Burrow() {
         super("Burrow", "this", Category.COMBAT);
@@ -50,12 +54,6 @@ public class Burrow extends Module {
     public void onUpdate() {
         if (mc.player == null || mc.world == null) return;
         InventoryUtil.check(this);
-        if (state == State.DISABLING) {
-            if (timer.hasPassed(500)) {
-                toggle();
-            }
-            return;
-        }
         if (!mc.player.onGround) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in the air! Disabling Burrow...");
             toggle();
@@ -89,11 +87,15 @@ public class Burrow extends Module {
 
             int startingItem = mc.player.inventory.currentItem;
             doSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class));
-            PlacementManager.placeBlock(currentPos, rotate.getValue(), rotate.getValue(), true, true, swing.getValue());
+            mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(currentPos, currentFace, EnumHand.MAIN_HAND, f, f1, f2));
+            if (swing.getValue()) {
+                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
+            }
             doSwitch(startingItem);
             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, getPos(), mc.player.posZ, false));
             timer.reset();
             state = State.DISABLING;
+            toggle();
         } else {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Burrow was unable to place! Disabling Burrow...");
             toggle();
@@ -143,6 +145,7 @@ public class Burrow extends Module {
         return mc.player.posY - 24D;
     }
 
+
     @EventListener
     public void onPacketReceive(PacketEvent.Receive event) {
         if (mc.currentScreen instanceof GuiDownloadTerrain) {
@@ -154,12 +157,6 @@ public class Burrow extends Module {
             ((ISPacketPlayerPosLook) event.getPacket()).setPitch(mc.player.rotationPitch);
         }
     }
-
-    @EventListener
-    public void onBlockPushOut(BlockPushOutEvent event) {
-        event.setCancelled(true);
-    }
-
     @Override
     public void onEnable() {
         if (mc.player == null || mc.world == null) {
@@ -172,6 +169,11 @@ public class Burrow extends Module {
             return;
         }
         state = State.WAITING;
+    }
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onBlockPush(PlayerSPPushOutOfBlocksEvent event)
+    {
+        event.setCanceled(true);
     }
     public void doSwitch(final int i) {
         if (switchMode.getValue() == Mode.NORMAL) {

@@ -156,7 +156,7 @@ public class Chams extends Module {
         if ((event.getEntityLivingBase() instanceof EntityOtherPlayerMP && players.getValue() || (isPassiveMob(event.getEntityLivingBase()) || isNeutralMob(event.getEntityLivingBase())) && mobs.getValue() != false || isHostileMob(event.getEntityLivingBase()) && monsters.getValue())) {
             if (!texture.getValue())
             {
-             event.setCanceled(true);
+             event.setCancelled(true);
             }
             if (transparent.getValue()) {
                 GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);

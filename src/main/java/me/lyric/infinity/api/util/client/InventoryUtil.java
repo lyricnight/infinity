@@ -1,5 +1,6 @@
 package me.lyric.infinity.api.util.client;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
@@ -21,6 +22,18 @@ public class InventoryUtil implements IGlobals {
         }
         return -1;
     }
+    public static int findHotbar(Class clazz) {
+        for (int i = 0; i < 9; ++i) {
+            ItemStack stack = mc.player.inventory.getStackInSlot(i);
+            if (stack == ItemStack.EMPTY) continue;
+            if (clazz.isInstance(stack.getItem())) {
+                return i;
+            }
+            return i;
+        }
+        return -1;
+    }
+
     public static void check(Module module)
     {
         if(mc.player == null)
@@ -32,7 +45,7 @@ public class InventoryUtil implements IGlobals {
 
         if (obbySlot == -1 && eChestSlot == -1)
         {
-            ChatUtils.sendMessage("No Obsidian or EChests! Disabling " + module.getName());
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "No Obsidian or EChests! Disabling " + module.getName() + "!");
             module.toggle();
         }
     }

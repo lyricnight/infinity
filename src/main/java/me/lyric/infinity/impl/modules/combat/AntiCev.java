@@ -7,6 +7,8 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
+import me.lyric.infinity.manager.client.PlacementManager;
+import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
 
 
@@ -18,6 +20,7 @@ public class AntiCev extends Module {
     public AntiCev() {
         super("AntiCev", "Prevents cevbreaker.", Category.COMBAT);
     }
+    public Setting<Mode> switchMode = register(new Setting<>("SwitchMode", "Mode for switch.", Mode.SILENT));
     public Setting<Boolean> rot = register(new Setting<>("Rotate", "Rotations.", false));
     public Setting<Boolean> jump = register(new Setting<>("JumpCheck", "doesnt place when in the air.", false));
     public Setting<Boolean> packet = register(new Setting<>("Packet Rotations", "Uses packet rotations.", true).withParent(rot));
@@ -47,7 +50,26 @@ public class AntiCev extends Module {
         }
         if (CombatUtil.isBlockAbovePlayerHead() && !CombatUtil.isAlreadyPrevented())
         {
-            Switch.placeBlockWithSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class), rot.getValue(), packet.getValue(), CombatUtil.getAntiCevPlacement(), true);
+            int oldSlot = mc.player.inventory.currentItem;
+            int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
+            int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
+            doSwitch(blockSlot == -1 ? chestSlot : blockSlot);
+            PlacementManager.placeBlock(CombatUtil.getAntiCevPlacement(), rot.getValue(), packet.getValue(), true, false, true);
+            doSwitch(oldSlot);
         }
     }
+    public void doSwitch(final int i) {
+        if (switchMode.getValue() == Mode.NORMAL) {
+            Switch.switchToSlot(i);
+        }
+        if (switchMode.getValue() == Mode.SILENT) {
+            Switch.switchToSlotGhost(i);
+        }
+    }
+    public enum Mode
+    {
+        NORMAL,
+        SILENT
+    }
+
 }

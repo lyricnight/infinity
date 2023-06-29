@@ -131,7 +131,6 @@ public class Notifications extends Module {
     }
 
 
-    @EventListener
     public void onDeath(EntityPlayer player) {
 
         boolean isFriend = (Infinity.INSTANCE.friendManager.isFriend(player.getName()));

@@ -1,8 +1,8 @@
 package me.lyric.infinity.api.event.render;
 
+import me.bush.eventbus.event.Event;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * @author lyric :0
@@ -65,5 +65,10 @@ public class RenderLivingEntityEvent extends Event {
 
     public float getScaleFactor() {
         return scaleFactor;
+    }
+    @Override
+    protected boolean isCancellable()
+    {
+        return true;
     }
 }

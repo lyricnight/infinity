@@ -23,8 +23,8 @@ public class MixinRenderLivingBase {
     @Inject(method = {"renderModel"}, at = {@At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V")}, cancellable = true)
     private void renderModel(EntityLivingBase entityLivingBase, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, CallbackInfo info) {
         RenderLivingEntityEvent renderLivingEntityEvent = new RenderLivingEntityEvent(this.mainModel, entityLivingBase, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-        MinecraftForge.EVENT_BUS.post(renderLivingEntityEvent);
-        if (renderLivingEntityEvent.isCanceled()) {
+        Infinity.INSTANCE.eventBus.post(renderLivingEntityEvent);
+        if (renderLivingEntityEvent.isCancelled()) {
             info.cancel();
         }
     }

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class MixinGuiNewChat {
     @Final
     @Shadow
-    public Minecraft mc = Minecraft.getMinecraft();
+    public final Minecraft mc = Minecraft.getMinecraft();
 
     @Redirect(method = {"drawChat"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V"))
     public void drawChatHook1(int left, int top, int right, int bottom, int color) {
