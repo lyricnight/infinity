@@ -69,18 +69,6 @@ public class HUD extends Module {
     float offset;
     public Timer packetTimer = new Timer();
     int packets;
-
-    private static HUD INSTANCE = new HUD();
-    public static HUD getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new HUD();
-        }
-        return INSTANCE;
-    }
-    private void setInstance() {
-        INSTANCE = this;
-    }
-
     public HUD() {
         super("HUD", "Renders various components on your screen.", Category.CLIENT);
     }

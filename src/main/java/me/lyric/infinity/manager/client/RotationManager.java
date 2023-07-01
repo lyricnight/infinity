@@ -46,7 +46,6 @@ public class RotationManager implements IGlobals {
         {
             return;
         }
-
         mc.player.rotationYaw = yaw;
         mc.player.rotationYawHead = yaw;
         mc.player.rotationPitch = pitch;
@@ -98,7 +97,7 @@ public class RotationManager implements IGlobals {
     }
 
     public static HoleUtil.Hole getTargetHoleVec3D(double targetRange) {
-        return HoleUtil.getHoles(targetRange, RotationManager.getPlayerPos(), false).stream().filter(hole -> RotationManager.mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)) <= targetRange).min(Comparator.comparingDouble(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)))).orElse(null);
+        return HoleUtil.getHoles(targetRange, RotationManager.getPlayerPos(), false).stream().filter(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)) <= targetRange).min(Comparator.comparingDouble(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)))).orElse(null);
     }
     public static BlockPos getPlayerPos() {
         double decimalPoint = mc.player.posY - Math.floor(mc.player.posY);

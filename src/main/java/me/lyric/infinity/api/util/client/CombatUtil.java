@@ -19,8 +19,8 @@ import java.util.Objects;
 
 public class CombatUtil implements IGlobals {
     private static final Minecraft mc = Minecraft.getMinecraft();
-    public static EntityLivingBase getTarget(final double targetRange) {
-        return (EntityLivingBase)mc.world.getLoadedEntityList().stream().filter(Objects::nonNull).filter(entity -> entity instanceof EntityPlayer).filter(CombatUtil::isAlive).filter(entity -> entity.getEntityId() != mc.player.getEntityId()).filter(entity -> !Infinity.INSTANCE.friendManager.isFriend(String.valueOf((EntityPlayer) entity))).filter(entity -> mc.player.getDistance(entity) <= targetRange).min(Comparator.comparingDouble(entity -> mc.player.getDistance(entity))).orElse(null);
+    public static EntityPlayer getTarget(final double targetRange) {
+        return (EntityPlayer) mc.world.getLoadedEntityList().stream().filter(Objects::nonNull).filter(entity -> entity instanceof EntityPlayer).filter(CombatUtil::isAlive).filter(entity -> entity.getEntityId() != mc.player.getEntityId()).filter(entity -> !Infinity.INSTANCE.friendManager.isFriend((EntityPlayer) entity)).filter(entity -> mc.player.getDistance(entity) <= targetRange).min(Comparator.comparingDouble(entity -> mc.player.getDistance(entity))).orElse(null);
     }
 
     public static boolean isAlive(final Entity entity) {

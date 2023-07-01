@@ -68,18 +68,6 @@ public class HoleFiller extends Module
     {
         RotationManager.resetRotationsPacket();
     }
-    @EventListener
-    public void onPacketReceive(PacketEvent.Receive event) {
-        if (mc.currentScreen instanceof GuiDownloadTerrain) {
-            toggle();
-            return;
-        }
-        if (event.getPacket() instanceof SPacketPlayerPosLook && !onground.getValue()) {
-            ((ISPacketPlayerPosLook) event.getPacket()).setYaw(mc.player.rotationYaw);
-            ((ISPacketPlayerPosLook) event.getPacket()).setPitch(mc.player.rotationPitch);
-        }
-    }
-
     @Override
     public void onUpdate() {
         InventoryUtil.check(this);
@@ -97,7 +85,7 @@ public class HoleFiller extends Module
         target = (EntityPlayer) CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
         if (target != null)
         {
-            if (HoleUtil.isHole(target.getPosition()))
+            if (HoleUtil.isHole(target.getPosition()) || isBurrow(target))
             {
                 return;
             }
@@ -121,21 +109,21 @@ public class HoleFiller extends Module
             boolean switched = false;
             for (final HoleUtil.Hole hole : holes) {
                 if (!switched) {
-                            doSwitch(blockSlot == -1 ? chestSlot : blockSlot);
+                    doSwitch(blockSlot == -1 ? chestSlot : blockSlot);
                     switched = true;
                 }
                 if (hole.doubleHole) {
-                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(),false , false);
-                    PlacementManager.placeBlock(hole.pos2, rotate.getValue(), rotate.getValue(),false, false);
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue());
+                    PlacementManager.placeBlock(hole.pos2, rotate.getValue());
                 }
                 else {
-                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), rotate.getValue(),false, false);
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue());
                 }
                 if (++blocksPlaced >= ((Number)blocksPerTick.getValue()).intValue()) {
                     break;
                 }
             }
-            if (switchMode.getValue() == Mode.SILENT && switched) {
+            if ((switchMode.getValue() == Mode.SILENT || switchMode.getValue() == Mode.NORMAL) && switched) {
                 doSwitch(oldSlot);
             }
             timer.reset();
@@ -174,7 +162,7 @@ public class HoleFiller extends Module
             return isAllowedSmart;
         }).filter(hole -> {
             BlockPos pos = hole.pos1.add(0, 1, 0);
-            boolean raytrace = mc.world.rayTraceBlocks(Rotation.getEyesPos(), new Vec3d((Vec3i)pos)) != null;
+            boolean raytrace = mc.world.rayTraceBlocks(Rotation.getEyesPos(), new Vec3d(pos)) != null;
             return !raytrace || mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= wallRange.getValue().doubleValue();
         }).collect(Collectors.toList());
     }

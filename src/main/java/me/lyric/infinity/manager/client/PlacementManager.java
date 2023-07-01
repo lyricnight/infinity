@@ -1,184 +1,70 @@
 package me.lyric.infinity.manager.client;
 
-import me.lyric.infinity.api.util.client.BlockUtil;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.api.util.time.Timer;
-import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
-import net.minecraft.network.play.client.CPacketAnimation;
-import net.minecraft.network.play.client.CPacketEntityAction;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import java.util.Optional;
+import net.minecraftforge.common.*;
+import net.minecraftforge.fml.common.gameevent.*;
+import net.minecraftforge.fml.common.eventhandler.*;
+import net.minecraft.util.*;
+import net.minecraft.block.*;
+import net.minecraft.network.play.client.*;
+import net.minecraft.util.math.*;
 
-/**
- * interactions
- * @author written by asphyxia
- */
+import java.util.*;
 
 public class PlacementManager implements IGlobals {
-    private static final Timer attackTimer = new Timer();
+    static List<BlockPos> tickCache;
 
-    //Block placements
-
-    public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal, boolean ignoreEntities, boolean swing) {
-
-        if (mc.player == null || mc.world == null) return;
-
-        if (BlockUtil.canReplace(pos)) {
-
-            if (attackCrystal) {
-                attackCrystals(pos, rotate);
-            }
-
-            Optional<ClickLocation> posCL = getClickLocation(pos, ignoreEntities, false, attackCrystal);
-
-            if (posCL.isPresent()) {
-
-                BlockPos currentPos = posCL.get().neighbour;
-                EnumFacing currentFace = posCL.get().opposite;
-
-                boolean shouldSneak = shouldShiftClick(currentPos);
-
-                if (shouldSneak) {
-                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
-                }
-
-                Vec3d hitVec = new Vec3d(currentPos).add(0.5, 0.5, 0.5).add(new Vec3d(currentFace.getDirectionVec()).scale(0.5));
-
-                if (rotate) {
-                    RotationManager.lookAtVec3dPacket(hitVec, false, true);
-                }
-
-                if (packet) {
-                    Vec3d extendedVec = new Vec3d(currentPos).add(0.5, 0.5, 0.5);
-
-                    float x = (float) (extendedVec.x - currentPos.getX());
-                    float y = (float) (extendedVec.y - currentPos.getY());
-                    float z = (float) (extendedVec.z - currentPos.getZ());
-
-                    mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(currentPos, currentFace, EnumHand.MAIN_HAND, x, y, z));
-
-                } else {
-                    mc.playerController.processRightClickBlock(mc.player, mc.world, currentPos, currentFace, hitVec, EnumHand.MAIN_HAND);
-                }
-
-                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
-
-                if (shouldSneak) {
-                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
-                }
-            }
-        }
+    public void init() {
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public static void placeBlock(BlockPos pos, boolean rotate, boolean packet, boolean attackCrystal, boolean swing) {
-        placeBlock(pos, rotate, packet, attackCrystal,false,  swing);
+    @SubscribeEvent
+    public void onUpdate(final TickEvent.ClientTickEvent event) {
+        tickCache = new ArrayList<>();
     }
 
-    //Entity interactions
-
-    public static void attackCrystals(BlockPos pos, boolean rotate) {
-
-        boolean sprint = mc.player.isSprinting();
-
-        int ping = TPSManager.getPing();
-
-        for (EntityEnderCrystal crystal : mc.world.getEntitiesWithinAABB(EntityEnderCrystal.class, new AxisAlignedBB(pos))) {
-
-            if (attackTimer.passedMs(ping <= 50 ? 75 : 100)) {
-
-                if (rotate) {
-                    RotationManager.lookAtVec3dPacket(crystal.getPositionVector(), false, true);
-                }
-
-                if (sprint) {
-                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SPRINTING));
-                }
-
-                mc.player.connection.sendPacket(new CPacketUseEntity(crystal));
-                mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
-
-                if (sprint) {
-                    mc.player.connection.sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SPRINTING));
-                }
-
-                attackTimer.reset();
-                break;
-            }
-        }
-    }
-
-    //Getters & variable methods
-
-    public static class ClickLocation {
-        public final BlockPos neighbour;
-        public final EnumFacing opposite;
-
-        public ClickLocation(BlockPos neighbour, EnumFacing opposite) {
-            this.neighbour = neighbour;
-            this.opposite = opposite;
-        }
-    }
-
-    public static Optional<ClickLocation> getClickLocation(BlockPos pos, boolean ignoreEntities, boolean noPistons, boolean onlyCrystals) {
-        Block block = mc.world.getBlockState(pos).getBlock();
-
+    public static boolean placeBlock(final BlockPos pos, final boolean rotate) {
+        final Block block = mc.world.getBlockState(pos).getBlock();
         if (!(block instanceof BlockAir) && !(block instanceof BlockLiquid)) {
-            return Optional.empty();
+            return false;
         }
+        final EnumFacing side = getPlaceableSide(pos);
+        if (side == null) {
+            return false;
+        }
+        final BlockPos neighbour = pos.offset(side);
+        final EnumFacing opposite = side.getOpposite();
+        final Vec3d hitVec = new Vec3d(neighbour).add(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
+        if (!mc.player.isSneaking() && shouldShiftClick(neighbour)) {
+            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
+        }
+        if (rotate)
+        {
+            RotationManager.lookAtVec3dPacket(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), false, true);
+        }
+        final EnumActionResult action = mc.playerController.processRightClickBlock(mc.player, mc.world, neighbour, opposite, hitVec, EnumHand.MAIN_HAND);
+        if (mc.player.isSneaking() && shouldShiftClick(neighbour)) {
+            Objects.requireNonNull(mc.getConnection()).sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
 
-        if (!ignoreEntities) {
-            for (Entity entity : mc.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
-                if (onlyCrystals && entity instanceof EntityEnderCrystal) continue;
-                if (!(entity instanceof EntityItem) && !(entity instanceof EntityXPOrb) && !(entity instanceof EntityArrow)) {
-                    return Optional.empty();
+        }
+        mc.player.swingArm(EnumHand.MAIN_HAND);
+        tickCache.add(pos);
+        return action == EnumActionResult.SUCCESS;
+    }
+    public static EnumFacing getPlaceableSide(final BlockPos pos) {
+        for (final EnumFacing side : EnumFacing.values()) {
+            final BlockPos neighbour = pos.offset(side);
+            if (mc.world.getBlockState(neighbour).getBlock().canCollideCheck(mc.world.getBlockState(neighbour), false) || tickCache.contains(neighbour)) {
+                final IBlockState blockState = mc.world.getBlockState(neighbour);
+                if (!blockState.getMaterial().isReplaceable()) {
+                    return side;
                 }
             }
         }
-
-        EnumFacing side = null;
-
-        for (EnumFacing blockSide : EnumFacing.values()) {
-            BlockPos sidePos = pos.offset(blockSide);
-            if (noPistons) {
-                if (mc.world.getBlockState(sidePos).getBlock() == Blocks.PISTON) continue;
-            }
-            if (!mc.world.getBlockState(sidePos).getBlock().canCollideCheck(mc.world.getBlockState(sidePos), false)) {
-                continue;
-            }
-            IBlockState blockState = mc.world.getBlockState(sidePos);
-            if (!blockState.getMaterial().isReplaceable()) {
-                side = blockSide;
-                break;
-            }
-        }
-        if (side == null) {
-            return Optional.empty();
-        }
-
-        BlockPos neighbour = pos.offset(side);
-        EnumFacing opposite = side.getOpposite();
-        if (!mc.world.getBlockState(neighbour).getBlock().canCollideCheck(mc.world.getBlockState(neighbour), false)) {
-            return Optional.empty();
-        }
-
-        return Optional.of(new ClickLocation(neighbour, opposite));
+        return null;
     }
-
     public static boolean shouldShiftClick(BlockPos pos) {
         Block block = mc.world.getBlockState(pos).getBlock();
 
