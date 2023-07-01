@@ -45,26 +45,15 @@ public class HUD extends Module {
         public Setting<Integer> coordY = register(new Setting<>("Coordinates Y", "Position Y for Coordinates.", 10, 1, 1000).withParent(coordinates));
 
     public Setting<Boolean> speed = register(new Setting<>("Speed", "Draws your speed.", true));
-        public Setting<Integer> speedX = register(new Setting<>("Speed X", "Position X for Speed.", 2, 1, 1000).withParent(speed));
-        public Setting<Integer> speedY = register(new Setting<>("Speed Y", "Position Y for Speed.", 12, 1, 1000).withParent(speed));
 
     public Setting<Boolean> ping = register(new Setting<>("Ping", "Draws your server connection speed.", true));
-        public Setting<Integer> pingX = register(new Setting<>("Ping X", "Position X for Ping.", 2, 1, 1000).withParent(ping));
-        public Setting<Integer> pingY = register(new Setting<>("Ping Y", "Position Y for Ping.", 14, 1, 1000).withParent(ping));
     public Setting<Boolean> armor = register(new Setting<>("Armor", "Draws Armor HUD.", false));
     public Setting<Boolean> tot = register(new Setting<>("Totem Display", "For impcat because he's retarded and can't press e", false));
     public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
     public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!"));
     public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
-        public Setting<Integer> fpsX = register(new Setting<>("FPS X", "Position X for FPS.", 2, 1, 1000).withParent(fps));
-        public Setting<Integer> fpsY = register(new Setting<>("FPS Y", "Position Y for FPS.", 6, 1, 1000).withParent(fps));
     public Setting<Boolean> tps = register(new Setting<>("TPS", "Draws TPS.", true));
-        public Setting<Integer> tpsX = register(new Setting<>("TPS X", "Position X for TPS.", 2, 1, 1000).withParent(tps));
-        public Setting<Integer> tpsY = register(new Setting<>("TPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(tps));
-
     public Setting<Boolean> pps = register(new Setting<>("PPS", "Draws Packets per Second sent to server.", true));
-        public Setting<Integer> ppsX = register(new Setting<>("PPS Y", "Position X for TPS.", 2, 1, 1000).withParent(pps));
-        public Setting<Integer> ppsY = register(new Setting<>("PPS Y", "Position Y for TPS.", 4, 1, 1000).withParent(pps));
     public Setting<Boolean> reset = register(new Setting<>("Reset", "Sets HUD components to default positions.", false));
     float offset;
     public Timer packetTimer = new Timer();
@@ -110,21 +99,26 @@ public class HUD extends Module {
             });
         }
 
+
         if (watermark.getValue()) {
             mc.fontRenderer.drawStringWithShadow("Infinity" + TextFormatting.WHITE + " " + Infinity.INSTANCE.version, waterX.getValue(), waterY.getValue(), color.getValue().getColor().getRGB()); // X & Y can be made custom.
         }
+
+        int y = SCREEN_HEIGHT - 11;
 
         if (speed.getValue()) {
             double distanceX = mc.player.posX - mc.player.prevPosX;
             double distanceZ = mc.player.posZ - mc.player.prevPosZ;
             String speedDisplay = "Speed: " + TextFormatting.WHITE + roundFloat((MathHelper.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceZ, 2)) / 1000) / (0.05F / 3600), 1) + " kmh";
-            mc.fontRenderer.drawStringWithShadow(speedDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(speedDisplay) - speedX.getValue(), SCREEN_HEIGHT - speedY.getValue() /* 10 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
+            mc.fontRenderer.drawStringWithShadow(speedDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(speedDisplay) - 2, y, color.getValue().getColor().getRGB());
+            y -= 10;
         }
 
         if (ping.getValue()) {
             try {
                 String pingDisplay = "Ping: " + TextFormatting.WHITE + (!mc.isSingleplayer() ? Objects.requireNonNull(mc.getConnection()).getPlayerInfo(mc.player.getUniqueID()).getResponseTime() : 0) + "ms";
-                mc.fontRenderer.drawStringWithShadow(pingDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(pingDisplay) - pingX.getValue(), SCREEN_HEIGHT - mc.fontRenderer.FONT_HEIGHT - pingY.getValue() /* 12 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
+                mc.fontRenderer.drawStringWithShadow(pingDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(pingDisplay) - 2, y, color.getValue().getColor().getRGB());
+                y -= 10;
             } catch (NullPointerException e) {
                 // Hmm...
             }
@@ -142,16 +136,20 @@ public class HUD extends Module {
             RenderUtils.renderGreeter();
         }
         if (fps.getValue()) {
-        String fpsDisplay = "FPS: " + TextFormatting.WHITE + Minecraft.getDebugFPS();
-        mc.fontRenderer.drawStringWithShadow(fpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(fpsDisplay) - fpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - fpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
+            String fpsDisplay = "FPS: " + TextFormatting.WHITE + Minecraft.getDebugFPS();
+            mc.fontRenderer.drawStringWithShadow(fpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(fpsDisplay) - 2, y, color.getValue().getColor().getRGB());
+            y -= 10;
         }
+
         if (tps.getValue()) {
             String tpsDisplay = "TPS: " + TextFormatting.WHITE + Infinity.INSTANCE.tpsManager.getTickRateRound();
-            mc.fontRenderer.drawStringWithShadow(tpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(tpsDisplay) - tpsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - tpsY.getValue() /* 15 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
+            mc.fontRenderer.drawStringWithShadow(tpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(tpsDisplay) - 2, y, color.getValue().getColor().getRGB());
+            y -= 10;
         }
+
         if (pps.getValue()) {
             String ppsDisplay = "Packets: " + TextFormatting.WHITE + packets;
-            mc.fontRenderer.drawStringWithShadow(ppsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(ppsDisplay) - ppsX.getValue(), SCREEN_HEIGHT - (3 * mc.fontRenderer.FONT_HEIGHT) - ppsY.getValue() /* 19 can be a made a Custom Value. */, color.getValue().getColor().getRGB());
+            mc.fontRenderer.drawStringWithShadow(ppsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(ppsDisplay) - 2, y, color.getValue().getColor().getRGB());
         }
 
         if (coordinates.getValue()) {
@@ -162,18 +160,10 @@ public class HUD extends Module {
         }
 
         if (reset.getValue()) {
-            fpsX.setValue(2);
-            fpsY.setValue(4);
-            pingX.setValue(2);
-            pingY.setValue(12);
             coordX.setValue(2);
             coordY.setValue(10);
-            speedX.setValue(2);
-            speedY.setValue(10);
             waterX.setValue(2);
             waterY.setValue(2);
-            ppsX.setValue(2);
-            ppsY.setValue(14);
             reset.setValue(false);
         }
     }
