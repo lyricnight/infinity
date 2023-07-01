@@ -8,6 +8,7 @@ import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
+import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,6 +28,7 @@ public class AutoCity extends Module
 {
     public Setting<Integer> targetRange = register(new Setting<>("Target Range", "Range to target.", 10, 2, 15));
     public Setting<Integer> resetRange = register(new Setting<>("Reset Range", "Range at which to reset the block we are attempting to mine. Set this to your SpeedMine's range.", 1, 4, 6));
+    public Setting<Boolean> rotate = register(new Setting<>("Rotate", "Rotates to hit the block.", false));
     public Setting<Boolean> burrow = register(new Setting<>("Burrow", "Whether to mine player's burrow or not.", false));
     public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
@@ -110,7 +113,10 @@ public class AutoCity extends Module
     }
 
     private void mine(final BlockPos blockPos) {
-
+        if (rotate.getValue())
+        {
+            RotationManager.lookAtVec3dPacket(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true);
+        }
         mc.playerController.onPlayerDamageBlock(blockPos, EnumFacing.UP);
         if (!NoSwing.getValue()) {
             mc.player.swingArm(EnumHand.MAIN_HAND);

@@ -63,6 +63,11 @@ public class HoleSnap extends Module {
         if (mc.player == null) {
             return;
         }
+        if (!mc.player.onGround)
+        {
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in the air! Disabling ..");
+            toggle();
+        }
         Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
         if (EntityUtil.isInLiquid()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in liquid! Disabling ..");
@@ -75,7 +80,7 @@ public class HoleSnap extends Module {
         {
             ChatUtils.sendMessage("Reached holegetter!");
         }
-        if (holes == null || HoleUtil.isObbyHole(RotationManager.getPlayerPos()) || HoleUtil.isBedrockHoles(RotationManager.getPlayerPos())) {
+        if (holes == null || HoleUtil.isHole(RotationManager.getPlayerPos())) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             toggle();

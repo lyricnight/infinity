@@ -23,7 +23,6 @@ public class AntiCev extends Module {
     public Setting<Mode> switchMode = register(new Setting<>("SwitchMode", "Mode for switch.", Mode.SILENT));
     public Setting<Boolean> rot = register(new Setting<>("Rotate", "Rotations.", false));
     public Setting<Boolean> jump = register(new Setting<>("JumpCheck", "doesnt place when in the air.", false));
-    public Setting<Boolean> packet = register(new Setting<>("Packet Rotations", "Uses packet rotations.", true).withParent(rot));
 
 
     @Override
@@ -54,7 +53,7 @@ public class AntiCev extends Module {
             int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
             int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
             doSwitch(blockSlot == -1 ? chestSlot : blockSlot);
-            PlacementManager.placeBlock(CombatUtil.getAntiCevPlacement(), rot.getValue(), packet.getValue(), true, false, true);
+            PlacementManager.placeBlock(CombatUtil.getAntiCevPlacement(), rot.getValue());
             doSwitch(oldSlot);
         }
     }

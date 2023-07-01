@@ -34,7 +34,8 @@ public class ThreadManager {
     public void run(Runnable command) {
         try {
             executorService.execute(command);
-        } catch (Exception ignored){
+        } catch (Exception e){
+            Infinity.LOGGER.error("Error in thread executor!" + " " + e.getMessage());
         }
     }
 

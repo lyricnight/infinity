@@ -27,7 +27,7 @@ public class HoleUtil
         boolean isHole = false;
         int amount = 0;
         for (BlockPos p : holeOffsets) {
-            if (HoleUtil.mc.world.getBlockState(pos.add((Vec3i)p)).getMaterial().isReplaceable()) continue;
+            if (HoleUtil.mc.world.getBlockState(pos.add(p)).getMaterial().isReplaceable()) continue;
             ++amount;
         }
         if (amount == 5) {

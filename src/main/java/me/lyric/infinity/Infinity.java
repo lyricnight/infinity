@@ -23,7 +23,6 @@ public class Infinity {
 
     public static final String PATH = "Infinity/";
     public static final String CONFIG_PATH = PATH + "configs/";
-
     public static final Logger LOGGER = LogManager.getLogger("Infinity");
     File directory = new File(Minecraft.getMinecraft().gameDir, "Infinity");
     public EventBus eventBus = new EventBus(LambdaHandler.class, Infinity.LOGGER::error, Infinity.LOGGER::info);
@@ -92,6 +91,7 @@ public class Infinity {
         this.holeManager.init();
         LOGGER.info("HoleManager initialised!");
         this.placementManager = new PlacementManager();
+        this.placementManager.init();
         LOGGER.info("PlacementManager initialised!");
         LOGGER.info("All Managers loaded successfully!");
         gui = new PanelStudioGUI();
