@@ -29,9 +29,9 @@ public class AntiCev extends Module {
     public String getDisplayInfo() {
         if (CombatUtil.isBlockAbovePlayerHead() && CombatUtil.isAlreadyPrevented())
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.GREEN + "prevented" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return ChatFormatting.GREEN + "prevented" + ChatFormatting.RESET;
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RED + "invalid" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.RED + "invalid" + ChatFormatting.RESET;
 
     }
 

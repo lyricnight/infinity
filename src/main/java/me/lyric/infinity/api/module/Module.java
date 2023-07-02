@@ -81,7 +81,7 @@ public class Module extends Register implements IGlobals {
     }
 
     public String getDisplayInfo() {
-        return info != null ? info.get() : "";
+        return "";
     }
 
     public String getDescription() {
@@ -116,13 +116,6 @@ public class Module extends Register implements IGlobals {
     public Bind getBind() {
         return this.bind.getValue();
     }
-
-    public void onSetting() {
-    }
-
-    public void onRender2D(float partialTicks) {
-    }
-
     public void onRender3D(float partialTicks) {
     }
 

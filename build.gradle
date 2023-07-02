@@ -35,7 +35,7 @@ def getGitHash = { ->
 }
 
 group = 'me.lyric.infinity'
-version = 'v3-beta-' + getGitHash()
+version = 'v4-' + getGitHash()
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8

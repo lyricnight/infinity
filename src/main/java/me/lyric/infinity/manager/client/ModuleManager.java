@@ -11,14 +11,13 @@ import me.lyric.infinity.impl.modules.player.KickPrevent;
 import me.lyric.infinity.impl.modules.player.NoInterpolation;
 import me.lyric.infinity.impl.modules.render.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class ModuleManager {
 
     public static ModuleManager moduleManager;
 
-    private final Set<Module> modules = new HashSet<>();
+    private final ArrayList<Module> modules = new ArrayList<>();
 
     public ModuleManager() {
         moduleManager = this;
@@ -111,7 +110,7 @@ public class ModuleManager {
         this.modules.add(new AutoCity());
     }
 
-    public Set<Module> getModules() {
+    public ArrayList<Module> getModules() {
         return modules;
     }
 

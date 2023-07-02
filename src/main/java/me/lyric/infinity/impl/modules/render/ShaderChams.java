@@ -127,9 +127,9 @@ public class ShaderChams extends Module {
         }
         if(shader.getValue() == Shader.SPACE)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "space" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "space";
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "rainbow" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return "rainbow";
     }
 
 

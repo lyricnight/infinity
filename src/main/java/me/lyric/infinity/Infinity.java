@@ -16,7 +16,7 @@ import java.io.File;
 
 @Mod(
         modid = "infinity",
-        version = "v3-beta"
+        version = "v4"
 )
 
 public class Infinity {
@@ -28,7 +28,7 @@ public class Infinity {
     public EventBus eventBus = new EventBus(LambdaHandler.class, Infinity.LOGGER::error, Infinity.LOGGER::info);
     public static PanelStudioGUI gui;
     public TPSManager tpsManager;
-    public String version = "v3-beta";
+    public String version = "v4";
     public ForgeEventManager forgeEventManager;
     public ModuleManager moduleManager;
     public ThreadManager threadManager;

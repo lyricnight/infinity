@@ -254,6 +254,6 @@ public class Chams extends Module {
 
     @Override
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + mode.getValue().toString().toLowerCase() + ChatFormatting.GRAY + "]";
+        return mode.getValue().toString().toLowerCase();
     }
 }

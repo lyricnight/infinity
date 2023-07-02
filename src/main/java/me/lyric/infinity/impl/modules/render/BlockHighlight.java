@@ -1,6 +1,7 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -73,6 +74,6 @@ public class BlockHighlight extends Module {
 
     @Override
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET+ChatFormatting.WHITE + mode.getValue().toString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return mode.getValue().toString().toLowerCase();
     }
 }

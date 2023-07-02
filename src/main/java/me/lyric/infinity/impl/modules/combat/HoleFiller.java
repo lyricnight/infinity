@@ -1,8 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -15,16 +13,14 @@ import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
-import me.lyric.infinity.mixin.mixins.accessors.ISPacketPlayerPosLook;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
-import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.server.SPacketPlayerPosLook;
 import net.minecraft.util.*;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
+
 import java.util.*;
 import java.util.List;
 import java.util.stream.*;
@@ -82,7 +78,7 @@ public class HoleFiller extends Module
         {
             return;
         }
-        target = (EntityPlayer) CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
+        target = CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
         if (target != null)
         {
             if (HoleUtil.isHole(target.getPosition()) || isBurrow(target))
@@ -189,14 +185,14 @@ public class HoleFiller extends Module
         {
             if (holes == null)
             {
-                return ChatFormatting.GRAY + "[" + ChatFormatting.RED + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+                return ChatFormatting.RED + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET;
 
             }
             else {
-                return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + target.getDisplayName().getFormattedText().toLowerCase()+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+                return target.getDisplayName().getFormattedText().toLowerCase();
 
             }
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RED +"none"+ ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return ChatFormatting.RED +"none"+ ChatFormatting.RESET;
     }
 }

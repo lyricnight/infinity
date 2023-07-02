@@ -23,7 +23,7 @@ public class Clip extends Module {
 
     @Override
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET+ChatFormatting.WHITE + String.valueOf(packets).toLowerCase() +ChatFormatting.RESET+ ChatFormatting.GRAY + "]";
+        return String.valueOf(packets).toLowerCase();
     }
 
     @Override

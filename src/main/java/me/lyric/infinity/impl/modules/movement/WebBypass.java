@@ -55,7 +55,7 @@ public class WebBypass extends Module {
 
     @Override
     public String getDisplayInfo() {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + mode.getValue().toString().toLowerCase() + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return mode.getValue().toString().toLowerCase();
     }
 
     public enum Mode {

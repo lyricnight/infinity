@@ -5,6 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class MathUtils implements IGlobals
 {
     public static double distanceTo(final BlockPos blockPos) {
@@ -31,18 +34,14 @@ public class MathUtils implements IGlobals
             return high;
         }
     }
+    public static float roundFloat(double number, int scale) {
+        BigDecimal bd = BigDecimal.valueOf(number);
+        bd = bd.setScale(scale, RoundingMode.FLOOR);
+        return bd.floatValue();
+    }
     public static int square(int i)
     {
         return i * i;
     }
 
-    public static float square(float i)
-    {
-        return i * i;
-    }
-
-    public static double square(double i)
-    {
-        return i * i;
-    }
 }

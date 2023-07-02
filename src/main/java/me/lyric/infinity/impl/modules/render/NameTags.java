@@ -29,6 +29,10 @@ import java.awt.*;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * @author lyric
+ * meh
+ */
 
 public class NameTags extends Module {
 

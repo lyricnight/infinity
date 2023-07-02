@@ -22,9 +22,9 @@ public class InstantSpeed extends Module {
     {
         if(noLiquid.getValue())
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + "noliquid" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "noliquid";
         }
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + "normal" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return "normal";
 
     }
 

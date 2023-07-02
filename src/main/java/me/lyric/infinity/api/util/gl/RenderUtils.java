@@ -351,11 +351,6 @@ public class RenderUtils implements IGlobals {
             GlStateManager.disableLighting();
         }
     }
-    public static void renderGreeter() {
-        final int width = new ScaledResolution(mc).getScaledWidth();
-        String welcomerString = String.format(Infinity.INSTANCE.moduleManager.getModuleByClass(HUD.class).textthing.getValue(), mc.player.getName());
-        mc.fontRenderer.drawStringWithShadow(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, Infinity.INSTANCE.moduleManager.getModuleByClass(HUD.class).color.getValue().getColor().getRGB());
-    }
     public static void renderArmorNew() {
             GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
             ScaledResolution res = new ScaledResolution(mc);

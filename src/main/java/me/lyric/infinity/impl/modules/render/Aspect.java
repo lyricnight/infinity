@@ -35,6 +35,6 @@ public class Aspect extends Module {
         {
             return "";
         }
-        return ChatFormatting.GRAY +"["+ ChatFormatting.RESET + ChatFormatting.WHITE + format.format(aspect.getValue()) + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return format.format(aspect.getValue());
     }
 }

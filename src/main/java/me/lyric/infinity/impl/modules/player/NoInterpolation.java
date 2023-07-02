@@ -19,6 +19,6 @@ public class NoInterpolation extends Module {
     public String getDisplayInfo()
     {
         if (mc.world == null || mc.player == null) return "";
-        return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + mc.world.playerEntities.size() + ChatFormatting.RESET + ChatFormatting.GRAY +"]";
+        return String.valueOf(mc.world.playerEntities.size());
     }
 }

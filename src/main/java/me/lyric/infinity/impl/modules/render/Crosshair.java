@@ -97,15 +97,15 @@ public class Crosshair extends Module {
         }
         if (gapMode.getValue() == GapMode.NONE)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "default-mc" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "default-mc";
         }
         if (gapMode.getValue() == GapMode.NORMAL)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "fixed" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "fixed";
         }
         if (gapMode.getValue() == GapMode.DYNAMIC)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "dynamic" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "dynamic";
         }
         return "";
     }

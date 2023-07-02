@@ -52,15 +52,15 @@ public class Swing extends Module {
         }
         if (swing.getValue() == SwingHand.MAINHAND)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "mainhand" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "mainhand";
         }
         if (swing.getValue() == SwingHand.OFFHAND)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "offhand" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "offhand";
         }
         if (swing.getValue() == SwingHand.NONE)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE  + "none" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "none";
         }
         return "";
     }

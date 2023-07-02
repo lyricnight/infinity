@@ -22,14 +22,14 @@ public class CustomTime extends Module {
     public String getDisplayInfo()
     {
         if(mc.world == null || mc.player == null) return "";
-        if (time.getValue() >= 12000) return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "night" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        if (time.getValue() >= 12000) return "night";
         if (time.getValue() > 0)
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "day" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "day";
         }
         else
         {
-            return ChatFormatting.GRAY + "[" + ChatFormatting.RESET + ChatFormatting.WHITE + "natural" + ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+            return "natural";
         }
     }
 

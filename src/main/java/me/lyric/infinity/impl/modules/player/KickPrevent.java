@@ -15,7 +15,7 @@ public class KickPrevent extends Module {
     @Override
     public String getDisplayInfo()
     {
-        return ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + "cancel" +ChatFormatting.RESET + ChatFormatting.GRAY + "]";
+        return "cancel";
     }
 
 }
