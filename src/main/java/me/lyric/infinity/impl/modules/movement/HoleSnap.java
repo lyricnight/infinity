@@ -80,7 +80,7 @@ public class HoleSnap extends Module {
         {
             ChatUtils.sendMessage("Reached holegetter!");
         }
-        if (holes == null || HoleUtil.isHole(RotationManager.getPlayerPos())) {
+        if (holes == null || HoleUtil.isBedrockHoles(RotationManager.getPlayerPos()) || HoleUtil.isObbyHole(RotationManager.getPlayerPos())) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             toggle();

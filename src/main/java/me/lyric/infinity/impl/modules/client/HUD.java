@@ -11,6 +11,7 @@ import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.ColorUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.metadata.MathUtils;
+import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.math.MathHelper;
@@ -22,9 +23,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author lyric
@@ -63,10 +61,11 @@ public class HUD extends Module {
 
     protected int width = 30;
     private int packets = 0;
+    private final Timer packetTimer = new Timer();
 
     public HUD()
     {
-        super("HUDnew", "test", Category.CLIENT);
+        super("HUD", "test", Category.CLIENT);
     }
 
     @EventListener
@@ -97,12 +96,17 @@ public class HUD extends Module {
         if (!nullSafe()) {
             return;
         }
+        if (packetTimer.passedMs(1000))
+        {
+            packets = 0;
+            packetTimer.reset();
+        }
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int y = new ScaledResolution(mc).getScaledHeight() - 11;
         if(activeModules.getValue())
         {
             final ArrayList<Module> sorted = new ArrayList<>();
-            int offsetx = -2;
+            int offsetx = 2;
             int offsety = 2;
             for (final Module module : Infinity.INSTANCE.moduleManager.getModules()) {
                 if ((module.isDrawn() && module.isEnabled())) {

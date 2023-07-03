@@ -5,10 +5,7 @@ import me.lyric.infinity.impl.modules.client.*;
 import me.lyric.infinity.impl.modules.combat.*;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
-import me.lyric.infinity.impl.modules.player.AutoReply;
-import me.lyric.infinity.impl.modules.player.HitboxDesync;
-import me.lyric.infinity.impl.modules.player.KickPrevent;
-import me.lyric.infinity.impl.modules.player.NoInterpolation;
+import me.lyric.infinity.impl.modules.player.*;
 import me.lyric.infinity.impl.modules.render.*;
 
 import java.util.ArrayList;
