@@ -32,7 +32,7 @@ public class AutoReply extends Module {
             String msg = p.getChatComponent().getUnformattedText();
             if (msg.contains("says: ") || msg.contains("whispers: ")) {
                 String ign = msg.split(" ")[0];
-                if (mc.player.getName() == ign) {
+                if (mc.player.getName().equals(ign)) {
                     return;
                 }
                 if (Infinity.INSTANCE.friendManager.isFriend((ign))) {

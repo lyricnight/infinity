@@ -6,8 +6,10 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
+import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
+import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
@@ -70,6 +72,12 @@ public class AutoCity extends Module
     public void onUpdate() {
         if (mc.player == null || mc.world == null) {
             return;
+        }
+        int i = InventoryUtil.findHotbar(ItemPickaxe.class);
+        if (i == -1)
+        {
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "No pickaxe found! Disabling AutoCity...");
+            toggle();
         }
         if(move.getValue() && SpeedUtil.anyMovementKeys())
         {

@@ -38,9 +38,6 @@ public class HUD extends Module {
 
     public Setting<ColorPicker> color = register(new Setting<>("Main Colour", "The main colour for the HUD components.", new ColorPicker(Color.WHITE)));
     public Setting<Boolean> activeModules = register(new Setting<>("Modules", "Draws an ArrayList for enabled & drawn modules.", true));
-    public Setting<Integer> xPos = register(new Setting<>("ListX", "X for list.", 100, 0, 1000).withParent(activeModules));
-    public Setting<Integer> yPos = register(new Setting<>("ListY", "Y for list.", 100, 0, 1000).withParent(activeModules));
-
     public Setting<Boolean> watermark = register(new Setting<>("Watermark", "Draws a watermark.", true));
     public Setting<Integer> waterX = register(new Setting<>("Watermark X", "Position X for Watermark.", 2, 1, 1000).withParent(watermark));
     public Setting<Integer> waterY = register(new Setting<>("Watermark Y", "Position Y for Watermark.", 2, 1, 1000).withParent(watermark));
@@ -78,10 +75,7 @@ public class HUD extends Module {
     {
         if (!nullSafe()) return;
         ScaledResolution sr = new ScaledResolution(mc);
-        xPos.setMaximum(sr.getScaledWidth());
-        yPos.setMaximum(sr.getScaledHeight());
     }
-
     @SubscribeEvent
     public void onRenderHud(RenderGameOverlayEvent event) {
         if (!nullSafe())
@@ -184,10 +178,5 @@ public class HUD extends Module {
         String welcomerString = String.format(textthing.getValue(), mc.player.getName());
         mc.fontRenderer.drawString(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2,getTextColor(2).getRGB(), shadow.getValue() );
     }
-
-
-
-
-
 }
 

@@ -3,9 +3,9 @@ package me.lyric.infinity.manager.client;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.impl.modules.client.*;
 import me.lyric.infinity.impl.modules.combat.*;
+import me.lyric.infinity.impl.modules.player.*;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
-import me.lyric.infinity.impl.modules.player.*;
 import me.lyric.infinity.impl.modules.render.*;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class ModuleManager {
         this.modules.add(new NoInterpolation());
         this.modules.add(new AutoReply());
         this.modules.add(new HitboxDesync());
-        this.modules.add(new KickPrevent());
+        this.modules.add(new IOCancel());
 
 
         // MISC

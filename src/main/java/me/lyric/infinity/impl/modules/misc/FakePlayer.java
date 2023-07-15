@@ -35,7 +35,7 @@ public class FakePlayer extends Module {
             fake.addPotionEffect(entry.getValue());
         }
 
-        mc.world.addEntityToWorld(-4201337, (Entity)fake);
+        mc.world.addEntityToWorld(-4201337, (Entity) fake);
     }
 
     @Override

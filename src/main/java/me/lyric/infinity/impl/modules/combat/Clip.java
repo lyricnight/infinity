@@ -1,13 +1,12 @@
 package me.lyric.infinity.impl.modules.combat;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.SpeedUtil;
+import me.lyric.infinity.api.util.metadata.MathUtils;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.MathHelper;
-import me.lyric.infinity.api.util.metadata.MathUtils;
 
 public class Clip extends Module {
     private final Setting<Integer> timeout = register(new Setting<>("Timeout","time before packets are stopped", 5, 1, 10));

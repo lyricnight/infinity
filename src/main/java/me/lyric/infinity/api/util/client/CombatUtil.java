@@ -2,23 +2,16 @@ package me.lyric.infinity.api.util.client;
 
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.network.play.client.CPacketAnimation;
-import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Comparator;
 import java.util.Objects;
 
 public class CombatUtil implements IGlobals {
-    private static final Minecraft mc = Minecraft.getMinecraft();
     public static EntityPlayer getTarget(final double targetRange) {
         return (EntityPlayer) mc.world.getLoadedEntityList().stream().filter(Objects::nonNull).filter(entity -> entity instanceof EntityPlayer).filter(CombatUtil::isAlive).filter(entity -> entity.getEntityId() != mc.player.getEntityId()).filter(entity -> !Infinity.INSTANCE.friendManager.isFriend((EntityPlayer) entity)).filter(entity -> mc.player.getDistance(entity) <= targetRange).min(Comparator.comparingDouble(entity -> mc.player.getDistance(entity))).orElse(null);
     }
@@ -46,7 +39,15 @@ public class CombatUtil implements IGlobals {
     public static boolean isAlreadyPrevented()
     {
         BlockPos pos = new BlockPos(mc.player.posX, mc.player.posY + 3, mc.player.posZ);
-        return mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN;
+        return mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(pos).getBlock() == Blocks.ENDER_CHEST;
+    }
+    public static boolean isBurrow(EntityPlayer target) {
+        if(mc.world == null || mc.player == null || target == null)
+        {
+            return false;
+        }
+        final BlockPos blockPos = new BlockPos(target.posX, target.posY, target.posZ);
+        return mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
     }
 
 }

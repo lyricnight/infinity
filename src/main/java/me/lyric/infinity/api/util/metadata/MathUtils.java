@@ -1,7 +1,6 @@
 package me.lyric.infinity.api.util.metadata;
 
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 

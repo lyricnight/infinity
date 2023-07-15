@@ -3,7 +3,7 @@ package me.lyric.infinity.mixin.mixins.network;
 import io.netty.channel.ChannelHandlerContext;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
-import me.lyric.infinity.impl.modules.player.KickPrevent;
+import me.lyric.infinity.impl.modules.player.IOCancel;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +39,7 @@ public class MixinNetworkManager {
     }
     @Inject(method = "exceptionCaught", at = @At("HEAD"), cancellable = true)
     private void exceptionCaught(ChannelHandlerContext p_exceptionCaught_1_, Throwable p_exceptionCaught_2_, CallbackInfo callback) {
-        if (p_exceptionCaught_2_ instanceof IOException && Infinity.INSTANCE.moduleManager.getModuleByClass(KickPrevent.class).isEnabled()) {
+        if (p_exceptionCaught_2_ instanceof IOException && Infinity.INSTANCE.moduleManager.getModuleByClass(IOCancel.class).isEnabled()) {
             callback.cancel();
         }
     }

@@ -132,7 +132,7 @@ public class Notifications extends Module {
 
 
     public void onDeath(EntityPlayer player) {
-
+        if(!totem.getValue()) return;
         boolean isFriend = (Infinity.INSTANCE.friendManager.isFriend(player.getName()));
         if (totemPops.containsKey(player.getName()) && totem.getValue()) {
             int popCount = totemPops.get(player.getName());

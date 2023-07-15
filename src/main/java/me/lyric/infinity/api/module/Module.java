@@ -39,6 +39,8 @@ public class Module extends Register implements IGlobals {
 
     private Supplier<String> info;
 
+    public int offset;
+    public boolean sliding;
     private final Setting<Bind> bind = new Setting<>("Bind", "Key bind for the module.", new Bind());
     private final Setting<Boolean> drawn = new Setting<>("Drawn", "Draws the module on the ArrayList when enabled.", true);
 

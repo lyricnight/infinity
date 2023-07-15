@@ -13,8 +13,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class HoleUtil
-        implements IGlobals {
+public class HoleUtil implements IGlobals {
     public static BlockPos[] holeOffsets = new BlockPos[]{new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, 1), new BlockPos(0, 0, -1), new BlockPos(0, -1, 0)};
     static final Vec3i[] OFFSETS_2x2 = new Vec3i[]{new Vec3i(0, 0, 0), new Vec3i(1, 0, 0), new Vec3i(0, 0, 1), new Vec3i(1, 0, 1)};
     static final Block[] NO_BLAST = new Block[]{Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.ANVIL, Blocks.ENDER_CHEST};
@@ -136,19 +135,6 @@ public class HoleUtil
         }
         return circleblocks;
     }
-    public static boolean[] is1x1(BlockPos pos, boolean[] result) {
-        for (EnumFacing facing : EnumFacing.values()) {
-            BlockPos offset;
-            IBlockState state;
-            if (facing == EnumFacing.UP || (state = HoleUtil.mc.world.getBlockState(offset = pos.offset(facing))).getBlock() == Blocks.BEDROCK) continue;
-            if (Arrays.stream(NO_BLAST).noneMatch(b -> b == state.getBlock())) {
-                return result;
-            }
-            result[1] = false;
-        }
-        result[0] = true;
-        return result;
-    }
     public static boolean is2x2Partial(BlockPos pos) {
         HashSet<BlockPos> positions = new HashSet<BlockPos>();
         for (Vec3i vec : OFFSETS_2x2) {
@@ -173,11 +159,6 @@ public class HoleUtil
         }
         return airBlock;
     }
-
-    public static boolean is2x2(BlockPos pos) {
-        return HoleUtil.is2x2(pos, true);
-    }
-
     public static boolean is2x2(BlockPos pos, boolean upper) {
         if (upper && !BlockUtil.isAir(pos)) {
             return false;

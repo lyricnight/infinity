@@ -1,6 +1,5 @@
 package me.lyric.infinity.impl.modules.render;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.render.RenderLivingEntityEvent;
 import me.lyric.infinity.api.event.render.crystal.RenderCrystalPostEvent;

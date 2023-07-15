@@ -17,8 +17,7 @@ import java.util.Date;
     @author lyric
  */
 
-public class BetterChat
-        extends Module {
+public class BetterChat extends Module {
     public final Setting<Boolean> timeStamps = register(new Setting<>("Timestamps","Does what it says on the tin lad",  true));
     public final Setting<Boolean> rect = register(new Setting<>("NoRect","Removes rectangle", true));
     public Setting<ChatFormat.Color> bracketColor = register(new Setting<>("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));

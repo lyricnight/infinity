@@ -1,17 +1,24 @@
 package me.lyric.infinity.manager.client;
 
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.*;
-import net.minecraftforge.fml.common.gameevent.*;
-import net.minecraftforge.fml.common.eventhandler.*;
-import net.minecraft.util.*;
+import me.lyric.infinity.impl.modules.client.Internals;
 import net.minecraft.block.*;
-import net.minecraft.network.play.client.*;
-import net.minecraft.util.math.*;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.network.play.client.CPacketEntityAction;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class PlacementManager implements IGlobals {
     static List<BlockPos> tickCache;
@@ -24,8 +31,12 @@ public class PlacementManager implements IGlobals {
     public void onUpdate(final TickEvent.ClientTickEvent event) {
         tickCache = new ArrayList<>();
     }
+    public static void placeBlock(BlockPos pos, boolean rotate)
+    {
+        placeBlock(pos, rotate, Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).update.getValue(), Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).normalise.getValue());
+    }
 
-    public static boolean placeBlock(final BlockPos pos, final boolean rotate) {
+    public static boolean placeBlock(final BlockPos pos, final boolean rotate, final boolean update, final boolean normalise) {
         final Block block = mc.world.getBlockState(pos).getBlock();
         if (!(block instanceof BlockAir) && !(block instanceof BlockLiquid)) {
             return false;
@@ -42,7 +53,7 @@ public class PlacementManager implements IGlobals {
         }
         if (rotate)
         {
-            RotationManager.lookAtVec3dPacket(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), false, true);
+            RotationManager.lookAtVec3dPacket(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), normalise, update);
         }
         final EnumActionResult action = mc.playerController.processRightClickBlock(mc.player, mc.world, neighbour, opposite, hitVec, EnumHand.MAIN_HAND);
         if (mc.player.isSneaking() && shouldShiftClick(neighbour)) {

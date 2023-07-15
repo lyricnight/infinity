@@ -1,8 +1,6 @@
 package me.lyric.infinity.api.util.gl;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.impl.modules.client.HUD;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.*;

@@ -4,6 +4,10 @@ import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
+
+/**
+ * @author lyric
+ */
 public class EntityUtil implements IGlobals {
     public static boolean isLiving(Entity entity) {
         return entity instanceof EntityLivingBase;
@@ -18,4 +22,6 @@ public class EntityUtil implements IGlobals {
         }
         return 0.0f;
     }
+
+
 }

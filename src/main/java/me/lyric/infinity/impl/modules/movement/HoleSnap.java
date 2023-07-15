@@ -7,6 +7,7 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
@@ -39,7 +40,7 @@ public class HoleSnap extends Module {
 
     @Override
     public void onEnable() {
-        if (mc.player == null) {
+        if (mc.player == null || mc.world == null) {
             return;
         }
         timer.reset();
@@ -47,7 +48,7 @@ public class HoleSnap extends Module {
     }
     @Override
     public void onDisable() {
-        if (mc.player == null) {
+        if (mc.player == null || mc.world == null) {
             return;
         }
         timer.reset();
@@ -60,7 +61,7 @@ public class HoleSnap extends Module {
 
     @Override
     public void onUpdate() {
-        if (mc.player == null) {
+        if (mc.player == null || mc.world == null) {
             return;
         }
         if (!mc.player.onGround)
@@ -78,9 +79,9 @@ public class HoleSnap extends Module {
         holes = RotationManager.getTargetHoleVec3D(range.getValue());
         if (debug.getValue())
         {
-            ChatUtils.sendMessage("Reached holegetter!");
+            ChatUtils.sendMessage("Reached holegetter!" + " " + holes.pos1);
         }
-        if (holes == null || HoleUtil.isBedrockHoles(RotationManager.getPlayerPos()) || HoleUtil.isObbyHole(RotationManager.getPlayerPos())) {
+        if (holes == null || HoleUtil.isHole(RotationManager.getPlayerPos()) || CombatUtil.isBurrow(mc.player)) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             toggle();

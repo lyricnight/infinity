@@ -1,6 +1,5 @@
 package me.lyric.infinity.impl.modules.render;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.render.AspectEvent;

@@ -2,7 +2,6 @@ package me.lyric.infinity.impl.modules.player;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;

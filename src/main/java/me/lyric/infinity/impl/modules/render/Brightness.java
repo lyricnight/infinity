@@ -1,6 +1,5 @@
 package me.lyric.infinity.impl.modules.render;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -42,7 +41,7 @@ public class Brightness extends Module {
             if (mc.world != null) {
                 for (int i = 0; i <= 15; i++) {
                     float f1 = 1.0f - i / 15.0f;
-                    mc.world.provider.getLightBrightnessTable()[i] = (1.0f - f1) / (f1 * 3.0f + 1.0f) * 1.0f + 0.0f;
+                    mc.world.provider.getLightBrightnessTable()[i] = (1.0f - f1) / (f1 * 3.0f + 1.0f) + 0.0f;
                 }
             }
         }

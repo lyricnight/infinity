@@ -1,6 +1,5 @@
 package me.lyric.infinity.impl.modules.movement;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;

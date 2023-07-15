@@ -7,7 +7,6 @@ import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPost;
 import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPre;
 import me.lyric.infinity.impl.modules.render.Swing;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.MoverType;

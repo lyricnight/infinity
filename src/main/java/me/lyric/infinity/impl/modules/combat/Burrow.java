@@ -6,13 +6,15 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketPlayerPosLook;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockObsidian;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.init.Blocks;
 import net.minecraft.network.play.client.CPacketAnimation;
@@ -56,6 +58,12 @@ public class Burrow extends Module {
         InventoryUtil.check(this);
         if (!mc.player.onGround) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in the air! Disabling Burrow...");
+            toggle();
+            return;
+        }
+        if(CombatUtil.isBurrow(mc.player))
+        {
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "You are already burrowed! Disabling...");
             toggle();
             return;
         }

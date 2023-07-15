@@ -6,8 +6,6 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 
-import static org.lwjgl.opengl.GL11.glPopAttrib;
-
 /**
  * @author lyricccc
  */
