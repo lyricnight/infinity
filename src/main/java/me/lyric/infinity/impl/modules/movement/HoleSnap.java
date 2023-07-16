@@ -46,8 +46,8 @@ public class HoleSnap extends Module {
         timer.reset();
         holes = null;
     }
-    @Override
-    public void onDisable() {
+    public void disable()
+    {
         if (mc.player == null || mc.world == null) {
             return;
         }
@@ -64,11 +64,6 @@ public class HoleSnap extends Module {
         if (mc.player == null || mc.world == null) {
             return;
         }
-        if (!mc.player.onGround)
-        {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in the air! Disabling ..");
-            toggle();
-        }
         Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
         if (EntityUtil.isInLiquid()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in liquid! Disabling ..");
@@ -79,11 +74,12 @@ public class HoleSnap extends Module {
         holes = RotationManager.getTargetHoleVec3D(range.getValue());
         if (debug.getValue())
         {
-            ChatUtils.sendMessage("Reached holegetter!" + " " + holes.pos1);
+            ChatUtils.sendMessage("Reached holegetter");
         }
         if (holes == null || HoleUtil.isHole(RotationManager.getPlayerPos()) || CombatUtil.isBurrow(mc.player)) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
+            disable();
             toggle();
             return;
         }

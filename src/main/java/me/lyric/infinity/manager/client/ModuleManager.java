@@ -85,6 +85,7 @@ public class ModuleManager {
         this.modules.add(new AutoRespawn());
         this.modules.add(new ChorusControl());
         this.modules.add(new LiquidInteract());
+        this.modules.add(new ChatColours());
         this.modules.add(new NoHandshake());
         this.modules.add(new FakePlayer());
         this.modules.add(new AntiHunger());

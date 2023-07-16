@@ -1,5 +1,6 @@
 package me.lyric.infinity.impl.modules.movement;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.player.MoveEvent;
@@ -8,6 +9,7 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
+import me.lyric.infinity.api.util.string.ChatFormat;
 
 public class InstantSpeed extends Module {
 
@@ -19,21 +21,17 @@ public class InstantSpeed extends Module {
     @Override
     public String getDisplayInfo()
     {
-        if(noLiquid.getValue())
+        if(!nullSafe()) return "";
+        if(pause)
         {
-            return "noliquid";
+            return ChatFormatting.RED + "false";
         }
-        return "normal";
-
+        return ChatFormatting.GREEN + "true";
     }
 
     @EventListener(priority = ListenerPriority.HIGH)
     public void onMove(MoveEvent e) {
-        if (mc.player.isElytraFlying()) {
-            return;
-        }
-        if (pause)
-        {
+        if (mc.player.isElytraFlying() || pause) {
             return;
         }
         if (this.noLiquid.getValue() && EntityUtil.isInLiquid()) {

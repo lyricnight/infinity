@@ -22,7 +22,7 @@ public class BetterChat extends Module {
     public final Setting<Boolean> rect = register(new Setting<>("NoRect","Removes rectangle", true));
     public Setting<ChatFormat.Color> bracketColor = register(new Setting<>("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));
     public Setting<ChatFormat.Color> commandColor = register(new Setting<>("NameColor","Colour of timestamps", ChatFormat.Color.LIGHT_PURPLE));
-
+    public Setting<Boolean> inf = register(new Setting<>("Infinite", "Makes chat infinite.", false));
     public BetterChat() {
         super("BetterChat", "Improves Minecraft's chat", Category.MISC);
     }
@@ -36,6 +36,7 @@ public class BetterChat extends Module {
             }
         }
     }
+
 
     public String getTimeString() {
         String date = new SimpleDateFormat("k:mm").format(new Date());
