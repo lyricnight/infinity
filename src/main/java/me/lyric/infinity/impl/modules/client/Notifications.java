@@ -63,7 +63,7 @@ public class Notifications extends Module {
             }
             if (!Notifications.mc.player.isPotionActive(Objects.requireNonNull(Potion.getPotionFromResourceLocation((String)"weakness"))) && this.last) {
 
-                ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " no longer have" + ChatFormatting.DARK_GRAY + "weakness" + ChatFormatting.BOLD + "!");
+                ChatUtils.sendMessage(ChatFormatting.BOLD + "You" + ChatFormatting.WHITE + " no longer have " + ChatFormatting.DARK_GRAY + "weakness" + ChatFormatting.BOLD + "!");
 
                 this.last = false;
             }

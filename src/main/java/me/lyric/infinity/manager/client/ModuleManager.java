@@ -64,7 +64,7 @@ public class ModuleManager {
         this.modules.add(new ShaderChams());
         this.modules.add(new Brightness());
         this.modules.add(new CustomTime());
-        this.modules.add(new CrystalModifier());
+        this.modules.add(new CModifier());
         this.modules.add(new HoleESP());
         this.modules.add(new CameraClip());
         this.modules.add(new NoRender());
