@@ -10,7 +10,6 @@ import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.impl.modules.client.Notifications;
-import me.lyric.infinity.manager.client.AnimationManager;
 import me.lyric.infinity.manager.client.ConfigManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,15 +31,10 @@ public class Module extends Register implements IGlobals {
 
     private final String name;
     private final String description;
-
+    public float animfactor = 0.0f;
     private final Category category;
 
-    private final AnimationManager animation;
-
     private Supplier<String> info;
-
-    public int offset;
-    public boolean sliding;
     private final Setting<Bind> bind = new Setting<>("Bind", "Key bind for the module.", new Bind());
     private final Setting<Boolean> drawn = new Setting<>("Drawn", "Draws the module on the ArrayList when enabled.", true);
 
@@ -53,8 +47,6 @@ public class Module extends Register implements IGlobals {
 
         this.register(bind);
         this.register(drawn);
-
-        animation = new AnimationManager(150, this.isEnabled());
     }
 
     public Module(final String name, final String description, final Category category, Supplier<String> info) {
@@ -67,8 +59,6 @@ public class Module extends Register implements IGlobals {
 
         this.register(bind);
         this.register(drawn);
-
-        animation = new AnimationManager(150, this.isEnabled());
     }
     public String getName() {
         return name;
@@ -76,10 +66,6 @@ public class Module extends Register implements IGlobals {
 
     public boolean isDrawn() {
         return drawn.getValue();
-    }
-
-    public AnimationManager getAnimation() {
-        return animation;
     }
 
     public String getDisplayInfo() {
@@ -132,13 +118,11 @@ public class Module extends Register implements IGlobals {
     }
 
     protected void onEnable() {
-            animation.setState(true);
             MinecraftForge.EVENT_BUS.register(this);
             Infinity.INSTANCE.eventBus.subscribe(this);
     }
 
     protected void onDisable() {
-            animation.setState(false);
             MinecraftForge.EVENT_BUS.unregister(this);
             Infinity.INSTANCE.eventBus.unsubscribe(this);
     }

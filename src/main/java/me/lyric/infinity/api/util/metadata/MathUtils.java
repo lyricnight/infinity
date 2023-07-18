@@ -6,7 +6,6 @@ import net.minecraft.util.math.MathHelper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
 public class MathUtils implements IGlobals
 {
     public static double distanceTo(final BlockPos blockPos) {
@@ -38,9 +37,22 @@ public class MathUtils implements IGlobals
         bd = bd.setScale(scale, RoundingMode.FLOOR);
         return bd.floatValue();
     }
+    public static float clamp(float num, float min, float max) {
+        if (num < min) {
+            return min;
+        } else {
+            return Math.min(num, max);
+        }
+    }
     public static int square(int i)
     {
         return i * i;
+    }
+
+    //shoutout a-level maths core stats
+    public static float linearInterpolation(float now, float to, float toInterp) {
+        now -= (now - to) * clamp(toInterp, 0, 1);
+        return now;
     }
 
 }

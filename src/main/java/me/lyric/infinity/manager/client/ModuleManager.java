@@ -131,7 +131,7 @@ public class ModuleManager {
     }
 
     public void onLogout() {
-        modules.forEach(Module::onLogout);
+        modules.stream().filter(Module::isEnabled).forEach(Module::onLogout);
     }
 
     public void onUpdate() {

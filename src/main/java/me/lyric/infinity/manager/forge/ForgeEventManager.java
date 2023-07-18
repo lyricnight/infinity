@@ -35,7 +35,8 @@ import java.util.concurrent.Executors;
 public class ForgeEventManager implements IGlobals {
 
     public static ForgeEventManager forgeEventManager;
-
+    public long frameTime;
+    public long previous;
     public ForgeEventManager() {
         forgeEventManager = this;
 
@@ -57,13 +58,15 @@ public class ForgeEventManager implements IGlobals {
         RotationManager.resetRotations();
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onWorldRender(RenderWorldLastEvent event) {
         if (event.isCanceled()) {
             return;
         }
         Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
         Infinity.INSTANCE.eventBus.post(render3DEvent);
+        frameTime = System.currentTimeMillis() - previous;
+        previous = System.currentTimeMillis();
 
         for (Module module : ModuleManager.getModuleManager().getModules()) {
             if (module.isEnabled()) {

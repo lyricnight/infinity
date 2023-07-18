@@ -134,7 +134,7 @@ public class Notifications extends Module {
     public void onDeath(EntityPlayer player) {
         if(!totem.getValue()) return;
         boolean isFriend = (Infinity.INSTANCE.friendManager.isFriend(player.getName()));
-        if (totemPops.containsKey(player.getName()) && totem.getValue()) {
+        if (totemPops.containsKey(player.getName())) {
             int popCount = totemPops.get(player.getName());
             totemPops.remove(player.getName());
                 ChatUtils.sendMessage((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() +ChatFormatting.RESET + ChatFormatting.BOLD+ " died after popping " +(isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE)+ChatFormatting.BOLD+ popCount +ChatFormatting.RESET+ChatFormatting.BOLD + (popCount == 1 ? " totem!" : " totems!"));

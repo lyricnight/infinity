@@ -21,7 +21,11 @@ public class FakePlayer extends Module {
     public FakePlayer() {
         super("FakePlayer","Creates FakePlayer for testing.", Category.MISC);
     }
-
+    @Override
+    public void onLogout()
+    {
+        toggle();
+    }
     @Override
     public void onEnable() {
         if (mc.player == null || mc.world == null) {
@@ -44,5 +48,11 @@ public class FakePlayer extends Module {
             return;
         }
         mc.world.removeEntityFromWorld(-4201337);
+    }
+    @Override
+    public String getDisplayInfo()
+    {
+        if(!nullSafe()) return "";
+        return username.getValue().toLowerCase();
     }
 }

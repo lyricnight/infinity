@@ -55,7 +55,6 @@ public class HUD extends Module {
     public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
     public Setting<Boolean> tps = register(new Setting<>("TPS", "Draws TPS.", true));
     public Setting<Boolean> pps = register(new Setting<>("PPS", "Draws Packets per Second sent to server.", true));
-
     protected int width = 30;
     private int packets = 0;
     private final Timer packetTimer = new Timer();
@@ -69,12 +68,6 @@ public class HUD extends Module {
     public void onPacketSend(PacketEvent.Send ignored)
     {
         packets++;
-    }
-    @Override
-    public void onEnable()
-    {
-        if (!nullSafe()) return;
-        ScaledResolution sr = new ScaledResolution(mc);
     }
     @SubscribeEvent
     public void onRenderHud(RenderGameOverlayEvent event) {
@@ -100,10 +93,8 @@ public class HUD extends Module {
         if(activeModules.getValue())
         {
             final ArrayList<Module> sorted = new ArrayList<>();
-            int offsetx = 2;
-            int offsety = 2;
             for (final Module module : Infinity.INSTANCE.moduleManager.getModules()) {
-                if ((module.isDrawn() && module.isEnabled())) {
+                if ((module.isDrawn() && module.isEnabled() && !sorted.contains(module))) {
                     sorted.add(module);
                 }
             }
@@ -114,9 +105,13 @@ public class HUD extends Module {
             }));
             int offset = 0;
             for (final Module module : sorted) {
+                module.animfactor = MathUtils.linearInterpolation(module.animfactor, module.isEnabled() ? 1.0f : 0.0f, 0.005f * Infinity.INSTANCE.forgeEventManager.frameTime);
+                if (module.animfactor < 0.05f && !module.isEnabled()) {
+                    sorted.remove(module);
+                }
                 String text = module.getName() + (module.getDisplayInfo().equals("") ? "" : (ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]"));
-                mc.fontRenderer.drawString(text, (float) (SCREEN_WIDTH - ((mc.fontRenderer.getStringWidth(text) + offsetx))), ((offset) + offsety), getTextColor(offset).getRGB(), shadow.getValue());
-                offset += mc.fontRenderer.FONT_HEIGHT + 1;
+                mc.fontRenderer.drawString(text, (SCREEN_WIDTH - ((mc.fontRenderer.getStringWidth(text)) * module.animfactor)), offset, getTextColor(offset).getRGB(), shadow.getValue());
+                offset += mc.fontRenderer.FONT_HEIGHT * module.animfactor;
             }
         }
         if (watermark.getValue())
