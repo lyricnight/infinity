@@ -11,6 +11,7 @@ import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.ColorUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.metadata.MathUtils;
+import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -55,9 +56,9 @@ public class HUD extends Module {
     public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
     public Setting<Boolean> tps = register(new Setting<>("TPS", "Draws TPS.", true));
     public Setting<Boolean> pps = register(new Setting<>("PPS", "Draws Packets per Second sent to server.", true));
-    protected int width = 30;
     private int packets = 0;
     private final Timer packetTimer = new Timer();
+    private final ArrayList<Module> modules = new ArrayList<>();
 
     public HUD()
     {
@@ -90,28 +91,22 @@ public class HUD extends Module {
         }
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int y = new ScaledResolution(mc).getScaledHeight() - 11;
-        if(activeModules.getValue())
-        {
-            final ArrayList<Module> sorted = new ArrayList<>();
-            for (final Module module : Infinity.INSTANCE.moduleManager.getModules()) {
-                if ((module.isDrawn() && module.isEnabled() && !sorted.contains(module))) {
-                    sorted.add(module);
+        if(activeModules.getValue()) {
+            Infinity.INSTANCE.moduleManager.getModules().stream().filter(module -> module.isEnabled() && !modules.contains(module)).forEach(modules::add);
+            modules.sort(Comparator.comparing(Module::getFullWidth));
+            int deltaY = 0;
+            for (final Module module : new ArrayList<>(modules)) {
+                if (!module.isDrawn()) {
+                    continue;
                 }
-            }
-            width = 30;
-            sorted.sort(Comparator.comparingInt(mod -> {
-                int o = mc.fontRenderer.getStringWidth(mod.getName() + (!mod.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + mod.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""));
-                return -o;
-            }));
-            int offset = 0;
-            for (final Module module : sorted) {
                 module.animfactor = MathUtils.linearInterpolation(module.animfactor, module.isEnabled() ? 1.0f : 0.0f, 0.005f * Infinity.INSTANCE.forgeEventManager.frameTime);
-                if (module.animfactor < 0.05f && !module.isEnabled()) {
-                    sorted.remove(module);
+                final float x = SCREEN_WIDTH - (module.animfactor * mc.fontRenderer.getStringWidth(module.getName() + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "")));
+                if (!module.isEnabled() && module.animfactor < 0.05f) {
+                    modules.remove(module);
                 }
-                String text = module.getName() + (module.getDisplayInfo().equals("") ? "" : (ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]"));
-                mc.fontRenderer.drawString(text, (SCREEN_WIDTH - ((mc.fontRenderer.getStringWidth(text)) * module.animfactor)), offset, getTextColor(offset).getRGB(), shadow.getValue());
-                offset += mc.fontRenderer.FONT_HEIGHT * module.animfactor;
+                String text = module.getName() + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
+                mc.fontRenderer.drawString(text, x, deltaY, getTextColor(deltaY).getRGB(), shadow.getValue());
+                deltaY += (mc.fontRenderer.FONT_HEIGHT + 1) * module.animfactor;
             }
         }
         if (watermark.getValue())

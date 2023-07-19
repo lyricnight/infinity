@@ -75,6 +75,18 @@ public class Module extends Register implements IGlobals {
     public String getDescription() {
         return description;
     }
+    public float getFullWidth()
+    {
+        return stringWidth() + infoWidth();
+    }
+    public float infoWidth()
+    {
+        return -mc.fontRenderer.getStringWidth((!getDisplayInfo().equals("") ? ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + getDisplayInfo() + ChatFormatting.GRAY + "]" : ""));
+    }
+    public float stringWidth()
+    {
+        return -mc.fontRenderer.getStringWidth(name + (!getDisplayInfo().equals("") ? " " : ""));
+    }
 
     public Category getCategory() {
         return category;

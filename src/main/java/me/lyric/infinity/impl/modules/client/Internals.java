@@ -20,7 +20,7 @@ public class Internals extends Module {
     public Setting<Boolean> unf = register(new Setting<>("UnfocusedFPS", "FPS when mc is minimised.", false));
     public Setting<Integer> fps = register(new Setting<>("FPS", "FPS when unfocused.", 60, 10, 200).withParent(unf));
     public Setting<Boolean> fov = register(new Setting<>("FOVModifier", "Whether to modify fov or not.", false));
-    public Setting<Float> fovslider = register(new Setting<>("FOV", "FOV to set to.", 30f, 140f, 180f).withParent(fov));
+    public Setting<Float> fovslider = register(new Setting<>("FOV", "FOV to set to.", 130f, 30f, 180f).withParent(fov));
     public Setting<Boolean> update = register(new Setting<>("UpdateRotations", "", true));
     public Setting<Boolean> normalise = register(new Setting<>("NormaliseRotationAngles", "", false));
 

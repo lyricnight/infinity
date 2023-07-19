@@ -36,6 +36,7 @@ public class AutoCity extends Module
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
     public Setting<Boolean> move = register(new Setting<>("MovementCheck", "Leave on if you want autocity to only city when stationary.", false));
     public Setting<Boolean> holeCheck = register(new Setting<>("Hole Check","Checks if the target is in a hole.", true));
+    public Setting<Boolean> pickCheck = register(new Setting<>("PickCheck", "If you want AutoCity to check if you have a pickaxe or not.", false));
 
     BlockPos mining;
     long startTime;
@@ -73,11 +74,14 @@ public class AutoCity extends Module
         if (mc.player == null || mc.world == null) {
             return;
         }
-        int i = InventoryUtil.findHotbar(ItemPickaxe.class);
-        if (i == -1)
+        if (pickCheck.getValue())
         {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "No pickaxe found! Disabling AutoCity...");
-            toggle();
+            int i = InventoryUtil.findHotbar(ItemPickaxe.class);
+            if (i == -1)
+            {
+                ChatUtils.sendMessage(ChatFormatting.BOLD + "No pickaxe found! Disabling AutoCity...");
+                toggle();
+            }
         }
         if(move.getValue() && SpeedUtil.anyMovementKeys())
         {
