@@ -8,6 +8,8 @@ thanks to bush for bushbus - https://github.com/lyricnight/eventbus
 
 thanks to Cattyn for providing gl code for shaders
 
-![image](https://github.com/lyricnight/infinity/assets/79311706/bce65072-1206-4dfa-875f-6fa4e79a9cec)
+gui showcase - https://youtu.be/cJC232yaHj0
+![image](https://github.com/lyricnight/infinity/assets/79311706/f9b92d82-f68d-4647-9fd8-44d4a08c5ed9)
+
 
 _skidded_
