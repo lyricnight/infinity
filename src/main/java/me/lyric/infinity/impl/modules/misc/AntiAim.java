@@ -93,25 +93,7 @@ public class AntiAim extends Module {
     @Override
     public String getDisplayInfo()
     {
-        if(yaw.getValue() == Yaw.LINEAR)
-        {
-            return "linear";
-        }
-        if(yaw.getValue() == Yaw.REVERSE)
-        {
-            return "reverse";
-
-        }
-        if(yaw.getValue() == Yaw.RANDOM)
-        {
-            return "random";
-
-        }
-        if(yaw.getValue() == Yaw.TOGGLE)
-        {
-            return "toggle";
-        }
-        return "none";
+        return yaw.getValue().toString().toLowerCase() + ", " + pitch.getValue().toString().toLowerCase();
     }
 
     public enum Yaw {

@@ -75,6 +75,7 @@ public class ModuleManager {
         // PLAYER
         this.modules.add(new NoInterpolation());
         this.modules.add(new AutoReply());
+        this.modules.add(new Announcer());
         this.modules.add(new HitboxDesync());
         this.modules.add(new IOCancel());
 

@@ -25,6 +25,7 @@
     "gui.MixinGuiIngame",
     "gui.MixinGuiNewChat",
     "network.MixinNetworkManager",
+    "network.MixinPlayerControllerMP",
     "render.MixinItemRenderer",
     "render.MixinLayerArmorBase",
     "render.MixinRenderEnderCrystal",

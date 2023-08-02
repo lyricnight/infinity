@@ -28,8 +28,8 @@ import java.util.function.ToDoubleFunction;
 
 public class AutoCity extends Module
 {
-    public Setting<Integer> targetRange = register(new Setting<>("Target Range", "Range to target.", 10, 2, 15));
-    public Setting<Integer> resetRange = register(new Setting<>("Reset Range", "Range at which to reset the block we are attempting to mine. Set this to your SpeedMine's range.", 1, 4, 6));
+    public Setting<Float> targetRange = register(new Setting<>("Target Range", "Range to target.", 10f, 2f, 15f));
+    public Setting<Float> resetRange = register(new Setting<>("Reset Range", "Range at which to reset the block we are attempting to mine. Set this to your SpeedMine's range.", 4f, 1f, 6f));
     public Setting<Boolean> rotate = register(new Setting<>("Rotate", "Rotates to hit the block.", false));
     public Setting<Boolean> burrow = register(new Setting<>("Burrow", "Whether to mine player's burrow or not.", false));
     public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
@@ -95,11 +95,11 @@ public class AutoCity extends Module
                 mining = null;
                 return;
             }
-            if (holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && !isBurrow(target)) {
+            if (holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && !CombatUtil.isBurrow((EntityPlayer) target)) {
                 mining = null;
                 return;
             }
-            if (mc.player.getDistanceSq(mining) > MathUtils.square(resetRange.getValue()))
+            if (mc.player.getDistanceSq(mining) > MathUtils.square(resetRange.getValue().intValue()))
             {
                 mining = null;
                 return;
@@ -160,10 +160,6 @@ public class AutoCity extends Module
             }
         }
         return positions;
-    }
-    public static boolean isBurrow(final Entity target) {
-        final BlockPos blockPos = new BlockPos(target.posX, target.posY, target.posZ);
-        return mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST);
     }
     public static BlockPos getBurrowBlock(final EntityPlayer player)
     {
