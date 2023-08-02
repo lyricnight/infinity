@@ -22,10 +22,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Announcer extends Module {
     public Setting<String> client = register(new Setting<>("Name", "Name to use in announcer.", "Infinity"));
-    public static String[] breakMessages = new String[] { "I just mined {amount} {name} thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!", "\u042f \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e \u0434\u043e\u0431\u044b\u043b {amount} {name} \u0431\u043b\u043e\u043a\u0430 \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!" };;
-    public static String[] placeMessages = new String[] { "I just placed {amount} {name} thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!", "\u042f \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e \u043f\u043e\u0441\u0442\u0440\u043e\u0438\u043b \u0437\u0430\u043c\u043e\u043a \u0438\u0437 {amount} {name} \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!" };
-    public static String[] eatMessages = new String[] { "I just ate {amount} {name} thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!", "\u042f \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e \u0441\u044a\u0435\u043b {amount} {name} \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!" };
-    public static String[] walkMessages = new String[] { "I just teleported {blocks} blocks thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() +  "!", "\u042f \u043f\u0440\u043e\u0441\u0442\u043e \u0432\u043e\u043b\u0448\u0435\u0431\u043d\u044b\u043c \u043e\u0431\u0440\u0430\u0437\u043e\u043c \u0442\u0435\u043b\u0435\u043f\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043b {blocks} \u0431\u043b\u043e\u043a\u043e\u0432 \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() +"!" };
+    public static String[] breakMessages;
+    public static String[] placeMessages;
+    public static String[] eatMessages;
+    public static String[] walkMessages;
     public Setting<Integer> delay = register(new Setting<>("Delay", "dumb", 5, 1, 15));
     public static int blockBrokeDelay;
     static int blockPlacedDelay;
@@ -46,6 +46,7 @@ public class Announcer extends Module {
     {
         super("Announcer", "Announces things to be annoying.", Category.PLAYER);
     }
+
     @EventListener
     public void onPacketSend(PacketEvent event) {
         if (!nullSafe()) {
@@ -81,6 +82,10 @@ public class Announcer extends Module {
         if (!nullSafe()) {
             return;
         }
+        breakMessages = new String[] { "I just mined {amount} {name} thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!", "\u042f \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e \u0434\u043e\u0431\u044b\u043b {amount} {name} \u0431\u043b\u043e\u043a\u0430 \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!" };;
+        placeMessages = new String[] { "I just placed {amount} {name} thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!", "\u042f \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e \u043f\u043e\u0441\u0442\u0440\u043e\u0438\u043b \u0437\u0430\u043c\u043e\u043a \u0438\u0437 {amount} {name} \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!" };
+        eatMessages = new String[] { "I just ate {amount} {name} thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!", "\u042f \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0442\u043e \u0441\u044a\u0435\u043b {amount} {name} \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() + "!" };
+        walkMessages = new String[] { "I just teleported {blocks} blocks thanks to " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() +  "!", "\u042f \u043f\u0440\u043e\u0441\u0442\u043e \u0432\u043e\u043b\u0448\u0435\u0431\u043d\u044b\u043c \u043e\u0431\u0440\u0430\u0437\u043e\u043c \u0442\u0435\u043b\u0435\u043f\u043e\u0440\u0442\u0438\u0440\u043e\u0432\u0430\u043b {blocks} \u0431\u043b\u043e\u043a\u043e\u0432 \u0431\u043b\u0430\u0433\u043e\u0434\u0430\u0440\u044f " + Infinity.INSTANCE.moduleManager.getModuleByClass(Announcer.class).client.getValue() +"!" };
         ++blockBrokeDelay;
         ++blockPlacedDelay;
         ++jumpDelay;
