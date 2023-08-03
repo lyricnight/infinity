@@ -8,8 +8,9 @@ import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
+import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
+import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
@@ -18,8 +19,6 @@ import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -35,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class HoleFiller extends Module
 {
-    public Setting<Mode> switchMode = register(new Setting<>("Mode", "Mode for switch", Mode.SILENT));
+    public Setting<SwitchType> switchMode = register(new Setting<>("Mode", "Mode for switch", SwitchType.SILENT));
     public Setting<Float> range = register(new Setting<>("Range", "Range for placing.", 5.0f, 1.0f, 10.0f));
     public Setting<Float> wallRange = register(new Setting<>("WallRange", "Range for placing through walls.", 3f, 1f, 10f));
     public Setting<Integer> delay = register(new Setting<>("Delay", "Delay of blockplacement",1, 0, 1000));
@@ -98,16 +97,13 @@ public class HoleFiller extends Module
                 }
                 return;
             }
-            if (switchMode.getValue() == Mode.REQUIRE && mc.player.getHeldItem(EnumHand.MAIN_HAND).getItem() != Item.getItemFromBlock(Blocks.OBSIDIAN)) {
-                return;
-            }
             final int oldSlot = mc.player.inventory.currentItem;
             final int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
             final int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
             boolean switched = false;
             for (final HoleUtil.Hole hole : holes) {
                 if (!switched) {
-                    doSwitch(blockSlot == -1 ? chestSlot : blockSlot);
+                    Switch.doSwitch(blockSlot == -1 ? chestSlot : blockSlot, switchMode.getValue());
                     switched = true;
                 }
                 if (hole.doubleHole) {
@@ -121,9 +117,7 @@ public class HoleFiller extends Module
                     break;
                 }
             }
-            if ((switchMode.getValue() == Mode.SILENT || switchMode.getValue() == Mode.NORMAL) && switched) {
-                doSwitch(oldSlot);
-            }
+            Switch.doSwitch(oldSlot, switchMode.getValue());
             timer.reset();
         }
     }
@@ -163,21 +157,6 @@ public class HoleFiller extends Module
             boolean raytrace = mc.world.rayTraceBlocks(Rotation.getEyesPos(), new Vec3d(pos)) != null;
             return !raytrace || mc.player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= wallRange.getValue().doubleValue();
         }).collect(Collectors.toList());
-    }
-
-    public void doSwitch(final int i) {
-        if (switchMode.getValue() == Mode.NORMAL) {
-            Switch.switchToSlot(i);
-        }
-        if (switchMode.getValue() == Mode.SILENT) {
-            Switch.switchToSlotGhost(i);
-        }
-    }
-    public enum Mode
-    {
-        NORMAL,
-        REQUIRE,
-        SILENT
     }
     @Override
     public String getDisplayInfo()

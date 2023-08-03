@@ -12,6 +12,7 @@
     "accessors.IEntityPlayerSP",
     "accessors.IRenderManager",
     "accessors.ISPacketChat",
+    "accessors.IPlayerControllerMP",
     "accessors.ISPacketPlayerPosLook",
     "accessors.ITimer",
     "accessors.ICPacketChat",

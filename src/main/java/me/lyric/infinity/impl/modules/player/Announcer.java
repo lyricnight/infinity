@@ -15,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -76,6 +77,22 @@ public class Announcer extends Module {
             blockBrokeDelay = 0;
         }
     }
+    @SubscribeEvent
+    public void onDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent ignored)
+    {
+        eaten = 0;
+        blocksPlaced = 0;
+        blocksBroken = 0;
+        lastPositionX = 0;
+        lastPositionY = 0;
+        lastPositionZ = 0;
+        speed = 0;
+        blockBrokeDelay = 0;
+        blockPlacedDelay = 0;
+        jumpDelay = 0;
+        attackDelay = 0;
+        eattingDelay = 0;
+    }
 
     @Override
     public void onUpdate() {
@@ -119,10 +136,22 @@ public class Announcer extends Module {
     public void onEntityEat(LivingEntityUseItemEvent.Finish event) {
         int randomNum = ThreadLocalRandom.current().nextInt(1, 11);
         if (event.getEntity() == mc.player && (event.getItem().getItem() instanceof ItemFood || event.getItem().getItem() instanceof ItemAppleGold)) {
+            boolean off = false;
+            if (!(mc.player.getHeldItemMainhand().getItem() instanceof ItemAppleGold) && (mc.player.getHeldItemOffhand().getItem() instanceof ItemAppleGold))
+            {
+                off = true;
+            }
             ++eaten;
             if (eattingDelay >= 300 * delay.getValue() && this.eaten > randomNum) {
                 Random random = new Random();
-                sendMessage(eatMessages[random.nextInt(eatMessages.length)].replace("{amount}", "" + this.eaten).replace("{name}", "" + mc.player.getHeldItemMainhand().getDisplayName()));
+                if (off)
+                {
+                    sendMessage(eatMessages[random.nextInt(eatMessages.length)].replace("{amount}", "" + this.eaten).replace("{name}", "" + mc.player.getHeldItemOffhand().getDisplayName()));
+                }
+                else
+                {
+                    sendMessage(eatMessages[random.nextInt(eatMessages.length)].replace("{amount}", "" + this.eaten).replace("{name}", "" + mc.player.getHeldItemMainhand().getDisplayName()));
+                }
                 eaten = 0;
                 eattingDelay = 0;
             }

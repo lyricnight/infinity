@@ -10,6 +10,7 @@ import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
+import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketPlayerPosLook;
@@ -34,8 +35,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 
 public class Burrow extends Module {
-    public Setting<Mode> switchMode = register(new Setting<>("Mode", "Mode for switch", Mode.SILENT));
-
+    public Setting<SwitchType> switchMode = register(new Setting<>("Mode", "Mode for switch", SwitchType.SILENT));
     public Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations for placing.", true));
     public Setting<Boolean> swing = register(new Setting<>("Swing","Swing to place the block.", true));
     public Setting<Boolean> strict = register(new Setting<>("Strict","For stricter anticheats.", false));
@@ -80,7 +80,8 @@ public class Burrow extends Module {
                 if (((IEntityPlayerSP) mc.player).getLastReportedPitch() < 0) {
                     mc.player.connection.sendPacket(new CPacketPlayer.Rotation(mc.player.rotationYaw, 0, true));
                 }
-                mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.rotationYaw, 90, true));            ((IEntityPlayerSP) mc.player).setLastReportedPosY(mc.player.posY + 1.16);
+                mc.player.connection.sendPacket(new CPacketPlayer.PositionRotation(mc.player.posX, mc.player.posY, mc.player.posZ, mc.player.rotationYaw, 90, true));
+                ((IEntityPlayerSP) mc.player).setLastReportedPosY(mc.player.posY + 1.16);
                 ((IEntityPlayerSP) mc.player).setLastReportedPitch(90);
             }
 
@@ -94,12 +95,16 @@ public class Burrow extends Module {
             float f2 = (float) (vec.z - (double) pos.getZ());
 
             int startingItem = mc.player.inventory.currentItem;
-            doSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class));
+            if (InventoryUtil.findHotbarBlock(BlockObsidian.class) == -1)
+            {
+                return;
+            }
+            Switch.doSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class), switchMode.getValue());
             mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(currentPos, currentFace, EnumHand.MAIN_HAND, f, f1, f2));
             if (swing.getValue()) {
                 mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
             }
-            doSwitch(startingItem);
+            Switch.doSwitch(startingItem, switchMode.getValue());
             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, getPos(), mc.player.posZ, false));
             timer.reset();
             state = State.DISABLING;
@@ -182,18 +187,5 @@ public class Burrow extends Module {
     public void onBlockPush(PlayerSPPushOutOfBlocksEvent event)
     {
         event.setCanceled(true);
-    }
-    public void doSwitch(final int i) {
-        if (switchMode.getValue() == Mode.NORMAL) {
-            Switch.switchToSlot(i);
-        }
-        if (switchMode.getValue() == Mode.SILENT) {
-            Switch.switchToSlotGhost(i);
-        }
-    }
-    public enum Mode
-    {
-        NORMAL,
-        SILENT
     }
 }

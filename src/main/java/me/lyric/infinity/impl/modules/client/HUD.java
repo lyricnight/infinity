@@ -11,19 +11,21 @@ import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.ColorUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.metadata.MathUtils;
-import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
+import java.util.List;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Objects;
 
 /**
  * @author lyric
@@ -42,56 +44,51 @@ public class HUD extends Module {
     public Setting<Boolean> watermark = register(new Setting<>("Watermark", "Draws a watermark.", true));
     public Setting<Integer> waterX = register(new Setting<>("Watermark X", "Position X for Watermark.", 2, 1, 1000).withParent(watermark));
     public Setting<Integer> waterY = register(new Setting<>("Watermark Y", "Position Y for Watermark.", 2, 1, 1000).withParent(watermark));
-
+    public Setting<Boolean> info = register(new Setting<>("Info", "Displays info.", true));
     public Setting<Boolean> coordinates = register(new Setting<>("Coordinates", "Draws your coordinates.", true));
     public Setting<Integer> coordX = register(new Setting<>("Coordinates X", "Position X for Coordinates.", 2, 1, 1000).withParent(coordinates));
     public Setting<Integer> coordY = register(new Setting<>("Coordinates Y", "Position Y for Coordinates.", 10, 1, 1000).withParent(coordinates));
 
     public Setting<Boolean> speed = register(new Setting<>("Speed", "Draws your speed.", true));
-
-    public Setting<Boolean> ping = register(new Setting<>("Ping", "Draws your server connection speed.", true));
     public Setting<Boolean> armor = register(new Setting<>("Armor", "Draws Armor HUD.", false));
     public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
     public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!").withParent(welcomer));
-    public Setting<Boolean> fps = register(new Setting<>("FPS", "Draws your current FPS.", true));
-    public Setting<Boolean> tps = register(new Setting<>("TPS", "Draws TPS.", true));
-    public Setting<Boolean> pps = register(new Setting<>("PPS", "Draws Packets per Second sent to server.", true));
     private int packets = 0;
+    private int offset = 0;
     private final Timer packetTimer = new Timer();
     private final ArrayList<Module> modules = new ArrayList<>();
 
-    public HUD()
-    {
+    public HUD() {
         super("HUD", "test", Category.CLIENT);
     }
 
     @EventListener
-    public void onPacketSend(PacketEvent.Send ignored)
-    {
+    public void onPacketSend(PacketEvent.Send ignored) {
         packets++;
     }
+
     @SubscribeEvent
     public void onRenderHud(RenderGameOverlayEvent event) {
         if (!nullSafe())
             return;
-        if (event.getType().equals(RenderGameOverlayEvent.ElementType.POTION_ICONS) || (event.getType().equals(RenderGameOverlayEvent.ElementType.ARMOR)))
-        {
+        if (event.getType().equals(RenderGameOverlayEvent.ElementType.POTION_ICONS) || (event.getType().equals(RenderGameOverlayEvent.ElementType.ARMOR))) {
             event.setCanceled(true);
         }
     }
+
     @SubscribeEvent
     public void draw(final RenderGameOverlayEvent.Text event) {
         if (!nullSafe()) {
             return;
         }
-        if (packetTimer.passedMs(1000))
-        {
+        offset = 0;
+        if (packetTimer.passedMs(1000)) {
             packets = 0;
             packetTimer.reset();
         }
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int y = new ScaledResolution(mc).getScaledHeight() - 11;
-        if(activeModules.getValue()) {
+        if (activeModules.getValue()) {
             Infinity.INSTANCE.moduleManager.getModules().stream().filter(module -> module.isEnabled() && !modules.contains(module)).forEach(modules::add);
             modules.sort(Comparator.comparing(Module::getFullWidth));
             int deltaY = 0;
@@ -109,55 +106,45 @@ public class HUD extends Module {
                 deltaY += (mc.fontRenderer.FONT_HEIGHT + 1) * module.animfactor;
             }
         }
-        if (watermark.getValue())
-        {
-            mc.fontRenderer.drawString("Infinity" + " " + Infinity.INSTANCE.version, waterX.getValue(), waterY.getValue(), getTextColor(waterY.getValue()).getRGB(), shadow.getValue());
-        }
-        if (armor.getValue())
-        {
-            RenderUtils.renderArmorNew();
-        }
-        if (welcomer.getValue())
-        {
-            renderGreeter();
-        }
-        if (speed.getValue()) {
+        if (info.getValue()) {
+            DecimalFormat minuteFormatter = new DecimalFormat("0");
+            DecimalFormat secondsFormatter = new DecimalFormat("00");
+            List<InfoComponent> potions = new ArrayList<InfoComponent>();
+            List<InfoComponent> info = new ArrayList<InfoComponent>();
+            for (final PotionEffect effect : mc.player.getActivePotionEffects()) {
+                double timeS = (double) effect.getDuration() / 20 % 60;
+                double timeM = (double) effect.getDuration() / 20 / 60;
+                final String time = minuteFormatter.format(timeM) + ":" + secondsFormatter.format(timeS);
+                String name = "";
+                name = I18n.format(effect.getEffectName(), new Object[0]) + " " + (effect.getAmplifier() + 1) + " " + ChatFormatting.WHITE + time;
+                potions.add(new InfoComponent(name));
+            }
+            info.add(new InfoComponent("FPS " + ChatFormatting.WHITE + Minecraft.getDebugFPS()));
+            if (mc.getConnection() != null && mc.world != null && !(mc.currentScreen instanceof GuiDownloadTerrain)) {
+                mc.getConnection().getPlayerInfo(mc.player.getUniqueID());
+                info.add(new InfoComponent("Ping " + ChatFormatting.WHITE + mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime()));
+                info.add(new InfoComponent("TPS " + ChatFormatting.WHITE + Infinity.INSTANCE.tpsManager.getTickRateRound()));
+            }
             double distanceX = mc.player.posX - mc.player.prevPosX;
             double distanceZ = mc.player.posZ - mc.player.prevPosZ;
-            String speedDisplay = "Speed: " + TextFormatting.WHITE + MathUtils.roundFloat((MathHelper.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceZ, 2)) / 1000) / (0.05F / 3600), 1) + " km/h";
-            mc.fontRenderer.drawString(speedDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(speedDisplay) - 2, y, getTextColor(y).getRGB(), shadow.getValue());
-            y -= 10;
+            info.add(new InfoComponent("Speed " + ChatFormatting.WHITE + MathUtils.roundFloat((MathHelper.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceZ, 2)) / 1000) / (0.05F / 3600), 1) + " km/h"));
+            info.sort(Comparator.comparingInt(i -> - mc.fontRenderer.getStringWidth(i.text)));
+            renderPotions(potions);
+            renderInfo(info);
         }
-
-        if (ping.getValue()) {
-            try {
-                String pingDisplay = "Ping: " + TextFormatting.WHITE + (!mc.isSingleplayer() ? Objects.requireNonNull(mc.getConnection()).getPlayerInfo(mc.player.getUniqueID()).getResponseTime() : 0) + "ms";
-                mc.fontRenderer.drawString(pingDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(pingDisplay) - 2, y, getTextColor(y).getRGB(), shadow.getValue());
-                y -= 10;
-            } catch (NullPointerException e) {
-                // Hmm...
-            }
+        if (watermark.getValue()) {
+            mc.fontRenderer.drawString("Infinity" + " " + Infinity.INSTANCE.version, waterX.getValue(), waterY.getValue(), getTextColor(waterY.getValue()).getRGB(), shadow.getValue());
         }
-        if (fps.getValue()) {
-            String fpsDisplay = "FPS: " + TextFormatting.WHITE + Minecraft.getDebugFPS();
-            mc.fontRenderer.drawString(fpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(fpsDisplay) - 2, y, getTextColor(y).getRGB(), shadow.getValue());
-            y -= 10;
+        if (armor.getValue()) {
+            RenderUtils.renderArmorNew();
         }
-
-        if (tps.getValue()) {
-            String tpsDisplay = "TPS: " + TextFormatting.WHITE + Infinity.INSTANCE.tpsManager.getTickRateRound();
-            mc.fontRenderer.drawString(tpsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(tpsDisplay) - 2, y, getTextColor(y).getRGB(), shadow.getValue());
-            y -= 10;
-        }
-
-        if (pps.getValue()) {
-            String ppsDisplay = "Packets: " + TextFormatting.WHITE + packets;
-            mc.fontRenderer.drawString(ppsDisplay, SCREEN_WIDTH - mc.fontRenderer.getStringWidth(ppsDisplay) - 2, y, getTextColor(y).getRGB(), shadow.getValue());
+        if (welcomer.getValue()) {
+            renderGreeter();
         }
     }
-    public Color getTextColor(final int y) {
+    public Color getTextColor (final int y){
         if (step.getValue()) {
-            double roundY = Math.sin(Math.toRadians((double)((long) y * (stepLength.getValue()) + System.currentTimeMillis() / stepSpeed.getValue())));
+            double roundY = Math.sin(Math.toRadians((double) ((long) y * (stepLength.getValue()) + System.currentTimeMillis() / stepSpeed.getValue())));
             roundY = Math.abs(roundY);
             return ColorUtils.interpolate((float) MathHelper.clamp(roundY, 0.0, 1.0), color.getValue().getColor(), stepColor.getValue().getColor());
         }
@@ -166,7 +153,31 @@ public class HUD extends Module {
     public void renderGreeter() {
         final int width = new ScaledResolution(mc).getScaledWidth();
         String welcomerString = String.format(textthing.getValue(), mc.player.getName());
-        mc.fontRenderer.drawString(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2,getTextColor(2).getRGB(), shadow.getValue() );
+        mc.fontRenderer.drawString(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, getTextColor(2).getRGB(), shadow.getValue());
+    }
+    public void renderInfo(List<InfoComponent> info) {
+        int start = new ScaledResolution(mc).getScaledHeight() - 11;
+        int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
+        for (final InfoComponent comp : info) {
+            final int x = SCREEN_WIDTH - mc.fontRenderer.getStringWidth(comp.text);
+            mc.fontRenderer.drawString(comp.text, x - 2, (start + offset + 1), getTextColor(start + offset).getRGB(), shadow.getValue());
+            offset -= mc.fontRenderer.FONT_HEIGHT + 1;
+        }
+    }
+    public void renderPotions(List<InfoComponent> potions) {
+        int start = new ScaledResolution(mc).getScaledHeight() - 11;
+        for (final InfoComponent comp : potions) {
+            int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
+            final int x = SCREEN_WIDTH - mc.fontRenderer.getStringWidth(comp.text);
+            mc.fontRenderer.drawString(comp.text, (x - 2), (start + offset + 1), getTextColor(start + offset).getRGB(), shadow.getValue());
+            offset -= mc.fontRenderer.FONT_HEIGHT + 1;
+        }
+    }
+    static class InfoComponent
+    {
+        String text;
+        public InfoComponent(String text) {
+            this.text = text;
+        }
     }
 }
-

@@ -137,7 +137,7 @@ public class Notifications extends Module {
         if (totemPops.containsKey(player.getName())) {
             int popCount = totemPops.get(player.getName());
             totemPops.remove(player.getName());
-                ChatUtils.sendMessage((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() +ChatFormatting.RESET + ChatFormatting.BOLD+ " died after popping " +(isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE)+ChatFormatting.BOLD+ popCount +ChatFormatting.RESET+ChatFormatting.BOLD + (popCount == 1 ? " totem!" : " totems!"));
+                ChatUtils.sendMessageWithID((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() +ChatFormatting.RESET + ChatFormatting.BOLD+ " died after popping " +(isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE)+ChatFormatting.BOLD+ popCount +ChatFormatting.RESET+ChatFormatting.BOLD + (popCount == 1 ? " totem!" : " totems!"), player.entityId);
         }
     }
     @EventListener
@@ -166,7 +166,7 @@ public class Notifications extends Module {
         } else {
             totemPops.put(player.getName(), popCount);
         }
-        ChatUtils.sendMessage((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() + ChatFormatting.RESET + " has popped " +(isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ popCount +ChatFormatting.RESET +ChatFormatting.BOLD + (popCount == 1 ? " totem!" : " totems!") );
+        ChatUtils.sendMessageWithID((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() + ChatFormatting.RESET + " has popped " +(isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ popCount +ChatFormatting.RESET +ChatFormatting.BOLD + (popCount == 1 ? " totem!" : " totems!"), player.entityId);
     }
 
 
