@@ -1,6 +1,8 @@
 package me.lyric.infinity.api.util.client;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.api.util.string.StringUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -22,6 +24,29 @@ public class EntityUtil implements IGlobals {
         }
         return 0.0f;
     }
+    public static String getFacing(final String in) {
+        final String gray = ChatFormatting.DARK_GRAY + "";
+        final String white = ChatFormatting.WHITE + "";
+        final String facing = StringUtils.getTitle(in);
+        String add;
+        if (in.equalsIgnoreCase("North")) {
+            add = " " + gray + "(" + white + "-Z" + gray + ")";
+        }
+        else if (in.equalsIgnoreCase("East")) {
+            add = " " + gray + "(" + white + "+X" + gray + ")";
+        }
+        else if (in.equalsIgnoreCase("South")) {
+            add = " " + gray + "(" + white + "+Z" + gray + ")";
+        }
+        else if (in.equalsIgnoreCase("West")) {
+            add = " " + gray + "(" + white + "-X" + gray + ")";
+        }
+        else {
+            add = " ERROR";
+        }
+        return facing + add;
+    }
+
 
 
 }

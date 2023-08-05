@@ -1,6 +1,7 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
@@ -12,6 +13,7 @@ import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.api.util.time.Timer;
+import me.lyric.infinity.impl.modules.movement.InstantSpeed;
 import me.lyric.infinity.manager.client.PlacementManager;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
@@ -102,6 +104,7 @@ public class HoleFiller extends Module
             final int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
             boolean switched = false;
             for (final HoleUtil.Hole hole : holes) {
+                Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
                 if (!switched) {
                     Switch.doSwitch(blockSlot == -1 ? chestSlot : blockSlot, switchMode.getValue());
                     switched = true;
@@ -117,6 +120,7 @@ public class HoleFiller extends Module
                     break;
                 }
             }
+            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             Switch.doSwitch(oldSlot, switchMode.getValue());
             timer.reset();
         }

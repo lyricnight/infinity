@@ -166,7 +166,7 @@ public class Notifications extends Module {
         } else {
             totemPops.put(player.getName(), popCount);
         }
-        ChatUtils.sendMessageWithID((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() + ChatFormatting.RESET + " has popped " +(isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ popCount +ChatFormatting.RESET +ChatFormatting.BOLD + (popCount == 1 ? " totem!" : " totems!"), player.entityId);
+        ChatUtils.sendMessageWithID((isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ player.getName() + ChatFormatting.RESET + " has popped " +(isFriend ? ChatFormatting.AQUA : ChatFormatting.WHITE) +"§l"+ popCount +ChatFormatting.RESET + (popCount == 1 ? " totem!" : " totems!"), player.entityId);
     }
 
 

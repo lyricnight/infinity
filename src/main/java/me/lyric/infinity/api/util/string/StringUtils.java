@@ -19,4 +19,8 @@ public class StringUtils {
 
         return flag;
     }
+    public static String getTitle(String in) {
+        in = Character.toUpperCase(in.toLowerCase().charAt(0)) + in.toLowerCase().substring(1);
+        return in;
+    }
 }

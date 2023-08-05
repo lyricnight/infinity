@@ -8,11 +8,13 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.gl.ColorUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
@@ -46,13 +48,12 @@ public class HUD extends Module {
     public Setting<Integer> waterY = register(new Setting<>("Watermark Y", "Position Y for Watermark.", 2, 1, 1000).withParent(watermark));
     public Setting<Boolean> info = register(new Setting<>("Info", "Displays info.", true));
     public Setting<Boolean> coordinates = register(new Setting<>("Coordinates", "Draws your coordinates.", true));
-    public Setting<Integer> coordX = register(new Setting<>("Coordinates X", "Position X for Coordinates.", 2, 1, 1000).withParent(coordinates));
-    public Setting<Integer> coordY = register(new Setting<>("Coordinates Y", "Position Y for Coordinates.", 10, 1, 1000).withParent(coordinates));
 
     public Setting<Boolean> speed = register(new Setting<>("Speed", "Draws your speed.", true));
     public Setting<Boolean> armor = register(new Setting<>("Armor", "Draws Armor HUD.", false));
     public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
     public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!").withParent(welcomer));
+    public Setting<Integer> thing = register(new Setting<>("yposdebug", "", 10, 1, 2000));
     private int packets = 0;
     private int offset = 0;
     private final Timer packetTimer = new Timer();
@@ -115,13 +116,12 @@ public class HUD extends Module {
                 double timeS = (double) effect.getDuration() / 20 % 60;
                 double timeM = (double) effect.getDuration() / 20 / 60;
                 final String time = minuteFormatter.format(timeM) + ":" + secondsFormatter.format(timeS);
-                String name = "";
+                String name;
                 name = I18n.format(effect.getEffectName(), new Object[0]) + " " + (effect.getAmplifier() + 1) + " " + ChatFormatting.WHITE + time;
                 potions.add(new InfoComponent(name));
             }
             info.add(new InfoComponent("FPS " + ChatFormatting.WHITE + Minecraft.getDebugFPS()));
-            if (mc.getConnection() != null && mc.world != null && !(mc.currentScreen instanceof GuiDownloadTerrain)) {
-                mc.getConnection().getPlayerInfo(mc.player.getUniqueID());
+            if (mc.getConnection() != null && mc.world != null && !(mc.currentScreen instanceof GuiDownloadTerrain) && (mc.getConnection().getPlayerInfo(mc.player.getUniqueID()) != null)) {
                 info.add(new InfoComponent("Ping " + ChatFormatting.WHITE + mc.getConnection().getPlayerInfo(mc.player.getUniqueID()).getResponseTime()));
                 info.add(new InfoComponent("TPS " + ChatFormatting.WHITE + Infinity.INSTANCE.tpsManager.getTickRateRound()));
             }
@@ -131,6 +131,21 @@ public class HUD extends Module {
             info.sort(Comparator.comparingInt(i -> - mc.fontRenderer.getStringWidth(i.text)));
             renderPotions(potions);
             renderInfo(info);
+        }
+        if (coordinates.getValue())
+        {
+            DecimalFormat coordFormat = new DecimalFormat("#.#");
+            boolean inHell = mc.world.getBiome(mc.player.getPosition()).getBiomeName().equals("Hell");
+            int k = (mc.currentScreen instanceof GuiChat) ? 14 : 0;
+            mc.fontRenderer.drawString(EntityUtil.getFacing(mc.player.getHorizontalFacing().getName().toUpperCase()), 2, 530 - mc.fontRenderer.FONT_HEIGHT - k, getTextColor(530 - mc.fontRenderer.FONT_HEIGHT).getRGB(), shadow.getValue());
+            if (inHell) {
+                mc.fontRenderer.drawString("XYZ " + ChatFormatting.WHITE + coordFormat.format(mc.player.posX) + ", " + coordFormat.format(mc.player.posY) + ", " + coordFormat.format(mc.player.posZ) + ChatFormatting.DARK_GRAY + " (" + ChatFormatting.WHITE + coordFormat.format(mc.player.posX * 7.0) + ", " + coordFormat.format(mc.player.posZ * 7.0) + ChatFormatting.DARK_GRAY + ")", 2, 530 - k, getTextColor(530).getRGB(), shadow.getValue());
+            }
+            else {
+                mc.fontRenderer.drawString("XYZ " + ChatFormatting.WHITE + coordFormat.format(mc.player.posX) + ", " + coordFormat.format(mc.player.posY) + ", " + coordFormat.format(mc.player.posZ) + ChatFormatting.DARK_GRAY + " (" + ChatFormatting.WHITE + coordFormat.format(mc.player.posX / 7.0) + ", " + coordFormat.format(mc.player.posZ / 7.0) + ChatFormatting.DARK_GRAY + ")", 2, 530 - k, getTextColor(530).getRGB(), shadow.getValue());
+            }
+
+
         }
         if (watermark.getValue()) {
             mc.fontRenderer.drawString("Infinity" + " " + Infinity.INSTANCE.version, waterX.getValue(), waterY.getValue(), getTextColor(waterY.getValue()).getRGB(), shadow.getValue());

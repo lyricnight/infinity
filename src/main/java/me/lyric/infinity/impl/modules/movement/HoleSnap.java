@@ -46,7 +46,8 @@ public class HoleSnap extends Module {
         timer.reset();
         holes = null;
     }
-    public void disable()
+    @Override
+    public void onDisable()
     {
         if (mc.player == null || mc.world == null) {
             return;
@@ -67,7 +68,6 @@ public class HoleSnap extends Module {
         Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
         if (EntityUtil.isInLiquid()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in liquid! Disabling ..");
-            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             toggle();
             return;
         }
@@ -78,14 +78,11 @@ public class HoleSnap extends Module {
         }
         if (holes == null || HoleUtil.isHole(RotationManager.getPlayerPos()) || CombatUtil.isBurrow(mc.player)) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
-            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
-            disable();
             toggle();
             return;
         }
         if (timer.passedMs(500L) && SpeedUtil.anyMovementKeys()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "HoleSnap timed out, disabling...");
-            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
             toggle();
             return;
         }

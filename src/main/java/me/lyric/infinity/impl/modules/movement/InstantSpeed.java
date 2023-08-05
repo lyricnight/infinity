@@ -29,15 +29,11 @@ public class InstantSpeed extends Module {
 
     @EventListener
     public void onMove(MoveEvent e) {
-        if (!EntityUtil.isInLiquid())
+        if ((EntityUtil.isInLiquid() && noLiquid.getValue()) || mc.player.isElytraFlying())
         {
-            pause = false;
-        }
-        if (mc.player.isElytraFlying() || pause) {
-            return;
-        }
-        if (this.noLiquid.getValue() && EntityUtil.isInLiquid()) {
             pause = true;
+        }
+        if (pause) {
             return;
         }
         SpeedUtil.instant(e, SpeedUtil.getSpeed());
