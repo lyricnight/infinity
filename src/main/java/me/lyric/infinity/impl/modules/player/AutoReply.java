@@ -10,6 +10,8 @@ import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.math.Vec3d;
 
+import java.text.DecimalFormat;
+
 
 /**
  * @author lyric
@@ -27,6 +29,7 @@ public class AutoReply extends Module {
         if (!nullSafe()) {
             return;
         }
+        DecimalFormat format = new DecimalFormat("#.#");
         if (e.getPacket() instanceof SPacketChat) {
             SPacketChat p = (SPacketChat) e.getPacket();
             String msg = p.getChatComponent().getUnformattedText();
@@ -42,7 +45,7 @@ public class AutoReply extends Module {
                             return;
                         }
                         Vec3d pos = mc.player.getPositionVector();
-                        mc.player.sendChatMessage("/msg " + ign + (" " + pos.x + "x " + (ignoreY.getValue() ? "" : pos.y + "y ") + pos.z + "z"));
+                        mc.player.sendChatMessage("/msg " + ign + (" " + format.format(pos.x) + "x " + (ignoreY.getValue() ? "" : format.format(pos.y) + "y ") + format.format(pos.z) + "z"));
                     }
                 }
             }
