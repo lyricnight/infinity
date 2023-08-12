@@ -13,10 +13,7 @@ import com.lukflug.panelstudio.popup.MousePositioner;
 import com.lukflug.panelstudio.popup.PanelPositioner;
 import com.lukflug.panelstudio.popup.PopupTuple;
 import com.lukflug.panelstudio.setting.*;
-import com.lukflug.panelstudio.theme.IColorScheme;
-import com.lukflug.panelstudio.theme.ITheme;
-import com.lukflug.panelstudio.theme.OptimizedTheme;
-import com.lukflug.panelstudio.theme.ThemeTuple;
+import com.lukflug.panelstudio.theme.*;
 import com.lukflug.panelstudio.widget.*;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -31,6 +28,8 @@ import org.lwjgl.input.Keyboard;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.*;
 import java.util.stream.Stream;
@@ -343,6 +342,20 @@ public class PanelStudioGUI extends MinecraftGUI {
                 return new ColorPickerComponent(setting, new ThemeTuple(theme.theme, theme.logicalLevel, colorLevel));
             }
         };
+        //Classic Panel
+        IComponentAdder classicPanelAdder=new PanelAdder(gui,false,()-> ClickGUI.clickGUI.layout.getValue()== ClickGUI.Layout.ClassicPanel, title->"classicPanel_" + title) {
+            @Override
+            protected IResizable getResizable (int width) {
+                return resizable.apply(width);
+            }
+
+            @Override
+            protected IScrollSize getScrollSize (IResizable size) {
+                return resizableHeight.apply(size);
+            }
+        };
+        ILayout classicPanelLayout=new PanelLayout(WIDTH,new Point(DISTANCE,DISTANCE),(WIDTH+DISTANCE)/2,HEIGHT+DISTANCE,animation,level->ChildMode.DOWN,level->ChildMode.DOWN,popupType);
+        classicPanelLayout.populateGUI(classicPanelAdder, generator, client, theme);
 
         // Horizontal CSGO
         AtomicReference<IResizable> horizontalResizable = new AtomicReference<IResizable>(null);

@@ -13,6 +13,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,7 +31,7 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         super(worldIn, playerProfile);
     }
     @Override
-    public void move(MoverType type, double x, double y, double z) {
+    public void move(@NotNull MoverType type, double x, double y, double z) {
         MoveEvent event = new MoveEvent(x, y, z);
         Infinity.INSTANCE.eventBus.post(event);
         super.move(type, event.getMotionX(), event.getMotionY(), event.getMotionZ());

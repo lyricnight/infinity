@@ -34,6 +34,7 @@ public class Module extends Register implements IGlobals {
     public float animfactor = 0.0f;
     private final Category category;
 
+    //???
     private Supplier<String> info;
     private final Setting<Bind> bind = new Setting<>("Bind", "Key bind for the module.", new Bind());
     private final Setting<Boolean> drawn = new Setting<>("Drawn", "Draws the module on the ArrayList when enabled.", true);
@@ -48,7 +49,7 @@ public class Module extends Register implements IGlobals {
         this.register(bind);
         this.register(drawn);
     }
-
+    //???
     public Module(final String name, final String description, final Category category, Supplier<String> info) {
         super();
 

@@ -38,8 +38,7 @@ public class ClickGUI extends Module {
             mc.displayGuiScreen(null);
         }
     }
-
     public enum Layout {
-        CSGOHorizontal, CSGOVertical, CSGOCategory, SearchableCSGO
+        CSGOHorizontal, CSGOVertical, CSGOCategory, SearchableCSGO, ClassicPanel
     }
 }

@@ -9,15 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockUtil implements IGlobals {
-
-    public static IBlockState getState(BlockPos pos) {
-        return mc.world.getBlockState(pos);
-    }
-
-    public static boolean canReplace(BlockPos pos) {
-        return getState(pos).getMaterial().isReplaceable();
-    }
-
     public static boolean isAir(BlockPos pos) {
         return BlockUtil.mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
     }

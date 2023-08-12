@@ -65,6 +65,7 @@ public class MixinEntityRenderer implements IEntityRenderer {
         Infinity.INSTANCE.eventBus.post(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
+    //what
 
     @ModifyVariable(method = "orientCamera", ordinal = 3, at = @At(value = "STORE", ordinal = 0), require = 1)
     public double changeCameraDistanceHook(double range) {

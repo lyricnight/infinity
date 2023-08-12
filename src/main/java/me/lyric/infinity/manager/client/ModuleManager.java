@@ -1,5 +1,6 @@
 package me.lyric.infinity.manager.client;
 
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.impl.modules.client.*;
 import me.lyric.infinity.impl.modules.combat.*;
@@ -75,6 +76,7 @@ public class ModuleManager {
         // PLAYER
         this.modules.add(new NoInterpolation());
         this.modules.add(new AutoReply());
+        this.modules.add(new PacketDelay());
         this.modules.add(new Announcer());
         this.modules.add(new HitboxDesync());
         this.modules.add(new IOCancel());

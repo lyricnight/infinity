@@ -10,7 +10,6 @@ import net.minecraft.block.BlockObsidian;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 public class InventoryUtil implements IGlobals {
-    private static boolean shouldWait;
     public static int findHotbarBlock(Class clazz) {
         for (int i = 0; i < 9; ++i) {
             ItemStack stack = mc.player.inventory.getStackInSlot(i);

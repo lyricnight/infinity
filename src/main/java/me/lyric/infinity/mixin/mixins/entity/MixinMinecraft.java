@@ -17,15 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements IMinecraft {
+    @Override
+    @Accessor(value = "timer")
+    public abstract Timer getTimer();
     @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endSection()V", ordinal = 0, shift = At.Shift.AFTER))
     private void post_ScheduledTasks(CallbackInfo callbackInfo)
     {
         GameLoopEvent event = new GameLoopEvent();
         Infinity.INSTANCE.eventBus.post(event);
     }
-    @Override
-    @Accessor(value = "timer")
-    public abstract Timer getTimer();
     @Inject(method={"getLimitFramerate"}, at={@At(value="HEAD")}, cancellable=true)
     public void getLimitFramerateHook(CallbackInfoReturnable<Integer> callbackInfoReturnable) {
         try {
