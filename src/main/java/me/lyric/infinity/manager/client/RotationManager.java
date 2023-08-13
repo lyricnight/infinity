@@ -1,126 +1,79 @@
 package me.lyric.infinity.manager.client;
 
 import me.bush.eventbus.annotation.EventListener;
-import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.render.RenderLivingEntityEvent;
-import me.lyric.infinity.api.util.client.HoleUtil;
+import me.lyric.infinity.api.event.player.MotionUpdateEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;
-import net.minecraft.network.play.client.CPacketPlayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import java.util.Comparator;
-
 
 /**
-  @author lyric :)
+  @author i wonder
  **/
 
 public class RotationManager implements IGlobals {
-    private static float yaw;
-    private static float pitch;
-    private float headPitch = -1;
+    private float yaw, pitch;
+    private boolean rotated;
+    private int ticksSinceNoRotate;
+    private double x, y, z;
+    private boolean onGround;
 
-    public void init() {
-        MinecraftForge.EVENT_BUS.register(this);
+    public void init()
+    {
         Infinity.INSTANCE.eventBus.subscribe(this);
     }
 
-    public static void updateRotations() {
-        if (mc.player == null)
+    @EventListener
+    public void onMotionUpdate(MotionUpdateEvent event)
+    {
+        if(event.getStage() == 1)
         {
-            return;
+            x = mc.player.posX;
+            y = mc.player.posY;
+            z = mc.player.posZ;
+            onGround = mc.player.onGround;
+            yaw = mc.player.rotationYaw;
+            pitch = mc.player.rotationPitch;
         }
-        yaw = mc.player.rotationYaw;
-        pitch = mc.player.rotationPitch;
+        if(event.getStage() == 2)
+        {
+            mc.player.posX = x;
+            mc.player.posY = y;
+            mc.player.posZ = z;
+            mc.player.onGround = onGround;
+            ticksSinceNoRotate++;
+            if (ticksSinceNoRotate > 2) {
+                rotated = false;
+            }
+            mc.player.rotationYaw = yaw;
+            mc.player.rotationYawHead = yaw;
+            mc.player.rotationPitch = pitch;
+        }
     }
-    public static void resetRotations() {
-        if (mc.player == null)
-        {
-            return;
-        }
+
+    public void setRotations(float yaw, float pitch) {
+        rotated = true;
+        ticksSinceNoRotate = 0;
         mc.player.rotationYaw = yaw;
         mc.player.rotationYawHead = yaw;
         mc.player.rotationPitch = pitch;
     }
-    public static void lookAtVec3dPacket(Vec3d vec, boolean normalize, boolean update) {
-        float[] angle = getAngle(vec);
-        mc.player.connection.sendPacket(new CPacketPlayer.Rotation(angle[0], normalize ? (float) MathHelper.normalizeAngle((int) angle[1], 360) : angle[1], mc.player.onGround));
 
-        if (update) {
-            ((IEntityPlayerSP) mc.player).setLastReportedYaw(angle[0]);
-            ((IEntityPlayerSP) mc.player).setLastReportedPitch(angle[1]);
-        }
-    }
-    public static float[] getAngle(Vec3d vec) {
-        Vec3d eyesPos = new Vec3d(mc.player.posX, mc.player.posY + (double) mc.player.getEyeHeight(), mc.player.posZ);
-        double diffX = vec.x - eyesPos.x;
-        double diffY = vec.y - eyesPos.y;
-        double diffZ = vec.z - eyesPos.z;
-        double diffXZ = Math.sqrt(diffX * diffX + diffZ * diffZ);
-        float yaw = (float) Math.toDegrees(Math.atan2(diffZ, diffX)) - 90.0f;
-        float pitch = (float) (-Math.toDegrees(Math.atan2(diffY, diffXZ)));
-        return new float[]{ mc.player.rotationYaw + MathHelper.wrapDegrees(yaw - mc.player.rotationYaw), mc.player.rotationPitch + MathHelper.wrapDegrees(pitch - mc.player.rotationPitch)};
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
     }
 
-    @SubscribeEvent
-    public void onUpdate(TickEvent.ClientTickEvent event) {
-        if (mc.player != null && mc.world != null) {
-            headPitch = -1;
-        }
-    }
-    public static void resetRotationsPacket() {
-        if (mc.player == null)
-        {
-            return;
-        }
-        float[] angle = new float[]{mc.player.rotationYaw, mc.player.rotationPitch};
-        mc.player.connection.sendPacket(new CPacketPlayer.Rotation(angle[0], angle[1], mc.player.onGround));
-    }
-    @EventListener(priority = ListenerPriority.HIGHEST)
-    public void onRenderLivingEntity(RenderLivingEntityEvent event) {
-        if (event.getEntityLivingBase().equals(mc.player)) {
-            event.setCancelled(true);
-            event.getModelBase().render(event.getEntityLivingBase(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), headPitch == -1 ? mc.player.rotationPitch : headPitch, event.getScaleFactor());
-        }
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
     }
 
-    public void setHeadPitch(float in) {
-        headPitch = in;
+    public float getPitch() {
+        return pitch;
     }
 
-    public static HoleUtil.Hole getTargetHoleVec3D(double targetRange) {
-        return HoleUtil.getHoles(targetRange, RotationManager.getPlayerPos(), false).stream().filter(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)) <= targetRange).min(Comparator.comparingDouble(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)))).orElse(null);
+    public float getYaw() {
+        return yaw;
     }
-    public static BlockPos getPlayerPos() {
-        double decimalPoint = mc.player.posY - Math.floor(mc.player.posY);
-        return new BlockPos(mc.player.posX, decimalPoint > 0.8 ? Math.floor(mc.player.posY) + 1.0 : Math.floor(mc.player.posY), mc.player.posZ);
-    }
-    public static Vec2f getRotationTo(Vec3d posTo, Vec3d posFrom) {
-        return RotationManager.getRotationFromVec(posTo.subtract(posFrom));
-    }
-    public static Vec2f getRotationFromVec(Vec3d vec) {
-        double xz = Math.hypot(vec.x, vec.z);
-        float yaw = (float)RotationManager.normalizeAngle(Math.toDegrees(Math.atan2(vec.z, vec.x)) - 90.0);
-        float pitch = (float)RotationManager.normalizeAngle(Math.toDegrees(-Math.atan2(vec.y, xz)));
-        return new Vec2f(yaw, pitch);
-    }
-    public static double normalizeAngle(Double angleIn) {
-        double angle = angleIn;
-        angle %= 360.0;
-        if (angle >= 180.0) {
-            angle -= 360.0;
-        }
-        if (angle < -180.0) {
-            angle += 360.0;
-        }
-        return angle;
+
+    public boolean isRotated() {
+        return rotated;
     }
 }

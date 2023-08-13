@@ -104,6 +104,7 @@ public class ModuleManager {
 
         // COMBAT
         this.modules.add(new Criticals());
+        this.modules.add(new Armor());
         this.modules.add(new HoleFiller());
         this.modules.add(new Burrow());
         this.modules.add(new Clip());

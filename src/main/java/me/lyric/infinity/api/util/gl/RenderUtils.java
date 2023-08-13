@@ -3,6 +3,8 @@ package me.lyric.infinity.api.util.gl;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -496,8 +498,8 @@ public class RenderUtils implements IGlobals {
     public static Vec3d interpolateEntity(Entity entity, float time) {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) time, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) time, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) time);
     }
-
-
-
+    public static boolean validScreen() {
+        return !(mc.currentScreen instanceof GuiContainer) || mc.currentScreen instanceof GuiInventory;
+    }
 
 }

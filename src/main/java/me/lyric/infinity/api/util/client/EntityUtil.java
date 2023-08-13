@@ -3,8 +3,13 @@ package me.lyric.infinity.api.util.client;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.string.StringUtils;
+import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+
+import java.util.Comparator;
 
 
 /**
@@ -45,6 +50,16 @@ public class EntityUtil implements IGlobals {
             add = " ERROR";
         }
         return facing + add;
+    }
+    public static double getEyeHeight(final Entity entity) {
+        return entity.posY + entity.getEyeHeight();
+    }
+    public static HoleUtil.Hole getTargetHoleVec3D(double targetRange) {
+        return HoleUtil.getHoles(targetRange, getPlayerPos(), false).stream().filter(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)) <= targetRange).min(Comparator.comparingDouble(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)))).orElse(null);
+    }
+    public static BlockPos getPlayerPos() {
+        double decimalPoint = mc.player.posY - Math.floor(mc.player.posY);
+        return new BlockPos(mc.player.posX, decimalPoint > 0.8 ? Math.floor(mc.player.posY) + 1.0 : Math.floor(mc.player.posY), mc.player.posZ);
     }
 
 

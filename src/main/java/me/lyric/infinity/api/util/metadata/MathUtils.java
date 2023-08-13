@@ -3,6 +3,7 @@ package me.lyric.infinity.api.util.metadata;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -44,10 +45,47 @@ public class MathUtils implements IGlobals
             return Math.min(num, max);
         }
     }
+    public static double angle(Vec3d vec3d, Vec3d other) {
+        double lengthSq = vec3d.length() * other.length();
+
+        if (lengthSq < 1.0E-4D) {
+            return 0.0;
+        }
+
+        double dot = vec3d.dotProduct(other);
+        double arg = dot / lengthSq;
+
+        if (arg > 1) {
+            return 0.0;
+        } else if (arg < -1) {
+            return 180.0;
+        }
+
+        return Math.acos(arg) * 180.0f / Math.PI;
+    }
+    public static float rad(final float angle) {
+        return (float) (angle * Math.PI / 180);
+    }
     public static int square(int i)
     {
         return i * i;
     }
+    public static Vec3d fromTo(Vec3d from, Vec3d to) {
+        return fromTo(from.x, from.y, from.z, to);
+    }
+
+    public static Vec3d fromTo(Vec3d from, double x, double y, double z) {
+        return fromTo(from.x, from.y, from.z, x, y, z);
+    }
+
+    public static Vec3d fromTo(double x, double y, double z, Vec3d to) {
+        return fromTo(x, y, z, to.x, to.y, to.z);
+    }
+
+    public static Vec3d fromTo(double x, double y, double z, double x2, double y2, double z2) {
+        return new Vec3d(x2 - x, y2 - y, z2 - z);
+    }
+
 
     //shoutout a-level maths core stats
     public static float linearInterpolation(float now, float to, float toInterp) {

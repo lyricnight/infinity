@@ -4,6 +4,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.mixin.mixins.accessors.IEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketEntityAction;
 
 import static net.minecraft.network.play.client.CPacketEntityAction.Action.START_SNEAKING;
@@ -29,7 +30,7 @@ public class WebBypass extends Module {
             return;
         }
         boolean sneaking = mc.player.isSneaking();
-        if (((IEntity) (me.lyric.infinity.mixin.transformer.IEntity) mc.player).isInWeb()) {
+        if (((IEntity) mc.player).isInWeb()) {
             switch (mode.getValue()) {
                 case STRICT:
                     for (int i = 0; i < 10; i++)

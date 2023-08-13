@@ -3,9 +3,8 @@ package me.lyric.infinity.mixin.mixins.entity;
 import com.mojang.authlib.GameProfile;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.entity.LivingUpdateEvent;
+import me.lyric.infinity.api.event.player.MotionUpdateEvent;
 import me.lyric.infinity.api.event.player.MoveEvent;
-import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPost;
-import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPre;
 import me.lyric.infinity.impl.modules.render.Swing;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -26,15 +25,30 @@ import static me.lyric.infinity.api.util.minecraft.IGlobals.mc;
 
 @Mixin(EntityPlayerSP.class)
 public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
+    private MotionUpdateEvent motionEvent;
 
     public MixinEntityPlayerSP(World worldIn, GameProfile playerProfile) {
         super(worldIn, playerProfile);
     }
     @Override
     public void move(@NotNull MoverType type, double x, double y, double z) {
-        MoveEvent event = new MoveEvent(x, y, z);
+        MoveEvent event = new MoveEvent(type, x, y, z);
         Infinity.INSTANCE.eventBus.post(event);
         super.move(type, event.getMotionX(), event.getMotionY(), event.getMotionZ());
+    }
+    @Inject(method = "onUpdateWalkingPlayer", at = @At(value = "HEAD"), cancellable = true)
+    private void onUpdateWalkingPlayerHead(CallbackInfo callbackInfo) {
+        motionEvent = new MotionUpdateEvent(1, this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
+        Infinity.INSTANCE.eventBus.post(motionEvent);
+        if (motionEvent.isCancelled()) {
+            callbackInfo.cancel();
+        }
+    }
+    @Inject(method = "onUpdateWalkingPlayer", at = @At(value = "RETURN"))
+    private void onUpdateWalkingPlayerReturn(CallbackInfo callbackInfo) {
+        MotionUpdateEvent event = new MotionUpdateEvent(2, motionEvent);
+        event.setCancelled(motionEvent.isCancelled());
+        Infinity.INSTANCE.eventBus.post(event);
     }
 
     @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;setSprinting(Z)V", ordinal = 2))
@@ -47,17 +61,7 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         else
             entityPlayerSP.setSprinting(sprinting);
     }
-    @Inject(method = {"onUpdateWalkingPlayer"}, at = {@At(value = "HEAD")})
-    private void preMotion(CallbackInfo info) {
-        UpdateWalkingPlayerEventPre event = new UpdateWalkingPlayerEventPre();
-        Infinity.INSTANCE.eventBus.post(event);
-    }
 
-    @Inject(method = {"onUpdateWalkingPlayer"}, at = {@At(value = "RETURN")})
-    private void postMotion(CallbackInfo info) {
-        UpdateWalkingPlayerEventPost event = new UpdateWalkingPlayerEventPost();
-        Infinity.INSTANCE.eventBus.post(event);
-    }
     @Inject(method = "swingArm" , at =  @At("HEAD") , cancellable = true)
     public void swingArm(EnumHand enumHand, CallbackInfo info) {
         if (Swing.INSTANCE.isEnabled()) {

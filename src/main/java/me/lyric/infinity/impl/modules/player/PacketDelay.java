@@ -19,7 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author 3arth, made into usuable module
+ * @author 3arth, lyric
  */
 
 public class PacketDelay extends Module {

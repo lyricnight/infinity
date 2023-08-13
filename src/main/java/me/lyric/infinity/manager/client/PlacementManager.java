@@ -2,6 +2,8 @@ package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
+import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
 import me.lyric.infinity.impl.modules.client.Internals;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
@@ -31,12 +33,8 @@ public class PlacementManager implements IGlobals {
     public void onUpdate(final TickEvent.ClientTickEvent event) {
         tickCache = new ArrayList<>();
     }
-    public static void placeBlock(BlockPos pos, boolean rotate)
-    {
-        placeBlock(pos, rotate, Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).update.getValue(), Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).normalise.getValue());
-    }
 
-    public static boolean placeBlock(final BlockPos pos, final boolean rotate, final boolean update, final boolean normalise) {
+    public static boolean placeBlock(final BlockPos pos, final boolean rotate, final RotationType type) {
         final Block block = mc.world.getBlockState(pos).getBlock();
         if (!(block instanceof BlockAir) && !(block instanceof BlockLiquid)) {
             return false;
@@ -53,7 +51,8 @@ public class PlacementManager implements IGlobals {
         }
         if (rotate)
         {
-            RotationManager.lookAtVec3dPacket(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), normalise, update);
+            float[] rotation = RotationUtil.getRotations(hitVec);
+            RotationUtil.doRotation(type, rotation);
         }
         final EnumActionResult action = mc.playerController.processRightClickBlock(mc.player, mc.world, neighbour, opposite, hitVec, EnumHand.MAIN_HAND);
         if (mc.player.isSneaking() && shouldShiftClick(neighbour)) {

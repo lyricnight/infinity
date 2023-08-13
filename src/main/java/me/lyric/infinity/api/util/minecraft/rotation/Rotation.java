@@ -26,7 +26,9 @@ public class Rotation implements IGlobals {
                 case PACKET:
                     mc.player.renderYawOffset = this.yaw;
                     mc.player.rotationYawHead = this.yaw;
-                    Infinity.INSTANCE.rotationManager.setHeadPitch(this.pitch);
+                    mc.player.rotationPitch = this.pitch;
+                    Infinity.INSTANCE.rotationManager.setYaw(this.yaw);
+                    Infinity.INSTANCE.rotationManager.setPitch(this.pitch);
                     break;
                 case CLIENT:
                     mc.player.rotationYaw = this.yaw;

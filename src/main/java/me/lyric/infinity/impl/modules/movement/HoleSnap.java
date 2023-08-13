@@ -12,8 +12,8 @@ import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
 import me.lyric.infinity.api.util.time.Timer;
-import me.lyric.infinity.manager.client.RotationManager;
 import me.lyric.infinity.mixin.mixins.accessors.ITimer;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
@@ -71,12 +71,12 @@ public class HoleSnap extends Module {
             toggle();
             return;
         }
-        holes = RotationManager.getTargetHoleVec3D(range.getValue());
+        holes = EntityUtil.getTargetHoleVec3D(range.getValue());
         if (debug.getValue())
         {
             ChatUtils.sendMessage("Reached holegetter");
         }
-        if (holes == null || HoleUtil.isHole(RotationManager.getPlayerPos()) || CombatUtil.isBurrow(mc.player)) {
+        if (holes == null || HoleUtil.isHole(EntityUtil.getPlayerPos()) || CombatUtil.isBurrow(mc.player)) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
             toggle();
             return;
@@ -88,7 +88,7 @@ public class HoleSnap extends Module {
         }
         Vec3d playerPos = mc.player.getPositionVector();
         Vec3d targetPos = new Vec3d((double)holes.pos1.getX() + 0.5, mc.player.posY, (double)holes.pos1.getZ() + 0.5);
-        double yawRad = Math.toRadians(RotationManager.getRotationTo(playerPos, targetPos).x);
+        double yawRad = Math.toRadians(RotationUtil.getRotationTo(playerPos, targetPos).x);
         double dist = playerPos.distanceTo(targetPos);
         double speed = mc.player.onGround ? -Math.min(0.2805, dist / 2.0) : -SpeedUtil.getSpeed() + 0.02;
         if (debug.getValue())

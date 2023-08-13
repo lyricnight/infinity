@@ -9,6 +9,7 @@ import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
@@ -45,6 +46,7 @@ public class HoleFiller extends Module
     public Setting<Boolean> onground = register(new Setting<>("OnGround", "only fills if you are on the ground.", true));
     public Setting<Boolean> self = register(new Setting<>("SelfHoleCheck", "only fills if you are in a hole.", false));
     public Setting<Boolean> rotate = register(new Setting<>("Rotate", "rots", true));
+    public Setting<RotationType> type = register(new Setting<>("Rotation Type", "How to rotate.", RotationType.PACKET).withParent(rotate));
     public Setting<Boolean> doubles = register(new Setting<>("Doubles", "double holes!!", true));
     public Setting<Boolean> smart = register(new Setting<>("smart", "smartypants", true));
     public Setting<Float> smartTargetRange = register(new Setting<>("SmartTargetRange","Range for smart to find a target.",5.0f, 1.0f, 10.0f));
@@ -61,11 +63,6 @@ public class HoleFiller extends Module
     @Override
     public void onEnable() {
         timer.reset();
-    }
-    @Override
-    public void onDisable()
-    {
-        RotationManager.resetRotationsPacket();
     }
     @Override
     public void onUpdate() {
@@ -110,13 +107,13 @@ public class HoleFiller extends Module
                     switched = true;
                 }
                 if (hole.doubleHole) {
-                    PlacementManager.placeBlock(hole.pos1, rotate.getValue());
-                    PlacementManager.placeBlock(hole.pos2, rotate.getValue());
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(),type.getValue());
+                    PlacementManager.placeBlock(hole.pos2, rotate.getValue(), type.getValue());
                 }
                 else {
-                    PlacementManager.placeBlock(hole.pos1, rotate.getValue());
+                    PlacementManager.placeBlock(hole.pos1, rotate.getValue(), type.getValue());
                 }
-                if (++blocksPlaced >= ((Number)blocksPerTick.getValue()).intValue()) {
+                if (++blocksPlaced >= blocksPerTick.getValue()) {
                     break;
                 }
             }

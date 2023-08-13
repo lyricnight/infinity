@@ -1,12 +1,8 @@
 package me.lyric.infinity.manager.forge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.bush.eventbus.annotation.EventListener;
-import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
-import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPost;
-import me.lyric.infinity.api.event.player.UpdateWalkingPlayerEventPre;
 import me.lyric.infinity.api.event.render.Render3DEvent;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
@@ -15,7 +11,6 @@ import me.lyric.infinity.impl.modules.client.Internals;
 import me.lyric.infinity.impl.modules.render.HoleESP;
 import me.lyric.infinity.manager.client.CommandManager;
 import me.lyric.infinity.manager.client.ModuleManager;
-import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -41,23 +36,10 @@ public class ForgeEventManager implements IGlobals {
         forgeEventManager = this;
 
     }
-
     public void init() {
         MinecraftForge.EVENT_BUS.register(this);
         Infinity.INSTANCE.eventBus.subscribe(this);
     }
-    @EventListener(priority = ListenerPriority.HIGHEST)
-    public void onUpdateWalkingPlayerPre(UpdateWalkingPlayerEventPre e) {
-        if (mc.player == null) return;
-        RotationManager.updateRotations();
-
-    }
-    @EventListener(priority = ListenerPriority.HIGHEST)
-    public void onUpdateWalkingPlayerPost(UpdateWalkingPlayerEventPost e) {
-        if (mc.player == null) return;
-        RotationManager.resetRotations();
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onWorldRender(RenderWorldLastEvent event) {
         if (event.isCanceled()) {

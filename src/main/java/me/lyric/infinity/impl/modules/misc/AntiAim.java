@@ -22,6 +22,8 @@ public class AntiAim extends Module {
     public Setting<Yaw> yaw = register(new Setting<>("Yaw", "Changes how your yaw is rotated.", Yaw.LINEAR));
     public Setting<Pitch> pitch = register(new Setting<>("Pitch", "Changes how your pitch is rotated.", Pitch.NONE));
 
+    public Setting<Rotation.Rotate> mode = register(new Setting<>("Rotation Mode", "", Rotation.Rotate.CLIENT));
+
     int aimTicks = 0;
     float aimYaw = 0;
     float aimPitch = 0;

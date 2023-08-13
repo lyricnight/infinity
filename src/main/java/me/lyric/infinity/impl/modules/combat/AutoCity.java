@@ -10,6 +10,9 @@ import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
+import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
+import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
@@ -32,7 +35,8 @@ public class AutoCity extends Module
     public Setting<Float> resetRange = register(new Setting<>("Reset Range", "Range at which to reset the block we are attempting to mine. Set this to your SpeedMine's range.", 4f, 1f, 6f));
     public Setting<Boolean> rotate = register(new Setting<>("Rotate", "Rotates to hit the block.", false));
     public Setting<Boolean> burrow = register(new Setting<>("Burrow", "Whether to mine player's burrow or not.", false));
-    public Setting<Mode2> cityMode = register(new Setting<>("Switch", "Handles swap.", Mode2.SILENT));
+
+    public Setting<RotationType> type = register(new Setting<>("Rotation Mode", "Mode for rotating.", RotationType.NORMAL).withParent(rotate));
     public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
     public Setting<Boolean> move = register(new Setting<>("MovementCheck", "Leave on if you want autocity to only city when stationary.", false));
     public Setting<Boolean> holeCheck = register(new Setting<>("Hole Check","Checks if the target is in a hole.", true));
@@ -102,20 +106,9 @@ public class AutoCity extends Module
             if (mc.player.getDistanceSq(mining) > MathUtils.square(resetRange.getValue().intValue()))
             {
                 mining = null;
-                return;
             }
         }
-        if (cityMode.getValue() == Mode2.REQUIRE_PICK) {
-            if(mining == null && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && getBurrowBlock((EntityPlayer)target) != null && burrow.getValue())
-            {
-                mine(getBurrowBlock((EntityPlayer) target));
-            }
-            if (mining == null && mc.player.getHeldItemMainhand().getItem() instanceof ItemPickaxe && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && getCityBlockSurround((EntityPlayer)target) != null) {
-                mine(getCityBlockSurround((EntityPlayer)target));
-            }
-
-        }
-        else if (mining == null && getBurrowBlock((EntityPlayer)target) != null && burrow.getValue())
+        if (mining == null && getBurrowBlock((EntityPlayer)target) != null && burrow.getValue())
         {
             mine(getBurrowBlock((EntityPlayer) target));
         }
@@ -127,7 +120,8 @@ public class AutoCity extends Module
     private void mine(final BlockPos blockPos) {
         if (rotate.getValue())
         {
-            RotationManager.lookAtVec3dPacket(new Vec3d(blockPos.getX(), blockPos.getY(), blockPos.getZ()), false, true);
+            float[] rotations = RotationUtil.getRotations(blockPos);
+            RotationUtil.doRotation(type.getValue(), rotations);
         }
         mc.playerController.onPlayerDamageBlock(blockPos, EnumFacing.UP);
         if (!NoSwing.getValue()) {
@@ -139,7 +133,6 @@ public class AutoCity extends Module
 
     @Override
     public void onDisable() {
-        super.onDisable();
         mining = null;
         swapBack = false;
     }
@@ -185,10 +178,5 @@ public class AutoCity extends Module
     }
     public static boolean canCityBlock(final BlockPos blockPos, final EnumFacing direction) {
         return mc.world.getBlockState(blockPos.up()).getBlock() == Blocks.AIR || (mc.world.getBlockState(blockPos.offset(direction)).getBlock() == Blocks.AIR && mc.world.getBlockState(blockPos.offset(direction).up()).getBlock() == Blocks.AIR && (mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.BEDROCK));
-    }
-    public enum Mode2
-    {
-        REQUIRE_PICK,
-        SILENT
     }
 }
