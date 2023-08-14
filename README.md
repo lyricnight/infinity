@@ -1,3 +1,6 @@
+ARCHIVED AS ANARCHY 1.12.2 IS NOW DEAD AND NO LONGER EXISTS
+
+
 client made by lyric
 
 thanks to cpacketcustompayload for some of the base 
