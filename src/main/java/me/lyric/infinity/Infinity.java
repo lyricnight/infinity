@@ -2,6 +2,7 @@ package me.lyric.infinity;
 
 import me.bush.eventbus.bus.EventBus;
 import me.bush.eventbus.handler.handlers.LambdaHandler;
+import me.lyric.infinity.api.util.gl.SplashProgress;
 import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
@@ -42,6 +43,7 @@ public class Infinity {
         ConfigManager.refresh();
         ConfigManager.reload();
         ConfigManager.process(ConfigManager.LOAD);
+        SplashProgress.setProgress(4, "Initializing Infinity");
     }
 
     public static void shutdown() {
@@ -60,6 +62,7 @@ public class Infinity {
     }
 
     public void whoosh(final String whoosh) {
+        SplashProgress.setProgress(1, "Initializing Minecraft");
         LOGGER.info("Initialising Infinity.");
         this.moduleManager = new ModuleManager();
         this.moduleManager.init();

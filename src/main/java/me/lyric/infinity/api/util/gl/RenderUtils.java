@@ -1,5 +1,6 @@
 package me.lyric.infinity.api.util.gl;
 
+import me.lyric.infinity.api.util.metadata.FileUtils;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.ScaledResolution;
@@ -11,11 +12,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
+import javax.imageio.ImageIO;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 import static net.minecraft.client.renderer.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -495,6 +499,37 @@ public class RenderUtils implements IGlobals {
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
     }
+    public static int loadGlTexture(ResourceLocation resource) {
+        try {
+            BufferedImage bufferedImage = ImageIO.read(FileUtils.getFile(resource.getPath()));
+            return loadGlTexture(bufferedImage);
+        } catch (Throwable e) {
+            return 0;
+        }
+    }
+
+    public static int loadGlTexture(BufferedImage bufferedImage) {
+        try {
+            int textureId = GL11.glGenTextures();
+
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+
+            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, bufferedImage.getWidth(), bufferedImage.getHeight(),
+                    0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, ImageUtils.readImageToBuffer(bufferedImage));
+
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+
+            return textureId;
+        } catch (Throwable e) {
+            return 0;
+        }
+    }
+
     public static Vec3d interpolateEntity(Entity entity, float time) {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) time, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) time, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) time);
     }

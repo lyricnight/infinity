@@ -2,6 +2,7 @@ package me.lyric.infinity.mixin.mixins.entity;
 
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.GameLoopEvent;
+import me.lyric.infinity.api.util.gl.SplashProgress;
 import me.lyric.infinity.impl.modules.client.Internals;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.client.Minecraft;
@@ -36,5 +37,13 @@ public abstract class MixinMinecraft implements IMinecraft {
         catch (NullPointerException nullPointerException) {
             //LOL!
         }
+    }
+    @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 1, shift = At.Shift.AFTER))
+    public void step1(CallbackInfo ci) {
+        SplashProgress.setProgress(2, "textures");
+    }
+    @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 2, shift = At.Shift.AFTER))
+    public void step2(CallbackInfo ci) {
+        SplashProgress.setProgress(3, "Gui");
     }
 }

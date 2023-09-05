@@ -30,6 +30,7 @@
     "render.MixinItemRenderer",
     "render.MixinLayerArmorBase",
     "render.MixinRenderEnderCrystal",
-    "render.MixinRenderLivingBase"
+    "render.MixinRenderLivingBase",
+    "render.MixinSplashProgressRun"
   ]
 }
