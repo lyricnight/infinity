@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.util.minecraft.switcher;
 
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.mixin.mixins.accessors.IPlayerControllerMP;
+import me.lyric.infinity.mixin.transformer.IPlayerControllerMP;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 
 /**
