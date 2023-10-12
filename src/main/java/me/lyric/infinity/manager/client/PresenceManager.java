@@ -59,9 +59,23 @@ public class PresenceManager implements IGlobals {
                     if (mc.player != null) {
                         int health = Math.round(mc.player.getHealth() + mc.player.getAbsorptionAmount());
                         int armor = Math.round(mc.player.getTotalArmorValue());
-                        presence.state = mc.player.getName() + " | Health " + health + " | " + "Armor " + armor;
+                        if(!Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).ign.getValue())
+                        {
+                            presence.state = "| Health " + health + " | " + "Armor " + armor;
+                        }
+                        else
+                        {
+                            presence.state = mc.player.getName() + " | Health " + health + " | " + "Armor " + armor;
+                        }
                         if (mc.player.isDead) {
-                            presence.state = mc.player.getName() + " | " + "Dead" + " | " + "Armor " + armor;
+                            if (!Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).ign.getValue())
+                            {
+                                presence.state = mc.player.getName() + " | " + "Dead" + " | " + "Armor " + armor;
+                            }
+                            else
+                            {
+                                presence.state = "| " + "Dead" + " | " + "Armor " + armor;
+                            }
                         }
                         if (mc.isIntegratedServerRunning()) {
                             presence.details = "Playing singleplayer";

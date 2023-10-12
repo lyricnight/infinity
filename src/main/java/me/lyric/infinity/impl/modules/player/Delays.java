@@ -11,9 +11,7 @@ import me.lyric.infinity.mixin.transformer.IPlayerControllerMP;
  */
 public class Delays extends Module {
     public Setting<Boolean> eat = register(new Setting<>("Eating", "Whether to remove eating delay or not.", false));
-
     public Setting<Boolean> bk = register(new Setting<>("Breaking", "Whether to remove breaking delay or not.", false));
-
 
     public Delays()
     {

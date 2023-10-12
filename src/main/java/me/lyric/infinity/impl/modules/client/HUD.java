@@ -53,7 +53,7 @@ public class HUD extends Module {
     public Setting<Boolean> armor = register(new Setting<>("Armor", "Draws Armor HUD.", false));
     public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
     public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!").withParent(welcomer));
-    public Setting<Integer> thing = register(new Setting<>("yposdebug", "", 10, 1, 2000));
+    public Setting<Integer> thing = register(new Setting<>("Offset-Array", "", 10, 1, 200).withParent(activeModules));
     private int packets = 0;
     private int offset = 0;
     private final Timer packetTimer = new Timer();
@@ -98,7 +98,7 @@ public class HUD extends Module {
                     continue;
                 }
                 module.animfactor = MathUtils.linearInterpolation(module.animfactor, module.isEnabled() ? 1.0f : 0.0f, 0.005f * Infinity.INSTANCE.forgeEventManager.frameTime);
-                final float x = SCREEN_WIDTH - (module.animfactor * mc.fontRenderer.getStringWidth(module.getName() + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "")));
+                final float x = SCREEN_WIDTH - ((module.animfactor * mc.fontRenderer.getStringWidth(module.getName() + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + thing.getValue());
                 if (!module.isEnabled() && module.animfactor < 0.05f) {
                     modules.remove(module);
                 }

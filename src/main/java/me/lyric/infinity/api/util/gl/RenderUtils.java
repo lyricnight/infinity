@@ -1,5 +1,7 @@
 package me.lyric.infinity.api.util.gl;
 
+import me.lyric.infinity.api.util.gl.axis.ESPBuilder;
+import me.lyric.infinity.api.util.gl.axis.IAxis;
 import me.lyric.infinity.api.util.metadata.FileUtils;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.block.material.Material;
@@ -14,15 +16,20 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.function.Supplier;
 
 import static net.minecraft.client.renderer.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLineWidth;
 
 /**
  * @author lyric :)))
@@ -35,6 +42,219 @@ public class RenderUtils implements IGlobals {
     private final static BufferBuilder bufferBuilder = tessellator.getBuffer();
     private static final ItemStack totem = new ItemStack(Items.TOTEM_OF_UNDYING);
 
+    public static void color(Color color)
+    {
+        glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
+    }
+
+    public static void startRender()
+    {
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glPushMatrix();
+        glDisable(GL_ALPHA_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_DEPTH_TEST);
+        glDepthMask(false);
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_FASTEST);
+        glDisable(GL_LIGHTING);
+    }
+
+    public static void endRender()
+    {
+        glEnable(GL_LIGHTING);
+        glDisable(GL_LINE_SMOOTH);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_DEPTH_TEST);
+        glDisable(GL_BLEND);
+        glEnable(GL_ALPHA_TEST);
+        glDepthMask(true);
+        glCullFace(GL_BACK);
+        glPopMatrix();
+        glPopAttrib();
+    }
+    public static void drawBox(AxisAlignedBB bb, Color color)
+    {
+        glPushMatrix();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_LINE_SMOOTH);
+        glDisable(GL_DEPTH_TEST);
+        glDepthMask(false);
+        color(color);
+        fillBox(bb);
+        glDisable(GL_LINE_SMOOTH);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(true);
+        glDisable(GL_BLEND);
+        glPopMatrix();
+    }
+    public static void drawOutline(AxisAlignedBB bb, float lineWidth, Color color)
+    {
+        glPushMatrix();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_LINE_SMOOTH);
+        glDisable(GL_DEPTH_TEST);
+        glDepthMask(false);
+        glLineWidth(lineWidth);
+        color(color);
+        fillOutline(bb);
+        glLineWidth(1.0f);
+        glDisable(GL_LINE_SMOOTH);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_LIGHTING);
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(true);
+        glDisable(GL_BLEND);
+        glPopMatrix();
+    }
+
+
+    public static void fillOutline(AxisAlignedBB bb)
+    {
+        if (bb != null)
+        {
+            glBegin(GL_LINES);
+            {
+                glVertex3d(bb.minX, bb.minY, bb.minZ);
+                glVertex3d(bb.maxX, bb.minY, bb.minZ);
+
+                glVertex3d(bb.maxX, bb.minY, bb.minZ);
+                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+
+                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+                glVertex3d(bb.minX, bb.minY, bb.maxZ);
+
+                glVertex3d(bb.minX, bb.minY, bb.maxZ);
+                glVertex3d(bb.minX, bb.minY, bb.minZ);
+
+                glVertex3d(bb.minX, bb.minY, bb.minZ);
+                glVertex3d(bb.minX, bb.maxY, bb.minZ);
+
+                glVertex3d(bb.maxX, bb.minY, bb.minZ);
+                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+
+                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
+                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+
+                glVertex3d(bb.minX, bb.minY, bb.maxZ);
+                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+
+                glVertex3d(bb.minX, bb.maxY, bb.minZ);
+                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+
+                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
+                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+
+                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
+                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+
+                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
+                glVertex3d(bb.minX, bb.maxY, bb.minZ);
+            }
+            glEnd();
+        }
+    }
+
+    public static void fillBox(AxisAlignedBB boundingBox)
+    {
+        if (boundingBox != null)
+        {
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glEnd();
+
+            glBegin(GL_QUADS);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
+            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
+            glEnd();
+        }
+    }
     public static void drawBBSlab(AxisAlignedBB bb, double height, Color color) {
         final int r = color.getRed();
         final int g = color.getGreen();
@@ -528,6 +748,27 @@ public class RenderUtils implements IGlobals {
         } catch (Throwable e) {
             return 0;
         }
+    }
+    public static void renderPos(BlockPos pos, Color color, float lineWidth, float height)
+    {
+        IAxis esp = new ESPBuilder().withColor(color).withOutlineColor(color).withLineWidth(lineWidth).build();
+        esp.render(Interpolation.interpolatePos(pos, height));
+    }
+    public static void renderBox(AxisAlignedBB bb, Color color, Color outLineColor, float lineWidth)
+    {
+        glPushMatrix();
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+        startRender();
+        drawOutline(bb, lineWidth, outLineColor);
+        endRender();
+        startRender();
+        drawBox(bb, color);
+        endRender();
+
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        glPopAttrib();
+        glPopMatrix();
     }
 
     public static Vec3d interpolateEntity(Entity entity, float time) {

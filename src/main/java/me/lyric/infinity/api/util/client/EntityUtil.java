@@ -29,6 +29,17 @@ public class EntityUtil implements IGlobals {
         }
         return 0.0f;
     }
+    public static BlockPos getPosition(Entity entity, double yOffset)
+    {
+        double y = entity.posY + yOffset;
+        if (entity.posY - Math.floor(entity.posY) > 0.5)
+        {
+            y = Math.ceil(entity.posY);
+        }
+
+        return new BlockPos(entity.posX, y, entity.posZ);
+    }
+
     public static String getFacing(final String in) {
         final String gray = ChatFormatting.DARK_GRAY + "";
         final String white = ChatFormatting.WHITE + "";

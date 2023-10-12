@@ -63,6 +63,7 @@ public class ModuleManager {
         this.modules.add(new Crosshair());
         this.modules.add(new PlayerChams());
         this.modules.add(new ShaderChams());
+        this.modules.add(new StepESP());
         this.modules.add(new Brightness());
         this.modules.add(new CustomTime());
         this.modules.add(new CModifier());
