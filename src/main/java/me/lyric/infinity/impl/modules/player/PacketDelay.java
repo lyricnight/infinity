@@ -34,11 +34,6 @@ public class PacketDelay extends Module {
         service = ThreadManager.newDaemonScheduledExecutor("Infinity PacketDelay");
     }
 
-    @Override
-    public String getDisplayInfo()
-    {
-        return String.valueOf(packets.size());
-    }
     @SubscribeEvent
     public void onDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent ignored)
     {

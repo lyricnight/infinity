@@ -6,6 +6,5 @@ package me.lyric.infinity.api.util.minecraft.switcher;
 public enum SwitchType {
     NORMAL,
     SILENT,
-    SLOT,
-    ALTSLOT
+    SLOT
 }

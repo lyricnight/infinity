@@ -13,7 +13,7 @@ import java.util.Map;
  * @author cpacketcustompayload
  */
 
-@SuppressWarnings("deprecated")
+@SuppressWarnings("API")
 public abstract class Shader {
 
     private int program;

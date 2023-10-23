@@ -2,7 +2,6 @@ package me.lyric.infinity.api.event.player;
 
 import me.bush.eventbus.event.Event;
 import net.minecraft.entity.MoverType;
-import org.jetbrains.annotations.NotNull;
 
 public class MoveEvent extends Event {
     private MoverType moverType;

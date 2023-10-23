@@ -11,6 +11,7 @@ import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 public class Command {
 
     private final String command;
+    //TODO: maybe add a description command?
     private final String description;
 
     public Command(String command, String description) {

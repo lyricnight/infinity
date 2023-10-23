@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.CPacketHeldItemChange;
 public class Switch implements IGlobals {
     //TODO: Fix slot modes
 
-    public static void doSwitch(final int slot, SwitchType type)
+    public static void doSwitch(int slot, SwitchType type)
     {
         if (mc.player == null || mc.world == null) return;
         if (type == SwitchType.NORMAL)
@@ -28,16 +28,28 @@ public class Switch implements IGlobals {
         }
         if(type == SwitchType.SLOT)
         {
-            //mc.playerController.windowClick(0, convert(slot),mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
-            //((IPlayerControllerMP)mc.playerController).syncItem();
-        }
-        if (type == SwitchType.ALTSLOT)
-        {
-            //short tid = mc.player.openContainer.getNextTransactionID(mc.player.inventory);
-           //ItemStack stack = mc.player.openContainer.slotClick(convert(slot), mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
-
-           // mc.player.connection.sendPacket(new CPacketClickWindow(mc.player.inventoryContainer.windowId, convert(slot), mc.player.inventory.currentItem, ClickType.SWAP, stack, tid));
-            //((IPlayerControllerMP)mc.playerController).syncItem();
+            //implementing this is such a fucking pain
+            /**
+            int startSlot = mc.player.inventory.currentItem;
+            slot = convert(slot);
+            if (mc.player.inventory.currentItem != slot && slot > 35 && slot < 45) {
+                mc.playerController.windowClick(0, slot, mc.player.inventory.currentItem, ClickType.SWAP, mc.player);
+            }
+            ItemStack newItem = mc.player.getHeldItemMainhand();
+            short id = mc.player.openContainer.getNextTransactionID(mc.player.inventory);
+            ItemStack fakeStack = new ItemStack(Items.END_CRYSTAL, 64);
+            int newSlot = convert(slot);
+            int altSlot = convert(startSlot);
+            Slot currentSlot = mc.player.inventoryContainer.inventorySlots.get(altSlot);
+            Slot swapSlot = mc.player.inventoryContainer.inventorySlots.get(newSlot);
+            NetHandlerPlayClient conn = mc.getConnection();
+            if (conn != null)
+            {
+                conn.sendPacket(new CPacketClickWindow(0, newSlot, mc.player.inventory.currentItem, ClickType.SWAP, fakeStack, id));
+            }
+            currentSlot.putStack(oldItem);
+            swapSlot.putStack(newItem);
+             */
         }
     }
     private static int convert(int slot) {

@@ -1,6 +1,7 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
 import me.lyric.infinity.Infinity;
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.player.Delays;
 import me.lyric.infinity.impl.modules.render.Swing;
 import net.minecraft.client.Minecraft;
@@ -19,10 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
 @Mixin(value={EntityLivingBase.class})
-public class MixinEntityLivingBase {
+public class MixinEntityLivingBase implements IGlobals {
 
-    @Final
-    private final Minecraft mc = Minecraft.getMinecraft();
 
     @Shadow
     public int activeItemStackUseCount;

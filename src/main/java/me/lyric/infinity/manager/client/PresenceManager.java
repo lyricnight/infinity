@@ -61,7 +61,7 @@ public class PresenceManager implements IGlobals {
                         int armor = Math.round(mc.player.getTotalArmorValue());
                         if(!Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).ign.getValue())
                         {
-                            presence.state = "| Health " + health + " | " + "Armor " + armor;
+                            presence.state = "Health " + health + " | " + "Armor " + armor;
                         }
                         else
                         {

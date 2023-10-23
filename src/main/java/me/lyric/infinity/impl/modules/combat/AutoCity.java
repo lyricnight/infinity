@@ -12,8 +12,6 @@ import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
 import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
-import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
-import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +20,6 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,6 +41,7 @@ public class AutoCity extends Module
 
     BlockPos mining;
     long startTime;
+    //TODO: is there a reason i kept this as an entity and not entityplayer?
     Entity target;
     int old;
     boolean swapBack;
