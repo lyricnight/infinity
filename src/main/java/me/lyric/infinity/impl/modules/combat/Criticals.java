@@ -5,13 +5,16 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.network.play.client.CPacketUseEntity;
 
+/**
+ * @author lyric
+ */
+
 public class Criticals extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "Mode used for critical damage.", Mode.PACKET));
+    public Setting<Mode> mode = register(new Setting<>("Mode", "Mode used for critical damage.", Mode.STRICT));
 
     public Criticals() {
         super("Criticals", "Allows you to always hit critical damage.", Category.COMBAT);
@@ -19,24 +22,36 @@ public class Criticals extends Module {
 
     @EventListener
     public void onPacketSend(PacketEvent.Send event) {
-        if (!nullSafe()) return;
-        if (event.getPacket() instanceof CPacketUseEntity) {
-            CPacketUseEntity packet = (CPacketUseEntity) event.getPacket();
-            if (packet.getAction() == CPacketUseEntity.Action.ATTACK) {
-                if (mc.player.onGround && !mc.gameSettings.keyBindJump.isKeyDown() && packet.getEntityFromWorld(mc.world) instanceof EntityLivingBase) {
-                    switch (mode.getValue()) {
-                        case JUMP: {
-                            mc.player.jump();
-                            break;
-                        }
-                        case PACKET: {
-                            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.11, mc.player.posZ, false));
-                            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.1100013579, mc.player.posZ, false));
-                            mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.1100013579, mc.player.posZ, false));
-                            break;
-                        }
-                    }
-                }
+        if (mode.getValue() == Mode.NORMAL && event.getPacket() instanceof CPacketUseEntity) {
+            CPacketUseEntity packet = (CPacketUseEntity)event.getPacket();
+            if (packet.getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround) {
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.10000000149011612, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
+            }
+        }
+        if (mode.getValue() == Mode.STRICT && event.getPacket() instanceof CPacketUseEntity) {
+            CPacketUseEntity packet = (CPacketUseEntity)event.getPacket();
+            if (packet.getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround) {
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.06260280169278, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.0726027996066, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
+            }
+        }
+        if (mode.getValue() == Mode.JOHN && event.getPacket() instanceof CPacketUseEntity) {
+            CPacketUseEntity packet = (CPacketUseEntity)event.getPacket();
+            if (packet.getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround) {
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.08260280169278, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.0826027996066, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
+            }
+        }
+        if (mode.getValue() == Mode.EXTRA && event.getPacket() instanceof CPacketUseEntity) {
+            CPacketUseEntity packet = (CPacketUseEntity)event.getPacket();
+            if (packet.getAction() == CPacketUseEntity.Action.ATTACK && mc.player.onGround) {
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.06260280169278, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.0726027996066, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY + 0.0336027996066, mc.player.posZ, false));
+                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, false));
             }
         }
     }
@@ -47,7 +62,9 @@ public class Criticals extends Module {
     }
 
     enum Mode {
-        PACKET,
-        JUMP
+        NORMAL,
+        STRICT,
+        JOHN,
+        EXTRA
     }
 }

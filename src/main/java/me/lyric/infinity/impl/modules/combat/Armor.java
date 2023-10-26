@@ -67,7 +67,7 @@ public class Armor extends Module {
     public Setting<Boolean> pause = register(new Setting<>("Pause", "Pauses when in inventories.", true).withParent(auto));
     public Armor()
     {
-        super("Armor", "Manages your armor.", Category.COMBAT);
+        super("Armor", "Module does not work - here for testing purposes.", Category.COMBAT);
         this.damages = new Setting[]{helm, chest, leg, boots};
     }
 

@@ -148,7 +148,7 @@ public class ForgeEventManager implements IGlobals {
                 }
             }
             if (!isCommand) {
-                ChatUtils.sendMessage(ChatFormatting.RED + "Unknown command.");
+                ChatUtils.sendMessage(ChatFormatting.RED + "Unknown command. Try " + Infinity.INSTANCE.commandManager.getPrefix() + "commands for a list of available commands.");
             }
         }
     }

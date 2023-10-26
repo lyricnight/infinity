@@ -1,10 +1,7 @@
 package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.api.command.Command;
-import me.lyric.infinity.impl.commands.ConfigCommand;
-import me.lyric.infinity.impl.commands.FriendCommand;
-import me.lyric.infinity.impl.commands.PrefixCommand;
-import me.lyric.infinity.impl.commands.ToggleCommand;
+import me.lyric.infinity.impl.commands.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +34,7 @@ public class CommandManager {
     public void init() {
         commands.add(new PrefixCommand());
         commands.add(new ConfigCommand());
+        commands.add(new ListCommand());
         commands.add(new FriendCommand());
         commands.add(new ToggleCommand());
     }
@@ -51,6 +49,15 @@ public class CommandManager {
 
     public static Set<Command> getCommands() {
         return commands;
+    }
+    public static StringBuilder getCommandsAsString()
+    {
+        StringBuilder returnval = new StringBuilder();
+        for(Command commands : getCommands())
+        {
+            returnval.append(commands.getCommand()).append(" ");
+        }
+        return returnval;
     }
 
     public String getClientMessage() {

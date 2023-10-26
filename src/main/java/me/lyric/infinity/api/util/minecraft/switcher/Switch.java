@@ -52,7 +52,7 @@ public class Switch implements IGlobals {
              */
         }
     }
-    private static int convert(int slot) {
+    public static int convert(int slot) {
         if (slot == -2) {
             return 45;
         }

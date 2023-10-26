@@ -7,10 +7,15 @@ import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+
 public class InventoryUtil implements IGlobals {
     public static int findHotbarBlock(Class clazz) {
         for (int i = 0; i < 9; ++i) {
@@ -66,6 +71,16 @@ public class InventoryUtil implements IGlobals {
     public static boolean areSame(Item item1, Item item2) {
         return Item.getIdFromItem(item1) == Item.getIdFromItem(item2);
     }
+    public static void click(int slot) {
+        mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
+    }
+    public static boolean validScreen() {
+        return !(mc.currentScreen instanceof GuiContainer) || mc.currentScreen instanceof GuiInventory;
+    }
+    public static EnumHand getHand(Item item) {
+        return mc.player.getHeldItemMainhand().getItem() == item ? EnumHand.MAIN_HAND : mc.player.getHeldItemOffhand().getItem() == item ? EnumHand.OFF_HAND : null;
+    }
+
     public static boolean equals(ItemStack stack1, ItemStack stack2) {
         if (stack1 == null) {
             return stack2 == null;
@@ -83,7 +98,6 @@ public class InventoryUtil implements IGlobals {
                 && stack1.getMetadata() == stack2.getMetadata()
                 && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
-
 
     public static void check(Module module)
     {
