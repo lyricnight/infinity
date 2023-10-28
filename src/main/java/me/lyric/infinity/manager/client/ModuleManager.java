@@ -67,7 +67,6 @@ public class ModuleManager {
         this.modules.add(new CustomTime());
         this.modules.add(new CModifier());
         this.modules.add(new HoleESP());
-        this.modules.add(new CameraClip());
         this.modules.add(new NoRender());
         this.modules.add(new NameTags());
         this.modules.add(new Swing());

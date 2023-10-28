@@ -1,6 +1,7 @@
 package me.lyric.infinity.impl.modules.player;
 
 import me.bush.eventbus.annotation.EventListener;
+import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -30,8 +31,8 @@ public class PacketDelay extends Module {
     ScheduledExecutorService service;
     public PacketDelay()
     {
-        super("PacketDelay", "Applies a delay to all packets you send.", Category.PLAYER);
-        service = ThreadManager.newDaemonScheduledExecutor("Infinity PacketDelay");
+        super("PacketDelay", "Applies a delay to all packets you send. Module might cause kicks or disconnects.", Category.PLAYER);
+        service = ThreadManager.newDaemonScheduledExecutor("InfinityPacketDelay");
     }
 
     @SubscribeEvent
@@ -40,7 +41,7 @@ public class PacketDelay extends Module {
         packets.clear();
         service.shutdown();
     }
-    @EventListener
+    @EventListener(priority = ListenerPriority.HIGHEST)
     public void onPacketSend(PacketEvent.Send event) {
         if (!mc.isSingleplayer() && event.getPacket() instanceof CPacketKeepAlive) {
             onPacket(event.getPacket());

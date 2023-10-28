@@ -20,7 +20,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
 
-
+/**
+ * @author cpacket - .vert files from moneymod
+ */
 
 public class ShaderChams extends Module {
 
@@ -33,11 +35,11 @@ public class ShaderChams extends Module {
 
     // RAINBOW
     public Setting<Boolean> outline = register(new Setting<>("Outline", "Renders a dynamic rainbow gradient.", true));
-    public Setting<Float> rainbowSpeed = register(new Setting<>("Rainbow Speed", "The speed of the rainbow outline.", 0.4f, 0.0f, 1.0f)).withParent(outline);
-    public Setting<Float> rainbowStrength = register(new Setting<>("Rainbow Strength", "The strength of the rainbow online.", 0.3f, 0.0f, 1.0f)).withParent(outline);
-    public Setting<Float> saturation = register(new Setting<>("Saturation", "The saturation of the rainbow outline.", 0.5f, 0.0f, 1.0f)).withParent(outline);
-    public Setting<Float> radius = register(new Setting<>("Radius", "The radius of the rainbow outline.", 1.0f, 0.1f, 5.0f)).withParent(outline);
-    public Setting<Float> quality = register(new Setting<>("Quality", "The quality of the rainbow outline.", 1.0f, 0.1f, 5.0f)).withParent(outline);
+    public Setting<Float> rainbowSpeed = register(new Setting<>("Rainbow Speed", "The speed of the rainbow outline.", 0.4f, 0.0f, 1.0f).withParent(outline));
+    public Setting<Float> rainbowStrength = register(new Setting<>("Rainbow Strength", "The strength of the rainbow online.", 0.3f, 0.0f, 1.0f).withParent(outline));
+    public Setting<Float> saturation = register(new Setting<>("Saturation", "The saturation of the rainbow outline.", 0.5f, 0.0f, 1.0f).withParent(outline));
+    public Setting<Float> radius = register(new Setting<>("Radius", "The radius of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
+    public Setting<Float> quality = register(new Setting<>("Quality", "The quality of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
 
     public Setting<ColorPicker> color = register(new Setting<>("Color", "The color for the ESP.", new ColorPicker(Color.BLUE)));
 
@@ -50,6 +52,7 @@ public class ShaderChams extends Module {
         super("ShaderChams", "Highlights entities in various ways.", Category.RENDER);
     }
 
+    //try-catch heaven
     @SubscribeEvent
     public void onRender2D(RenderGameOverlayEvent.Pre event) {
         if (!nullSafe()) return;

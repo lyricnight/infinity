@@ -49,7 +49,7 @@ public class HoleManager implements IGlobals {
             new Vec3i(1, 0, 0)
     };
 
-    @EventListener(priority = ListenerPriority.HIGH)
+    @EventListener
     public void onRender3D(Render3DEvent event) {
         boolean enable = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
         if (enable)

@@ -25,6 +25,10 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+/**
+ * @author cpacket
+ */
+
 public class Chams extends Module {
 
     public Setting<Mode> mode = register(new Setting<>("Mode", "The chams mode.", Mode.MODEL));
@@ -53,7 +57,7 @@ public class Chams extends Module {
     public Setting<ColorPicker> playerHighlightColor = register(new Setting<>("Player Highlight Color", "The highlight color for players.", new ColorPicker(Color.PINK)));
 
     public Chams() {
-        super("Chams", "Renders entities through walls in various ways.", Category.RENDER);
+        super("Chams", "Renders entities through walls in various ways. This modules kinda funky and not really updated....", Category.RENDER);
     }
 
     @EventListener

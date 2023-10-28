@@ -341,7 +341,7 @@ public class NameTags extends Module {
                 int responseTime = Objects.requireNonNull(mc.getConnection()).getPlayerInfo(player.getUniqueID()).getResponseTime();
                 pingStr = pingStr + responseTime + "ms ";
             } catch (Exception responseTime) {
-                // empty catch block
+                //do i really need this?
             }
         }
         String popStr = " ";

@@ -21,7 +21,7 @@ public class ThreadManager {
 
     public static ScheduledExecutorService newDaemonScheduledExecutor(String name) {
         ThreadFactoryBuilder factory = newDaemonThreadFactoryBuilder();
-        factory.setNameFormat("Lithium-" + name + "-%d");
+        factory.setNameFormat("Infinity-" + name + "-%d");
         return Executors.newSingleThreadScheduledExecutor(factory.build());
     }
     public static ThreadFactoryBuilder newDaemonThreadFactoryBuilder() {

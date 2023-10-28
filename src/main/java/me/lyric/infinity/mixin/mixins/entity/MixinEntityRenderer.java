@@ -4,7 +4,6 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.AspectEvent;
 import me.lyric.infinity.api.event.render.RenderNametagEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.impl.modules.render.CameraClip;
 import me.lyric.infinity.mixin.transformer.IEntityRenderer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -13,7 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -24,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderer.class)
 public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
 
-    // TODO: IM FUCKING RETARDED
     @Inject(method = "drawNameplate", at = @At("HEAD"), cancellable = true)
     private static void drawNameplate(FontRenderer fontRendererIn, String str, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking, CallbackInfo ci) {
         RenderNametagEvent event = new RenderNametagEvent();
@@ -62,22 +59,5 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
         AspectEvent event = new AspectEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
         Infinity.INSTANCE.eventBus.post(event);
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
-    }
-    //what
-
-    @ModifyVariable(method = "orientCamera", ordinal = 3, at = @At(value = "STORE", ordinal = 0), require = 1)
-    public double changeCameraDistanceHook(double range) {
-        return Infinity.INSTANCE.moduleManager.getModuleByClass(CameraClip.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(CameraClip.class).extend.getValue()
-                ? Infinity.INSTANCE.moduleManager.getModuleByClass(CameraClip.class).distance.getValue()
-                : range;
-    }
-
-    @ModifyVariable(method = "orientCamera", ordinal = 7, at = @At(value = "STORE", ordinal = 0), require = 1)
-    public double orientCameraHook(double range) {
-        return Infinity.INSTANCE.moduleManager.getModuleByClass(CameraClip.class).isEnabled()
-                ? Infinity.INSTANCE.moduleManager.getModuleByClass(CameraClip.class).extend.getValue()
-                ? Infinity.INSTANCE.moduleManager.getModuleByClass(CameraClip.class).distance.getValue()
-                : 4.0
-                : range;
     }
 }
