@@ -5,7 +5,6 @@ import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.gl.Interpolation;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketPlayer;

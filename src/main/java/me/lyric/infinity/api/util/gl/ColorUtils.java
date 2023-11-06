@@ -7,13 +7,6 @@ import java.awt.*;
 public class ColorUtils implements IGlobals {
     public ColorUtils(final int i, final int i1, final int i2, final int i3) {
     }
-    public static int toRGBA(final int r, final int g, final int b) {
-        return toRGBA(r, g, b, 255);
-    }
-
-    public static int toRGBA(final int r, final int g, final int b, final int a) {
-        return (r << 16) + (g << 8) + b + (a << 24);
-    }
     public static Color toColor(float red, float green, float blue, float alpha)
     {
         if (!(green < 0.0f) && !(green > 100.0f))

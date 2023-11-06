@@ -14,4 +14,5 @@ public abstract class MixinSplashProgressRun {
         callbackInfo.cancel();
         SplashProgress.drawSplash();
     }
+
 }

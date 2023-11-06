@@ -5,9 +5,9 @@ import me.lyric.infinity.api.module.Module;
 /**
     @author lyric :P
  */
-public class IOCancel extends Module {
-    public IOCancel ()
+public class Exception extends Module {
+    public Exception ()
     {
-        super("IOCancel", "Prevents packet kicks, by cancelling IOException.", Category.PLAYER);
+        super("Exception", "Prevents packet kicks, by cancelling IOException.", Category.PLAYER);
     }
 }

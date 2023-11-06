@@ -17,7 +17,7 @@ import net.minecraft.block.BlockObsidian;
 /**
  * @author lyric (o_o)
  */
-
+//TODO: make this activated on a keybind so that you don't double trap yourself everytime somebody traps you if they dont have cev
 public class AntiCev extends Module {
     public AntiCev() {
         super("AntiCev", "Prevents cevbreaker.", Category.COMBAT);

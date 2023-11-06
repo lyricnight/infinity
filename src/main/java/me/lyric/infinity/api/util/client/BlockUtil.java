@@ -1,17 +1,12 @@
 package me.lyric.infinity.api.util.client;
 
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlockUtil implements IGlobals {
-    public static boolean isAir(BlockPos pos) {
-        return BlockUtil.mc.world.getBlockState(pos).getBlock() == Blocks.AIR;
-    }
     public static List<BlockPos> getBlocksInRadius(final double range, final boolean movePredict, final int predictTicks) {
         final List<BlockPos> posses = new ArrayList<>();
         float xRange = (float)Math.round(range);

@@ -116,6 +116,10 @@ public class AutoCity extends Module
     }
 
     private void mine(final BlockPos blockPos) {
+        if (mc.player.getDistanceSq(blockPos) > MathUtils.square(resetRange.getValue()))
+        {
+            return;
+        }
         if (rotate.getValue())
         {
             float[] rotations = RotationUtil.getRotations(blockPos);
@@ -152,7 +156,7 @@ public class AutoCity extends Module
         }
         return positions;
     }
-    public static BlockPos getBurrowBlock(final EntityPlayer player)
+    public BlockPos getBurrowBlock(final EntityPlayer player)
     {
         if (player == null)
         {

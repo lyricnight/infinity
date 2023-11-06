@@ -6,6 +6,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
+import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
@@ -67,7 +68,7 @@ public class HoleFiller extends Module
     @Override
     public void onUpdate() {
         InventoryUtil.check(this);
-        if (mc.player == null) {
+        if (mc.player == null || mc.player.noClip || EntityUtil.isSuffocating(mc.player)) {
             return;
         }
         if(onground.getValue() && !mc.player.onGround)
@@ -81,7 +82,7 @@ public class HoleFiller extends Module
         target = CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
         if (target != null)
         {
-            if (HoleUtil.isHole(target.getPosition()) || isBurrow(target))
+            if (HoleUtil.isHole(target.getPosition()) || isBurrow(target) || EntityUtil.isSuffocating(target))
             {
                 return;
             }

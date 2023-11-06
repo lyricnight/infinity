@@ -2,22 +2,15 @@ package me.lyric.infinity.api.util.client;
 
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public class HoleUtil implements IGlobals {
     public static BlockPos[] holeOffsets = new BlockPos[]{new BlockPos(1, 0, 0), new BlockPos(-1, 0, 0), new BlockPos(0, 0, 1), new BlockPos(0, 0, -1), new BlockPos(0, -1, 0)};
-    static final Vec3i[] OFFSETS_2x2 = new Vec3i[]{new Vec3i(0, 0, 0), new Vec3i(1, 0, 0), new Vec3i(0, 0, 1), new Vec3i(1, 0, 1)};
-    static final Block[] NO_BLAST = new Block[]{Blocks.BEDROCK, Blocks.OBSIDIAN, Blocks.ANVIL, Blocks.ENDER_CHEST};
-
     public static boolean isHole(BlockPos pos) {
         if(pos == null)
         {
@@ -135,50 +128,6 @@ public class HoleUtil implements IGlobals {
         }
         return circleblocks;
     }
-    public static boolean is2x2Partial(BlockPos pos) {
-        HashSet<BlockPos> positions = new HashSet<BlockPos>();
-        for (Vec3i vec : OFFSETS_2x2) {
-            positions.add(pos.add(vec));
-        }
-        boolean airBlock = false;
-        for (BlockPos holePos : positions) {
-            if (BlockUtil.isAir(holePos) && BlockUtil.isAir(holePos.up()) && !BlockUtil.isAir(holePos.down())) {
-                if (BlockUtil.isAir(holePos.up(2))) {
-                    airBlock = true;
-                }
-                for (EnumFacing facing : EnumFacing.HORIZONTALS) {
-                    BlockPos offset = holePos.offset(facing);
-                    if (positions.contains(offset)) continue;
-                    IBlockState state = HoleUtil.mc.world.getBlockState(offset);
-                    if (!Arrays.stream(NO_BLAST).noneMatch(b -> b == state.getBlock())) continue;
-                    return false;
-                }
-                continue;
-            }
-            return false;
-        }
-        return airBlock;
-    }
-    public static boolean is2x2(BlockPos pos, boolean upper) {
-        if (upper && !BlockUtil.isAir(pos)) {
-            return false;
-        }
-        if (HoleUtil.is2x2Partial(pos)) {
-            return true;
-        }
-        BlockPos l = pos.add(-1, 0, 0);
-        boolean airL = BlockUtil.isAir(l);
-        if (airL && HoleUtil.is2x2Partial(l)) {
-            return true;
-        }
-        BlockPos r = pos.add(0, 0, -1);
-        boolean airR = BlockUtil.isAir(r);
-        if (airR && HoleUtil.is2x2Partial(r)) {
-            return true;
-        }
-        return (airL || airR) && HoleUtil.is2x2Partial(pos.add(-1, 0, -1));
-    }
-
     public static class Hole {
         public boolean bedrock;
         public boolean doubleHole;

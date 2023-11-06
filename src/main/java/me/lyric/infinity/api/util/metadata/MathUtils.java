@@ -22,17 +22,6 @@ public class MathUtils implements IGlobals
         final float h = (float)(mc.player.posZ - z);
         return MathHelper.sqrt(f * f + g * g + h * h);
     }
-    public static double roundToClosest(double num, double low, double high) {
-        double d1 = num - low;
-        double d2 = high - num;
-
-        if (d2 > d1) {
-            return low;
-
-        } else {
-            return high;
-        }
-    }
     public static float roundFloat(double number, int scale) {
         BigDecimal bd = BigDecimal.valueOf(number);
         bd = bd.setScale(scale, RoundingMode.FLOOR);
@@ -70,16 +59,14 @@ public class MathUtils implements IGlobals
     {
         return i * i;
     }
-    public static Vec3d fromTo(Vec3d from, Vec3d to) {
-        return fromTo(from.x, from.y, from.z, to);
+
+    public static float square(float i)
+    {
+        return i * i;
     }
 
     public static Vec3d fromTo(Vec3d from, double x, double y, double z) {
         return fromTo(from.x, from.y, from.z, x, y, z);
-    }
-
-    public static Vec3d fromTo(double x, double y, double z, Vec3d to) {
-        return fromTo(x, y, z, to.x, to.y, to.z);
     }
 
     public static Vec3d fromTo(double x, double y, double z, double x2, double y2, double z2) {
@@ -88,6 +75,8 @@ public class MathUtils implements IGlobals
 
 
     //shoutout a-level maths core stats
+    //i dont like stats
+    //ihatestats
     public static float linearInterpolation(float now, float to, float toInterp) {
         now -= (now - to) * clamp(toInterp, 0, 1);
         return now;

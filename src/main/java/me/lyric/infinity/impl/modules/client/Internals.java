@@ -21,7 +21,6 @@ public class Internals extends Module {
     public Setting<Integer> fps = register(new Setting<>("FPS", "FPS when unfocused.", 60, 10, 200).withParent(unf));
     public Setting<Boolean> fov = register(new Setting<>("FOVModifier", "Whether to modify fov or not.", false));
     public Setting<Float> fovslider = register(new Setting<>("FOV", "FOV to set to.", 130f, 30f, 180f).withParent(fov));
-
     public Internals()
     {
         super("Internals", "Handles settings that don't fit anywhere else.", Category.CLIENT);

@@ -25,7 +25,6 @@ import static net.minecraft.client.renderer.GlStateManager.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLineWidth;
 
 /**
  * @author lyric :)))
@@ -672,6 +671,35 @@ public class RenderUtils implements IGlobals {
             return 0;
         }
     }
+
+    public static void drawLine(float x, float y, float x1, float y1, float thickness, int hex) {
+        float red = (hex >> 16 & 0xFF) / 255.0f;
+        float green = (hex >> 8 & 0xFF) / 255.0f;
+        float blue = (hex & 0xFF) / 255.0f;
+        float alpha = (hex >> 24 & 0xFF) / 255.0f;
+        GlStateManager.pushMatrix();
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(7425);
+        GL11.glLineWidth(thickness);
+        GL11.glEnable(2848);
+        GL11.glHint(3154, 4354);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(3, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x1, y1, 0.0).color(red, green, blue, alpha).endVertex();
+        tessellator.draw();
+        GlStateManager.shadeModel(7424);
+        GL11.glDisable(2848);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
+    }
+
     public static Vec3d interpolateEntity(Entity entity, float time) {
         return new Vec3d(entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) time, entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) time, entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) time);
     }

@@ -2,7 +2,7 @@ package me.lyric.infinity.impl.modules.render;
 
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
-import me.lyric.infinity.api.event.network.GameLoopEvent;
+import me.lyric.infinity.api.event.misc.GameLoopEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;

@@ -42,17 +42,6 @@ public class TPSManager implements IGlobals {
         timer2 = 1.0f;
         ((ITimer) ((IMinecraft) mc).getTimer()).setTickLength(50.0f);
     }
-    public Float getTickRate() {
-        int tickCount = 0;
-        float tickRate = 0.0f;
-        for (float tick : this.ticks) {
-            if (!(tick > 0.0f)) continue;
-            tickRate += tick;
-            ++tickCount;
-        }
-
-        return MathHelper.clamp((tickRate / (float)tickCount), 0.0f, 20.0f);
-    }
     public String getTickRateRound() {
         int tickCount = 0;
         float tickRate = 0.0f;
@@ -93,17 +82,8 @@ public class TPSManager implements IGlobals {
             lastUpdate = currentTime;
         }
     }
-    public float getTpsFactor() {
-        return 20.0f / this.TPS;
-    }
-
-
     public void reset() {
         this.TPS = 20.0f;
-    }
-
-    public float getTPS() {
-        return this.TPS;
     }
 
     @EventListener

@@ -87,11 +87,11 @@ public class Notifications extends Module {
                 else
                 {
                     if (entityPlayer.isPotionActive(MobEffects.STRENGTH) && !this.str.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.BLUE) + " has" + ChatFormatting.RED + " strength" + ChatFormatting.BOLD + "!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " has" + ChatFormatting.RED + " strength" + ChatFormatting.BOLD + "!");
                         this.str.add(entityPlayer);
                     }
                     if (!this.str.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.STRENGTH)) continue;
-                    ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.BLUE) + " no longer has" + ChatFormatting.RED + " strength"+ ChatFormatting.BOLD + "!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " no longer has" + ChatFormatting.RED + " strength"+ ChatFormatting.BOLD + "!");
                     this.str.remove(entityPlayer);
                 }
 
@@ -117,11 +117,11 @@ public class Notifications extends Module {
                 else
                 {
                     if (entityPlayer.isPotionActive(MobEffects.SPEED) && !this.spd.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.BLUE) + " has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                         this.spd.add(entityPlayer);
                     }
                     if (!this.spd.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.SPEED)) continue;
-                    ChatUtils.sendMessage(ChatFormatting.BOLD + entityPlayer.getDisplayNameString() + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.BLUE) + " no longer has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " no longer has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                     this.spd.remove(entityPlayer);
                 }
 

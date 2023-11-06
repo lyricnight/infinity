@@ -4,8 +4,16 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.string.StringUtils;
 import me.lyric.infinity.manager.client.RotationManager;
+import me.lyric.infinity.mixin.mixins.accessors.IBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.network.play.client.CPacketEntityAction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -29,17 +37,6 @@ public class EntityUtil implements IGlobals {
         }
         return 0.0f;
     }
-    public static BlockPos getPosition(Entity entity, double yOffset)
-    {
-        double y = entity.posY + yOffset;
-        if (entity.posY - Math.floor(entity.posY) > 0.5)
-        {
-            y = Math.ceil(entity.posY);
-        }
-
-        return new BlockPos(entity.posX, y, entity.posZ);
-    }
-
     public static String getFacing(final String in) {
         final String gray = ChatFormatting.DARK_GRAY + "";
         final String white = ChatFormatting.WHITE + "";
@@ -72,7 +69,8 @@ public class EntityUtil implements IGlobals {
         double decimalPoint = mc.player.posY - Math.floor(mc.player.posY);
         return new BlockPos(mc.player.posX, decimalPoint > 0.8 ? Math.floor(mc.player.posY) + 1.0 : Math.floor(mc.player.posY), mc.player.posZ);
     }
-
-
-
+    public static boolean isSuffocating(EntityPlayer player) {
+        BlockPos playerPos = CombatUtil.getOtherPlayerPos(player);
+        return mc.world.getBlockState(playerPos.up()).getBlock() != Blocks.AIR;
+    }
 }

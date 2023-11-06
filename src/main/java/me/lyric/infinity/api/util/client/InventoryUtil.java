@@ -9,12 +9,9 @@ import net.minecraft.block.BlockObsidian;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.ClickType;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 
 public class InventoryUtil implements IGlobals {
     public static int findHotbarBlock(Class clazz) {
@@ -48,39 +45,12 @@ public class InventoryUtil implements IGlobals {
 
         return mc.player.inventoryContainer.getInventory().get(slot);
     }
-
-    public static void put(int slot, ItemStack stack) {
-        if (slot == -2) {
-            mc.player.inventory.setItemStack(stack);
-        }
-
-        mc.player.inventoryContainer.putStackInSlot(slot, stack);
-    }
-    public static boolean isHolding(Item item) {
-        return isHolding(mc.player, item);
-    }
-
-    public static boolean isHolding(EntityLivingBase entity, Item item) {
-        ItemStack mainHand = entity.getHeldItemMainhand();
-        ItemStack offHand  = entity.getHeldItemOffhand();
-        return areSame(mainHand, item) || areSame(offHand, item);
-    }
-    public static boolean areSame(ItemStack stack, Item item) {
-        return stack != null && areSame(stack.getItem(), item);
-    }
-    public static boolean areSame(Item item1, Item item2) {
-        return Item.getIdFromItem(item1) == Item.getIdFromItem(item2);
-    }
     public static void click(int slot) {
         mc.playerController.windowClick(0, slot, 0, ClickType.PICKUP, mc.player);
     }
     public static boolean validScreen() {
         return !(mc.currentScreen instanceof GuiContainer) || mc.currentScreen instanceof GuiInventory;
     }
-    public static EnumHand getHand(Item item) {
-        return mc.player.getHeldItemMainhand().getItem() == item ? EnumHand.MAIN_HAND : mc.player.getHeldItemOffhand().getItem() == item ? EnumHand.OFF_HAND : null;
-    }
-
     public static boolean equals(ItemStack stack1, ItemStack stack2) {
         if (stack1 == null) {
             return stack2 == null;

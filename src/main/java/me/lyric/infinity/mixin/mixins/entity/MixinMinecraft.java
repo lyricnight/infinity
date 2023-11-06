@@ -1,23 +1,32 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.network.GameLoopEvent;
+import me.lyric.infinity.api.event.misc.GameLoopEvent;
 import me.lyric.infinity.api.util.gl.SplashProgress;
+import me.lyric.infinity.gui.main.InfinityMainScreen;
 import me.lyric.infinity.impl.modules.client.Internals;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.Timer;
 import org.lwjgl.opengl.Display;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
+
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft implements IMinecraft {
+
+    @Shadow
+    public abstract void displayGuiScreen(@Nullable GuiScreen var1);
     @Override
     @Accessor(value = "timer")
     public abstract Timer getTimer();
@@ -45,5 +54,19 @@ public abstract class MixinMinecraft implements IMinecraft {
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 2, shift = At.Shift.AFTER))
     public void step2(CallbackInfo ci) {
         SplashProgress.setProgress(3, "Gui");
+    }
+
+    //oh we're gaming
+    @Inject(method = "displayGuiScreen", at = @At(value = "HEAD"))
+    private void displayGuiScreen(GuiScreen screen, CallbackInfo ci) {
+        if (screen instanceof GuiMainMenu) {
+            this.displayGuiScreen(new InfinityMainScreen());
+        }
+    }
+    @Inject(method = "runTick()V", at = @At(value = "RETURN"))
+    private void runTick(CallbackInfo callbackInfo) {
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
+            Minecraft.getMinecraft().displayGuiScreen((GuiScreen) new InfinityMainScreen());
+        }
     }
 }

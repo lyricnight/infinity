@@ -7,6 +7,7 @@ import me.lyric.infinity.impl.modules.combat.*;
 import me.lyric.infinity.impl.modules.player.*;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
+import me.lyric.infinity.impl.modules.player.Exception;
 import me.lyric.infinity.impl.modules.render.*;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class ModuleManager {
         this.modules.add(new Delays());
         this.modules.add(new Announcer());
         this.modules.add(new HitboxDesync());
-        this.modules.add(new IOCancel());
+        this.modules.add(new Exception());
 
 
         // MISC
@@ -104,10 +105,8 @@ public class ModuleManager {
 
         // COMBAT
         this.modules.add(new Criticals());
-        this.modules.add(new Armor());
         this.modules.add(new HoleFiller());
         this.modules.add(new Burrow());
-        this.modules.add(new Clip());
         this.modules.add(new Arrow());
         this.modules.add(new AntiCev());
         this.modules.add(new AutoCity());

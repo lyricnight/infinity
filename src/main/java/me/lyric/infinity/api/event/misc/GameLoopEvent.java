@@ -1,4 +1,4 @@
-package me.lyric.infinity.api.event.network;
+package me.lyric.infinity.api.event.misc;
 
 import me.bush.eventbus.event.Event;
 import me.lyric.infinity.impl.modules.render.CustomTime;
