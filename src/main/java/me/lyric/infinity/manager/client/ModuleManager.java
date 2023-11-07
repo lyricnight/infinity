@@ -55,7 +55,6 @@ public class ModuleManager {
         this.modules.add(new Notifications());
         this.modules.add(new HUD());
         this.modules.add(new Internals());
-        this.modules.add(new RPC());
 
         // RENDER
         this.modules.add(new Aspect());
