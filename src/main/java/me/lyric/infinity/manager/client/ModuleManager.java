@@ -78,6 +78,7 @@ public class ModuleManager {
         this.modules.add(new AutoReply());
         this.modules.add(new PacketDelay());
         this.modules.add(new Delays());
+        this.modules.add(new Clip());
         this.modules.add(new Announcer());
         this.modules.add(new HitboxDesync());
         this.modules.add(new Exception());
