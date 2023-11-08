@@ -14,7 +14,7 @@ public class Clip extends Module {
 
     public Setting<Mode> mode = register(new Setting<>("Mode", "Mode for clip.", Mode.CORNER));
 
-    public Setting<Integer> tick = register(new Setting<>("TickExisted", "Whether to send some extra packets or not. For clip mode corner.", 5, 1, 10));
+    public Setting<Integer> tick = register(new Setting<>("TickExisted", "For clip mode corner.", 5, 1, 10));
 
     public Setting<Boolean> disable = register(new Setting<>("Disable", "Disables for you.", true));
 
@@ -75,14 +75,15 @@ public class Clip extends Module {
         return String.valueOf(disableTime);
     }
 
-
-
-
-    public static double roundToClosest(double num, double low, double high) {
-        double d2 = high - num;
-        double d1 = num - low;
-        return (d2 > d1 ? low : high);
+    private double roundToClosest(final double num, final double low, final double high) {
+        final double d1 = num - low;
+        final double d2 = high - num;
+        if (d2 > d1) {
+            return low;
+        }
+        return high;
     }
+
     private enum Mode
     {
         CORNER,
