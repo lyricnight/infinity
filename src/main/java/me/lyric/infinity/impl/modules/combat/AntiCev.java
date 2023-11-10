@@ -27,6 +27,9 @@ public class AntiCev extends Module {
     public Setting<RotationType> type = register(new Setting<>("Rotation Type", "Type of rotation.", RotationType.PACKET).withParent(rot));
     public Setting<Boolean> jump = register(new Setting<>("JumpCheck", "doesnt place when in the air.", false));
 
+    public Setting<Boolean> cd = register(new Setting<>("Slot-Cooldown", "Attempts to prevent burrow stopping your CA when using SLOT", false));
+
+
     @Override
     public String getDisplayInfo() {
         if (CombatUtil.isBlockAbovePlayerHead() && CombatUtil.isAlreadyPrevented())
@@ -41,7 +44,7 @@ public class AntiCev extends Module {
     public void onUpdate()
     {
         InventoryUtil.check(this);
-        if (mc.player == null)
+        if (!nullSafe())
         {
             return;
         }
@@ -54,9 +57,24 @@ public class AntiCev extends Module {
             int oldSlot = mc.player.inventory.currentItem;
             int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
             int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
-            Switch.doSwitch(blockSlot == -1 ? chestSlot : blockSlot, switchMode.getValue());
+            int slot = blockSlot == -1 ? chestSlot : blockSlot;
+            Switch.doSwitch(slot, switchMode.getValue());
             PlacementManager.placeBlock(CombatUtil.getAntiCevPlacement(), rot.getValue(), type.getValue());
-            Switch.doSwitch(oldSlot, switchMode.getValue());
+            if(switchMode.getValue() == SwitchType.SLOT)
+            {
+                if(cd.getValue())
+                {
+                    Switch.switchBackAlt(slot);
+                }
+                else
+                {
+                    Switch.doSwitch(slot, SwitchType.SLOT);
+                }
+            }
+            else
+            {
+                Switch.doSwitch(oldSlot, switchMode.getValue());
+            }
         }
     }
 }

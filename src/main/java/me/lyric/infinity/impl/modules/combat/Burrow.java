@@ -41,6 +41,9 @@ public class Burrow extends Module {
     public Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations for placing.", true));
     public Setting<Boolean> swing = register(new Setting<>("Swing","Swing to place the block.", true));
     public Setting<Boolean> strict = register(new Setting<>("Strict","For stricter anticheats.", false));
+
+    public Setting<Boolean> cd = register(new Setting<>("Slot-Cooldown", "Attempts to prevent burrow stopping your CA when using SLOT", false));
+
     public Burrow() {
         super("Burrow", "this", Category.COMBAT);
     }
@@ -94,12 +97,27 @@ public class Burrow extends Module {
             {
                 return;
             }
-            Switch.doSwitch(InventoryUtil.findHotbarBlock(BlockObsidian.class), switchMode.getValue());
+            int slot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
+            Switch.doSwitch(slot, switchMode.getValue());
             mc.player.connection.sendPacket(new CPacketPlayerTryUseItemOnBlock(currentPos, currentFace, EnumHand.MAIN_HAND, f, f1, f2));
             if (swing.getValue()) {
                 mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
             }
-            Switch.doSwitch(startingItem, switchMode.getValue());
+            if (switchMode.getValue() == SwitchType.SLOT)
+            {
+                if (cd.getValue())
+                {
+                    Switch.switchBackAlt(slot);
+                }
+                else
+                {
+                    Switch.doSwitch(slot, SwitchType.SLOT);
+                }
+            }
+            else
+            {
+                Switch.doSwitch(startingItem, switchMode.getValue());
+            }
             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, getPos(), mc.player.posZ, false));
             timer.reset();
             toggle();

@@ -100,11 +100,12 @@ public class HoleFiller extends Module
             final int oldSlot = mc.player.inventory.currentItem;
             final int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
             final int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
+            int slot = (blockSlot == -1 ? chestSlot : blockSlot);
             boolean switched = false;
             for (final HoleUtil.Hole hole : holes) {
                 Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
                 if (!switched) {
-                    Switch.doSwitch(blockSlot == -1 ? chestSlot : blockSlot, switchMode.getValue());
+                    Switch.doSwitch(slot, switchMode.getValue());
                     switched = true;
                 }
                 if (hole.doubleHole) {
@@ -119,7 +120,14 @@ public class HoleFiller extends Module
                 }
             }
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
-            Switch.doSwitch(oldSlot, switchMode.getValue());
+            if (switchMode.getValue() == SwitchType.SLOT)
+            {
+                Switch.switchBackAlt(slot);
+            }
+            else
+            {
+                Switch.doSwitch(oldSlot, switchMode.getValue());
+            }
             timer.reset();
         }
     }
