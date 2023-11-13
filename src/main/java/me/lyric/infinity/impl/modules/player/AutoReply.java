@@ -22,7 +22,7 @@ public class AutoReply extends Module {
         super("AutoReply","Automatically replies your coords to people you have added.", Category.PLAYER);
     }
 
-    public Setting<Boolean> ignoreY = register(new Setting("IgnoreY","Doesn't send your Y coordinate.", true));
+    public Setting<Boolean> ignoreY = register(new Setting<>("IgnoreY","Doesn't send your Y coordinate.", true));
 
     @EventListener(priority = ListenerPriority.LOW)
     public void onReceivePacket(PacketEvent.Receive e)  {

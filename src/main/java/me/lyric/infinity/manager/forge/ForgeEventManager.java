@@ -40,7 +40,7 @@ public class ForgeEventManager implements IGlobals {
         MinecraftForge.EVENT_BUS.register(this);
         Infinity.INSTANCE.eventBus.subscribe(this);
     }
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void onWorldRender(RenderWorldLastEvent event) {
         if (event.isCanceled()) {
             return;
@@ -115,7 +115,7 @@ public class ForgeEventManager implements IGlobals {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+    @SubscribeEvent(priority = EventPriority.LOW, receiveCanceled = true)
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (Keyboard.getEventKeyState()) {
             for (Module modules : ModuleManager.getModuleManager().getModules()) {
