@@ -9,4 +9,7 @@ public interface IEntity {
     @Accessor(value = "isInWeb")
     boolean isInWeb();
 
+    @Accessor(value = "inPortal")
+    void setInPortal(boolean inPortal);
+
 }

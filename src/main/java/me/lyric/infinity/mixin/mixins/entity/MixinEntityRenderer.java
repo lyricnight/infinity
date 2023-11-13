@@ -4,6 +4,7 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.AspectEvent;
 import me.lyric.infinity.api.event.render.RenderNametagEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.impl.modules.render.Ambience;
 import me.lyric.infinity.mixin.transformer.IEntityRenderer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -39,6 +41,31 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
     public void setupCamera(float partialTicks, int pass) {
         setupCameraTransform(partialTicks, pass);
     }
+
+    @ModifyVariable(method = "updateLightmap", at = @At(value="STORE"), index = 20)
+    public int red(int red) {
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).isEnabled()) {
+            red = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getColor().getRed();
+        }
+        return red;
+    }
+
+    @ModifyVariable(method = "updateLightmap", at = @At(value = "STORE"), index = 21)
+    public int green(int green) {
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).isEnabled()) {
+            green = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getColor().getGreen();
+        }
+        return green;
+    }
+
+    @ModifyVariable(method = "updateLightmap", at = @At(value="STORE"), index = 22)
+    public int blue(int blue) {
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).isEnabled()) {
+            blue = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getColor().getBlue();
+        }
+        return blue;
+    }
+
 
     @Redirect(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onSetupCameraTransform(float fovy, float aspect, float zNear, float zFar) {

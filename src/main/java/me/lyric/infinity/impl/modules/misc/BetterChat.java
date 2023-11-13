@@ -7,7 +7,9 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.string.ChatFormat;
+import me.lyric.infinity.mixin.mixins.accessors.ICPacketChat;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketChat;
+import net.minecraft.network.play.client.CPacketChatMessage;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.text.TextComponentString;
 
@@ -22,7 +24,13 @@ public class BetterChat extends Module {
     public final Setting<Boolean> rect = register(new Setting<>("NoRect","Removes rectangle", true));
     public Setting<ChatFormat.Color> bracketColor = register(new Setting<>("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));
     public Setting<ChatFormat.Color> commandColor = register(new Setting<>("NameColor","Colour of timestamps", ChatFormat.Color.LIGHT_PURPLE));
+
     public Setting<Boolean> inf = register(new Setting<>("Infinite", "Makes chat infinite.", false));
+
+    public Setting<Boolean> append = register(new Setting<>("Append", "Add a suffix to your messages.", false));
+
+    public Setting<String> str = register(new Setting<>("Append-String", "String to append.", "infinity"));
+
     public BetterChat() {
         super("BetterChat", "Improves Minecraft's chat", Category.MISC);
     }
@@ -34,6 +42,16 @@ public class BetterChat extends Module {
             if (this.timeStamps.getValue()) {
                 ((ISPacketChat)packet).setChatComponent(new TextComponentString(getTimeString() +" "+  packet.getChatComponent().getFormattedText()));
             }
+        }
+    }
+
+    @EventListener
+    public void onPacketSend(PacketEvent.Send event)
+    {
+        if (event.getPacket() instanceof CPacketChatMessage && !((CPacketChatMessage)(event.getPacket())).getMessage().startsWith("/"))
+        {
+            CPacketChatMessage packet = (CPacketChatMessage) event.getPacket();
+            ((ICPacketChat)packet).setMessage(packet.getMessage() + " | " +  str.getValue());
         }
     }
 

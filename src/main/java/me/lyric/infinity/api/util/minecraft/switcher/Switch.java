@@ -14,8 +14,6 @@ import net.minecraft.network.play.client.CPacketHeldItemChange;
  */
 
 public class Switch implements IGlobals {
-    //TODO: Fix slot modes
-
     private static ItemStack stackAlt = null;
 
     private static int lastSlot = -1;

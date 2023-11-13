@@ -65,6 +65,8 @@ public class ModuleManager {
         this.modules.add(new PlayerChams());
         this.modules.add(new ShaderChams());
         this.modules.add(new Brightness());
+        this.modules.add(new Portals());
+        this.modules.add(new Ambience());
         this.modules.add(new CustomTime());
         this.modules.add(new CModifier());
         this.modules.add(new HoleESP());

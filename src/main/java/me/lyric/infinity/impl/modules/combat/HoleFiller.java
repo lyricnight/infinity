@@ -17,7 +17,6 @@ import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.impl.modules.movement.InstantSpeed;
 import me.lyric.infinity.manager.client.PlacementManager;
-import me.lyric.infinity.manager.client.RotationManager;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
 import net.minecraft.entity.Entity;
@@ -131,6 +130,7 @@ public class HoleFiller extends Module
             timer.reset();
         }
     }
+
 
     public void getHoles() {
         loadHoles();

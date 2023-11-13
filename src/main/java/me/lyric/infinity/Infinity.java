@@ -50,7 +50,7 @@ public class Infinity {
         ConfigManager.refresh();
         ConfigManager.reload();
         ConfigManager.process(ConfigManager.LOAD);
-        SplashProgress.setProgress(4, "Loading Infinity's Configs...");
+        SplashProgress.setProgress(3, "Loading Infinity's Configs...");
     }
 
     public static void shutdown() {
