@@ -4,6 +4,7 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.network.play.client.CPacketChatMessage;
 
@@ -11,18 +12,12 @@ import java.util.Objects;
 
 /**
  * @author lyric
- * 2bpvp beef
  */
+@ModuleInformation(getName = "ChatColours", getDescription = "only for 2b2tpvp", category = Category.Misc)
 public class ChatColours extends Module {
     public Setting<Color> colour = register(new Setting<>("Colour", "Which colour to use.", Color.Aqua));
     public Setting<Modifier> modifier = register(new Setting<>("Modifier", "Modifies how the message will be displayed.", Modifier.None));
     private String[] disallowed = new String[] {".", "/", ",", "-"};
-
-    public ChatColours()
-    {
-        super("ChatColours", "Allows you to use ChatFormatting in chat. Doesn't work on most servers.", Category.MISC);
-    }
-
     @EventListener
     public void onPacketSend(PacketEvent.Send event)
     {

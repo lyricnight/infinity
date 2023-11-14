@@ -2,6 +2,7 @@ package me.lyric.infinity.impl.modules.player;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.util.math.MathHelper;
 /**
  * @author mioclient for the original module, WMS for weirdserver mode, rest is me
  */
+@ModuleInformation(getName = "Clip", getDescription = "we CLIPPING out here", category = Category.Player)
 public class Clip extends Module {
 
     public Setting<Mode> mode = register(new Setting<>("Mode", "Mode for clip.", Mode.CORNER));
@@ -21,12 +23,6 @@ public class Clip extends Module {
     public Setting<Integer> updates = register(new Setting<>("Update-Amount", "Amount of ticks before autodisable disables.", 10, 1, 40).withParent(disable));
 
     int disableTime = 0;
-
-    public Clip()
-    {
-        super("Clip", "least robotic player", Category.PLAYER);
-    }
-
     @Override
     public void onDisable()
     {

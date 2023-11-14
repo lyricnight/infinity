@@ -5,6 +5,7 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.item.ItemAppleGold;
 import net.minecraft.item.ItemBlock;
@@ -21,6 +22,7 @@ import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+@ModuleInformation(getName = "Announcer", getDescription = "we ANNOUNCING out here", category = Category.Player)
 public class Announcer extends Module {
     public Setting<String> client = register(new Setting<>("Name", "Name to use in announcer.", "Infinity"));
     public static String[] breakMessages;

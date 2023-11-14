@@ -3,6 +3,7 @@ package me.lyric.infinity.api.util.gl;
 import me.lyric.infinity.api.util.metadata.FileUtils;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -31,152 +32,31 @@ import static org.lwjgl.opengl.GL11.glEnd;
  */
 
 public class RenderUtils implements IGlobals {
-
     private final static Tessellator tessellator = Tessellator.getInstance();
-    private static final RenderItem itemRender = mc.getRenderItem();
     private final static BufferBuilder bufferBuilder = tessellator.getBuffer();
-    private static final ItemStack totem = new ItemStack(Items.TOTEM_OF_UNDYING);
 
     public static void color(Color color)
     {
         glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f);
     }
-
-    public static void fillOutline(AxisAlignedBB bb)
-    {
-        if (bb != null)
-        {
-            glBegin(GL_LINES);
-            {
-                glVertex3d(bb.minX, bb.minY, bb.minZ);
-                glVertex3d(bb.maxX, bb.minY, bb.minZ);
-
-                glVertex3d(bb.maxX, bb.minY, bb.minZ);
-                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
-
-                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
-                glVertex3d(bb.minX, bb.minY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.minY, bb.maxZ);
-                glVertex3d(bb.minX, bb.minY, bb.minZ);
-
-                glVertex3d(bb.minX, bb.minY, bb.minZ);
-                glVertex3d(bb.minX, bb.maxY, bb.minZ);
-
-                glVertex3d(bb.maxX, bb.minY, bb.minZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
-
-                glVertex3d(bb.maxX, bb.minY, bb.maxZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.minY, bb.maxZ);
-                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.maxY, bb.minZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
-
-                glVertex3d(bb.maxX, bb.maxY, bb.minZ);
-                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.maxX, bb.maxY, bb.maxZ);
-                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
-
-                glVertex3d(bb.minX, bb.maxY, bb.maxZ);
-                glVertex3d(bb.minX, bb.maxY, bb.minZ);
-            }
-            glEnd();
-        }
+    public static void prepareScissor(int x, int y, int width, int height) {
+        GL11.glPushMatrix();
+        GL11.glPushAttrib(524288);
+        scissor(x, y, x + width, y + height);
+        GL11.glEnable(3089);
     }
 
-    public static void fillBox(AxisAlignedBB boundingBox)
-    {
-        if (boundingBox != null)
-        {
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.maxY, (float) boundingBox.maxZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glEnd();
-
-            glBegin(GL_QUADS);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.minZ);
-            glVertex3d((float) boundingBox.minX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glVertex3d((float) boundingBox.maxX, (float) boundingBox.minY, (float) boundingBox.maxZ);
-            glEnd();
-        }
+    public static void releaseScissor() {
+        GL11.glDisable(3089);
+        GL11.glPopAttrib();
+        GL11.glPopMatrix();
     }
+
+    public static void scissor(int x, int y, int x2, int y2) {
+        ScaledResolution scaledResolution = new ScaledResolution(mc);
+        GL11.glScissor(x * scaledResolution.getScaleFactor(), (scaledResolution.getScaledHeight() - y2) * scaledResolution.getScaleFactor(), (x2 - x) * scaledResolution.getScaleFactor(), (y2 - y) * scaledResolution.getScaleFactor());
+    }
+
     public static void drawBBSlab(AxisAlignedBB bb, double height, Color color) {
         final int r = color.getRed();
         final int g = color.getGreen();
@@ -471,32 +351,6 @@ public class RenderUtils implements IGlobals {
     private static void width(float width) {
         GlStateManager.glLineWidth(width);
     }
-
-    public static void renderTotem() {
-        int width = new ScaledResolution(mc).getScaledWidth();
-        int height = new ScaledResolution(mc).getScaledHeight();
-        int totems = mc.player.inventory.mainInventory.stream().filter(itemStack -> (itemStack.getItem() == Items.TOTEM_OF_UNDYING)).mapToInt(ItemStack::getCount).sum();
-        if (mc.player.getHeldItemOffhand().getItem() == Items.TOTEM_OF_UNDYING)
-            totems += mc.player.getHeldItemOffhand().getCount();
-        if (totems > 0) {
-            GlStateManager.enableTexture2D();
-            int i = width / 2;
-            int iteration = 0;
-            int y = height - 55 - ((mc.player.isInWater() && mc.playerController.gameIsSurvivalOrAdventure()) ? 10 : 0);
-            int x = i - 189 + 180 + 2;
-            GlStateManager.enableDepth();
-            itemRender.zLevel = 200.0F;
-            itemRender.renderItemAndEffectIntoGUI(totem, x, y);
-            itemRender.renderItemOverlayIntoGUI(mc.fontRenderer, totem, x, y, "");
-            itemRender.zLevel = 0.0F;
-            GlStateManager.enableTexture2D();
-            GlStateManager.disableLighting();
-            GlStateManager.disableDepth();
-            mc.fontRenderer.drawStringWithShadow(totems + "", (x + 19 - 2 - mc.fontRenderer.getStringWidth(totems + "")), (y + 9), 16777215);
-            GlStateManager.enableDepth();
-            GlStateManager.disableLighting();
-        }
-    }
     public static void renderArmorNew() {
             GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
             ScaledResolution res = new ScaledResolution(mc);
@@ -641,6 +495,84 @@ public class RenderUtils implements IGlobals {
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
     }
+
+    public static void rectangle(float x, float y, float width, float height, int color) {
+        float alpha = (color >> 24 & 0xFF) / 255.0f;
+        float red = (color >> 16 & 0xFF) / 255.0f;
+        float green = (color >> 8 & 0xFF) / 255.0f;
+        float blue = (color & 0xFF) / 255.0f;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        bufferbuilder.pos(x, height, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(width, height, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(width, y, 0.0).color(red, green, blue, alpha).endVertex();
+        bufferbuilder.pos(x, y, 0.0).color(red, green, blue, alpha).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+    public static void outline(float x, float y, float width, float height, final Color color, final float lineWidth) {
+        if (x < width) {
+            final double i = x;
+            x = width;
+            width = (float) i;
+        }
+        if (y < height) {
+            final double j = y;
+            y = height;
+            height = (float)j;
+        }
+        float f3 = (color.getRGB() >> 24 & 0xFF) / 255.0f;
+        float f4 = (color.getRGB() >> 16 & 0xFF) / 255.0f;
+        float f5 = (color.getRGB() >> 8 & 0xFF) / 255.0f;
+        float f6 = (color.getRGB() & 0xFF) / 255.0f;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        GlStateManager.enableBlend();
+        GL11.glPolygonMode(1032, 6913);
+        GL11.glLineWidth(lineWidth);
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.color(f4, f5, f6, f3);
+        bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
+        bufferbuilder.pos(x, height, 0.0).endVertex();
+        bufferbuilder.pos(width, height, 0.0).endVertex();
+        bufferbuilder.pos(width, y, 0.0).endVertex();
+        bufferbuilder.pos(x, y, 0.0).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GL11.glPolygonMode(1032, 6914);
+    }
+    public static void drawArrow(float x, float y, float size, float widthDiv, float heightDiv, float outlineWidth) {
+        final boolean blend = GL11.glIsEnabled(3042);
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(2848);
+        GL11.glPushMatrix();
+        GL11.glLineWidth(outlineWidth);
+        GL11.glBegin(2);
+        GL11.glColor4f(255.0f, 255.0f, 255.0f, 255.0f);
+        GL11.glVertex2d(x, y);
+        GL11.glVertex2d((x - size / widthDiv), (y - size));
+        GL11.glVertex2d(x, (y - size / heightDiv));
+        GL11.glVertex2d((x + size / widthDiv), (y - size));
+        GL11.glVertex2d(x, y);
+        GL11.glEnd();
+        GL11.glPopMatrix();
+        GL11.glEnable(3553);
+        if (!blend) {
+            GL11.glDisable(3042);
+        }
+        GL11.glDisable(2848);
+    }
+
     public static int loadGlTexture(ResourceLocation resource) {
         try {
             BufferedImage bufferedImage = ImageIO.read(FileUtils.getFile(resource.getPath()));
@@ -670,6 +602,16 @@ public class RenderUtils implements IGlobals {
         } catch (Throwable e) {
             return 0;
         }
+    }
+
+    public static void image(ResourceLocation resourceLocation, int x, int y, int width, int height) {
+        GL11.glPushMatrix();
+        GlStateManager.enableAlpha();
+        mc.getTextureManager().bindTexture(resourceLocation);
+        GlStateManager.color(1.0f, 1.0f, 1.0f);
+        GuiScreen.drawScaledCustomSizeModalRect(x, y, 0.0f, 0.0f, width, height, width, height, (float)width, (float)height);
+        GlStateManager.disableAlpha();
+        GL11.glPopMatrix();
     }
 
     public static void drawLine(float x, float y, float x1, float y1, float thickness, int hex) {

@@ -3,25 +3,23 @@ package me.lyric.infinity.impl.modules.misc;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * @author Paupro (Thanks lyric for help)
+ * @author who knows
  */
 
+@ModuleInformation(getName = "AutoRespawn", getDescription = "useful", category = Category.Misc)
 public class AutoRespawn extends Module {
 
     public Setting<Boolean> message = register(new Setting<>("Message", "Sends your death coordinates in chat after you die.", true));
-
-    public AutoRespawn() {
-        super("AutoRespawn", "Respawns automatically when you die.", Category.MISC);
-    }
-
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onDisplayDeathScreen(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiGameOver) {
             if (message.getValue()) {

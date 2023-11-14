@@ -5,6 +5,7 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
@@ -14,12 +15,8 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
  * very useful
  */
 
+@ModuleInformation(getName = "NoHandshake", getDescription = "hypixel players when", category = Category.Misc)
 public class NoHandshake extends Module {
-
-    public NoHandshake() {
-        super("NoHandshake", "Prevents sending your modlist to the server.", Category.MISC);
-    }
-
     @EventListener
     public void onPacketReceive(PacketEvent.Receive event) {
         if (!nullSafe()) return;

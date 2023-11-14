@@ -3,10 +3,12 @@ package me.lyric.infinity.impl.modules.client;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.string.ChatFormat;
 
+@ModuleInformation(getName = "Internals", getDescription = "Handles internal settings that don't fit anywhere else.", category = Category.Client)
 public class Internals extends Module {
 
     public Setting<ChatFormat.Color> bracketColor = register(new Setting<>("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));
@@ -21,10 +23,6 @@ public class Internals extends Module {
     public Setting<Integer> fps = register(new Setting<>("FPS", "FPS when unfocused.", 60, 10, 200).withParent(unf));
     public Setting<Boolean> fov = register(new Setting<>("FOVModifier", "Whether to modify fov or not.", false));
     public Setting<Float> fovslider = register(new Setting<>("FOV", "FOV to set to.", 130f, 30f, 180f).withParent(fov));
-    public Internals()
-    {
-        super("Internals", "Handles settings that don't fit anywhere else.", Category.CLIENT);
-    }
 
     @Override
     public void onUpdate() {

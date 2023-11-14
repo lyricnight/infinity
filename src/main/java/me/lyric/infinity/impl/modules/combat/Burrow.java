@@ -6,6 +6,7 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
@@ -36,17 +37,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author lyric !!
  */
 
+@ModuleInformation(getName = "Burrow", getDescription = "this", category = Category.Combat)
 public class Burrow extends Module {
     public Setting<SwitchType> switchMode = register(new Setting<>("Mode", "Mode for switch", SwitchType.SILENT));
+
     public Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations for placing.", true));
     public Setting<Boolean> swing = register(new Setting<>("Swing","Swing to place the block.", true));
     public Setting<Boolean> strict = register(new Setting<>("Strict","For stricter anticheats.", false));
 
     public Setting<Boolean> cd = register(new Setting<>("Slot-Cooldown", "Attempts to prevent burrow stopping your CA when using SLOT", false));
 
-    public Burrow() {
-        super("Burrow", "this", Category.COMBAT);
-    }
     private Timer timer = new Timer();
 
     @Override

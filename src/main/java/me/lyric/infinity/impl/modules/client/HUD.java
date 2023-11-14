@@ -6,8 +6,9 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.gl.ColorUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
@@ -31,11 +32,11 @@ import java.util.Comparator;
 
 /**
  * @author lyric
- * the long awaited rewrite
  */
 
+@ModuleInformation(getName = "HUD", getDescription = "Head-Up-Display", category = Category.Client)
 public class HUD extends Module {
-    public Setting<Boolean> shadow = register(new Setting<>("Shadow", "For string to be drawn with a shadow.", false));
+    public BooleanSetting shadow = register(new Setting<>("Shadow", "For string to be drawn with a shadow.", false));
     public Setting<Boolean> step = register(new Setting<>("Step", "Colour step.", false));
     public Setting<ColorPicker> stepColor = register(new Setting<>("Step Colour", "The step colour for the HUD components.", new ColorPicker(Color.WHITE)).withParent(step));
     public Setting<Integer> stepLength = register(new Setting<>("Length", "Length for step.", 30, 10, 130).withParent(step));
@@ -58,10 +59,6 @@ public class HUD extends Module {
     private int offset = 0;
     private final Timer packetTimer = new Timer();
     private final ArrayList<Module> modules = new ArrayList<>();
-
-    public HUD() {
-        super("HUD", "test", Category.CLIENT);
-    }
 
     @EventListener
     public void onPacketSend(PacketEvent.Send ignored) {

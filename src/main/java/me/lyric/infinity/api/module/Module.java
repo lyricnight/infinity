@@ -21,18 +21,33 @@ import java.util.function.Predicate;
 
 public class Module implements IGlobals {
 
-    private final String name = getModuleInfo().getName();
-    private final String description = getModuleInfo().getDescription();
-    public List<Setting<?>> settingList = new ArrayList<>();
-    public float animfactor = 0.0f;
-    private final Category category = getModuleInfo().category();
+    private String name;
+    private String description;
 
-    public boolean enabled = false;
-    private final KeySetting bind = new KeySetting("Keybind",0);
-    private final BooleanSetting drawn = new BooleanSetting("Drawn",true);
+    public Color defaultColor;
+    public List<Setting<?>> settingList;
+    public float animfactor = 0.0f;
+    private Category category;
+
+    public boolean enabled;
+
+    public KeySetting bind = new KeySetting("Keybind",0);
+
+    public BooleanSetting drawn = new BooleanSetting("Drawn",true);
     public ModuleInformation getModuleInfo() {
         return this.getClass().getAnnotation(ModuleInformation.class);
     }
+
+    public Module() {
+        this.settingList = new ArrayList<>();
+        this.defaultColor = new Color(254, 254, 254);
+        this.enabled = false;
+        this.name = this.getModuleInfo().getName();
+        this.category = this.getModuleInfo().category();
+        this.description = this.getModuleInfo().getDescription();
+    }
+
+
     public String getName() {
         return name;
     }

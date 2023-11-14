@@ -2,6 +2,7 @@ package me.lyric.infinity.impl.modules.movement;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovementInput;
@@ -11,14 +12,11 @@ import net.minecraft.world.chunk.EmptyChunk;
  * @author cpacketcustompayload
  */
 
+@ModuleInformation(getName = "EntitySpeed", getDescription = "pig speed", category = Category.Movement)
 public class EntitySpeed extends Module {
 
     public Setting<Boolean> antiStuck = register(new Setting<>("Anti-Stuck", "Checks empty chunks and stops entity speed.", false));
     public Setting<Double> entitySpeed = register(new Setting<>("Speed", "The speed of the entity.", 1.0, 0.0, 10.0));
-
-    public EntitySpeed() {
-        super("EntitySpeed", "Allows you to make entities go faster.", Category.MOVEMENT);
-    }
 
     @Override
     public void onUpdate() {

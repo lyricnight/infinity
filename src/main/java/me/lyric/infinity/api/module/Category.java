@@ -1,6 +1,12 @@
 package me.lyric.infinity.api.module;
 
-
-public enum Category {
-    COMBAT, RENDER, PLAYER, MOVEMENT, MISC, CLIENT
+public enum Category
+{
+    Combat,
+    Exploit,
+    Misc,
+    Movement,
+    Player,
+    Visual,
+    Client;
 }

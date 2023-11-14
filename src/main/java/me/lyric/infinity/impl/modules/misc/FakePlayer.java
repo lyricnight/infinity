@@ -3,6 +3,7 @@ package me.lyric.infinity.impl.modules.misc;
 import com.mojang.authlib.GameProfile;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
@@ -14,13 +15,10 @@ import java.util.Map;
 
 /**
  * @author lyric
- * this is weird
  */
+@ModuleInformation(getName = "FakePlayer", getDescription = "testing things", category = Category.Misc)
 public class FakePlayer extends Module {
-    public Setting<String> username = register(new Setting<Object>("Name","The name of the FakePlayer.", "lyric"));
-    public FakePlayer() {
-        super("FakePlayer","Creates FakePlayer for testing.", Category.MISC);
-    }
+    public Setting<String> username = register(new Setting<Object>("Name","The name of the FakePlayer.", "real"));
     @Override
     public void onLogout()
     {

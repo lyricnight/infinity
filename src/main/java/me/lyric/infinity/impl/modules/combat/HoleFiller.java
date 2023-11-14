@@ -4,6 +4,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.EntityUtil;
@@ -32,9 +33,9 @@ import java.util.stream.Collectors;
 
 /**
  * @author lyric
- * much better than before
  */
 
+@ModuleInformation(getName = "HoleFiller", getDescription = "bot", category = Category.Combat)
 public class HoleFiller extends Module
 {
     public Setting<SwitchType> switchMode = register(new Setting<>("Mode", "Mode for switch", SwitchType.SILENT));
@@ -55,11 +56,6 @@ public class HoleFiller extends Module
     private Timer timer = new Timer();
     List<HoleUtil.Hole> holes = new ArrayList<HoleUtil.Hole>();
     EntityPlayer target = null;
-
-    public HoleFiller() {
-        super("HoleFiller","very good for strict and other servers.", Category.COMBAT);
-    }
-
     @Override
     public void onEnable() {
         timer.reset();

@@ -6,21 +6,18 @@ import me.lyric.infinity.api.event.entity.LivingUpdateEvent;
 import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 
 /**
  * @author lyric
  * rewrite?
  */
-
+@ModuleInformation(getName = "Sprint", getDescription = "we SPRINTING out here", category = Category.Movement)
 public class Sprint extends Module {
 
     public Setting<Mode> mode = register(new Setting<>("Mode", "The mode for sprint.", Mode.DIRECTIONAL));
     public Setting<Boolean> strict = register(new Setting<>("Strict", "Changes sprint to function better in stricter anti-cheats.", false));
-
-    public Sprint() {
-        super("Sprint", "Keeps you always sprinting.", Category.MOVEMENT);
-    }
 
     @Override
     public void onUpdate() {

@@ -2,6 +2,7 @@ package me.lyric.infinity.impl.modules.player;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -12,18 +13,12 @@ import static net.minecraft.util.math.MathHelper.abs;
 
 /**
  * @author cattyn and mironov ig?
-    idek if this works
-    update - it does - requires you to look at the +X or +Z dirs
+    requires you to look at the +X or +Z dirs
     maybe automatically rotate the player to look at that dir when active?
  */
-
+@ModuleInformation(getName = "Announcer", getDescription = "we BEING WEIRD out here", category = Category.Player)
 public class HitboxDesync extends Module {
     private static final double MAGIC_OFFSET = .200009968835369999878673424677777777777761;
-
-    public HitboxDesync() {
-        super("HitboxDesync", "Crashes chinese crystal auras.", Category.PLAYER);
-    }
-
     @Override
     public void onTick() {
         if (mc.world == null) return;

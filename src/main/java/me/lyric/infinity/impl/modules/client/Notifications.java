@@ -6,6 +6,7 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.time.Timer;
@@ -16,17 +17,12 @@ import net.minecraft.potion.Potion;
 
 import java.util.*;
 
+@ModuleInformation(getName = "Notifications", getDescription = "Handles various notifications.", category = Category.Client)
 public class Notifications extends Module {
-
     public Setting<Boolean> modules = register(new Setting<>("Modules", "Chat notifications when a module is enabled or disabled.", true));
     public Setting<Boolean> totem = register(new Setting<>("Totem Counter" , "Notifies you when a player pops a totem.",true ));
     public Setting<Boolean> potions = register(new Setting<>("Potion Detector", "Detects players potion effects.", true));
-
     public Setting<Integer> checkrate = register(new Setting<>("Checkrate", "How often to check potions.", 500,  0, 5000));
-
-    public Notifications() {
-        super("Notifications", "Handle various notifications.", Category.CLIENT);
-    }
     public static HashMap<String, Integer> totemPops = new HashMap<>();
     private final Set<EntityPlayer> str = Collections.newSetFromMap(new WeakHashMap<>());
     private final Set<EntityPlayer> spd = Collections.newSetFromMap(new WeakHashMap<>());

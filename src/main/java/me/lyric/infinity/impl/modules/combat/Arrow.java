@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.Bind;
 import me.lyric.infinity.api.util.client.InventoryUtil;
@@ -27,16 +28,13 @@ import java.util.*;
  * @author lyric
  */
 
+@ModuleInformation(getName = "Arrow", getDescription = "Quiver but worse", category = Category.Combat)
 public class Arrow extends Module {
 
     public Setting<Bind> cyclebind = register(new Setting<>("Cycle-Bind", "Bind to instantly cycle arrows.", new Bind()));
 
     public Setting<Integer> cycle = register(new Setting<>("Cycle-Time", "Time taken to cycle an arrow type.", 200, 0, 5000));
 
-    public Arrow()
-    {
-        super("Arrow", "Basically just quiver.", Category.COMBAT);
-    }
     static PotionType SPECTRAL = new PotionType();
 
     static Set<PotionType> BAD_TYPES = Sets.newHashSet(

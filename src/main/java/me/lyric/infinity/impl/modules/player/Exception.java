@@ -2,12 +2,12 @@ package me.lyric.infinity.impl.modules.player;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
+
 /**
     @author lyric :P
  */
+@ModuleInformation(getName = "Exception", getDescription = "we NOT GETTING KICKED out here", category = Category.Player)
 public class Exception extends Module {
-    public Exception ()
-    {
-        super("Exception", "Prevents packet kicks, by cancelling IOException.", Category.PLAYER);
-    }
+
 }

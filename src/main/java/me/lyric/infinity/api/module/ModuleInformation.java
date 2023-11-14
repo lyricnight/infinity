@@ -1,6 +1,5 @@
 package me.lyric.infinity.api.module;
 
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

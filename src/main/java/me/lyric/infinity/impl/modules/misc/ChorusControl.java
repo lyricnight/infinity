@@ -4,8 +4,8 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import net.minecraft.network.play.client.CPacketConfirmTeleport;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -23,7 +23,7 @@ import java.util.Queue;
 /**
  * @author cpacketcustompayload
  */
-
+@ModuleInformation(getName = "ChorusControl", getDescription = "Control chorus teleportation.", category = Category.Misc)
 public class ChorusControl extends Module {
 
     public Setting<Boolean> cpacketplayer = register(new Setting<>("CPacketPlayer", "Cancels the CPacketPlayer packet.", true));
@@ -37,10 +37,6 @@ public class ChorusControl extends Module {
     Queue<CPacketConfirmTeleport> teleportPackets = new LinkedList<>();
 
     SPacketPlayerPosLook sPacketPlayerPosLook;
-
-    public ChorusControl() {
-        super("ChorusControl", "Lets you control your chorus teleportation.", Category.MISC);
-    }
 
     @EventListener
     public void onPacketReceive(PacketEvent.Receive event) {

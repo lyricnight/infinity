@@ -1,6 +1,6 @@
 package me.lyric.infinity.manager.client;
 
-import me.lyric.infinity.Infinity;
+import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.impl.modules.client.*;
 import me.lyric.infinity.impl.modules.combat.*;
@@ -11,6 +11,8 @@ import me.lyric.infinity.impl.modules.player.Exception;
 import me.lyric.infinity.impl.modules.render.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ModuleManager {
 
@@ -49,6 +51,20 @@ public class ModuleManager {
         return null;
     }
 
+    public List<Module> getModulesInCategory(Category category) {
+        final ArrayList<Module> modulesInCategory = new ArrayList<>();
+        for (Module module : this.modules) {
+            if (module.getCategory().equals(category)) {
+                modulesInCategory.add(module);
+            }
+        }
+        return modulesInCategory;
+    }
+
+    public List<Category> getCategories() {
+        return Arrays.asList(Category.values());
+    }
+
     public void init() {
         // CLIENT
         this.modules.add(new ClickGUI());
@@ -76,7 +92,7 @@ public class ModuleManager {
 
 
         // PLAYER
-        this.modules.add(new NoInterpolation());
+        this.modules.add(new Resolver());
         this.modules.add(new AutoReply());
         this.modules.add(new PacketDelay());
         this.modules.add(new Delays());
@@ -118,25 +134,6 @@ public class ModuleManager {
     public ArrayList<Module> getModules() {
         return modules;
     }
-
-    public void onSave() {
-        for (Module modules : this.getModules()) {
-            modules.onSave();
-        }
-    }
-
-    public void onLoad() {
-        for (Module modules : this.getModules()) {
-            modules.onLoad();
-        }
-    }
-
-    public void onReload() {
-        for (Module modules : this.getModules()) {
-            modules.reloadListener();
-        }
-    }
-
     public void onLogout() {
         modules.stream().filter(Module::isEnabled).forEach(Module::onLogout);
     }

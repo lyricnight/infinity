@@ -6,6 +6,7 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.EntityUtil;
@@ -23,9 +24,9 @@ import java.util.Objects;
 
 /**
  * @author lyric
- * better version of cascade holesnap
  */
 
+@ModuleInformation(getName = "HoleSnap", getDescription = "we SNAPPING out here", category = Category.Movement)
 public class HoleSnap extends Module {
     public Setting<Float> range = register(new Setting<>("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
     public Setting<Float> factor = register(new Setting<>("Factor","Factor!1!1!!", 2.5f, 1.0f, 15.0f));
@@ -33,10 +34,6 @@ public class HoleSnap extends Module {
 
     Timer timer = new Timer();
     HoleUtil.Hole holes;
-
-    public HoleSnap() {
-        super("HoleSnap","TPs you to closest hole.", Category.MOVEMENT);
-    }
 
     @Override
     public void onEnable() {

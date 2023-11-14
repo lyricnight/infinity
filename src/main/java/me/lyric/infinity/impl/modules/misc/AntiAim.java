@@ -4,6 +4,7 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.mixin.mixins.accessors.ICPacketPlayer;
@@ -17,6 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * this is alright I guess
  */
 
+@ModuleInformation(getName = "AntiAim", getDescription = "Have a mental breakdown", category = Category.Misc)
 public class AntiAim extends Module {
 
     public Setting<Yaw> yaw = register(new Setting<>("Yaw", "Changes how your yaw is rotated.", Yaw.LINEAR));
@@ -28,11 +30,6 @@ public class AntiAim extends Module {
     float aimYaw = 0;
     float aimPitch = 0;
     boolean aimToggle = false;
-
-    public AntiAim() {
-        super("AntiAim", "Spoofs your head making you harder to hit.", Category.MISC);
-    }
-
     @Override
     public void onEnable() {
         aimTicks = 0;

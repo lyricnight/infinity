@@ -2,6 +2,7 @@ package me.lyric.infinity.impl.modules.movement;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.mixin.mixins.accessors.IEntity;
 import net.minecraft.entity.Entity;
@@ -13,16 +14,11 @@ import static net.minecraft.network.play.client.CPacketEntityAction.Action.STOP_
 /**
  * @author lyric :(
  */
-
+@ModuleInformation(getName = "WebBypass", getDescription = "we FALLING out here", category = Category.Movement)
 public class WebBypass extends Module {
 
     public Setting<Mode> mode = register(new Setting<>("Mode", "The mode of web bypass.", Mode.VANILLA));
     public Setting<Boolean> sneak = register(new Setting<>("Sneak", "Sneaks whilst falling through the web.", false));
-
-
-    public WebBypass() {
-        super("WebBypass", "Prevents you from slowing down in webs.", Category.MOVEMENT);
-    }
 
     @Override
     public void onUpdate() {

@@ -5,14 +5,13 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 
+@ModuleInformation(getName = "AntiAim", getDescription = "Have a mental breakdown", category = Category.Movement)
 public class InstantSpeed extends Module {
 
-    public InstantSpeed(){
-        super("InstantSpeed", "Makes you accelerate instantly", Category.MOVEMENT);
-    }
     public boolean pause = false;
     private boolean pauseLocal = false;
 

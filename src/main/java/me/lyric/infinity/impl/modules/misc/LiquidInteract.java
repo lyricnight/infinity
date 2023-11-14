@@ -4,17 +4,14 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.blocks.CanCollideCheckEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 
 /**
  * @author lyric
  */
 
+@ModuleInformation(getName = "LiquidInteract", getDescription = "????", category = Category.Misc)
 public class LiquidInteract extends Module {
-
-    public LiquidInteract() {
-        super("LiquidInteract", "Allows you to place blocks in liquids.", Category.MISC);
-    }
-
     @EventListener
     public void canCollide(CanCollideCheckEvent event) {
         if (!nullSafe()) return;

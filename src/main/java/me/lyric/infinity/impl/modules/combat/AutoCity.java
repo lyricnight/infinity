@@ -3,6 +3,7 @@ package me.lyric.infinity.impl.modules.combat;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
@@ -26,6 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 
+@ModuleInformation(getName = "AutoCity", getDescription = "what do you think it does", category = Category.Combat)
 public class AutoCity extends Module
 {
     public Setting<Float> targetRange = register(new Setting<>("Target Range", "Range to target.", 10f, 2f, 15f));
@@ -46,9 +48,6 @@ public class AutoCity extends Module
     int old;
     boolean swapBack;
 
-    public AutoCity() {
-        super("AutoCity", "Automatically cities opp", Category.COMBAT);
-    }
     @Override
     public void onEnable()
     {

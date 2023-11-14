@@ -2,18 +2,15 @@ package me.lyric.infinity.impl.modules.player;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 
 /**
  * @author lyric
  * @link {MixinEntityOtherPlayerMP}
  */
 
-public class NoInterpolation extends Module {
-
-    public NoInterpolation() {
-        super("Resolver", "Renders server-side player positions.", Category.PLAYER);
-    }
-
+@ModuleInformation(getName = "Resolver", getDescription = "we REMOVING INTERPOLATION out here", category = Category.Player)
+public class Resolver extends Module {
     @Override
     public String getDisplayInfo()
     {

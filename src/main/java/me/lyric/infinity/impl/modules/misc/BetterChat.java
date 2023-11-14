@@ -5,6 +5,7 @@ import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.util.string.ChatFormat;
 import me.lyric.infinity.mixin.mixins.accessors.ICPacketChat;
@@ -19,6 +20,7 @@ import java.util.Date;
     @author lyric
  */
 
+@ModuleInformation(getName = "BetterChat", getDescription = "the chat is now better guys", category = Category.Misc)
 public class BetterChat extends Module {
     public final Setting<Boolean> timeStamps = register(new Setting<>("Timestamps","Does what it says on the tin lad",  true));
     public final Setting<Boolean> rect = register(new Setting<>("NoRect","Removes rectangle", true));
@@ -30,10 +32,6 @@ public class BetterChat extends Module {
     public Setting<Boolean> append = register(new Setting<>("Append", "Add a suffix to your messages.", false));
 
     public Setting<String> str = register(new Setting<>("Append-String", "String to append.", "infinity"));
-
-    public BetterChat() {
-        super("BetterChat", "Improves Minecraft's chat", Category.MISC);
-    }
 
     @EventListener(priority = ListenerPriority.LOW)
     public void onPacketReceive(PacketEvent.Receive event) {
