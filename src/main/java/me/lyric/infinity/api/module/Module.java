@@ -1,65 +1,37 @@
 package me.lyric.infinity.api.module;
 
-import com.google.gson.*;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.setting.Register;
 import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.Bind;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.setting.settings.*;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.impl.modules.client.Notifications;
-import me.lyric.infinity.manager.client.ConfigManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.function.Supplier;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
- * @author CPacketCustomPayload
- * stuff added by lyric
+ * @author lyric
  */
 
-public class Module extends Register implements IGlobals {
+public class Module implements IGlobals {
 
-    private final String name;
-    private final String description;
+    private final String name = getModuleInfo().getName();
+    private final String description = getModuleInfo().getDescription();
+    public List<Setting<?>> settingList = new ArrayList<>();
     public float animfactor = 0.0f;
-    private final Category category;
+    private final Category category = getModuleInfo().category();
 
-    //???
-    private Supplier<String> info;
-    private final Setting<Bind> bind = new Setting<>("Bind", "Key bind for the module.", new Bind());
-    private final Setting<Boolean> drawn = new Setting<>("Drawn", "Draws the module on the ArrayList when enabled.", true);
-
-    public Module(final String name, final String description, final Category category) {
-        super();
-
-        this.name = name;
-        this.description = description;
-        this.category = category;
-
-        this.register(bind);
-        this.register(drawn);
-    }
-    //???
-    public Module(final String name, final String description, final Category category, Supplier<String> info) {
-        super();
-
-        this.name = name;
-        this.description = description;
-        this.category = category;
-        this.info = info;
-
-        this.register(bind);
-        this.register(drawn);
+    public boolean enabled = false;
+    private final KeySetting bind = new KeySetting("Keybind",0);
+    private final BooleanSetting drawn = new BooleanSetting("Drawn",true);
+    public ModuleInformation getModuleInfo() {
+        return this.getClass().getAnnotation(ModuleInformation.class);
     }
     public String getName() {
         return name;
@@ -71,22 +43,6 @@ public class Module extends Register implements IGlobals {
 
     public String getDisplayInfo() {
         return "";
-    }
-
-    public String getDescription() {
-        return description;
-    }
-    public float getFullWidth()
-    {
-        return stringWidth() + infoWidth();
-    }
-    public float infoWidth()
-    {
-        return -mc.fontRenderer.getStringWidth((!getDisplayInfo().equals("") ? ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + getDisplayInfo() + ChatFormatting.GRAY + "]" : ""));
-    }
-    public float stringWidth()
-    {
-        return -mc.fontRenderer.getStringWidth(name + (!getDisplayInfo().equals("") ? " " : ""));
     }
 
     public Category getCategory() {
@@ -101,22 +57,12 @@ public class Module extends Register implements IGlobals {
     }
 
     public boolean isEnabled() {
-        return this.bind.getValue().isState();
+        return this.enabled;
     }
     public final boolean isDisabled() {
         return !isEnabled();
     }
 
-    public void setEnabled(boolean state) {
-        if (state != this.bind.getValue().isState()) {
-            this.bind.getValue().setState(state);
-            this.reloadListener();
-        }
-    }
-
-    public Bind getBind() {
-        return this.bind.getValue();
-    }
     public void onRender3D(float partialTicks) {
     }
 
@@ -139,217 +85,135 @@ public class Module extends Register implements IGlobals {
             MinecraftForge.EVENT_BUS.unregister(this);
             Infinity.INSTANCE.eventBus.unsubscribe(this);
     }
-    public void toggle() {
-        this.setEnabled(!this.isEnabled());
-    }
-
-    public void reloadListener() {
-        if (this.bind.getValue().isState()) {
-            this.setListener();
-        } else {
-            this.unsetListener();
-        }
-    }
-
-    public void setListener() {
+    public void enable()
+    {
+        this.enabled = true;
+        this.onEnable();
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
             ChatUtils.sendMessageWithID(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.GREEN + "enabled!", hashCode());
         }
-        this.bind.getValue().setState(true);
-
-        Infinity.INSTANCE.eventBus.subscribe(this);
-        MinecraftForge.EVENT_BUS.register(this);
-        this.onEnable();
     }
 
-    public void unsetListener() {
-            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
-                ChatUtils.sendMessageWithID(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled!", hashCode());
-            }
-            this.bind.getValue().setState(false);
-            Infinity.INSTANCE.eventBus.unsubscribe(this);
-            MinecraftForge.EVENT_BUS.unregister(this);
-            this.onDisable();
-    }
-
-    public void onSave() {
-        try {
-            String pathFolder = ConfigManager.configManager.getCurrentPresetPath() + "/module/" + this.category.name().toLowerCase() + "/";
-            String pathFile = pathFolder + this.getName() + ".json";
-
-            Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
-            JsonParser jsonParser = new JsonParser();
-
-            if (Files.exists(Paths.get(pathFolder)) == false) {
-                Files.createDirectories(Paths.get(pathFolder));
-            }
-
-            if (Files.exists(Paths.get(pathFile))) {
-                java.io.File file = new java.io.File(pathFile);
-                file.delete();
-            }
-
-            Files.createFile(Paths.get(pathFile));
-
-            JsonObject mainJson = new JsonObject();
-            JsonObject jsonSettingList = new JsonObject();
-
-            for (Map.Entry<String, Setting> entry : this.getSettings().entrySet()) {
-                final String name = entry.getKey();
-                final Setting setting = entry.getValue();
-
-                if (setting.getValue() instanceof Boolean) {
-                    jsonSettingList.add(setting.getName(), new JsonPrimitive((Boolean) setting.getValue()));
-                }
-                if (setting.getValue() instanceof String) {
-                    jsonSettingList.add(setting.getName(), new JsonPrimitive((String) setting.getValue()));
-                }
-
-                if (setting.getValue() instanceof Number) {
-                    jsonSettingList.add(setting.getName(), new JsonPrimitive((Number) setting.getValue()));
-                }
-
-                if (setting.getValue() instanceof Enum) {
-                    jsonSettingList.add(setting.getName(), new JsonPrimitive(((Enum) setting.getValue()).name()));
-                }
-
-                if (setting.getValue() instanceof Bind) {
-                    JsonObject object = new JsonObject();
-
-                    final Bind bind = (Bind) setting.getValue();
-
-                    object.add("key", new JsonPrimitive(bind.getKey()));
-                    object.add("state", new JsonPrimitive(bind.isState()));
-
-                    jsonSettingList.add(setting.getName(), object);
-                }
-
-                if (setting.getValue() instanceof ColorPicker) {
-                    JsonObject object = new JsonObject();
-
-                    final ColorPicker colorPicker = (ColorPicker) setting.getValue();
-
-                    object.add("red", new JsonPrimitive(colorPicker.getColor().getRed()));
-                    object.add("green", new JsonPrimitive(colorPicker.getColor().getGreen()));
-                    object.add("blue", new JsonPrimitive(colorPicker.getColor().getBlue()));
-                    object.add("alpha", new JsonPrimitive(colorPicker.getColor().getAlpha()));
-                    object.add("rgb", new JsonPrimitive(colorPicker.isRGB()));
-
-                    jsonSettingList.add(setting.getName(), object);
-                }
-            }
-
-            mainJson.add("settings", jsonSettingList);
-
-            String stringJson = gsonBuilder.toJson(jsonParser.parse(mainJson.toString()));
-            OutputStreamWriter fileOutputStream = new OutputStreamWriter(new FileOutputStream(pathFile), StandardCharsets.UTF_8);
-
-            fileOutputStream.write(stringJson);
-            fileOutputStream.close();
-        } catch (IOException | IllegalStateException exc) {
+    public void disable()
+    {
+        this.enabled = false;
+        this.onDisable();
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
+            ChatUtils.sendMessageWithID(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled!", hashCode());
         }
     }
 
-    public void onLoad() {
-        try {
-            String pathFolder = ConfigManager.configManager.getCurrentPresetPath() + "/module/" + this.category.name().toLowerCase() + "/";
-            String pathFile = pathFolder + this.getName() + ".json";
-
-            if (!Files.exists(Paths.get(pathFile))) {
-                return;
-            }
-
-            JsonParser jsonParser = new JsonParser();
-
-            InputStream file = Files.newInputStream(Paths.get(pathFile));
-            JsonObject mainJson = jsonParser.parse(new InputStreamReader(file)).getAsJsonObject();
-
-            if (mainJson.get("settings") != null) {
-                JsonObject jsonSettingList = mainJson.get("settings").getAsJsonObject();
-
-                for (Map.Entry<String, Setting> entry : this.getSettings().entrySet()) {
-                    final String name = entry.getKey();
-                    final Setting setting = entry.getValue();
-
-                    if (jsonSettingList.get(name) == null) {
-                        continue;
-                    }
-
-                    if (setting.getValue() instanceof Boolean) {
-                        setting.setValue(jsonSettingList.get(setting.getName()).getAsBoolean());
-                    }
-                    if (setting.getValue() instanceof String) {
-                        setting.setValue(jsonSettingList.get(setting.getName()).getAsString());
-                    }
-
-                    if (setting.getValue() instanceof Number) {
-                        if (setting.getValue() instanceof Float) {
-                            setting.setValue(jsonSettingList.get(setting.getName()).getAsFloat());
-                        }
-
-                        if (setting.getValue() instanceof Double) {
-                            setting.setValue(jsonSettingList.get(setting.getName()).getAsDouble());
-                        }
-
-                        if (setting.getValue() instanceof Integer) {
-                            setting.setValue(jsonSettingList.get(setting.getName()).getAsInt());
-                        }
-                    }
-
-                    if (setting.getValue() instanceof Enum) {
-                        for (Enum enums : ((Enum) setting.getValue()).getClass().getEnumConstants()) {
-                            if (jsonSettingList.get(setting.getName()).getAsString().equalsIgnoreCase(enums.name())) {
-                                setting.setValue(enums);
-
-                                break;
-                            }
-                        }
-                    }
-
-                    if (setting.getValue() instanceof Bind) {
-                        final Bind bind = (Bind) setting.getValue();
-
-                        if (jsonSettingList.get(setting.getName()) != null) {
-                            JsonObject object = jsonSettingList.get(setting.getName()).getAsJsonObject();
-
-                            if (object.get("key") != null) {
-                                bind.setKey(object.get("key").getAsInt());
-                            }
-
-                            if (object.get("state") != null) {
-                                bind.setState(object.get("state").getAsBoolean());
-                            }
-                        }
-                    }
-
-                    if (setting.getValue() instanceof ColorPicker) {
-                        final ColorPicker colorPicker = (ColorPicker) setting.getValue();
-
-                        if (jsonSettingList.get(setting.getName()) != null) {
-                            JsonObject object = jsonSettingList.get(setting.getName()).getAsJsonObject();
-
-                            final Color color = new Color(object.get("red").getAsInt(), object.get("green").getAsInt(), object.get("blue").getAsInt(), object.get("alpha").getAsInt());
-
-                            colorPicker.setColor(color);
-
-                            if (object.get("rgb") != null && object.get("rgb").getAsBoolean()) {
-                                colorPicker.setRGB();
-                            } else {
-                                colorPicker.unsetRGB();
-                            }
-
-                            colorPicker.updateSB();
-                        }
-                    }
-                }
-            }
-
-            file.close();
-        } catch (IOException | IllegalStateException exc) {
-        }
+    public BooleanSetting createSetting(String name, boolean value) {
+        BooleanSetting setting = new BooleanSetting(name, value);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
     }
 
+    public BooleanSetting createSetting(String name, boolean value, Predicate<Boolean> shown) {
+        BooleanSetting setting = new BooleanSetting(name, value, shown);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public ColorSetting createSetting(String name, Color value) {
+        ColorSetting setting = new ColorSetting(name, value);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public ColorSetting createSetting(String name, Color value, Predicate<Color> shown) {
+        ColorSetting setting = new ColorSetting(name, value, shown);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public ModeSetting createSetting(String name, String value, List<String> modeList) {
+        ModeSetting setting = new ModeSetting(name, value, modeList);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public ModeSetting createSetting(String name, String value, List<String> modeList, Predicate<String> shown) {
+        ModeSetting setting = new ModeSetting(name, value, modeList, shown);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public FloatSetting createSetting(String name, float value, float minimum, float maximum) {
+        FloatSetting setting = new FloatSetting(name, value, minimum, maximum);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public FloatSetting createSetting(String name, float value, float minimum, float maximum, Predicate<Float> shown) {
+        FloatSetting setting = new FloatSetting(name, value, minimum, maximum, shown);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public IntegerSetting createSetting(String name, int value, int minimum, int maximum) {
+        IntegerSetting setting = new IntegerSetting(name, value, minimum, maximum);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public IntegerSetting createSetting(String name, int value, int minimum, int maximum, Predicate<Integer> shown) {
+        IntegerSetting setting = new IntegerSetting(name, value, minimum, maximum, shown);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public KeySetting createSetting(String name, int value) {
+        KeySetting setting = new KeySetting(name, value);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public KeySetting createSetting(String name, int value, Predicate<Integer> shown) {
+        KeySetting setting = new KeySetting(name, value, shown);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public StringSetting createSetting(String name, String value) {
+        StringSetting setting = new StringSetting(name, value);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
+
+    public StringSetting createSetting(String name, String value, Predicate<String> shown) {
+        StringSetting setting = new StringSetting(name, value, shown);
+        setting.setModule(this);
+        this.settingList.add(setting);
+        return setting;
+    }
     protected boolean nullSafe() {
         return mc.player != null && mc.world != null;
+    }
+
+    public float getFullWidth()
+    {
+        return stringWidth() + infoWidth();
+    }
+    public float infoWidth()
+    {
+        return -mc.fontRenderer.getStringWidth((!getDisplayInfo().equals("") ? ChatFormatting.GRAY + "[" + ChatFormatting.WHITE + getDisplayInfo() + ChatFormatting.GRAY + "]" : ""));
+    }
+    public float stringWidth()
+    {
+        return -mc.fontRenderer.getStringWidth(name + (!getDisplayInfo().equals("") ? " " : ""));
     }
 }

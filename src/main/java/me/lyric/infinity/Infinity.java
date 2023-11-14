@@ -3,6 +3,7 @@ package me.lyric.infinity;
 import me.bush.eventbus.bus.EventBus;
 import me.bush.eventbus.handler.handlers.LambdaHandler;
 import me.lyric.infinity.api.util.gl.SplashProgress;
+import me.lyric.infinity.api.util.string.ClientFont;
 import me.lyric.infinity.gui.main.InfinityMainScreen;
 import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
@@ -18,7 +19,7 @@ import java.io.File;
 
 @Mod(
         modid = "infinity",
-        version = "v4"
+        version = "v5"
 )
 
 public class Infinity {
@@ -26,6 +27,9 @@ public class Infinity {
     public static final String PATH = "Infinity/";
     public static final String CONFIG_PATH = PATH + "configs/";
     public static final Logger LOGGER = LogManager.getLogger("Infinity");
+
+    public ClientFont infinityFont;
+
     File directory = new File(Minecraft.getMinecraft().gameDir, "Infinity");
 
     public EventBus eventBus = new EventBus(LambdaHandler.class, Infinity.LOGGER::error, Infinity.LOGGER::info);
@@ -34,7 +38,8 @@ public class Infinity {
 
     public InfinityMainScreen infinityMainScreen;
     public TPSManager tpsManager;
-    public String version = "v4";
+
+    public String version = "v5";
     public ForgeEventManager forgeEventManager;
 
     public ModuleManager moduleManager;
@@ -107,8 +112,10 @@ public class Infinity {
         this.placementManager.init();
         LOGGER.info("PlacementManager initialised!");
         LOGGER.info("All Managers loaded successfully!");
-        gui = new PanelStudioGUI();
-        LOGGER.info("GUI initialised!");
+        //gui = new PanelStudioGUI();
+        //LOGGER.info("GUI initialised!");
+        infinityFont = new ClientFont("Comfortaa-Regular", 17.0f);
+        LOGGER.info("Infinity has set its font.");
         startup();
         LOGGER.info("Running config startup.");
         LOGGER.info("Infinity fully initialised!");
