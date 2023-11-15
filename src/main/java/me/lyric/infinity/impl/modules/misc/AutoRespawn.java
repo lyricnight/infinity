@@ -5,6 +5,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @ModuleInformation(getName = "AutoRespawn", getDescription = "useful", category = Category.Misc)
 public class AutoRespawn extends Module {
 
-    public BooleanSetting message = createSetting("Message", "Sends your death coordinates in chat after you die.", true));
+    public BooleanSetting message = createSetting("Message", true);
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onDisplayDeathScreen(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiGameOver) {

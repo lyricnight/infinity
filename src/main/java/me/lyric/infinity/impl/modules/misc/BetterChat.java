@@ -7,6 +7,9 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
+import me.lyric.infinity.api.setting.settings.StringSetting;
 import me.lyric.infinity.api.util.string.ChatFormat;
 import me.lyric.infinity.mixin.mixins.accessors.ICPacketChat;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketChat;
@@ -22,16 +25,16 @@ import java.util.Date;
 
 @ModuleInformation(getName = "BetterChat", getDescription = "the chat is now better guys", category = Category.Misc)
 public class BetterChat extends Module {
-    public final BooleanSetting timeStamps = createSetting("Timestamps","Does what it says on the tin lad",  true));
-    public final BooleanSetting rect = createSetting("NoRect","Removes rectangle", true));
-    public Setting<ChatFormat.Color> bracketColor = createSetting("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));
-    public Setting<ChatFormat.Color> commandColor = createSetting("NameColor","Colour of timestamps", ChatFormat.Color.LIGHT_PURPLE));
+    public final BooleanSetting timeStamps = createSetting("Timestamps", true);
+    public final BooleanSetting rect = createSetting("NoRect", true);
+    public ModeSetting bracketColor = createSetting("BracketColor", ChatFormat.DARK_PURPLE, ChatFormat.getAll());
+    public ModeSetting commandColor = createSetting("NameColor", ChatFormat.LIGHT_PURPLE, ChatFormat.getAll());
 
-    public BooleanSetting inf = createSetting("Infinite", "Makes chat infinite.", false));
+    public BooleanSetting inf = createSetting("Infinite", false);
 
-    public BooleanSetting append = createSetting("Append", "Add a suffix to your messages.", false));
+    public BooleanSetting append = createSetting("Append", false);
 
-    public StringSetting str = createSetting("Append-String", "String to append.", "infinity"));
+    public StringSetting str = createSetting("Append-String", "infinity");
 
     @EventListener(priority = ListenerPriority.LOW)
     public void onPacketReceive(PacketEvent.Receive event) {
@@ -46,7 +49,7 @@ public class BetterChat extends Module {
     @EventListener
     public void onPacketSend(PacketEvent.Send event)
     {
-        if (event.getPacket() instanceof CPacketChatMessage && !((CPacketChatMessage)(event.getPacket())).getMessage().startsWith("/"))
+        if (event.getPacket() instanceof CPacketChatMessage && !((CPacketChatMessage)(event.getPacket())).getMessage().startsWith("/") && append.getValue())
         {
             CPacketChatMessage packet = (CPacketChatMessage) event.getPacket();
             ((ICPacketChat)packet).setMessage(packet.getMessage() + " | " +  str.getValue());

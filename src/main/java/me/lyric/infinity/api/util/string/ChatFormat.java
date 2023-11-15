@@ -1,6 +1,10 @@
 package me.lyric.infinity.api.util.string;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * for changing watermark in chat thing
@@ -31,74 +35,16 @@ public class ChatFormat {
     public static final String RESET = String.valueOf(ChatFormatting.RESET);
 
 
-    public static String coloredString(String string, Color color) {
+    public static String coloredString(String string, String color) {
         String coloredString = string;
-        switch (color) {
-            case AQUA: {
-                coloredString = ChatFormatting.AQUA + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case WHITE: {
-                coloredString = ChatFormatting.WHITE + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case BLACK: {
-                coloredString = ChatFormatting.BLACK + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case DARK_BLUE: {
-                coloredString = ChatFormatting.DARK_BLUE + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case DARK_GREEN: {
-                coloredString = ChatFormatting.DARK_GREEN + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case DARK_AQUA: {
-                coloredString = ChatFormatting.DARK_AQUA + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case DARK_RED: {
-                coloredString = ChatFormatting.DARK_RED + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case DARK_PURPLE: {
-                coloredString = ChatFormatting.DARK_PURPLE + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case GOLD: {
-                coloredString = ChatFormatting.GOLD + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case DARK_GRAY: {
-                coloredString = ChatFormatting.DARK_GRAY + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case GRAY: {
-                coloredString = ChatFormatting.GRAY + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case BLUE: {
-                coloredString = ChatFormatting.BLUE + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case RED: {
-                coloredString = ChatFormatting.RED + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case GREEN: {
-                coloredString = ChatFormatting.GREEN + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case LIGHT_PURPLE: {
-                coloredString = ChatFormatting.LIGHT_PURPLE + coloredString + ChatFormatting.RESET;
-                break;
-            }
-            case YELLOW: {
-                coloredString = ChatFormatting.YELLOW + coloredString + ChatFormatting.RESET;
-            }
-        }
+
+        coloredString = color + string + ChatFormatting.RESET;
+
         return coloredString;
+    }
+    public static List<String> getAll()
+    {
+        return Arrays.asList(BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY, DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE);
     }
 
     public enum Color {

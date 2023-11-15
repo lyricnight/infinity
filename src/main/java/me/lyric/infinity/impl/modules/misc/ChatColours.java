@@ -6,8 +6,11 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import net.minecraft.network.play.client.CPacketChatMessage;
 
+import java.awt.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -15,7 +18,7 @@ import java.util.Objects;
  */
 @ModuleInformation(getName = "ChatColours", getDescription = "only for 2b2tpvp", category = Category.Misc)
 public class ChatColours extends Module {
-    public Setting<Color> colour = createSetting("Colour", "Which colour to use.", Color.Aqua));
+    public ModeSetting colour = createSetting("Colour", Color.Aqua, Arrays.asList(Color.ge)));
     public Setting<Modifier> modifier = createSetting("Modifier", "Modifies how the message will be displayed.", Modifier.None));
     private String[] disallowed = new String[] {".", "/", ",", "-"};
     @EventListener
@@ -72,6 +75,10 @@ public class ChatColours extends Module {
         Color(char c,boolean bypass) {
             if(bypass) value = String.valueOf(c);
             else value = "&" + c;
+        }
+        public List<String> getAll()
+        {
+            return Arrays.asList(Color.)
         }
 
         public String getValue() {

@@ -5,19 +5,17 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.FloatSetting;
 import me.lyric.infinity.api.setting.settings.IntegerSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
-import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.impl.modules.movement.InstantSpeed;
 import me.lyric.infinity.manager.client.PlacementManager;
@@ -31,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,22 +40,24 @@ import java.util.stream.Collectors;
 @ModuleInformation(getName = "HoleFiller", getDescription = "bot", category = Category.Combat)
 public class HoleFiller extends Module
 {
-    public Setting<SwitchType> switchMode = createSetting("Mode", "Mode for switch", SwitchType.SILENT));
-    public FloatSetting range = createSetting("Range", "Range for placing.", 5.0f, 1.0f, 10.0f));
-    public FloatSetting wallRange = createSetting("WallRange", "Range for placing through walls.", 3f, 1f, 10f));
-    public IntegerSetting delay = createSetting("Delay", "Delay of blockplacement",1, 0, 1000));
-    public IntegerSetting blocksPerTick = createSetting("BPT", "this", 5, 1, 10));
-    public BooleanSetting disableAfter = createSetting("Disable", "for dumb hf", false));
-    public BooleanSetting onground = createSetting("OnGround", "only fills if you are on the ground.", true));
-    public BooleanSetting self = createSetting("SelfHoleCheck", "only fills if you are in a hole.", false));
-    public BooleanSetting rotate = createSetting("Rotate", "rots", true));
-    public Setting<RotationType> type = createSetting("Rotation Type", "How to rotate.", RotationType.PACKET).withParent(rotate));
-    public BooleanSetting doubles = createSetting("Doubles", "double holes!!", true));
-    public BooleanSetting smart = createSetting("smart", "smartypants", true));
-    public FloatSetting smartTargetRange = createSetting("SmartTargetRange","Range for smart to find a target.",5.0f, 1.0f, 10.0f));
-    public FloatSetting smartBlockRange = createSetting("SmartBlockRange","Range for smart fill.",1.0f, 0.3f, 5.0f));
+    public ModeSetting switchMode = createSetting("SwitchMode","Silent",  Arrays.asList("Silent", "SilentPacket", "Slot"));
 
-    private Timer timer = new Timer();
+    public FloatSetting range = createSetting("Range", 5.0f, 1.0f, 10.0f);
+    public FloatSetting wallRange = createSetting("WallRange", 3f, 1f, 10f);
+    public IntegerSetting delay = createSetting("Delay", 1, 0, 1000);
+    public IntegerSetting blocksPerTick = createSetting("BPT", 5, 1, 10);
+    public BooleanSetting disableAfter = createSetting("Disable", false);
+    public BooleanSetting onground = createSetting("OnGround",true);
+    public BooleanSetting self = createSetting("SelfHoleCheck", false);
+    public BooleanSetting rotate = createSetting("Rotate", true);
+
+    public ModeSetting type = createSetting("Rotation Type","Packet", Arrays.asList("Packet", "Normal"), v -> rotate.getValue());
+    public BooleanSetting doubles = createSetting("Doubles", true);
+    public BooleanSetting smart = createSetting("Smart", true);
+    public FloatSetting smartTargetRange = createSetting("SmartTargetRange",5.0f, 1.0f, 10.0f, v -> smart.getValue());
+    public FloatSetting smartBlockRange = createSetting("SmartBlockRange",1.0f, 0.3f, 5.0f, v -> smart.getValue());
+
+    private final Timer timer = new Timer();
     List<HoleUtil.Hole> holes = new ArrayList<HoleUtil.Hole>();
     EntityPlayer target = null;
     @Override
@@ -88,10 +89,10 @@ public class HoleFiller extends Module
         int blocksPlaced = 0;
         if (timer.passedMs(delay.getValue())) {
             getHoles();
-            if (holes == null || holes.size() == 0) {
+            if (holes == null || holes.isEmpty()) {
                 if (disableAfter.getValue()) {
                     ChatUtils.sendMessage(ChatFormatting.BOLD + "All holes filled, disabling HoleFiller...");
-                    toggle();
+                    disable();
                 }
                 return;
             }
@@ -118,7 +119,7 @@ public class HoleFiller extends Module
                 }
             }
             Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
-            if (switchMode.getValue() == SwitchType.SLOT)
+            if (switchMode.getValue() == "Slot")
             {
                 Switch.switchBackAlt(slot);
             }

@@ -5,12 +5,13 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
 import me.lyric.infinity.mixin.mixins.accessors.ICPacketPlayer;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -21,15 +22,16 @@ import java.util.concurrent.ThreadLocalRandom;
 @ModuleInformation(getName = "AntiAim", getDescription = "Have a mental breakdown", category = Category.Misc)
 public class AntiAim extends Module {
 
-    public Setting<Yaw> yaw = createSetting("Yaw", "Changes how your yaw is rotated.", Yaw.LINEAR));
-    public Setting<Pitch> pitch = createSetting("Pitch", "Changes how your pitch is rotated.", Pitch.NONE));
+    public ModeSetting yaw = createSetting("Yaw", "Linear", Arrays.asList("Linear", "Reverse", "Random", "Toggle", "None"));
+    public ModeSetting pitch = createSetting("Pitch", "MinMax", Arrays.asList("Toggle", "Random", "MinMax", "None"));
 
-    public Setting<Rotation.Rotate> mode = createSetting("Rotation Mode", "", Rotation.Rotate.CLIENT));
+    public ModeSetting mode = createSetting("Rotation Mode", "Client", Arrays.asList("Client", "Packet"));
 
     int aimTicks = 0;
     float aimYaw = 0;
     float aimPitch = 0;
     boolean aimToggle = false;
+
     @Override
     public void onEnable() {
         aimTicks = 0;
@@ -39,37 +41,36 @@ public class AntiAim extends Module {
     public void onUpdate() {
         if (!nullSafe()) return;
         switch (yaw.getValue()) {
-            case LINEAR:
+            case "Linear":
                 aimYaw += 5;
                 break;
-            case REVERSE:
+            case "Reverse":
                 aimYaw -= 5;
                 break;
-            case RANDOM:
+            case "Random":
                 aimYaw = ThreadLocalRandom.current().nextInt(0, 360);
                 break;
-            case TOGGLE:
+            case "Toggle":
                 aimYaw += ThreadLocalRandom.current().nextInt(-360, 360);
                 break;
-            case NONE:
+            case "None":
                 break;
         }
 
         switch (pitch.getValue()) {
-            case TOGGLE:
+            case "Toggle":
                 if (aimPitch == -90 || aimPitch == 90) {
                     aimToggle = !aimToggle;
                 }
-
                 aimPitch = aimPitch + (aimToggle ? 5 : -5);
                 break;
-            case RANDOM:
+            case "Random":
                 aimPitch = ThreadLocalRandom.current().nextInt(-90, 90);
                 break;
-            case MINMAX:
+            case "MinMax":
                 aimPitch = (aimTicks % 2 == 0) ? 90 : -90;
                 break;
-            case NONE:
+            case "None":
                 break;
         }
 
@@ -89,17 +90,10 @@ public class AntiAim extends Module {
             ((ICPacketPlayer) event.getPacket()).setPitch(aimPitch);
         }
     }
+
     @Override
-    public String getDisplayInfo()
-    {
-        return yaw.getValue().toString().toLowerCase() + ", " + pitch.getValue().toString().toLowerCase();
-    }
-
-    public enum Yaw {
-        LINEAR, REVERSE, RANDOM, TOGGLE, NONE
-    }
-
-    public enum Pitch {
-        TOGGLE, RANDOM, MINMAX, NONE
+    public String getDisplayInfo() {
+        return yaw.getValue().toLowerCase() + ", " + pitch.getValue().toLowerCase();
     }
 }
+
