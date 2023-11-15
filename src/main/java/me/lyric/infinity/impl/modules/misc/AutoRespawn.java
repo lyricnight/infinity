@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @ModuleInformation(getName = "AutoRespawn", getDescription = "useful", category = Category.Misc)
 public class AutoRespawn extends Module {
 
-    public Setting<Boolean> message = register(new Setting<>("Message", "Sends your death coordinates in chat after you die.", true));
+    public BooleanSetting message = createSetting("Message", "Sends your death coordinates in chat after you die.", true));
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onDisplayDeathScreen(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiGameOver) {

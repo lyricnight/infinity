@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @ModuleInformation(getName = "AutoWalk", getDescription = "so useful", category = Category.Movement)
 public class AutoWalk extends Module {
 
-    public Setting<Boolean> sprint = register(new Setting<>("Sprint", "Enables sprinting when you auto walk.", false));
+    public BooleanSetting sprint = createSetting("Sprint", "Enables sprinting when you auto walk.", false));
 
     @SubscribeEvent
     public void onUpdateInput(InputUpdateEvent event) {

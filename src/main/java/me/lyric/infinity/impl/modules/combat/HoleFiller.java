@@ -6,6 +6,9 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
+import me.lyric.infinity.api.setting.settings.IntegerSetting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
@@ -38,20 +41,20 @@ import java.util.stream.Collectors;
 @ModuleInformation(getName = "HoleFiller", getDescription = "bot", category = Category.Combat)
 public class HoleFiller extends Module
 {
-    public Setting<SwitchType> switchMode = register(new Setting<>("Mode", "Mode for switch", SwitchType.SILENT));
-    public Setting<Float> range = register(new Setting<>("Range", "Range for placing.", 5.0f, 1.0f, 10.0f));
-    public Setting<Float> wallRange = register(new Setting<>("WallRange", "Range for placing through walls.", 3f, 1f, 10f));
-    public Setting<Integer> delay = register(new Setting<>("Delay", "Delay of blockplacement",1, 0, 1000));
-    public Setting<Integer> blocksPerTick = register(new Setting<>("BPT", "this", 5, 1, 10));
-    public Setting<Boolean> disableAfter = register(new Setting<>("Disable", "for dumb hf", false));
-    public Setting<Boolean> onground = register(new Setting<>("OnGround", "only fills if you are on the ground.", true));
-    public Setting<Boolean> self = register(new Setting<>("SelfHoleCheck", "only fills if you are in a hole.", false));
-    public Setting<Boolean> rotate = register(new Setting<>("Rotate", "rots", true));
-    public Setting<RotationType> type = register(new Setting<>("Rotation Type", "How to rotate.", RotationType.PACKET).withParent(rotate));
-    public Setting<Boolean> doubles = register(new Setting<>("Doubles", "double holes!!", true));
-    public Setting<Boolean> smart = register(new Setting<>("smart", "smartypants", true));
-    public Setting<Float> smartTargetRange = register(new Setting<>("SmartTargetRange","Range for smart to find a target.",5.0f, 1.0f, 10.0f));
-    public Setting<Float> smartBlockRange = register(new Setting<>("SmartBlockRange","Range for smart fill.",1.0f, 0.3f, 5.0f));
+    public Setting<SwitchType> switchMode = createSetting("Mode", "Mode for switch", SwitchType.SILENT));
+    public FloatSetting range = createSetting("Range", "Range for placing.", 5.0f, 1.0f, 10.0f));
+    public FloatSetting wallRange = createSetting("WallRange", "Range for placing through walls.", 3f, 1f, 10f));
+    public IntegerSetting delay = createSetting("Delay", "Delay of blockplacement",1, 0, 1000));
+    public IntegerSetting blocksPerTick = createSetting("BPT", "this", 5, 1, 10));
+    public BooleanSetting disableAfter = createSetting("Disable", "for dumb hf", false));
+    public BooleanSetting onground = createSetting("OnGround", "only fills if you are on the ground.", true));
+    public BooleanSetting self = createSetting("SelfHoleCheck", "only fills if you are in a hole.", false));
+    public BooleanSetting rotate = createSetting("Rotate", "rots", true));
+    public Setting<RotationType> type = createSetting("Rotation Type", "How to rotate.", RotationType.PACKET).withParent(rotate));
+    public BooleanSetting doubles = createSetting("Doubles", "double holes!!", true));
+    public BooleanSetting smart = createSetting("smart", "smartypants", true));
+    public FloatSetting smartTargetRange = createSetting("SmartTargetRange","Range for smart to find a target.",5.0f, 1.0f, 10.0f));
+    public FloatSetting smartBlockRange = createSetting("SmartBlockRange","Range for smart fill.",1.0f, 0.3f, 5.0f));
 
     private Timer timer = new Timer();
     List<HoleUtil.Hole> holes = new ArrayList<HoleUtil.Hole>();

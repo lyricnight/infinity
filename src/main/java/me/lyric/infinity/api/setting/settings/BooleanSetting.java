@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.150.
- */
 package me.lyric.infinity.api.setting.settings;
 
 import me.lyric.infinity.api.setting.Setting;

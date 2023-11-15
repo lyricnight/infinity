@@ -24,12 +24,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @ModuleInformation(getName = "Announcer", getDescription = "we ANNOUNCING out here", category = Category.Player)
 public class Announcer extends Module {
-    public Setting<String> client = register(new Setting<>("Name", "Name to use in announcer.", "Infinity"));
+    public StringSetting client = createSetting("Name", "Name to use in announcer.", "Infinity"));
     public static String[] breakMessages;
     public static String[] placeMessages;
     public static String[] eatMessages;
     public static String[] walkMessages;
-    public Setting<Integer> delay = register(new Setting<>("Delay", "dumb", 5, 1, 15));
+    public IntegerSetting delay = createSetting("Delay", "dumb", 5, 1, 15));
     public static int blockBrokeDelay;
     static int blockPlacedDelay;
     static int jumpDelay;

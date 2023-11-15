@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @ModuleInformation(getName = "FakePlayer", getDescription = "testing things", category = Category.Misc)
 public class FakePlayer extends Module {
-    public Setting<String> username = register(new Setting<Object>("Name","The name of the FakePlayer.", "real"));
+    public StringSetting username = register(new Setting<Object>("Name","The name of the FakePlayer.", "real"));
     @Override
     public void onLogout()
     {

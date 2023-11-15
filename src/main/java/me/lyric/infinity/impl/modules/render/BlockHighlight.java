@@ -19,18 +19,18 @@ import java.awt.*;
 
 public class BlockHighlight extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "The mode of rendering.", Mode.CLAW));
-    public Setting<Float> renderWidth = register(new Setting<>("Width", "The line width.", 0.5f, 0.1f, 3.0f));
+    public Setting<Mode> mode = createSetting("Mode", "The mode of rendering.", Mode.CLAW));
+    public FloatSetting renderWidth = createSetting("Width", "The line width.", 0.5f, 0.1f, 3.0f));
 
     // I wanted to make this depend on a certain option from a setting. TODO: this.
     //TODO: Fade?
-    public Setting<Float> clawHeight = register(new Setting<>("Claw Height", "The height of the claw.", 0.3f, 0.1f, 1.0f));
+    public FloatSetting clawHeight = createSetting("Claw Height", "The height of the claw.", 0.3f, 0.1f, 1.0f));
 
-    public Setting<ColorPicker> primaryColor = register(new Setting<>("Gradient Color 1", "The first color of the gradient.", new ColorPicker(Color.BLUE)));
-    public Setting<ColorPicker> secondaryColor = register(new Setting<>("Gradient Color 2", "The second color of the gradient.", new ColorPicker(Color.MAGENTA)));
+    public Setting<ColorPicker> primaryColor = createSetting("Gradient Color 1", "The first color of the gradient.", new ColorPicker(Color.BLUE)));
+    public Setting<ColorPicker> secondaryColor = createSetting("Gradient Color 2", "The second color of the gradient.", new ColorPicker(Color.MAGENTA)));
 
-    public Setting<ColorPicker> secondaryGradientColorOne = register(new Setting<>("Secondary Gradient Color 1", "The first color of mode BOTH.", new ColorPicker(Color.GREEN)));
-    public Setting<ColorPicker> getSecondaryGradientColorTwo = register(new Setting<>("Secondary Gradient Color 2", "The second color of mode BOTH.", new ColorPicker(Color.RED)));
+    public Setting<ColorPicker> secondaryGradientColorOne = createSetting("Secondary Gradient Color 1", "The first color of mode BOTH.", new ColorPicker(Color.GREEN)));
+    public Setting<ColorPicker> getSecondaryGradientColorTwo = createSetting("Secondary Gradient Color 2", "The second color of mode BOTH.", new ColorPicker(Color.RED)));
 
     public BlockHighlight() {
         super("BlockHighlight", "Highlights the block you are looking at.", Category.RENDER);

@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class Ambience extends Module {
 
-    public Setting<ColorPicker> color = register(new Setting<>("Colour", "The colour to use for ambience.", new ColorPicker(Color.WHITE)));
+    public Setting<ColorPicker> color = createSetting("Colour", "The colour to use for ambience.", new ColorPicker(Color.WHITE)));
     public Ambience() {
         super("Ambience", "Changes the color of everything.", Category.RENDER);
     }

@@ -13,7 +13,7 @@ import net.minecraft.potion.PotionEffect;
 
 public class Brightness extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "The mode for brightness.", Mode.GAMMA));
+    public Setting<Mode> mode = createSetting("Mode", "The mode for brightness.", Mode.GAMMA));
 
     private float lastGamma;
 

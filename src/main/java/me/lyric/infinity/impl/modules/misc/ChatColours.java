@@ -15,8 +15,8 @@ import java.util.Objects;
  */
 @ModuleInformation(getName = "ChatColours", getDescription = "only for 2b2tpvp", category = Category.Misc)
 public class ChatColours extends Module {
-    public Setting<Color> colour = register(new Setting<>("Colour", "Which colour to use.", Color.Aqua));
-    public Setting<Modifier> modifier = register(new Setting<>("Modifier", "Modifies how the message will be displayed.", Modifier.None));
+    public Setting<Color> colour = createSetting("Colour", "Which colour to use.", Color.Aqua));
+    public Setting<Modifier> modifier = createSetting("Modifier", "Modifies how the message will be displayed.", Modifier.None));
     private String[] disallowed = new String[] {".", "/", ",", "-"};
     @EventListener
     public void onPacketSend(PacketEvent.Send event)

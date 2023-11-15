@@ -14,13 +14,13 @@ import net.minecraft.util.math.MathHelper;
 @ModuleInformation(getName = "Clip", getDescription = "we CLIPPING out here", category = Category.Player)
 public class Clip extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "Mode for clip.", Mode.CORNER));
+    public Setting<Mode> mode = createSetting("Mode", "Mode for clip.", Mode.CORNER));
 
-    public Setting<Integer> tick = register(new Setting<>("TickExisted", "For clip mode corner.", 5, 1, 10));
+    public IntegerSetting tick = createSetting("TickExisted", "For clip mode corner.", 5, 1, 10));
 
-    public Setting<Boolean> disable = register(new Setting<>("Disable", "Disables for you.", true));
+    public BooleanSetting disable = createSetting("Disable", "Disables for you.", true));
 
-    public Setting<Integer> updates = register(new Setting<>("Update-Amount", "Amount of ticks before autodisable disables.", 10, 1, 40).withParent(disable));
+    public IntegerSetting updates = createSetting("Update-Amount", "Amount of ticks before autodisable disables.", 10, 1, 40).withParent(disable));
 
     int disableTime = 0;
     @Override

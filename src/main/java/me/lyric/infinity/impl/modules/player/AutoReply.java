@@ -20,7 +20,7 @@ import java.text.DecimalFormat;
 @ModuleInformation(getName = "AutoReply", getDescription = "we REPLYING out here", category = Category.Player)
 public class AutoReply extends Module {
 
-    public Setting<Boolean> ignoreY = register(new Setting<>("IgnoreY","Doesn't send your Y coordinate.", true));
+    public BooleanSetting ignoreY = createSetting("IgnoreY","Doesn't send your Y coordinate.", true));
 
     @EventListener(priority = ListenerPriority.LOW)
     public void onReceivePacket(PacketEvent.Receive e)  {

@@ -7,12 +7,12 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
-import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.impl.modules.movement.InstantSpeed;
 import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;
@@ -33,19 +33,21 @@ import net.minecraftforge.client.event.PlayerSPPushOutOfBlocksEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.Arrays;
+
 /**
  * @author lyric !!
  */
 
 @ModuleInformation(getName = "Burrow", getDescription = "this", category = Category.Combat)
 public class Burrow extends Module {
-    public Setting<SwitchType> switchMode = register(new Setting<>("Mode", "Mode for switch", SwitchType.SILENT));
+    public ModeSetting switchMode = createSetting("SwitchMode","Silent",  Arrays.asList("Silent", "SilentPacket", "Slot"));
 
-    public Setting<Boolean> rotate = register(new Setting<>("Rotate","Rotations for placing.", true));
-    public Setting<Boolean> swing = register(new Setting<>("Swing","Swing to place the block.", true));
-    public Setting<Boolean> strict = register(new Setting<>("Strict","For stricter anticheats.", false));
+    public BooleanSetting rotate = createSetting("Rotate", true);
+    public BooleanSetting swing = createSetting("Swing", true);
+    public BooleanSetting strict = createSetting("Strict", false);
 
-    public Setting<Boolean> cd = register(new Setting<>("Slot-Cooldown", "Attempts to prevent burrow stopping your CA when using SLOT", false));
+    public BooleanSetting cd = createSetting("Slot-Cooldown", false);
 
     private Timer timer = new Timer();
 
@@ -55,13 +57,13 @@ public class Burrow extends Module {
         InventoryUtil.check(this);
         if (!mc.player.onGround) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in the air! Disabling Burrow...");
-            toggle();
+            disable();
             return;
         }
         if(CombatUtil.isBurrow(mc.player))
         {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "You are already burrowed! Disabling...");
-            toggle();
+            disable();
             return;
         }
         if (mc.world.getBlockState(new BlockPos(mc.player)).getBlock() == Blocks.AIR) {
@@ -103,7 +105,7 @@ public class Burrow extends Module {
             if (swing.getValue()) {
                 mc.player.connection.sendPacket(new CPacketAnimation(EnumHand.MAIN_HAND));
             }
-            if (switchMode.getValue() == SwitchType.SLOT)
+            if (switchMode.getValue() == "Slot")
             {
                 if (cd.getValue())
                 {
@@ -111,7 +113,7 @@ public class Burrow extends Module {
                 }
                 else
                 {
-                    Switch.doSwitch(slot, SwitchType.SLOT);
+                    Switch.doSwitch(slot, "Slot");
                 }
             }
             else
@@ -120,10 +122,10 @@ public class Burrow extends Module {
             }
             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, getPos(), mc.player.posZ, false));
             timer.reset();
-            toggle();
+            disable();
         } else {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Burrow was unable to place! Disabling Burrow...");
-            toggle();
+            disable();
         }
     }
     @Override
@@ -179,7 +181,7 @@ public class Burrow extends Module {
     @EventListener
     public void onPacketReceive(PacketEvent.Receive event) {
         if (mc.currentScreen instanceof GuiDownloadTerrain) {
-            toggle();
+            disable();
             return;
         }
         //im retarded why did i make this loooool
@@ -191,12 +193,12 @@ public class Burrow extends Module {
     @Override
     public void onEnable() {
         if (mc.player == null || mc.world == null) {
-            toggle();
+            disable();
             return;
         }
         if (!mc.player.onGround) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in the air! Disabling Burrow...");
-            toggle();
+            disable();
         }
     }
     @SubscribeEvent(priority = EventPriority.HIGH)

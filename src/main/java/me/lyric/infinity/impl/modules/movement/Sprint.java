@@ -16,8 +16,8 @@ import me.lyric.infinity.api.setting.Setting;
 @ModuleInformation(getName = "Sprint", getDescription = "we SPRINTING out here", category = Category.Movement)
 public class Sprint extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "The mode for sprint.", Mode.DIRECTIONAL));
-    public Setting<Boolean> strict = register(new Setting<>("Strict", "Changes sprint to function better in stricter anti-cheats.", false));
+    public Setting<Mode> mode = createSetting("Mode", "The mode for sprint.", Mode.DIRECTIONAL));
+    public BooleanSetting strict = createSetting("Strict", "Changes sprint to function better in stricter anti-cheats.", false));
 
     @Override
     public void onUpdate() {

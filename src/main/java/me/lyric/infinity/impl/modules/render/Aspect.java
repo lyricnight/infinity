@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 
 public class Aspect extends Module {
 
-    public Setting<Float> aspect = register(new Setting("Aspect", "The aspect.", mc.displayWidth / mc.displayHeight + 0.0f, 0.1f, 3.0f));
+    public FloatSetting aspect = register(new Setting("Aspect", "The aspect.", mc.displayWidth / mc.displayHeight + 0.0f, 0.1f, 3.0f));
 
     public Aspect() {
         super("Aspect", "Lets you modify the aspect ratio.", Category.RENDER);

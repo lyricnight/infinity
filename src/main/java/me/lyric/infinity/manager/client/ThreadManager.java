@@ -1,11 +1,6 @@
 package me.lyric.infinity.manager.client;
 
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.impl.modules.client.Internals;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -15,9 +10,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ThreadManager {
-
+    //TODO: need to fix this by implementing threadDeathEvent
     public ExecutorService executorService;
-    public int num = 2;
 
     public static ScheduledExecutorService newDaemonScheduledExecutor(String name) {
         ThreadFactoryBuilder factory = newDaemonThreadFactoryBuilder();
@@ -31,21 +25,8 @@ public class ThreadManager {
     }
     public void init()
     {
-        MinecraftForge.EVENT_BUS.register(this);
-        executorService = Executors.newFixedThreadPool(num);
+        executorService = Executors.newFixedThreadPool(2);
     }
-    public void reload()
-    {
-        executorService.shutdownNow();
-        executorService = Executors.newFixedThreadPool(num);
-        ChatUtils.sendMessage("Thread pool reloaded.");
-    }
-    @SubscribeEvent
-    public void onUpdate(LivingEvent.LivingUpdateEvent e)
-    {
-        num = Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).threadCount.getValue();
-    }
-
     public void run(Runnable command) {
         try {
             executorService.execute(command);

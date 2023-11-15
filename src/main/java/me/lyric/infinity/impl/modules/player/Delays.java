@@ -12,10 +12,10 @@ import me.lyric.infinity.mixin.transformer.IPlayerControllerMP;
  */
 @ModuleInformation(getName = "Delays", getDescription = "we GOING FASTER out here", category = Category.Player)
 public class Delays extends Module {
-    public Setting<Boolean> eat = register(new Setting<>("Eating", "Whether to remove eating delay or not.", false));
-    public Setting<Boolean> bk = register(new Setting<>("Breaking", "Whether to remove breaking delay or not.", false));
-    public Setting<Boolean> drop = register(new Setting<>("Dropping", "Modifies the delay while dropping a stack using Q.", false));
-    public Setting<Integer> dropspeed = register(new Setting<>("Speed", "Speed of dropping items.", 5, 0, 5).withParent(drop));
+    public BooleanSetting eat = createSetting("Eating", "Whether to remove eating delay or not.", false));
+    public BooleanSetting bk = createSetting("Breaking", "Whether to remove breaking delay or not.", false));
+    public BooleanSetting drop = createSetting("Dropping", "Modifies the delay while dropping a stack using Q.", false));
+    public IntegerSetting dropspeed = createSetting("Speed", "Speed of dropping items.", 5, 0, 5).withParent(drop));
     int delay = 0;
     @Override
     public void onUpdate()

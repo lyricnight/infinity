@@ -26,22 +26,22 @@ import java.awt.*;
 
 public class ShaderChams extends Module {
 
-    public Setting<Boolean> players = register(new Setting<>("Players", "Renders the ESP on players.", true));
-    public Setting<Boolean> crystals = register(new Setting<>("Crystals", "Renders the ESP on crystals.", true));
-    public Setting<Boolean> mobs = register(new Setting<>("Mobs", "Renders the ESP on mobs.", false));
-    public Setting<Boolean> items = register(new Setting<>("Items", "Renders the ESP on items.", false));
+    public BooleanSetting players = createSetting("Players", "Renders the ESP on players.", true));
+    public BooleanSetting crystals = createSetting("Crystals", "Renders the ESP on crystals.", true));
+    public BooleanSetting mobs = createSetting("Mobs", "Renders the ESP on mobs.", false));
+    public BooleanSetting items = createSetting("Items", "Renders the ESP on items.", false));
 
-    public Setting<Shader> shader = register(new Setting<>("Shader", "The type of shader.", Shader.SPACE));
+    public Setting<Shader> shader = createSetting("Shader", "The type of shader.", Shader.SPACE));
 
     // RAINBOW
-    public Setting<Boolean> outline = register(new Setting<>("Outline", "Renders a dynamic rainbow gradient.", true));
-    public Setting<Float> rainbowSpeed = register(new Setting<>("Rainbow Speed", "The speed of the rainbow outline.", 0.4f, 0.0f, 1.0f).withParent(outline));
-    public Setting<Float> rainbowStrength = register(new Setting<>("Rainbow Strength", "The strength of the rainbow online.", 0.3f, 0.0f, 1.0f).withParent(outline));
-    public Setting<Float> saturation = register(new Setting<>("Saturation", "The saturation of the rainbow outline.", 0.5f, 0.0f, 1.0f).withParent(outline));
-    public Setting<Float> radius = register(new Setting<>("Radius", "The radius of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
-    public Setting<Float> quality = register(new Setting<>("Quality", "The quality of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
+    public BooleanSetting outline = createSetting("Outline", "Renders a dynamic rainbow gradient.", true));
+    public FloatSetting rainbowSpeed = createSetting("Rainbow Speed", "The speed of the rainbow outline.", 0.4f, 0.0f, 1.0f).withParent(outline));
+    public FloatSetting rainbowStrength = createSetting("Rainbow Strength", "The strength of the rainbow online.", 0.3f, 0.0f, 1.0f).withParent(outline));
+    public FloatSetting saturation = createSetting("Saturation", "The saturation of the rainbow outline.", 0.5f, 0.0f, 1.0f).withParent(outline));
+    public FloatSetting radius = createSetting("Radius", "The radius of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
+    public FloatSetting quality = createSetting("Quality", "The quality of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
 
-    public Setting<ColorPicker> color = register(new Setting<>("Color", "The color for the ESP.", new ColorPicker(Color.BLUE)));
+    public Setting<ColorPicker> color = createSetting("Color", "The color for the ESP.", new ColorPicker(Color.BLUE)));
 
     // Shader ESP Framebuffer.
     public FramebufferShader framebuffer = null;

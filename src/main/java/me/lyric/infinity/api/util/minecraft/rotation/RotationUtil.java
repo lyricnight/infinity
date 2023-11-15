@@ -132,13 +132,13 @@ public class RotationUtil implements IGlobals {
         return MathUtils.angle(vec3d, Interpolation.interpolatedEyeVec());
     }
 
-    public static void doRotation(RotationType rotation, float[] angles) {
+    public static void doRotation(String rotation, float[] angles) {
         switch (rotation) {
-            case PACKET: {
+            case "Packet": {
                 mc.player.connection.sendPacket(new CPacketPlayer.Rotation(angles[0], angles[1], mc.player.onGround));
                 break;
             }
-            case NORMAL: {
+            case "Normal": {
                 Infinity.INSTANCE.rotationManager.setRotations(angles[0], angles[1]);
                 break;
             }

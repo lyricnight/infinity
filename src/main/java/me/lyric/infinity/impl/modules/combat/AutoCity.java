@@ -4,14 +4,15 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
 import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.Entity;
@@ -23,6 +24,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
@@ -30,16 +32,16 @@ import java.util.function.ToDoubleFunction;
 @ModuleInformation(getName = "AutoCity", getDescription = "what do you think it does", category = Category.Combat)
 public class AutoCity extends Module
 {
-    public Setting<Float> targetRange = register(new Setting<>("Target Range", "Range to target.", 10f, 2f, 15f));
-    public Setting<Float> resetRange = register(new Setting<>("Reset Range", "Range at which to reset the block we are attempting to mine. Set this to your SpeedMine's range.", 4f, 1f, 6f));
-    public Setting<Boolean> rotate = register(new Setting<>("Rotate", "Rotates to hit the block.", false));
-    public Setting<Boolean> burrow = register(new Setting<>("Burrow", "Whether to mine player's burrow or not.", false));
+    public FloatSetting targetRange = createSetting("Target Range", 10f, 2f, 15f);
+    public FloatSetting resetRange = createSetting("Reset Range", 4f, 1f, 6f);
+    public BooleanSetting rotate = createSetting("Rotate", false);
+    public BooleanSetting burrow = createSetting("Burrow", false);
 
-    public Setting<RotationType> type = register(new Setting<>("Rotation Mode", "Mode for rotating.", RotationType.NORMAL).withParent(rotate));
-    public Setting<Boolean> NoSwing = register(new Setting<>("No Swing","Handles swing.", true));
-    public Setting<Boolean> move = register(new Setting<>("MovementCheck", "Leave on if you want autocity to only city when stationary.", false));
-    public Setting<Boolean> holeCheck = register(new Setting<>("Hole Check","Checks if the target is in a hole.", true));
-    public Setting<Boolean> pickCheck = register(new Setting<>("PickCheck", "If you want AutoCity to check if you have a pickaxe or not.", false));
+    public ModeSetting type = createSetting("Rotation Type","Packet", Arrays.asList("Packet", "Normal"), v -> rotate.getValue());
+    public BooleanSetting NoSwing = createSetting("No Swing", false);
+    public BooleanSetting move = createSetting("MovementCheck", false);
+    public BooleanSetting holeCheck = createSetting("Hole Check", true);
+    public BooleanSetting pickCheck = createSetting("PickCheck", false);
 
     BlockPos mining;
     long startTime;
@@ -81,7 +83,7 @@ public class AutoCity extends Module
             if (i == -1)
             {
                 ChatUtils.sendMessage(ChatFormatting.BOLD + "No pickaxe found! Disabling AutoCity...");
-                toggle();
+                disable();
             }
         }
         if(move.getValue() && SpeedUtil.anyMovementKeys())

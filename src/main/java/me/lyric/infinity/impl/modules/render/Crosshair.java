@@ -20,17 +20,17 @@ import java.awt.*;
 
 public class Crosshair extends Module {
 
-    public Setting<Boolean> indicator = register(new Setting<>("Indicator", "Renders an attack indicator beneath the crosshair.", true));
+    public BooleanSetting indicator = createSetting("Indicator", "Renders an attack indicator beneath the crosshair.", true));
 
-    public Setting<Boolean> outline = register(new Setting<>("Outline", "Renders an outline on the crosshair.", true));
-    public Setting<ColorPicker> outlineColor = register(new Setting<>("Outline Color", "The outline color of the crosshair.", new ColorPicker(Color.WHITE)).withParent(outline));
+    public BooleanSetting outline = createSetting("Outline", "Renders an outline on the crosshair.", true));
+    public Setting<ColorPicker> outlineColor = createSetting("Outline Color", "The outline color of the crosshair.", new ColorPicker(Color.WHITE)).withParent(outline));
 
-    public Setting<GapMode> gapMode = register(new Setting<>("Gap Mode", "The mode of the gap on the crosshair.", GapMode.NORMAL));
-    public Setting<Float> gapSize = register(new Setting<>("Gap Size", "The size of the gap on the crosshair.", 2.0f, 0.5f, 20.f));
+    public Setting<GapMode> gapMode = createSetting("Gap Mode", "The mode of the gap on the crosshair.", GapMode.NORMAL));
+    public FloatSetting gapSize = createSetting("Gap Size", "The size of the gap on the crosshair.", 2.0f, 0.5f, 20.f));
 
-    public Setting<ColorPicker> color = register(new Setting<>("Color", "The color of the crosshair.", new ColorPicker(Color.BLUE)));
-    public Setting<Float> length = register(new Setting<>("Length", "The length of the crosshair.", 5.5f, 0.5f, 50.f));
-    public Setting<Float> width = register(new Setting<>("Width", "The width of the crosshair.", 0.5f, 0.1f, 10.f));
+    public Setting<ColorPicker> color = createSetting("Color", "The color of the crosshair.", new ColorPicker(Color.BLUE)));
+    public FloatSetting length = createSetting("Length", "The length of the crosshair.", 5.5f, 0.5f, 50.f));
+    public FloatSetting width = createSetting("Width", "The width of the crosshair.", 0.5f, 0.1f, 10.f));
 
     public Crosshair() {
         super("Crosshair", "Renders your crosshair in various ways.", Category.RENDER);

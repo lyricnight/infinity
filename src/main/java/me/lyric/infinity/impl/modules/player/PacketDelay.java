@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PacketDelay extends Module {
 
-    public Setting<Integer> delay = register(new Setting<>("Delay", "Delay in ms.", 1, 1, 5000));
+    public IntegerSetting delay = createSetting("Delay", "Delay in ms.", 1, 1, 5000));
 
     Queue<Packet<?>> packets = new ConcurrentLinkedQueue<>();
     ScheduledExecutorService service;

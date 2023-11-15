@@ -4,15 +4,17 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
-import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
-import me.lyric.infinity.api.util.minecraft.switcher.SwitchType;
 import me.lyric.infinity.manager.client.PlacementManager;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 
 /**
@@ -21,12 +23,13 @@ import net.minecraft.block.BlockObsidian;
 //TODO: make this activated on a keybind so that you don't double trap yourself everytime somebody traps you if they dont have cev
 @ModuleInformation(getName = "AntiCev", getDescription = "Prevents cevbreaker.", category = Category.Combat)
 public class AntiCev extends Module {
-    public Setting<SwitchType> switchMode = register(new Setting<>("SwitchMode", "Mode for switch.", SwitchType.SILENT));
-    public Setting<Boolean> rot = register(new Setting<>("Rotate", "Rotations.", false));
-    public Setting<RotationType> type = register(new Setting<>("Rotation Type", "Type of rotation.", RotationType.PACKET).withParent(rot));
-    public Setting<Boolean> jump = register(new Setting<>("JumpCheck", "doesnt place when in the air.", false));
+    public ModeSetting switchMode = createSetting("SwitchMode","Silent",  Arrays.asList("Silent", "SilentPacket", "Slot"));
+    public BooleanSetting rot = createSetting("Rotate", false);
 
-    public Setting<Boolean> cd = register(new Setting<>("Slot-Cooldown", "Attempts to prevent burrow stopping your CA when using SLOT", false));
+    public ModeSetting type = createSetting("Rotation Type","Packet", Arrays.asList("Packet", "Normal"), v -> rot.getValue());
+    public BooleanSetting jump = createSetting("JumpCheck",true);
+
+    public BooleanSetting cd = createSetting("Slot-Cooldown", false);
 
 
     @Override
@@ -59,7 +62,7 @@ public class AntiCev extends Module {
             int slot = blockSlot == -1 ? chestSlot : blockSlot;
             Switch.doSwitch(slot, switchMode.getValue());
             PlacementManager.placeBlock(CombatUtil.getAntiCevPlacement(), rot.getValue(), type.getValue());
-            if(switchMode.getValue() == SwitchType.SLOT)
+            if(Objects.equals(switchMode.getValue(), "Slot"))
             {
                 if(cd.getValue())
                 {
@@ -67,7 +70,7 @@ public class AntiCev extends Module {
                 }
                 else
                 {
-                    Switch.doSwitch(slot, SwitchType.SLOT);
+                    Switch.doSwitch(slot, "Slot");
                 }
             }
             else

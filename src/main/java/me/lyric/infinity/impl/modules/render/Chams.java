@@ -31,30 +31,30 @@ import java.awt.*;
 
 public class Chams extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "The chams mode.", Mode.MODEL));
-    public Setting<Float> width = register(new Setting<>("Line Width", "The line width for the model.", 3.0f, 0.1f, 5.0f).withParent(mode));
+    public Setting<Mode> mode = createSetting("Mode", "The chams mode.", Mode.MODEL));
+    public FloatSetting width = createSetting("Line Width", "The line width for the model.", 3.0f, 0.1f, 5.0f).withParent(mode));
 
-    public Setting<Boolean> players = register(new Setting<>("Players", "Renders chams on players.", true));
-    public Setting<Boolean> mobs = register(new Setting<>("Mobs", "Renders chams on mobs.", true));
-    public Setting<Boolean> monsters = register(new Setting<>("Monsters", "Renders chams on monsters.", true));
+    public BooleanSetting players = createSetting("Players", "Renders chams on players.", true));
+    public BooleanSetting mobs = createSetting("Mobs", "Renders chams on mobs.", true));
+    public BooleanSetting monsters = createSetting("Monsters", "Renders chams on monsters.", true));
 
-    public Setting<Boolean> crystals = register(new Setting<>("Crystals", "Renders chams on crystals.", true));
-    public Setting<Double> scale = register(new Setting<>("Scale", "Scale for the crystal.", 1.0, 0.1, 2.0).withParent(crystals));
+    public BooleanSetting crystals = createSetting("Crystals", "Renders chams on crystals.", true));
+    public Setting<Double> scale = createSetting("Scale", "Scale for the crystal.", 1.0, 0.1, 2.0).withParent(crystals));
 
-    public Setting<Boolean> texture = register(new Setting<>("Textured", "Textures the entity.", false));
-    public Setting<Boolean> lighting = register(new Setting<>("Lighting", "Disables vanilla lighting.", true));
-    public Setting<Boolean> blend = register(new Setting<>("Blended", "Blends the texture.", false));
-    public Setting<Boolean> transparent = register(new Setting<>("Transparent", "Renders the entity models as transparent.", true));
-    public Setting<Boolean> depth = register(new Setting<>("Depth", "Enables entity depth.", true));
-    public Setting<Boolean> walls = register(new Setting<>("Walls", "Enables chams to be rendered through walls.", true));
+    public BooleanSetting texture = createSetting("Textured", "Textures the entity.", false));
+    public BooleanSetting lighting = createSetting("Lighting", "Disables vanilla lighting.", true));
+    public BooleanSetting blend = createSetting("Blended", "Blends the texture.", false));
+    public BooleanSetting transparent = createSetting("Transparent", "Renders the entity models as transparent.", true));
+    public BooleanSetting depth = createSetting("Depth", "Enables entity depth.", true));
+    public BooleanSetting walls = createSetting("Walls", "Enables chams to be rendered through walls.", true));
 
-    public Setting<Boolean> xqz = register(new Setting<>("XQZ", "Secondary color for chams through walls.", false));
-    public Setting<ColorPicker> playerXQZColor = register(new Setting<>("Player XQZ", "The XQZ color for players.", new ColorPicker(Color.BLUE)));
-    public Setting<ColorPicker> crystalXQZColor = register(new Setting<>("CrystalXQZ", "the XQZ color for crystals.", new ColorPicker(Color.MAGENTA)));
+    public BooleanSetting xqz = createSetting("XQZ", "Secondary color for chams through walls.", false));
+    public Setting<ColorPicker> playerXQZColor = createSetting("Player XQZ", "The XQZ color for players.", new ColorPicker(Color.BLUE)));
+    public Setting<ColorPicker> crystalXQZColor = createSetting("CrystalXQZ", "the XQZ color for crystals.", new ColorPicker(Color.MAGENTA)));
 
-    public Setting<Boolean> highlight = register(new Setting<>("Highlight", "Highlights the model of the entity.", true));
-    public Setting<ColorPicker> crystalHighlightColor = register(new Setting<>("Crystal Highlight Color", "The highlight color for crystals.", new ColorPicker(Color.RED)));
-    public Setting<ColorPicker> playerHighlightColor = register(new Setting<>("Player Highlight Color", "The highlight color for players.", new ColorPicker(Color.PINK)));
+    public BooleanSetting highlight = createSetting("Highlight", "Highlights the model of the entity.", true));
+    public Setting<ColorPicker> crystalHighlightColor = createSetting("Crystal Highlight Color", "The highlight color for crystals.", new ColorPicker(Color.RED)));
+    public Setting<ColorPicker> playerHighlightColor = createSetting("Player Highlight Color", "The highlight color for players.", new ColorPicker(Color.PINK)));
 
     public Chams() {
         super("Chams", "Renders entities through walls in various ways. This modules kinda funky and not really updated....", Category.RENDER);

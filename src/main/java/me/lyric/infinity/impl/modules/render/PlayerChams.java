@@ -11,7 +11,7 @@ public class PlayerChams extends Module {
     {
         super("PlayerChams", "Normal chams for players", Category.RENDER);
     }
-    public Setting<Boolean> self = register(new Setting<>("Self", "Renders yourself", false));
+    public BooleanSetting self = createSetting("Self", "Renders yourself", false));
 
     public boolean isValid(Entity entity)
     {

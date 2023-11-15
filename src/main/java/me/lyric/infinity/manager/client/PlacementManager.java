@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PlacementManager implements IGlobals {
-    static List<BlockPos> tickCache;
+    private static List<BlockPos> tickCache;
 
     public void init() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -34,18 +34,18 @@ public class PlacementManager implements IGlobals {
         tickCache = new ArrayList<>();
     }
 
-    public static boolean placeBlock(final BlockPos pos, final boolean rotate, final RotationType type) {
-        final Block block = mc.world.getBlockState(pos).getBlock();
+    public static boolean placeBlock(BlockPos pos, boolean rotate, String type) {
+        Block block = mc.world.getBlockState(pos).getBlock();
         if (!(block instanceof BlockAir) && !(block instanceof BlockLiquid)) {
             return false;
         }
-        final EnumFacing side = getPlaceableSide(pos);
+        EnumFacing side = getPlaceableSide(pos);
         if (side == null) {
             return false;
         }
-        final BlockPos neighbour = pos.offset(side);
-        final EnumFacing opposite = side.getOpposite();
-        final Vec3d hitVec = new Vec3d(neighbour).add(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
+        BlockPos neighbour = pos.offset(side);
+        EnumFacing opposite = side.getOpposite();
+        Vec3d hitVec = new Vec3d(neighbour).add(0.5, 0.5, 0.5).add(new Vec3d(opposite.getDirectionVec()).scale(0.5));
         if (!mc.player.isSneaking() && shouldShiftClick(neighbour)) {
             Objects.requireNonNull(mc.getConnection()).sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.START_SNEAKING));
         }
@@ -54,7 +54,7 @@ public class PlacementManager implements IGlobals {
             float[] rotation = RotationUtil.getRotations(hitVec);
             RotationUtil.doRotation(type, rotation);
         }
-        final EnumActionResult action = mc.playerController.processRightClickBlock(mc.player, mc.world, neighbour, opposite, hitVec, EnumHand.MAIN_HAND);
+        EnumActionResult action = mc.playerController.processRightClickBlock(mc.player, mc.world, neighbour, opposite, hitVec, EnumHand.MAIN_HAND);
         if (mc.player.isSneaking() && shouldShiftClick(neighbour)) {
             Objects.requireNonNull(mc.getConnection()).sendPacket(new CPacketEntityAction(mc.player, CPacketEntityAction.Action.STOP_SNEAKING));
 
@@ -63,11 +63,11 @@ public class PlacementManager implements IGlobals {
         tickCache.add(pos);
         return action == EnumActionResult.SUCCESS;
     }
-    public static EnumFacing getPlaceableSide(final BlockPos pos) {
-        for (final EnumFacing side : EnumFacing.values()) {
-            final BlockPos neighbour = pos.offset(side);
+    public static EnumFacing getPlaceableSide(BlockPos pos) {
+        for (EnumFacing side : EnumFacing.values()) {
+            BlockPos neighbour = pos.offset(side);
             if (mc.world.getBlockState(neighbour).getBlock().canCollideCheck(mc.world.getBlockState(neighbour), false) || tickCache.contains(neighbour)) {
-                final IBlockState blockState = mc.world.getBlockState(neighbour);
+                IBlockState blockState = mc.world.getBlockState(neighbour);
                 if (!blockState.getMaterial().isReplaceable()) {
                     return side;
                 }

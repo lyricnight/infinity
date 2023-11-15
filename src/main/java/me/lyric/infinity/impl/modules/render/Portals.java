@@ -13,9 +13,9 @@ import net.minecraftforge.client.GuiIngameForge;
 
 public class Portals extends Module {
 
-    public Setting<Boolean> gui = register(new Setting<>("GUI", "Allows opening guis in portal.", true));
+    public BooleanSetting gui = createSetting("GUI", "Allows opening guis in portal.", true));
 
-    public Setting<Boolean> noRender = register(new Setting<>("Render", "Cancels portal rendering.", true));
+    public BooleanSetting noRender = createSetting("Render", "Cancels portal rendering.", true));
 
     private boolean renderPortal = false;
     public Portals()

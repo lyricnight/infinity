@@ -8,13 +8,13 @@ import net.minecraft.init.MobEffects;
 
 public class NoRender extends Module {
     public static NoRender INSTANCE;
-    public Setting<Boolean> effects = register(new Setting<>("Effects", "Cancels potions effects.", false)); // TODO: Add more potion effects lol.
-    public Setting<Boolean> weather = register(new Setting<>("Weather", "Cancels weather.", false));
+    public BooleanSetting effects = createSetting("Effects", "Cancels potions effects.", false)); // TODO: Add more potion effects lol.
+    public BooleanSetting weather = createSetting("Weather", "Cancels weather.", false));
 
 
-     //public Setting<Boolean> Fire = register(new Setting<>("Fire", "Avoids fire overlay render.", false));
-     public Setting<Boolean> NoArmor = register(new Setting<>("NoArmor", "Avoids armor overlay render.", false));
-     public Setting<Boolean> sneak = register(new Setting<>("Force Sneak", "Forces all players to sneak clientside.", true));
+     //public BooleanSetting Fire = createSetting("Fire", "Avoids fire overlay render.", false));
+     public BooleanSetting NoArmor = createSetting("NoArmor", "Avoids armor overlay render.", false));
+     public BooleanSetting sneak = createSetting("Force Sneak", "Forces all players to sneak clientside.", true));
 
 
     public NoRender() {

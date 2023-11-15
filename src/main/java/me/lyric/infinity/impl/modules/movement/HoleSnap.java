@@ -28,9 +28,9 @@ import java.util.Objects;
 
 @ModuleInformation(getName = "HoleSnap", getDescription = "we SNAPPING out here", category = Category.Movement)
 public class HoleSnap extends Module {
-    public Setting<Float> range = register(new Setting<>("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
-    public Setting<Float> factor = register(new Setting<>("Factor","Factor!1!1!!", 2.5f, 1.0f, 15.0f));
-    public Setting<Boolean> debug = register(new Setting<>("Debug", "For testing.", false));
+    public FloatSetting range = createSetting("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
+    public FloatSetting factor = createSetting("Factor","Factor!1!1!!", 2.5f, 1.0f, 15.0f));
+    public BooleanSetting debug = createSetting("Debug", "For testing.", false));
 
     Timer timer = new Timer();
     HoleUtil.Hole holes;

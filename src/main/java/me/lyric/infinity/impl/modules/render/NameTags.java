@@ -36,29 +36,29 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NameTags extends Module {
 
-    private final Setting<Boolean> health = this.register(new Setting<>("Health","Renders health.", true));
-    private final Setting<Boolean> armor = this.register(new Setting<>("Armor","Renders armor.", true));
-    private final Setting<Boolean> reversedArmour = this.register(new Setting<>("ReversedArmour","Reverses the render for armour.", true).withParent(armor));
-    private final Setting<Boolean> scaleing = this.register(new Setting<>("Scale","Whether to modify scale or not.", false));
-    private final Setting<Float> scaling = this.register(new Setting<>("Scaler","Scale for the nametags.", 0.3f, 0.1f, 20.0f).withParent(scaleing));
-    private final Setting<Boolean> ping = this.register(new Setting<>("Ping","Whether to render ping or not.", true));
-    private final Setting<Boolean> totemPops = this.register(new Setting<>("TotemPops","Displays totem pops.", true));
-    private final Setting<Boolean> gamemode = this.register(new Setting<>("Gamemode","Displays gamemode.", false));
-    private final Setting<Boolean> entityID = this.register(new Setting<>("ID","Displays Entity ID - for oldfag", false));
-    private final Setting<Boolean> rect = this.register(new Setting<>("Rectangle","horrible", true));
-    private final Setting<Boolean> outline = this.register(new Setting<Object>("Outline","outline",false));
-    private final Setting<Float> lineWidth = this.register(new Setting<Object>("LineWidth","Width of line.", 1.5f, 0.1f, 5.0f).withParent(outline));
-    private final Setting<Boolean> sneak = this.register(new Setting<>("SneakColor","Displays a different color for sneaking entities.", false));
-    private final Setting<Boolean> heldStackName = this.register(new Setting<>("StackName","Name of item stack.", false));
-    private final Setting<Float> factor = this.register(new Setting<Object>("Factor","Scale Factor.", 1.0f, 0.1f, 1.0f).withParent(scaleing));
-    private final Setting<Boolean> smartScale = this.register(new Setting<Object>("SmartScale","Whether scaling should be calculated automatically.", false).withParent(scaleing));
-    private final Setting<Boolean> ench = this.register(new Setting<>("Enchantments","Whether to render enchantment names.", false));
-    private final Setting<ColorPicker> mainColor = this.register(new Setting<>("MainColour", "Colour of the main rect.", new ColorPicker(Color.BLACK)));
-    private final Setting<ColorPicker> outlineColor = this.register(new Setting<>("OutlineColour", "Colour of the main rect's outline.", new ColorPicker(Color.BLACK)));
-    private final Setting<ColorPicker> textColor = this.register(new Setting<>("TextColour", "Colour of the main rect's text.", new ColorPicker(Color.WHITE)));
-    private final Setting<ColorPicker> friendtextColor = this.register(new Setting<>("FriendColor", "Colour of the nametags for friends.", new ColorPicker(Color.CYAN)));
-    private final Setting<ColorPicker> invisibleText = this.register(new Setting<>("InvisColour", "Colour of the main rect's text for invis entities.", new ColorPicker(Color.ORANGE)));
-    private final Setting<ColorPicker> shiftColor = this.register(new Setting<>("ShiftColour", "Colour of the main rect's text when an entity is shifted.", new ColorPicker(Color.magenta)));
+    private final BooleanSetting health = this.createSetting("Health","Renders health.", true));
+    private final BooleanSetting armor = this.createSetting("Armor","Renders armor.", true));
+    private final BooleanSetting reversedArmour = this.createSetting("ReversedArmour","Reverses the render for armour.", true).withParent(armor));
+    private final BooleanSetting scaleing = this.createSetting("Scale","Whether to modify scale or not.", false));
+    private final FloatSetting scaling = this.createSetting("Scaler","Scale for the nametags.", 0.3f, 0.1f, 20.0f).withParent(scaleing));
+    private final BooleanSetting ping = this.createSetting("Ping","Whether to render ping or not.", true));
+    private final BooleanSetting totemPops = this.createSetting("TotemPops","Displays totem pops.", true));
+    private final BooleanSetting gamemode = this.createSetting("Gamemode","Displays gamemode.", false));
+    private final BooleanSetting entityID = this.createSetting("ID","Displays Entity ID - for oldfag", false));
+    private final BooleanSetting rect = this.createSetting("Rectangle","horrible", true));
+    private final BooleanSetting outline = this.register(new Setting<Object>("Outline","outline",false));
+    private final FloatSetting lineWidth = this.register(new Setting<Object>("LineWidth","Width of line.", 1.5f, 0.1f, 5.0f).withParent(outline));
+    private final BooleanSetting sneak = this.createSetting("SneakColor","Displays a different color for sneaking entities.", false));
+    private final BooleanSetting heldStackName = this.createSetting("StackName","Name of item stack.", false));
+    private final FloatSetting factor = this.register(new Setting<Object>("Factor","Scale Factor.", 1.0f, 0.1f, 1.0f).withParent(scaleing));
+    private final BooleanSetting smartScale = this.register(new Setting<Object>("SmartScale","Whether scaling should be calculated automatically.", false).withParent(scaleing));
+    private final BooleanSetting ench = this.createSetting("Enchantments","Whether to render enchantment names.", false));
+    private final Setting<ColorPicker> mainColor = this.createSetting("MainColour", "Colour of the main rect.", new ColorPicker(Color.BLACK)));
+    private final Setting<ColorPicker> outlineColor = this.createSetting("OutlineColour", "Colour of the main rect's outline.", new ColorPicker(Color.BLACK)));
+    private final Setting<ColorPicker> textColor = this.createSetting("TextColour", "Colour of the main rect's text.", new ColorPicker(Color.WHITE)));
+    private final Setting<ColorPicker> friendtextColor = this.createSetting("FriendColor", "Colour of the nametags for friends.", new ColorPicker(Color.CYAN)));
+    private final Setting<ColorPicker> invisibleText = this.createSetting("InvisColour", "Colour of the main rect's text for invis entities.", new ColorPicker(Color.ORANGE)));
+    private final Setting<ColorPicker> shiftColor = this.createSetting("ShiftColour", "Colour of the main rect's text when an entity is shifted.", new ColorPicker(Color.magenta)));
     public NameTags() {
         super("NameTags", "Testing", Category.RENDER);
     }

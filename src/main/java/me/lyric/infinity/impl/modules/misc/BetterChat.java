@@ -22,16 +22,16 @@ import java.util.Date;
 
 @ModuleInformation(getName = "BetterChat", getDescription = "the chat is now better guys", category = Category.Misc)
 public class BetterChat extends Module {
-    public final Setting<Boolean> timeStamps = register(new Setting<>("Timestamps","Does what it says on the tin lad",  true));
-    public final Setting<Boolean> rect = register(new Setting<>("NoRect","Removes rectangle", true));
-    public Setting<ChatFormat.Color> bracketColor = register(new Setting<>("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));
-    public Setting<ChatFormat.Color> commandColor = register(new Setting<>("NameColor","Colour of timestamps", ChatFormat.Color.LIGHT_PURPLE));
+    public final BooleanSetting timeStamps = createSetting("Timestamps","Does what it says on the tin lad",  true));
+    public final BooleanSetting rect = createSetting("NoRect","Removes rectangle", true));
+    public Setting<ChatFormat.Color> bracketColor = createSetting("BracketColor","Colour of the brackets.", ChatFormat.Color.DARK_PURPLE));
+    public Setting<ChatFormat.Color> commandColor = createSetting("NameColor","Colour of timestamps", ChatFormat.Color.LIGHT_PURPLE));
 
-    public Setting<Boolean> inf = register(new Setting<>("Infinite", "Makes chat infinite.", false));
+    public BooleanSetting inf = createSetting("Infinite", "Makes chat infinite.", false));
 
-    public Setting<Boolean> append = register(new Setting<>("Append", "Add a suffix to your messages.", false));
+    public BooleanSetting append = createSetting("Append", "Add a suffix to your messages.", false));
 
-    public Setting<String> str = register(new Setting<>("Append-String", "String to append.", "infinity"));
+    public StringSetting str = createSetting("Append-String", "String to append.", "infinity"));
 
     @EventListener(priority = ListenerPriority.LOW)
     public void onPacketReceive(PacketEvent.Receive event) {

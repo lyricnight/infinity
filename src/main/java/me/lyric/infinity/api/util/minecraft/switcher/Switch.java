@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketClickWindow;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 
+
 /**
  * @author lyriccc
  */
@@ -20,22 +21,22 @@ public class Switch implements IGlobals {
 
     private static ItemStack stackAltNew = null;
 
-    public static void doSwitch(int slot, SwitchType type)
+    public static void doSwitch(int slot, String type)
     {
         if (mc.player == null || mc.world == null) return;
-        if (type == SwitchType.SILENT)
+        if (type == "Silent")
         {
             mc.player.inventory.currentItem = slot;
             ((IPlayerControllerMP)mc.playerController).syncItem();
             return;
         }
-        if (type == SwitchType.SILENTPACKET)
+        if (type == "SilentPacket")
         {
             mc.player.connection.sendPacket(new CPacketHeldItemChange(slot));
             ((IPlayerControllerMP)mc.playerController).syncItem();
             return;
         }
-        if(type == SwitchType.SLOT)
+        if(type == "Slot")
         {
             lastSlot = mc.player.inventory.currentItem;
             stackAlt = mc.player.getHeldItemMainhand();

@@ -20,13 +20,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class HoleESP extends Module {
-    public Setting<Float> radius = register((new Setting<>("Radius", "Radius to render (and calculate) holes.", 8f, 0f, 50f)));
-    protected final Setting<Float> lineWidth = register((new Setting<>("LineWidth", "Width of lines.", 0.1f, 0f, 5f)));
-    protected final Setting<Float> height = register((new Setting<>("Height", "Height of box esp.", 0f, 0f, 2f)));
-    public Setting<Boolean> doubles = register(new Setting<>("Doubles", "Renders double holes.", true));
+    public FloatSetting radius = register((new Setting<>("Radius", "Radius to render (and calculate) holes.", 8f, 0f, 50f)));
+    protected final FloatSetting lineWidth = register((new Setting<>("LineWidth", "Width of lines.", 0.1f, 0f, 5f)));
+    protected final FloatSetting height = register((new Setting<>("Height", "Height of box esp.", 0f, 0f, 2f)));
+    public BooleanSetting doubles = createSetting("Doubles", "Renders double holes.", true));
     public Setting<Mode> animation = register(new Setting<Object>("Animation", "Mode of animation.", Mode.FADE));
-    protected final Setting<Float> growSpeed = register((new Setting<>("GrowSpeed", "Speed for mode grow.", 200f, 0f, 1000f)));
-    protected final Setting<Float> distanceDivision = register((new Setting<>("Divisor", "Divisor for mode fade.", 6f, 0f, 50f)));
+    protected final FloatSetting growSpeed = register((new Setting<>("GrowSpeed", "Speed for mode grow.", 200f, 0f, 1000f)));
+    protected final FloatSetting distanceDivision = register((new Setting<>("Divisor", "Divisor for mode fade.", 6f, 0f, 50f)));
     public Setting<ColorPicker> bedrockBox = register(new Setting<ColorPicker>("Bedrock Box", "Colour of bedrock box.", new ColorPicker(Color.green)));
     public Setting<ColorPicker> bedrockOutline = register(new Setting<ColorPicker>("Bedrock Outline", "Colour of bedrock box's outline.", new ColorPicker(Color.GREEN)));
 

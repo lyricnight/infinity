@@ -17,8 +17,8 @@ import static net.minecraft.network.play.client.CPacketEntityAction.Action.STOP_
 @ModuleInformation(getName = "WebBypass", getDescription = "we FALLING out here", category = Category.Movement)
 public class WebBypass extends Module {
 
-    public Setting<Mode> mode = register(new Setting<>("Mode", "The mode of web bypass.", Mode.VANILLA));
-    public Setting<Boolean> sneak = register(new Setting<>("Sneak", "Sneaks whilst falling through the web.", false));
+    public Setting<Mode> mode = createSetting("Mode", "The mode of web bypass.", Mode.VANILLA));
+    public BooleanSetting sneak = createSetting("Sneak", "Sneaks whilst falling through the web.", false));
 
     @Override
     public void onUpdate() {

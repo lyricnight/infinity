@@ -11,11 +11,11 @@ public class Swing extends Module {
 
 
     public Setting<SwingHand> swing =
-            register(new Setting<>("Swing","Changes hand of swing.", SwingHand.MAINHAND));
-    public Setting<Boolean> slowSwing =
-            register(new Setting<>("SlowSwing","Makes the swing animation slower.", false));
-    public Setting<Boolean> instantSwap =
-            register(new Setting<>("InstantSwap","AKA 1.8 Animations.", false));
+            createSetting("Swing","Changes hand of swing.", SwingHand.MAINHAND));
+    public BooleanSetting slowSwing =
+            createSetting("SlowSwing","Makes the swing animation slower.", false));
+    public BooleanSetting instantSwap =
+            createSetting("InstantSwap","AKA 1.8 Animations.", false));
 
     public Swing() {
         super("Swing", "Changes swing.", Category.RENDER);

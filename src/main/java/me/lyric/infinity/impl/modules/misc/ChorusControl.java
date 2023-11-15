@@ -26,12 +26,12 @@ import java.util.Queue;
 @ModuleInformation(getName = "ChorusControl", getDescription = "Control chorus teleportation.", category = Category.Misc)
 public class ChorusControl extends Module {
 
-    public Setting<Boolean> cpacketplayer = register(new Setting<>("CPacketPlayer", "Cancels the CPacketPlayer packet.", true));
-    public Setting<Boolean> spacketplayerposlook = register(new Setting<>("SPacketPlayerPosLook", "Cancels the SPacketPlayerPosLook packet.", true));
+    public BooleanSetting cpacketplayer = createSetting("CPacketPlayer", "Cancels the CPacketPlayer packet.", true));
+    public BooleanSetting spacketplayerposlook = createSetting("SPacketPlayerPosLook", "Cancels the SPacketPlayerPosLook packet.", true));
 
-    public Setting<Boolean> render = register(new Setting<>("Render", "Renders the predicted teleport spot.", true));
-    public Setting<Double> slabHeight = register(new Setting<>("Height", "The height of the slab.", 0.1, -1.0, 1.0).withParent(render));
-    public Setting<ColorPicker> color = register(new Setting<>("Color", "The color of the slab.", new ColorPicker(Color.BLUE)));
+    public BooleanSetting render = createSetting("Render", "Renders the predicted teleport spot.", true));
+    public Setting<Double> slabHeight = createSetting("Height", "The height of the slab.", 0.1, -1.0, 1.0).withParent(render));
+    public Setting<ColorPicker> color = createSetting("Color", "The color of the slab.", new ColorPicker(Color.BLUE)));
 
     Queue<CPacketPlayer> packets = new LinkedList<>();
     Queue<CPacketConfirmTeleport> teleportPackets = new LinkedList<>();

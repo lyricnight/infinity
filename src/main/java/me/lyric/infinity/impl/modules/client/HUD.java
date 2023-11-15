@@ -9,6 +9,9 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ColorSetting;
+import me.lyric.infinity.api.setting.settings.IntegerSetting;
+import me.lyric.infinity.api.setting.settings.StringSetting;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.gl.ColorUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
@@ -29,6 +32,8 @@ import java.util.List;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.function.Predicate;
+
 
 /**
  * @author lyric
@@ -36,35 +41,30 @@ import java.util.Comparator;
 
 @ModuleInformation(getName = "HUD", getDescription = "Head-Up-Display", category = Category.Client)
 public class HUD extends Module {
-    public BooleanSetting shadow = register(new Setting<>("Shadow", "For string to be drawn with a shadow.", false));
-    public Setting<Boolean> step = register(new Setting<>("Step", "Colour step.", false));
-    public Setting<ColorPicker> stepColor = register(new Setting<>("Step Colour", "The step colour for the HUD components.", new ColorPicker(Color.WHITE)).withParent(step));
-    public Setting<Integer> stepLength = register(new Setting<>("Length", "Length for step.", 30, 10, 130).withParent(step));
-    public Setting<Integer> stepSpeed = register(new Setting<>("Speed", "Speed for step.", 30, 1, 130).withParent(step));
+    public BooleanSetting shadow = createSetting("Shadow", true);
 
-    public Setting<ColorPicker> color = register(new Setting<>("Main Colour", "The main colour for the HUD components.", new ColorPicker(Color.WHITE)));
-    public Setting<Boolean> activeModules = register(new Setting<>("Modules", "Draws an ArrayList for enabled & drawn modules.", true));
-    public Setting<Boolean> watermark = register(new Setting<>("Watermark", "Draws a watermark.", true));
-    public Setting<Integer> waterX = register(new Setting<>("Watermark X", "Position X for Watermark.", 2, 1, 1000).withParent(watermark));
-    public Setting<Integer> waterY = register(new Setting<>("Watermark Y", "Position Y for Watermark.", 2, 1, 1000).withParent(watermark));
-    public Setting<Boolean> info = register(new Setting<>("Info", "Displays info.", true));
-    public Setting<Boolean> coordinates = register(new Setting<>("Coordinates", "Draws your coordinates.", true));
+    public BooleanSetting step = createSetting("Step", false);
+    public ColorSetting stepColor = createSetting("Step Colour", defaultColor, v -> step.getValue());
+    public IntegerSetting stepLength = createSetting("Length", 30, 10, 130, (Predicate<Integer>) v -> step.getValue());
+    public IntegerSetting stepSpeed = createSetting("Speed", 30, 1, 130, (Predicate<Integer>) v -> step.getValue());
 
-    public Setting<Boolean> speed = register(new Setting<>("Speed", "Draws your speed.", true));
-    public Setting<Boolean> armor = register(new Setting<>("Armor", "Draws Armor HUD.", false));
-    public Setting<Boolean> welcomer = register(new Setting<>("Welcomer", "does what it says on the tin", false));
-    public Setting<String> textthing = register(new Setting<>("Welcomer String", "string for welcomer", "Welcome to infinity!").withParent(welcomer));
-    public Setting<Integer> thing = register(new Setting<>("Offset-Array", "", 10, 1, 200).withParent(activeModules));
-    private int packets = 0;
+    public ColorSetting color = createSetting("Main Colour", defaultColor);
+    public BooleanSetting activeModules = createSetting("Modules",true);
+    public BooleanSetting watermark = createSetting("Watermark",true);
+    public IntegerSetting waterX = createSetting("Watermark X", 2, 1, 1000, (Predicate<Integer>) v -> watermark.getValue());
+    public IntegerSetting waterY = createSetting("Watermark Y", 2, 1, 1000, (Predicate<Integer>) v -> watermark.getValue());
+
+    public BooleanSetting info = createSetting("Info", true);
+
+    public BooleanSetting coordinates = createSetting("Coordinates",true);
+
+    public BooleanSetting speed = createSetting("Speed", true);
+    public BooleanSetting armor = createSetting("Armor", false);
+    public BooleanSetting welcomer = createSetting("Welcomer", false);
+    public StringSetting textthing = createSetting("Welcomer String", "Welcome to infinity!", v -> welcomer.getValue());
+    public IntegerSetting thing = createSetting("Offset-Array", 10, 1, 200, (Predicate<Integer>) v -> activeModules.getValue());
     private int offset = 0;
-    private final Timer packetTimer = new Timer();
     private final ArrayList<Module> modules = new ArrayList<>();
-
-    @EventListener
-    public void onPacketSend(PacketEvent.Send ignored) {
-        packets++;
-    }
-
     @SubscribeEvent
     public void onRenderHud(RenderGameOverlayEvent event) {
         if (!nullSafe())
@@ -80,10 +80,6 @@ public class HUD extends Module {
             return;
         }
         offset = 0;
-        if (packetTimer.passedMs(1000)) {
-            packets = 0;
-            packetTimer.reset();
-        }
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         int y = new ScaledResolution(mc).getScaledHeight() - 11;
         if (activeModules.getValue()) {
@@ -158,9 +154,9 @@ public class HUD extends Module {
         if (step.getValue()) {
             double roundY = Math.sin(Math.toRadians((double) ((long) y * (stepLength.getValue()) + System.currentTimeMillis() / stepSpeed.getValue())));
             roundY = Math.abs(roundY);
-            return ColorUtils.interpolate((float) MathHelper.clamp(roundY, 0.0, 1.0), color.getValue().getColor(), stepColor.getValue().getColor());
+            return ColorUtils.interpolate((float) MathHelper.clamp(roundY, 0.0, 1.0), color.getValue(), stepColor.getValue());
         }
-        return color.getValue().getColor();
+        return color.getValue();
     }
     public void renderGreeter() {
         final int width = new ScaledResolution(mc).getScaledWidth();
