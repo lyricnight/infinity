@@ -35,7 +35,6 @@ public class ImageUtils implements IGlobals {
         GlStateManager.color(1.0f, 1.0f, 1.0f);
         GuiScreen.drawScaledCustomSizeModalRect(x, y, 0.0f, 0.0f, width, height, width, height, (float)width, (float)height);
         GlStateManager.disableAlpha();
-        GL11.glPopMatrix();
     }
 
 

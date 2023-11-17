@@ -57,12 +57,9 @@ public class HUD extends Module {
     public BooleanSetting info = createSetting("Info", true);
 
     public BooleanSetting coordinates = createSetting("Coordinates",true);
-
-    public BooleanSetting speed = createSetting("Speed", true);
     public BooleanSetting armor = createSetting("Armor", false);
     public BooleanSetting welcomer = createSetting("Welcomer", false);
     public StringSetting textthing = createSetting("Welcomer String", "Welcome to infinity!", v -> welcomer.getValue());
-    public IntegerSetting thing = createSetting("Offset-Array", 10, 1, 200, (Predicate<Integer>) v -> activeModules.getValue());
     private int offset = 0;
     private final ArrayList<Module> modules = new ArrayList<>();
     @SubscribeEvent
@@ -91,7 +88,7 @@ public class HUD extends Module {
                     continue;
                 }
                 module.animfactor = MathUtils.linearInterpolation(module.animfactor, module.isEnabled() ? 1.0f : 0.0f, 0.005f * Infinity.INSTANCE.forgeEventManager.frameTime);
-                final float x = SCREEN_WIDTH - ((module.animfactor * mc.fontRenderer.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + thing.getValue());
+                final float x = SCREEN_WIDTH - ((module.animfactor * mc.fontRenderer.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + 2);
                 if (!module.isEnabled() && module.animfactor < 0.05f) {
                     modules.remove(module);
                 }

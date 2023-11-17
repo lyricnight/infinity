@@ -27,8 +27,12 @@ public class ConfigManager implements IGlobals {
         if (!path.exists()) {
             path.mkdirs();
         }
-        if (!this.getActiveConfig().equals("0")) {
-            load(this.getActiveConfig());
+        if (!getActiveConfig().equals("0")) {
+            load(getActiveConfig());
+        }
+        else
+        {
+            load("0");
         }
     }
 

@@ -86,7 +86,7 @@ public class CsgoGui extends GuiScreen {
         RenderUtils.outline(x, y, x + (float)width, y + (float)height, new Color(0x2C2C2C), 2.0f);
         RenderUtils.outline(x + 2.0f, y + 5.0f, x + (float)width - 2.0f, y + (float)height - 2.0f, new Color(0x2C2C2C), 2.0f);
         RenderUtils.rectangle(x + 1.0f, y + 1.0f, x + (float)width - 1.0f, y + 2.0f, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
-        ImageUtils.image(new ResourceLocation("textures/infinity/icons/logo.png"), (int)(x + 14.0f), (int)(y + 4.0f), 100, 19);
+        ImageUtils.image(new ResourceLocation("infinity/textures/icons/logo.png"), (int)(x + 14.0f), (int)(y + 4.0f), 100, 19);
         RenderUtils.rectangle(x + 7.0f, y + 23.0f, x + 118.0f, y + 24.0f, new Color(0x2C2C2C).getRGB());
         RenderUtils.prepareScissor((int)x + 2, (int)y, width, height);
         this.csgoCategories.forEach(csgoCategory -> csgoCategory.drawScreen(mouseX, mouseY));
@@ -153,7 +153,7 @@ public class CsgoGui extends GuiScreen {
                 return;
             }
             Category category1 = iterator.next();
-            ImageUtils.image(new ResourceLocation("textures/infinity/icons/" + category1.toString().toLowerCase() + ".png"), i += 80, (int)y + 9, 18, 18);
+            ImageUtils.image(new ResourceLocation("infinity/textures/icons/" + category1.toString().toLowerCase() + ".png"), i += 80, (int)y + 9, 18, 18);
         }
     }
 

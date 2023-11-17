@@ -115,7 +115,7 @@ public class CsgoCategory {
             this.textX = AnimationUtils.decreaseNumber(this.textX, targetX, (this.textX - targetX) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
             this.imageX = AnimationUtils.increaseNumber(this.imageX, (float)x + (float)this.width / 2.0f - 10.0f, ((float)x + (float)this.width / 2.0f - 10.0f - this.imageX) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
         }
-        ImageUtils.image(new ResourceLocation("textures/infinity/icons/" + name.toLowerCase() + ".png"), (int)this.imageX, this.y + 1, 18, 18);
+        ImageUtils.image(new ResourceLocation("infinity/textures/icons/" + name.toLowerCase() + ".png"), (int)this.imageX, this.y + 1, 18, 18);
         RenderUtils.prepareScissor((int)(this.imageX + 18.0f), this.y, this.width, this.height);
         Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, this.textX, (float)this.y + (float)this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
         RenderUtils.releaseScissor();

@@ -4,7 +4,6 @@ import me.bush.eventbus.bus.EventBus;
 import me.bush.eventbus.handler.handlers.LambdaHandler;
 import me.lyric.infinity.api.util.gl.SplashProgress;
 import me.lyric.infinity.api.util.string.ClientFont;
-import me.lyric.infinity.gui.main.InfinityMainScreen;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
 import net.minecraftforge.fml.common.Mod;
@@ -24,8 +23,6 @@ public class Infinity {
     public ClientFont infinityFont;
 
     public EventBus eventBus = new EventBus(LambdaHandler.class, Infinity.LOGGER::error, Infinity.LOGGER::info);
-
-    public InfinityMainScreen infinityMainScreen;
     public TPSManager tpsManager;
 
     public String version = "v5";
@@ -65,8 +62,6 @@ public class Infinity {
         LOGGER.info("Initialising Infinity.");
         Display.setTitle("Infinity " + version);
         LOGGER.info("Attempted to set window title.");
-        infinityMainScreen = new InfinityMainScreen();
-        LOGGER.info("Infinity Main Menu Screen initialised!");
         this.moduleManager = new ModuleManager();
         this.moduleManager.init();
         LOGGER.info("ModuleManager initialised!");
