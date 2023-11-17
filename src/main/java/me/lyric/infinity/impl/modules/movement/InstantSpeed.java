@@ -9,7 +9,7 @@ import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 
-@ModuleInformation(getName = "AntiAim", getDescription = "Have a mental breakdown", category = Category.Movement)
+@ModuleInformation(name = "InstantSpeed", description = "we GOING TOO FAST out here", category = Category.Movement)
 public class InstantSpeed extends Module {
 
     public boolean pause = false;

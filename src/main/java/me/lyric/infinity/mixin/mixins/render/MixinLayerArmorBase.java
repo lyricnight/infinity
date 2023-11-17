@@ -1,5 +1,6 @@
 package me.lyric.infinity.mixin.mixins.render;
 
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.impl.modules.render.NoRender;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinLayerArmorBase {
     @Inject(method = "renderArmorLayer", at = @At("HEAD"), cancellable = true)
     public void renderArmorLayer(EntityLivingBase p_Entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slotIn, CallbackInfo callbackInfo) {
-        if(NoRender.INSTANCE.isEnabled() && NoRender.INSTANCE.NoArmor.getValue()) {
+        if(Infinity.INSTANCE.moduleManager.getModuleByClass(NoRender.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(NoRender.class).NoArmor.getValue()) {
             callbackInfo.cancel();
         }
     }

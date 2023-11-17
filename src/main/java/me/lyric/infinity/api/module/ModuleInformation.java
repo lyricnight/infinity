@@ -5,9 +5,9 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface ModuleInformation {
-    public String getName();
+    Category category();
 
-    public String getDescription();
+    String name();
 
-    public Category category();
+    String description();
 }

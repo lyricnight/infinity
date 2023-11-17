@@ -8,6 +8,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.math.Vec3d;
 
@@ -17,10 +18,10 @@ import java.text.DecimalFormat;
 /**
  * @author lyric
  */
-@ModuleInformation(getName = "AutoReply", getDescription = "we REPLYING out here", category = Category.Player)
+@ModuleInformation(name = "AutoReply", description = "we REPLYING out here", category = Category.Player)
 public class AutoReply extends Module {
 
-    public BooleanSetting ignoreY = createSetting("IgnoreY","Doesn't send your Y coordinate.", true));
+    public BooleanSetting ignoreY = createSetting("IgnoreY", true);
 
     @EventListener(priority = ListenerPriority.LOW)
     public void onReceivePacket(PacketEvent.Receive e)  {

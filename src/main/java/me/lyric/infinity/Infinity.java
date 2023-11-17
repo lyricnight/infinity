@@ -5,17 +5,13 @@ import me.bush.eventbus.handler.handlers.LambdaHandler;
 import me.lyric.infinity.api.util.gl.SplashProgress;
 import me.lyric.infinity.api.util.string.ClientFont;
 import me.lyric.infinity.gui.main.InfinityMainScreen;
-import me.lyric.infinity.gui.panelstudio.PanelStudioGUI;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.Display;
-
-import java.io.File;
 
 @Mod(
         modid = "infinity",
@@ -23,18 +19,11 @@ import java.io.File;
 )
 
 public class Infinity {
-
-    public static final String PATH = "Infinity/";
-    public static final String CONFIG_PATH = PATH + "configs/";
     public static final Logger LOGGER = LogManager.getLogger("Infinity");
 
     public ClientFont infinityFont;
 
-    File directory = new File(Minecraft.getMinecraft().gameDir, "Infinity");
-
     public EventBus eventBus = new EventBus(LambdaHandler.class, Infinity.LOGGER::error, Infinity.LOGGER::info);
-
-    public static PanelStudioGUI gui;
 
     public InfinityMainScreen infinityMainScreen;
     public TPSManager tpsManager;
@@ -52,17 +41,15 @@ public class Infinity {
     public RotationManager rotationManager;
 
     public static void startup() {
-        ConfigManager.refresh();
-        ConfigManager.reload();
-        ConfigManager.process(ConfigManager.LOAD);
+        ConfigManager.loadPlayer();
+        CommandManager.setPrefix(ConfigManager.getPrefix());
         SplashProgress.setProgress(3, "Loading Infinity's Configs...");
     }
 
     public static void shutdown() {
         TPSManager.unload();
-        FriendManager.unload();
-        ConfigManager.reload();
-        ConfigManager.process(ConfigManager.SAVE);
+        ConfigManager.savePlayer();
+        ConfigManager.save(ConfigManager.getActiveConfig());
     }
 
     @Mod.Instance
@@ -90,7 +77,6 @@ public class Infinity {
         this.forgeEventManager.init();
         LOGGER.info("ForgeEventManager initialised!");
         this.configManager = new ConfigManager();
-        this.configManager.init();
         LOGGER.info("ConfigManager initialised!");
         this.rotationManager = new RotationManager();
         this.rotationManager.init();
@@ -99,8 +85,6 @@ public class Infinity {
         this.tpsManager.load();
         LOGGER.info("TPSManager initialised!");
         this.friendManager = new FriendManager();
-        friendManager.setDirectory(new File(this.directory, "friends.json"));
-        friendManager.init();
         LOGGER.info("FriendManager initialised!");
         this.threadManager = new ThreadManager();
         threadManager.init();
@@ -112,8 +96,6 @@ public class Infinity {
         this.placementManager.init();
         LOGGER.info("PlacementManager initialised!");
         LOGGER.info("All Managers loaded successfully!");
-        //gui = new PanelStudioGUI();
-        //LOGGER.info("GUI initialised!");
         infinityFont = new ClientFont("Comfortaa-Regular", 17.0f);
         LOGGER.info("Infinity has set its font.");
         startup();

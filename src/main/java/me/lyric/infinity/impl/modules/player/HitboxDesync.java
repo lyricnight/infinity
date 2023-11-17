@@ -16,7 +16,7 @@ import static net.minecraft.util.math.MathHelper.abs;
     requires you to look at the +X or +Z dirs
     maybe automatically rotate the player to look at that dir when active?
  */
-@ModuleInformation(getName = "Announcer", getDescription = "we BEING WEIRD out here", category = Category.Player)
+@ModuleInformation(name = "HitboxDesync", description = "we BEING WEIRD out here", category = Category.Player)
 public class HitboxDesync extends Module {
     private static final double MAGIC_OFFSET = .200009968835369999878673424677777777777761;
     @Override
@@ -29,7 +29,7 @@ public class HitboxDesync extends Module {
 
         Vec3d fin = merge(new Vec3d(new BlockPos(MathHelper.floor(center.x), MathHelper.floor(center.y), MathHelper.floor(center.z))).add(.5, 0, .5).add(offset.scale(MAGIC_OFFSET)), f);
         mc.player.setPosition(fin.x == 0 ? mc.player.posX : fin.x, mc.player.posY, fin.z == 0 ? mc.player.posZ : fin.z);
-        toggle();
+        disable();
     }
 
     private Vec3d merge(Vec3d a, EnumFacing facing) {

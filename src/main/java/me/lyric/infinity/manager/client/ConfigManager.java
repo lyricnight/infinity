@@ -1,336 +1,312 @@
 package me.lyric.infinity.manager.client;
 
-import com.google.gson.*;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.config.Config;
-import me.lyric.infinity.api.util.bytes.ByteChanger;
-import me.lyric.infinity.api.util.metadata.MetaDataUtils;
-import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.api.util.time.DateTimeUtils;
-import org.apache.commons.io.FileUtils;
+import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.*;
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 
+import java.awt.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.Iterator;
 
 /**
- * @author lyric
+ * @author vikas
  */
 
-public class ConfigManager {
-    public static final int SAVE = 331;
-    public static final int LOAD = 332;
-
-    public static ConfigManager configManager;
-    public static Path PATH = Paths.get(Infinity.CONFIG_PATH);
-
-    private final Set<Config> configSet = new HashSet<>();
-    protected String policyProtectionPreset = "default";
+public class ConfigManager implements IGlobals {
+    public static File socialsPath;
+    static File path;
 
     public ConfigManager() {
-        configManager = this;
+        socialsPath = new File(this.mc.gameDir + File.separator + "Infinity" + File.separator + "Socials");
+        if (!socialsPath.exists()) {
+            socialsPath.mkdirs();
+        }
+        path = new File(this.mc.gameDir + File.separator + "Infinity" + File.separator + "Configs");
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        if (!this.getActiveConfig().equals("0")) {
+            load(this.getActiveConfig());
+        }
     }
 
-    public static void implement(Config config) {
-        if (configManager.configSet.contains(config)) {
+    public static void save(String folder) {
+        path = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Configs" + File.separator + folder);
+        if (!path.exists()) {
+            path.mkdirs();
+        }
+        saveModuleFile();
+        saveActiveConfig(folder);
+        savePrefix();
+    }
+
+    public static void load(String folder) {
+        path = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Configs" + File.separator + folder);
+        if (!path.exists()) {
             return;
         }
-
-        configManager.configSet.add(config);
+        setModuleValue();
+        setModuleBind();
+        setModuleSettingValues();
+        saveActiveConfig(folder);
     }
 
-    public static void exclude(Config config) {
-        configManager.configSet.remove(config);
-
-        final String path = Infinity.CONFIG_PATH + config.getTag();
-
-        if (Files.exists(Paths.get(path))) {
-            try {
-                FileUtils.deleteDirectory(new File(path));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
+    public static void savePlayer() {
+        saveFriendList(socialsPath);
     }
 
-    public static void sync(Config config) {
-        final Config current = current();
-
-        set(config);
-        reload();
-
-        process(SAVE);
-
-        if (current != null) {
-            set(current);
-            reload();
-        }
+    public static void loadPlayer() {
+        loadFriendList(socialsPath);
     }
 
-    public static Config get(String name) {
-        Config config = null;
 
-        for (Config presets : configManager.getPresetSet()) {
-            if (presets.getName().equalsIgnoreCase(name)) {
-                config = presets;
-
-                break;
-            }
-        }
-
-        return config;
-    }
-
-    public static boolean contains(String name) {
-        return get(name) != null;
-    }
-
-    public static void refresh() {
-        final Map<String, MetaDataUtils> map = configManager.findForPresetMap();
-
-        for (Map.Entry<String, MetaDataUtils> entry : map.entrySet()) {
-            final String name = entry.getKey();
-            final MetaDataUtils preset = entry.getValue();
-
-            Config theConfig = get(name);
-
-            if (theConfig != null) {
-                continue;
-            }
-
-            final JsonObject metadata = preset.getMetaData();
-
-            theConfig = new Config(name, name.toLowerCase(), DateTimeUtils.time(DateTimeUtils.TIME_AND_DATE));
-
-            if (metadata != null && (metadata.get("data") != null || metadata.get("current") != null)) {
-                if (metadata.get("data") != null) {
-                    theConfig.setData(metadata.get("data").getAsString());
-                }
-
-                if (metadata.get("current") != null) {
-                    boolean isValid = ByteChanger.byteToBoolean(metadata.get("current").getAsByte());
-
-                    if (isValid) {
-                        theConfig.setValidator();
-                    } else {
-                        theConfig.unsetValidator();
-                    }
-                }
-            }
-
-            implement(theConfig);
-
-            ChatUtils.sendMessage("Found " + theConfig.getName() + " new config!");
-        }
-    }
-
-    public static void reload() {
-        boolean containsOne = false;
-
-        for (Config presets : configManager.getPresetSet()) {
-            if (presets.isCurrent()) {
-                configManager.setPolicyProtectionPreset(presets.getTag().toLowerCase());
-
-                containsOne = true;
-
-                break;
-            }
-        }
-
-        if (!containsOne) {
-            final Config config = new Config("Default", "default", DateTimeUtils.time(DateTimeUtils.TIME_AND_DATE));
-
-            implement(config);
-            configManager.setPolicyProtectionPreset(config.getTag().toLowerCase());
-
-            set(config);
-        }
-    }
-
-    public static void process(int protocol) {
-        switch (protocol) {
-            case SAVE: {
-                for (Config presets : configManager.getPresetSet()) {
-                    configManager.updateMetaData(presets);
-
-                    if (presets.isCurrent()) {
-                        configManager.doSaveClient();
-                    }
-                }
-
-                break;
-            }
-
-            case LOAD: {
-                for (Config presets : configManager.getPresetSet()) {
-                    if (presets.isCurrent()) {
-                        configManager.doLoadClient();
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-        }
-    }
-
-    public static Config current() {
-        Config config = null;
-
-        for (Config presets : configManager.getPresetSet()) {
-            if (presets.isCurrent()) {
-                config = presets;
-
-                break;
-            }
-        }
-
-        return config;
-    }
-
-    public static void set(Config config) {
-        for (Config presets : configManager.getPresetSet()) {
-            if (presets.getName().equalsIgnoreCase(config.getName())) {
-                presets.setValidator();
-            } else {
-                presets.unsetValidator();
-            }
-        }
-    }
-
-    public static void info() {
-        final StringBuilder stringBuilder = new StringBuilder();
-
-        for (Config presets : configManager.getPresetSet()) {
-            stringBuilder.append(presets.getName()).append("; ");
-        }
-
-        ChatUtils.sendMessage(stringBuilder.toString());
-    }
-
-    public void init() {
-    }
-
-    public Set<Config> getPresetSet() {
-        return configSet;
-    }
-
-    public Map<String, MetaDataUtils> findForPresetMap() {
-        final HashMap<String, MetaDataUtils> map = new HashMap<>();
-
-        if (!Files.exists(PATH)) {
-            try {
-                Files.createDirectories(PATH);
-            } catch (IOException exc) {
-                exc.printStackTrace();
-            }
-
-            return map;
-        }
-
-        final File[] fileList = new File(Infinity.CONFIG_PATH).listFiles();
-
-        if (fileList != null) {
-            int i = 0;
-
-            for (int j = fileList.length; i < j; i++) {
-                final File file = fileList[i];
-
-                if (!file.isDirectory() || contains(file.getName())) {
-                    continue;
-                }
-
-                map.put(file.getName(), this.getPresetEnum(file.getPath()));
-            }
-        }
-
-        return map;
-    }
-
-    public MetaDataUtils getPresetEnum(final String path) {
-        final String concurrentPath = path + "/" + "Validator.json";
-
-        MetaDataUtils theEnum = MetaDataUtils.CACHE;
-
-        if (!Files.exists(Paths.get(concurrentPath))) {
-            return theEnum;
-        }
-
+    public static void savePrefix() {
         try {
-            JsonParser jsonParser = new JsonParser();
-
-            InputStream file = Files.newInputStream(Paths.get(concurrentPath));
-            JsonObject mainJson = jsonParser.parse(new InputStreamReader(file)).getAsJsonObject();
-
-            if (mainJson != null) {
-                theEnum = MetaDataUtils.LOADABLE;
-                theEnum.setMetaData(mainJson);
+            File file = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Prefix.txt");
+            if (!file.exists()) {
+                file.createNewFile();
             }
-
-            file.close();
-        } catch (IOException exc) {
-            theEnum = MetaDataUtils.CACHE;
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            bufferedWriter.write(Infinity.INSTANCE.commandManager.getPrefix());
+            bufferedWriter.close();
         }
-
-        return theEnum;
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
-    public void updateMetaData(Config config) {
-        Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
-        JsonParser jsonParser = new JsonParser();
-
-        String superiorFolder = Infinity.CONFIG_PATH + config.getTag();
-        String superiorFile = superiorFolder + "/Validator.json";
-
+    public static String getPrefix() {
         try {
-            if (!Files.exists(Paths.get(superiorFolder))) {
-                Files.createDirectories(Paths.get(superiorFolder));
+            File file = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Prefix.txt");
+            if (!file.exists()) {
+                return ".";
             }
-
-            if (Files.exists(Paths.get(superiorFile))) {
-                java.io.File file = new java.io.File(superiorFile);
-                file.delete();
-            }
-
-            Files.createFile(Paths.get(superiorFile));
-
-            JsonObject metadata = new JsonObject();
-
-            metadata.add("name", new JsonPrimitive(config.getName()));
-            metadata.add("tag", new JsonPrimitive(config.getTag()));
-            metadata.add("data", new JsonPrimitive(config.getData()));
-            metadata.add("current", new JsonPrimitive(config.getCertification()));
-
-            String stringJson = gsonBuilder.toJson(jsonParser.parse(metadata.toString()));
-            OutputStreamWriter fileOutputStream = new OutputStreamWriter(new FileOutputStream(superiorFile), StandardCharsets.UTF_8);
-
-            fileOutputStream.write(stringJson);
-            fileOutputStream.close();
-        } catch (IOException exc) {
+            FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
+            DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+            BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
+            String line = bufferReader.readLine();
+            bufferReader.close();
+            return line;
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+            return ".";
         }
     }
 
-    public void setPolicyProtectionPreset(String preset) {
-        policyProtectionPreset = preset;
+    public static void saveActiveConfig(String folder) {
+        try {
+            File file = new File(mc.gameDir + File.separator + "ClientRewrite" + File.separator + "ActiveConfig.txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            bufferedWriter.write(folder);
+            bufferedWriter.close();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
-    public String getCurrentPresetPath() {
-        return Infinity.CONFIG_PATH + this.policyProtectionPreset + "/";
+    public static String getActiveConfig() {
+        try {
+            File file = new File(mc.gameDir + File.separator + "ClientRewrite" + File.separator + "ActiveConfig.txt");
+            if (!file.exists()) {
+                return "0";
+            }
+            FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
+            DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+            BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
+            String line = bufferReader.readLine();
+            bufferReader.close();
+            return line;
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+            return "0";
+        }
     }
 
-    public void doSaveClient() {
-        ModuleManager.moduleManager.onSave();
+    public static void saveFriendList(File path) {
+        try {
+            File file = new File(path + File.separator + File.separator + "Friends.txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            for (FriendManager.FriendPlayer friendPlayer : Infinity.INSTANCE.friendManager.friendList) {
+                bufferedWriter.write(friendPlayer.getName());
+                bufferedWriter.write("\r\n");
+            }
+            bufferedWriter.close();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
-    public void doLoadClient() {
-        ModuleManager.moduleManager.onLoad();
-        ModuleManager.moduleManager.onReload();
+    public static void loadFriendList(File path) {
+        try {
+            File file = new File(path + File.separator + "Friends.txt");
+            if (!file.exists()) {
+                return;
+            }
+            FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
+            DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+            BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
+            bufferReader.lines().forEach(line -> Infinity.INSTANCE.friendManager.addFriend(line));
+            bufferReader.close();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void saveModuleFile() {
+        try {
+            for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+                File file;
+                File categoryPath = new File(path + File.separator + module.category.toString());
+                if (!categoryPath.exists()) {
+                    categoryPath.mkdirs();
+                }
+                if (!(file = new File(categoryPath.getAbsolutePath(), module.name + ".txt")).exists()) {
+                    file.createNewFile();
+                }
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+                bufferedWriter.write("State : " + (module.isEnabled() ? "Enabled" : "Disabled"));
+                bufferedWriter.write("\r\n");
+                for (Setting<?> setting : module.settingList) {
+                    if (setting.getName().equals("Keybind") || setting.getName().equals("Enabled")) continue;
+                    if (setting instanceof StringSetting) {
+                        bufferedWriter.write(setting.getName() + " : " + setting.getValue());
+                        bufferedWriter.write("\r\n");
+                        continue;
+                    }
+                    if (setting instanceof ColorSetting) {
+                        bufferedWriter.write(setting.getName() + " : " + (((ColorSetting)setting).getValue()).getRGB());
+                        bufferedWriter.write("\r\n");
+                        continue;
+                    }
+                    bufferedWriter.write(setting.getName() + " : " + setting.getValue());
+                    bufferedWriter.write("\r\n");
+                }
+                bufferedWriter.write("Keybind : " + module.bind.getValue());
+                bufferedWriter.close();
+            }
+        }
+        catch (Exception exception) {
+            // empty catch block
+        }
+    }
+
+    public static void setModuleValue() {
+        for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+            try {
+                File file;
+                File categoryPath = new File(path + File.separator + module.category.toString());
+                if (!categoryPath.exists() || !(file = new File(categoryPath.getAbsolutePath(), module.name + ".txt")).exists()) continue;
+                FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
+                DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
+                bufferReader.lines().forEach(line -> {
+                    String clarification = line.split(" : ")[0];
+                    String state = line.split(" : ")[1];
+                    if (clarification.equals("State")) {
+                        if (state.equals("Enabled")) {
+                            module.enable();
+                        } else if (state.equals("Disabled")) {
+                            module.disable();
+                        }
+                    }
+                });
+                bufferReader.close();
+            }
+            catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
+
+    public static void setModuleBind() {
+        for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+            try {
+                File file;
+                File categoryPath = new File(path + File.separator + module.category.toString());
+                if (!categoryPath.exists() || !(file = new File(categoryPath.getAbsolutePath(), module.name + ".txt")).exists()) continue;
+                FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
+                DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
+                bufferReader.lines().forEach(line -> {
+                    String clarification = line.split(" : ")[0];
+                    String state = line.split(" : ")[1];
+                    if (clarification.equals("Keybind")) {
+                        if (state.equals("0")) {
+                            return;
+                        }
+                        module.bind.setValue(Integer.parseInt(state));
+                    }
+                });
+                bufferReader.close();
+            }
+            catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
+
+    public static void setModuleSettingValues() {
+        for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+            try {
+                File file;
+                File categoryPath = new File(path.getAbsolutePath() + File.separator + module.category.toString());
+                if (!categoryPath.exists() || !(file = new File(categoryPath.getAbsolutePath(), module.name + ".txt")).exists()) continue;
+                FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
+                DataInputStream dataInputStream = new DataInputStream(fileInputStream);
+                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
+                bufferReader.lines().forEach(line -> {
+                    String clarification = line.split(" : ")[0];
+                    String state = line.split(" : ")[1];
+                    Iterator<Setting<?>> iterator = module.settingList.stream().iterator();
+                    while (iterator.hasNext())
+                    {
+                        Setting setting = iterator.next();
+                        if (setting.getName().equals(clarification)) {
+                            if (setting instanceof StringSetting) {
+                                setting.setValue(state);
+                            }
+                            if (setting instanceof IntegerSetting) {
+                                setting.setValue(Integer.parseInt(state));
+                            }
+                            if (setting instanceof FloatSetting) {
+                                setting.setValue(Float.parseFloat(state));
+                            }
+                            if (setting instanceof BooleanSetting) {
+                                setting.setValue(Boolean.parseBoolean(state));
+                            }
+                            if (setting instanceof KeySetting) {
+                                setting.setValue(Integer.parseInt(state));
+                            }
+                            if (setting instanceof ColorSetting) {
+                                ((ColorSetting)setting).setColor(new Color(Integer.parseInt(state), true));
+                            }
+                            if (setting instanceof ModeSetting) {
+                                setting.setValue(state);
+                            }
+                            else {
+                                continue;
+                            }
+                        }
+                    }
+                });
+                bufferReader.close();
+            }
+            catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
     }
 }

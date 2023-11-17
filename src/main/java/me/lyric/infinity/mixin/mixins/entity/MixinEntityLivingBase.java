@@ -28,10 +28,7 @@ public class MixinEntityLivingBase implements IGlobals {
 
     @Inject(method={"getArmSwingAnimationEnd"}, at={@At(value="HEAD")}, cancellable=true)
     private void getArmSwingAnimationEnd(CallbackInfoReturnable<Integer> info) {
-
-        Swing mod = Swing.INSTANCE;
-
-        if (mod.isEnabled() && mod.slowSwing.getValue()) {
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).slowSwing.getValue()) {
             info.setReturnValue(15);
 
         }

@@ -1,6 +1,4 @@
-//Deobfuscated with https://github.com/SimplyProgrammer/Minecraft-Deobfuscator3000 using mappings "C:\Users\parin\Downloads\Minecraft-Deobfuscator3000-1.2.3\1.12 stable mappings"!
 
-//Decompiled by Procyon!
 
 package me.lyric.infinity.gui.Csgo.setting;
 
@@ -15,7 +13,6 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -37,7 +34,7 @@ public class CsgoColor extends CsgoSetting implements IGlobals
     boolean pickingAlpha;
     private Color finalColor;
     
-    public CsgoColor(final ColorSetting setting) {
+    public CsgoColor(ColorSetting setting) {
         super(setting);
         this.pickingColor = false;
         this.pickingHue = false;
@@ -46,18 +43,18 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         this.finalColor = (Color)setting.getValue();
     }
     
-    public static boolean mouseOver(final int minX, final int minY, final int maxX, final int maxY, final int mX, final int mY) {
+    public static boolean mouseOver(int minX, int minY, int maxX, int maxY, int mX, int mY) {
         return mX >= minX && mY >= minY && mX <= maxX && mY <= maxY;
     }
     
-    public static Color getColor(final Color color, final float alpha) {
-        final float red = color.getRed() / 255.0f;
-        final float green = color.getGreen() / 255.0f;
-        final float blue = color.getBlue() / 255.0f;
+    public static Color getColor(Color color, float alpha) {
+        float red = color.getRed() / 255.0f;
+        float green = color.getGreen() / 255.0f;
+        float blue = color.getBlue() / 255.0f;
         return new Color(red, green, blue, alpha);
     }
     
-    public static void drawPickerBase(final int pickerX, final int pickerY, final int pickerWidth, final int pickerHeight, final float red, final float green, final float blue) {
+    public static void drawPickerBase(int pickerX, int pickerY, int pickerWidth, int pickerHeight, float red, float green, float blue) {
         GL11.glEnable(3042);
         GL11.glDisable(3553);
         GL11.glBlendFunc(770, 771);
@@ -86,15 +83,15 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         GL11.glDisable(3042);
     }
     
-    public static void drawGradientRect(final double leftpos, final double top, final double right, final double bottom, final int col1, final int col2) {
-        final float f = (col1 >> 24 & 0xFF) / 255.0f;
-        final float f2 = (col1 >> 16 & 0xFF) / 255.0f;
-        final float f3 = (col1 >> 8 & 0xFF) / 255.0f;
-        final float f4 = (col1 & 0xFF) / 255.0f;
-        final float f5 = (col2 >> 24 & 0xFF) / 255.0f;
-        final float f6 = (col2 >> 16 & 0xFF) / 255.0f;
-        final float f7 = (col2 >> 8 & 0xFF) / 255.0f;
-        final float f8 = (col2 & 0xFF) / 255.0f;
+    public static void drawGradientRect(double leftpos, double top, double right, double bottom, int col1, int col2) {
+        float f = (col1 >> 24 & 0xFF) / 255.0f;
+        float f2 = (col1 >> 16 & 0xFF) / 255.0f;
+        float f3 = (col1 >> 8 & 0xFF) / 255.0f;
+        float f4 = (col1 & 0xFF) / 255.0f;
+        float f5 = (col2 >> 24 & 0xFF) / 255.0f;
+        float f6 = (col2 >> 16 & 0xFF) / 255.0f;
+        float f7 = (col2 >> 8 & 0xFF) / 255.0f;
+        float f8 = (col2 & 0xFF) / 255.0f;
         GL11.glEnable(3042);
         GL11.glDisable(3553);
         GL11.glBlendFunc(770, 771);
@@ -116,7 +113,7 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         GL11.glShadeModel(7424);
     }
     
-    public static void drawLeftGradientRect(final int left, final int top, final int right, final int bottom, final int startColor, final int endColor) {
+    public static void drawLeftGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
@@ -134,16 +131,16 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         GlStateManager.enableTexture2D();
     }
     
-    public static void gradient(final int minX, final int minY, final int maxX, final int maxY, final int startColor, final int endColor, final boolean left) {
+    public static void gradient(int minX, int minY, int maxX, int maxY, int startColor, int endColor, boolean left) {
         if (left) {
-            final float startA = (startColor >> 24 & 0xFF) / 255.0f;
-            final float startR = (startColor >> 16 & 0xFF) / 255.0f;
-            final float startG = (startColor >> 8 & 0xFF) / 255.0f;
-            final float startB = (startColor & 0xFF) / 255.0f;
-            final float endA = (endColor >> 24 & 0xFF) / 255.0f;
-            final float endR = (endColor >> 16 & 0xFF) / 255.0f;
-            final float endG = (endColor >> 8 & 0xFF) / 255.0f;
-            final float endB = (endColor & 0xFF) / 255.0f;
+            float startA = (startColor >> 24 & 0xFF) / 255.0f;
+            float startR = (startColor >> 16 & 0xFF) / 255.0f;
+            float startG = (startColor >> 8 & 0xFF) / 255.0f;
+            float startB = (startColor & 0xFF) / 255.0f;
+            float endA = (endColor >> 24 & 0xFF) / 255.0f;
+            float endR = (endColor >> 16 & 0xFF) / 255.0f;
+            float endG = (endColor >> 8 & 0xFF) / 255.0f;
+            float endB = (endColor & 0xFF) / 255.0f;
             GL11.glEnable(3042);
             GL11.glDisable(3553);
             GL11.glBlendFunc(770, 771);
@@ -165,33 +162,33 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         }
     }
     
-    public static int gradientColor(final int color, final int percentage) {
-        final int r = ((color & 0xFF0000) >> 16) * (100 + percentage) / 100;
-        final int g = ((color & 0xFF00) >> 8) * (100 + percentage) / 100;
-        final int b = (color & 0xFF) * (100 + percentage) / 100;
+    public static int gradientColor(int color, int percentage) {
+        int r = ((color & 0xFF0000) >> 16) * (100 + percentage) / 100;
+        int g = ((color & 0xFF00) >> 8) * (100 + percentage) / 100;
+        int b = (color & 0xFF) * (100 + percentage) / 100;
         return new Color(r, g, b).hashCode();
     }
     
-    public static void drawGradientRect(final float left, final float top, final float right, final float bottom, int startColor, int endColor, final boolean hovered) {
+    public static void drawGradientRect(float left, float top, float right, float bottom, int startColor, int endColor, boolean hovered) {
         if (hovered) {
             startColor = gradientColor(startColor, -20);
             endColor = gradientColor(endColor, -20);
         }
-        final float c = (startColor >> 24 & 0xFF) / 255.0f;
-        final float c2 = (startColor >> 16 & 0xFF) / 255.0f;
-        final float c3 = (startColor >> 8 & 0xFF) / 255.0f;
-        final float c4 = (startColor & 0xFF) / 255.0f;
-        final float c5 = (endColor >> 24 & 0xFF) / 255.0f;
-        final float c6 = (endColor >> 16 & 0xFF) / 255.0f;
-        final float c7 = (endColor >> 8 & 0xFF) / 255.0f;
-        final float c8 = (endColor & 0xFF) / 255.0f;
+        float c = (startColor >> 24 & 0xFF) / 255.0f;
+        float c2 = (startColor >> 16 & 0xFF) / 255.0f;
+        float c3 = (startColor >> 8 & 0xFF) / 255.0f;
+        float c4 = (startColor & 0xFF) / 255.0f;
+        float c5 = (endColor >> 24 & 0xFF) / 255.0f;
+        float c6 = (endColor >> 16 & 0xFF) / 255.0f;
+        float c7 = (endColor >> 8 & 0xFF) / 255.0f;
+        float c8 = (endColor & 0xFF) / 255.0f;
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.shadeModel(7425);
-        final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder bufferbuilder = tessellator.getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferbuilder = tessellator.getBuffer();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
         bufferbuilder.pos((double)right, (double)top, 0.0).color(c2, c3, c4, c).endVertex();
         bufferbuilder.pos((double)left, (double)top, 0.0).color(c2, c3, c4, c).endVertex();
@@ -204,7 +201,7 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         GlStateManager.enableTexture2D();
     }
     
-    public void drawScreen(final int mouseX, final int mouseY) {
+    public void drawScreen(int mouseX, int mouseY) {
         RenderUtils.rectangle((float)this.x, (float)this.y, (float)(this.x + this.width), (float)(this.y + (this.setting.isOpen ? 122 : this.height)), new Color(0, 0, 0, this.isInside(mouseX, mouseY) ? 40 : 20).getRGB());
         RenderUtils.outline((float)this.x, (float)this.y, (float)(this.x + this.width), (float)(this.y + (this.setting.isOpen ? 122 : this.height)), new Color(2894892), 1.0f);
         try {
@@ -244,14 +241,14 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         }
     }
     
-    public void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) {
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (mouseButton == 1 && this.isInside(mouseX, mouseY)) {
             this.setting.isOpen = !this.setting.isOpen;
         }
         if (mouseButton == 0 && this.isInsideCopy(mouseX, mouseY) && this.setting.isOpen) {
-            final String hex = this.finalColor.getRed() + "-" + this.finalColor.getGreen() + "-" + this.finalColor.getBlue() + "-" + this.finalColor.getAlpha();
-            final StringSelection selection = new StringSelection(hex);
-            final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            String hex = this.finalColor.getRed() + "-" + this.finalColor.getGreen() + "-" + this.finalColor.getBlue() + "-" + this.finalColor.getAlpha();
+            StringSelection selection = new StringSelection(hex);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
             this.mc.player.sendMessage(new TextComponentString("Color has been successfully copied to clipboard!"));
         }
@@ -260,22 +257,22 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         }
     }
     
-    public void mouseReleased(final int mouseX, final int mouseY, final int releaseButton) {
-        final boolean pickingColor = false;
+    public void mouseReleased(int mouseX, int mouseY, int releaseButton) {
+        boolean pickingColor = false;
         this.pickingAlpha = pickingColor;
         this.pickingHue = pickingColor;
         this.pickingColor = pickingColor;
     }
     
-    public boolean isInsideCopy(final int mouseX, final int mouseY) {
+    public boolean isInsideCopy(int mouseX, int mouseY) {
         return mouseX > this.x + 1 && mouseX < this.x + 41.0f && mouseY > this.y + 111 && mouseY < this.y + 121;
     }
     
-    public boolean isInsidePaste(final int mouseX, final int mouseY) {
+    public boolean isInsidePaste(int mouseX, int mouseY) {
         return mouseX > this.x + 41.0f && mouseX < this.x + 93 && mouseY > this.y + 111 && mouseY < this.y + 121;
     }
     
-    public void drawPicker(final ColorSetting setting, final int pickerX, final int pickerY, final int hueSliderX, final int hueSliderY, final int alphaSliderX, final int alphaSliderY, final int mouseX, final int mouseY) {
+    public void drawPicker(ColorSetting setting, int pickerX, int pickerY, int hueSliderX, int hueSliderY, int alphaSliderX, int alphaSliderY, int mouseX, int mouseY) {
         float[] color = { 0.0f, 0.0f, 0.0f, 0.0f };
         try {
             color = new float[] { Color.RGBtoHSB((setting.getValue()).getRed(), (setting.getValue()).getGreen(), (setting.getValue()).getBlue(), null)[0], Color.RGBtoHSB(((Color)setting.getValue()).getRed(), ((Color)setting.getValue()).getGreen(), ((Color)setting.getValue()).getBlue(), null)[1], Color.RGBtoHSB(((Color)setting.getValue()).getRed(), ((Color)setting.getValue()).getGreen(), ((Color)setting.getValue()).getBlue(), null)[2], ((Color)setting.getValue()).getAlpha() / 255.0f };
@@ -283,11 +280,11 @@ public class CsgoColor extends CsgoSetting implements IGlobals
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        final int pickerWidth = this.width - 2;
-        final int pickerHeight = 78;
-        final int hueSliderWidth = pickerWidth + 5;
-        final int hueSliderHeight = 7;
-        final int alphaSliderHeight = 7;
+        int pickerWidth = this.width - 2;
+        int pickerHeight = 78;
+        int hueSliderWidth = pickerWidth + 5;
+        int hueSliderHeight = 7;
+        int alphaSliderHeight = 7;
         if (this.pickingColor && (!Mouse.isButtonDown(0) || !mouseOver(pickerX, pickerY, pickerX + pickerWidth, pickerY + pickerHeight, mouseX, mouseY))) {
             this.pickingColor = false;
         }
@@ -307,66 +304,66 @@ public class CsgoColor extends CsgoSetting implements IGlobals
             this.pickingAlpha = true;
         }
         if (this.pickingHue) {
-            final float restrictedX = (float)Math.min(Math.max(hueSliderX, mouseX), hueSliderX + hueSliderWidth);
+            float restrictedX = (float)Math.min(Math.max(hueSliderX, mouseX), hueSliderX + hueSliderWidth);
             color[0] = (restrictedX - hueSliderX) / hueSliderWidth;
         }
         if (this.pickingAlpha) {
-            final float restrictedX = (float)Math.min(Math.max(alphaSliderX, mouseX), alphaSliderX + pickerWidth);
+            float restrictedX = (float)Math.min(Math.max(alphaSliderX, mouseX), alphaSliderX + pickerWidth);
             color[3] = 1.0f - (restrictedX - alphaSliderX) / pickerWidth;
         }
         if (this.pickingColor) {
-            final float restrictedX = (float)Math.min(Math.max(pickerX, mouseX), pickerX + pickerWidth);
-            final float restrictedY = (float)Math.min(Math.max(pickerY, mouseY), pickerY + pickerHeight);
+            float restrictedX = (float)Math.min(Math.max(pickerX, mouseX), pickerX + pickerWidth);
+            float restrictedY = (float)Math.min(Math.max(pickerY, mouseY), pickerY + pickerHeight);
             color[1] = (restrictedX - pickerX) / pickerWidth;
             color[2] = 1.0f - (restrictedY - pickerY) / pickerHeight;
         }
-        final int selectedColor = Color.HSBtoRGB(color[0], 1.0f, 1.0f);
-        final float selectedRed = (selectedColor >> 16 & 0xFF) / 255.0f;
-        final float selectedGreen = (selectedColor >> 8 & 0xFF) / 255.0f;
-        final float selectedBlue = (selectedColor & 0xFF) / 255.0f;
+        int selectedColor = Color.HSBtoRGB(color[0], 1.0f, 1.0f);
+        float selectedRed = (selectedColor >> 16 & 0xFF) / 255.0f;
+        float selectedGreen = (selectedColor >> 8 & 0xFF) / 255.0f;
+        float selectedBlue = (selectedColor & 0xFF) / 255.0f;
         drawPickerBase(pickerX, pickerY, pickerWidth, pickerHeight, selectedRed, selectedGreen, selectedBlue);
         RenderUtils.prepareScissor(CsgoGui.x + 245, CsgoGui.y + 30, hueSliderWidth - 5, CsgoGui.height - 36);
         this.drawHueSlider(hueSliderX, hueSliderY, hueSliderWidth - 2, hueSliderHeight, color[0]);
         RenderUtils.releaseScissor();
-        final int cursorX = (int)(pickerX + color[1] * pickerWidth);
-        final int cursorY = (int)(pickerY + pickerHeight - color[2] * pickerHeight);
+        int cursorX = (int)(pickerX + color[1] * pickerWidth);
+        int cursorY = (int)(pickerY + pickerHeight - color[2] * pickerHeight);
         RenderUtils.outline((float)(cursorX - 2), (float)(cursorY - 2), (float)(cursorX + 2), (float)(cursorY + 2), Color.black, 1.0f);
         Gui.drawRect(cursorX - 2, cursorY - 2, cursorX + 2, cursorY + 2, -1);
         this.drawAlphaSlider(alphaSliderX, alphaSliderY, pickerWidth - 1, alphaSliderHeight, selectedRed, selectedGreen, selectedBlue, color[3]);
         this.finalColor = getColor(new Color(Color.HSBtoRGB(color[0], color[1], color[2])), color[3]);
     }
     
-    public void drawHueSlider(final int x, int y, final int width, final int height, final float hue) {
+    public void drawHueSlider(int x, int y, int width, int height, float hue) {
         int step = 0;
         if (height > width) {
             RenderUtils.rectangle((float)x, (float)y, (float)(x + width), (float)(y + 4), -65536);
             y += 4;
             for (int colorIndex = 0; colorIndex < 6; ++colorIndex) {
-                final int previousStep = Color.HSBtoRGB(step / 6.0f, 1.0f, 1.0f);
-                final int nextStep = Color.HSBtoRGB((step + 1) / 6.0f, 1.0f, 1.0f);
+                int previousStep = Color.HSBtoRGB(step / 6.0f, 1.0f, 1.0f);
+                int nextStep = Color.HSBtoRGB((step + 1) / 6.0f, 1.0f, 1.0f);
                 drawGradientRect((float)x, y + step * (height / 6.0f), (float)(x + width), y + (step + 1) * (height / 6.0f), previousStep, nextStep, false);
                 ++step;
             }
-            final int sliderMinY = (int)(y + height * hue) - 4;
+            int sliderMinY = (int)(y + height * hue) - 4;
             RenderUtils.rectangle((float)x, (float)(sliderMinY - 1), (float)(x + width), (float)(sliderMinY + 1), -1);
             RenderUtils.outline((float)x, (float)(sliderMinY - 1), (float)(x + width), (float)(sliderMinY + 1), Color.BLACK, 1.0f);
         }
         else {
             for (int colorIndex = 0; colorIndex < 6; ++colorIndex) {
-                final int previousStep = Color.HSBtoRGB(step / 6.0f, 1.0f, 1.0f);
-                final int nextStep = Color.HSBtoRGB((step + 1) / 6.0f, 1.0f, 1.0f);
+                int previousStep = Color.HSBtoRGB(step / 6.0f, 1.0f, 1.0f);
+                int nextStep = Color.HSBtoRGB((step + 1) / 6.0f, 1.0f, 1.0f);
                 gradient(x + step * (width / 6), y, x + (step + 1) * (width / 6), y + height, previousStep, nextStep, true);
                 ++step;
             }
-            final int sliderMinX = (int)(x + width * hue);
+            int sliderMinX = (int)(x + width * hue);
             RenderUtils.rectangle((float)(sliderMinX - 1), (float)y, (float)(sliderMinX + 1), (float)(y + height), -1);
             RenderUtils.outline((float)(sliderMinX - 1), (float)y, (float)(sliderMinX + 1), (float)(y + height), Color.BLACK, 1.0f);
         }
     }
     
-    public void drawAlphaSlider(final int x, final int y, final int width, final int height, final float red, final float green, final float blue, final float alpha) {
+    public void drawAlphaSlider(int x, int y, int width, int height, float red, float green, float blue, float alpha) {
         drawLeftGradientRect(x, y, x + width + 13, y + height, new Color(red, green, blue, 1.0f).getRGB(), 0);
-        final int sliderMinX = (int)(x + width - width * alpha);
+        int sliderMinX = (int)(x + width - width * alpha);
         RenderUtils.rectangle((float)(sliderMinX - 1), (float)y, (float)(sliderMinX + 1), (float)(y + height), -1);
         RenderUtils.outline((float)(sliderMinX - 1), (float)y, (float)(sliderMinX + 1), (float)(y + height), Color.BLACK, 1.0f);
     }

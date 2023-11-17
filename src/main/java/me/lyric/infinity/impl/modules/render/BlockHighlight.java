@@ -2,8 +2,10 @@ package me.lyric.infinity.impl.modules.render;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.ColorSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -11,30 +13,25 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
+import java.util.Arrays;
 
 /**
  * @author lyric
  */
 
+@ModuleInformation(name = "BlockHighlight", description = "Highlights the block you are looking at.", category = Category.Render)
 public class BlockHighlight extends Module {
 
-    public Setting<Mode> mode = createSetting("Mode", "The mode of rendering.", Mode.CLAW));
-    public FloatSetting renderWidth = createSetting("Width", "The line width.", 0.5f, 0.1f, 3.0f));
+    public ModeSetting mode = createSetting("Mode", "Outline" , Arrays.asList("Outline", "Fill", "Both", "Claw"));
+    public FloatSetting renderWidth = createSetting("Width", 0.5f, 0.1f, 3.0f);
 
-    // I wanted to make this depend on a certain option from a setting. TODO: this.
-    //TODO: Fade?
-    public FloatSetting clawHeight = createSetting("Claw Height", "The height of the claw.", 0.3f, 0.1f, 1.0f));
+    // I wanted to make this depend on a certain option from a setting. TODO: this. //did it work?
+    public FloatSetting clawHeight = createSetting("Claw Height", 0.3f, 0.1f, 1.0f, v -> mode.getValue() == "Claw");
+    public ColorSetting primaryColor = createSetting("Gradient Color 1", defaultColor);
+    public ColorSetting secondaryColor = createSetting("Gradient Color 2", defaultColor);
 
-    public Setting<ColorPicker> primaryColor = createSetting("Gradient Color 1", "The first color of the gradient.", new ColorPicker(Color.BLUE)));
-    public Setting<ColorPicker> secondaryColor = createSetting("Gradient Color 2", "The second color of the gradient.", new ColorPicker(Color.MAGENTA)));
-
-    public Setting<ColorPicker> secondaryGradientColorOne = createSetting("Secondary Gradient Color 1", "The first color of mode BOTH.", new ColorPicker(Color.GREEN)));
-    public Setting<ColorPicker> getSecondaryGradientColorTwo = createSetting("Secondary Gradient Color 2", "The second color of mode BOTH.", new ColorPicker(Color.RED)));
-
-    public BlockHighlight() {
-        super("BlockHighlight", "Highlights the block you are looking at.", Category.RENDER);
-    }
+    public ColorSetting secondaryGradientColorOne = createSetting("Secondary Gradient Color 1", defaultColor);
+    public ColorSetting getSecondaryGradientColorTwo = createSetting("Secondary Gradient Color 2", defaultColor);
 
     @SubscribeEvent
     public void onWorldRender(RenderWorldLastEvent event) {
@@ -43,20 +40,20 @@ public class BlockHighlight extends Module {
         if (rayTraceResult != null && rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
             BlockPos pos = rayTraceResult.getBlockPos();
             switch (mode.getValue()) {
-                case BOTH:
-                    RenderUtils.drawBBFill(new AxisAlignedBB(pos), secondaryColor.getValue().getColor(), primaryColor.getValue().getColor());
-                    RenderUtils.drawBBOutline(new AxisAlignedBB(pos), renderWidth.getValue(), secondaryGradientColorOne.getValue().getColor(), getSecondaryGradientColorTwo.getValue().getColor());
+                case "Both":
+                    RenderUtils.drawBBFill(new AxisAlignedBB(pos), secondaryColor.getValue(), primaryColor.getValue());
+                    RenderUtils.drawBBOutline(new AxisAlignedBB(pos), renderWidth.getValue(), secondaryGradientColorOne.getValue(), getSecondaryGradientColorTwo.getValue());
                     break;
-                case OUTLINE: {
-                    RenderUtils.drawBBOutline(new AxisAlignedBB(pos), renderWidth.getValue(), primaryColor.getValue().getColor(), secondaryColor.getValue().getColor());
-                    break;
-                }
-                case FILL: {
-                    RenderUtils.drawBBFill(new AxisAlignedBB(pos), secondaryColor.getValue().getColor(), primaryColor.getValue().getColor());
+                case "Outline": {
+                    RenderUtils.drawBBOutline(new AxisAlignedBB(pos), renderWidth.getValue(), primaryColor.getValue(), secondaryColor.getValue());
                     break;
                 }
-                case CLAW: {
-                    RenderUtils.drawBBClaw(new AxisAlignedBB(pos), renderWidth.getValue(), clawHeight.getValue(), secondaryColor.getValue().getColor());
+                case "Fill": {
+                    RenderUtils.drawBBFill(new AxisAlignedBB(pos), secondaryColor.getValue(), primaryColor.getValue());
+                    break;
+                }
+                case "Claw": {
+                    RenderUtils.drawBBClaw(new AxisAlignedBB(pos), renderWidth.getValue(), clawHeight.getValue(), secondaryColor.getValue());
                     break;
                 }
             }

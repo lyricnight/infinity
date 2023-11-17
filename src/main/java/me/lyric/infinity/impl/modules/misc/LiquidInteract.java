@@ -10,7 +10,7 @@ import me.lyric.infinity.api.module.ModuleInformation;
  * @author lyric
  */
 
-@ModuleInformation(getName = "LiquidInteract", getDescription = "????", category = Category.Misc)
+@ModuleInformation(name = "LiquidInteract", description = "????", category = Category.Misc)
 public class LiquidInteract extends Module {
     @EventListener
     public void canCollide(CanCollideCheckEvent event) {

@@ -39,7 +39,7 @@ import java.util.function.Predicate;
  * @author lyric
  */
 
-@ModuleInformation(getName = "HUD", getDescription = "Head-Up-Display", category = Category.Client)
+@ModuleInformation(name = "HUD", description = "Head-Up-Display", category = Category.Client)
 public class HUD extends Module {
     public BooleanSetting shadow = createSetting("Shadow", true);
 
@@ -91,11 +91,11 @@ public class HUD extends Module {
                     continue;
                 }
                 module.animfactor = MathUtils.linearInterpolation(module.animfactor, module.isEnabled() ? 1.0f : 0.0f, 0.005f * Infinity.INSTANCE.forgeEventManager.frameTime);
-                final float x = SCREEN_WIDTH - ((module.animfactor * mc.fontRenderer.getStringWidth(module.getName() + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + thing.getValue());
+                final float x = SCREEN_WIDTH - ((module.animfactor * mc.fontRenderer.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + thing.getValue());
                 if (!module.isEnabled() && module.animfactor < 0.05f) {
                     modules.remove(module);
                 }
-                String text = module.getName() + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
+                String text = module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
                 mc.fontRenderer.drawString(text, x, deltaY, getTextColor(deltaY).getRGB(), shadow.getValue());
                 deltaY += (mc.fontRenderer.FONT_HEIGHT + 1) * module.animfactor;
             }

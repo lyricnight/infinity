@@ -6,21 +6,22 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.ModeSetting;
 import net.minecraft.network.play.client.CPacketChatMessage;
 
-import java.awt.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * @author lyric
  */
-@ModuleInformation(getName = "ChatColours", getDescription = "only for 2b2tpvp", category = Category.Misc)
+@ModuleInformation(name = "ChatColours", description = "only for 2b2tpvp", category = Category.Misc)
 public class ChatColours extends Module {
-    public ModeSetting colour = createSetting("Colour", Color.Aqua, Arrays.asList(Color.ge)));
-    public Setting<Modifier> modifier = createSetting("Modifier", "Modifies how the message will be displayed.", Modifier.None));
-    private String[] disallowed = new String[] {".", "/", ",", "-"};
+    //public ModeSetting colour = createSetting("Colour", Color.Aqua);
+    //public Setting<Modifier> modifier = createSetting("Modifier", Modifier.None);
+    private final String[] disallowed = new String[] {".", "/", ",", "-"};
     @EventListener
     public void onPacketSend(PacketEvent.Send event)
     {
@@ -29,7 +30,7 @@ public class ChatColours extends Module {
         {
             CPacketChatMessage message = (CPacketChatMessage) event.getPacket();
             String the = message.getMessage();
-            the = colour.getValue().getValue() + modifier.getValue().getValue() + " " + the;
+            //the = colour.getValue().getValue() + modifier.getValue().getValue() + " " + the;
             message.message = the;
         }
     }
@@ -76,10 +77,6 @@ public class ChatColours extends Module {
             if(bypass) value = String.valueOf(c);
             else value = "&" + c;
         }
-        public List<String> getAll()
-        {
-            return Arrays.asList(Color.)
-        }
 
         public String getValue() {
             return value;
@@ -99,7 +96,6 @@ public class ChatColours extends Module {
             if(Objects.equals(c, " ")) value = "";
             else value = "&" + c;
         }
-
         public String getValue() {
             return value;
         }

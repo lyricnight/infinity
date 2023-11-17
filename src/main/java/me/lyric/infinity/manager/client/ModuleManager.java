@@ -32,7 +32,7 @@ public class ModuleManager {
         Module module = null;
 
         for (Module modules : moduleManager.getModules()) {
-            if (modules.getName().equalsIgnoreCase(name)) {
+            if (modules.name.equalsIgnoreCase(name)) {
                 module = modules;
 
                 break;
@@ -54,7 +54,7 @@ public class ModuleManager {
     public List<Module> getModulesInCategory(Category category) {
         final ArrayList<Module> modulesInCategory = new ArrayList<>();
         for (Module module : this.modules) {
-            if (module.getCategory().equals(category)) {
+            if (module.category.equals(category)) {
                 modulesInCategory.add(module);
             }
         }

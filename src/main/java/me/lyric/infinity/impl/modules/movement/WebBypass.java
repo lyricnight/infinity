@@ -3,10 +3,12 @@ package me.lyric.infinity.impl.modules.movement;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.mixin.mixins.accessors.IEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketEntityAction;
+
+import java.util.Arrays;
 
 import static net.minecraft.network.play.client.CPacketEntityAction.Action.START_SNEAKING;
 import static net.minecraft.network.play.client.CPacketEntityAction.Action.STOP_SNEAKING;
@@ -14,11 +16,11 @@ import static net.minecraft.network.play.client.CPacketEntityAction.Action.STOP_
 /**
  * @author lyric :(
  */
-@ModuleInformation(getName = "WebBypass", getDescription = "we FALLING out here", category = Category.Movement)
+@ModuleInformation(name = "WebBypass", description = "we FALLING out here", category = Category.Movement)
 public class WebBypass extends Module {
 
-    public Setting<Mode> mode = createSetting("Mode", "The mode of web bypass.", Mode.VANILLA));
-    public BooleanSetting sneak = createSetting("Sneak", "Sneaks whilst falling through the web.", false));
+    public ModeSetting mode = createSetting("Mode", "Strict", Arrays.asList("Strict", "Vanilla"));
+    public BooleanSetting sneak = createSetting("Sneak", false);
 
     @Override
     public void onUpdate() {
@@ -28,7 +30,7 @@ public class WebBypass extends Module {
         boolean sneaking = mc.player.isSneaking();
         if (((IEntity) mc.player).isInWeb()) {
             switch (mode.getValue()) {
-                case STRICT:
+                case "Strict":
                     for (int i = 0; i < 10; i++)
                         if (sneak.getValue()) {
                             if (sneaking) {
@@ -42,7 +44,7 @@ public class WebBypass extends Module {
                         }
                     }
                     break;
-                case VANILLA:
+                case "Vanilla":
                     //TODO: I removed this because of the stupid AccessTransformer
                     break;
             }
@@ -51,11 +53,6 @@ public class WebBypass extends Module {
 
     @Override
     public String getDisplayInfo() {
-        return mode.getValue().toString().toLowerCase();
-    }
-
-    public enum Mode {
-        STRICT,
-        VANILLA
+        return mode.getValue().toLowerCase();
     }
 }

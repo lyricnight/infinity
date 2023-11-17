@@ -3,7 +3,6 @@ package me.lyric.infinity.impl.commands;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
-import me.lyric.infinity.api.config.Config;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.string.StringUtils;
 import me.lyric.infinity.api.util.time.DateTimeUtils;
@@ -24,8 +23,10 @@ public class ConfigCommand extends Command {
         return "config <save/load> <name> | <add/new/create/remove/rem/del/delete> <name> | <refresh/reload/list>";
     }
 
+
     @Override
     public void onCommand(String[] args) {
+        /**
         String task = null;
         String name = null;
 
@@ -44,7 +45,7 @@ public class ConfigCommand extends Command {
         }
 
         if (StringUtils.contains(task, "list")) {
-            ConfigManager.info();
+            //ConfigManager.info();
 
             this.splash(CommandState.PERFORMED);
 
@@ -58,7 +59,7 @@ public class ConfigCommand extends Command {
                 return;
             }
 
-            ConfigManager.refresh();
+            //ConfigManager.refresh();
 
             ChatUtils.sendMessage("Reloaded configurations folder.");
 
@@ -69,35 +70,35 @@ public class ConfigCommand extends Command {
 
         if (task.equalsIgnoreCase("save")) {
             if (name == null) {
-                ConfigManager.reload();
-                ConfigManager.process(ConfigManager.SAVE);
+                //ConfigManager.reload();
+                //ConfigManager.process(ConfigManager.SAVE);
 
-                ChatUtils.sendMessage("Saved current configuration: " + ConfigManager.current().getName());
+                //ChatUtils.sendMessage("Saved current configuration: " + ConfigManager.current().getName());
 
                 return;
             }
 
-            final Config current = ConfigManager.current();
-            final Config config = ConfigManager.get(name);
+            //final Config current = ConfigManager.current();
+            //final Config config = ConfigManager.get(name);
 
-            if (config != null) {
-                ConfigManager.set(config);
-                ConfigManager.reload();
-                ConfigManager.process(ConfigManager.SAVE);
+            //if (config != null) {
+                //ConfigManager.set(config);
+                //ConfigManager.reload();
+                //ConfigManager.process(ConfigManager.SAVE);
 
-                if (current != null) {
-                    ConfigManager.set(current);
-                    ConfigManager.reload();
+                //if (current != null) {
+                    //ConfigManager.set(current);
+                    //ConfigManager.reload();
                 }
 
-                ChatUtils.sendMessage("Saved " + config.getName() + ".");
+                //ChatUtils.sendMessage("Saved " + config.getName() + ".");
 
                 return;
-            }
+            //}
 
-            ChatUtils.sendMessage(ChatFormatting.RED + name + " config does not exist.");
+            //ChatUtils.sendMessage(ChatFormatting.RED + name + " config does not exist.");
 
-            return;
+            //return;
         }
 
         if (task.equalsIgnoreCase("load")) {
@@ -173,5 +174,6 @@ public class ConfigCommand extends Command {
         }
 
         splash(CommandState.ERROR);
+         */
     }
 }

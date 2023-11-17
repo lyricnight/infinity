@@ -5,7 +5,9 @@ import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.IntegerSetting;
 import me.lyric.infinity.manager.client.ThreadManager;
 import me.lyric.infinity.mixin.transformer.INetworkManager;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -23,15 +25,15 @@ import java.util.concurrent.TimeUnit;
  * @author 3arth, lyric
  */
 
+@ModuleInformation(name = "PacketDelay", description = "idk if this works lol", category = Category.Player)
 public class PacketDelay extends Module {
 
-    public IntegerSetting delay = createSetting("Delay", "Delay in ms.", 1, 1, 5000));
+    public IntegerSetting delay = createSetting("Delay", 1, 1, 5000);
 
     Queue<Packet<?>> packets = new ConcurrentLinkedQueue<>();
     ScheduledExecutorService service;
     public PacketDelay()
     {
-        super("PacketDelay", "Applies a delay to all packets you send. Module might cause kicks or disconnects.", Category.PLAYER);
         service = ThreadManager.newDaemonScheduledExecutor("InfinityPacketDelay");
     }
 

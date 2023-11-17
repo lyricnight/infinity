@@ -19,7 +19,7 @@ import java.util.Arrays;
  * @author lyric
  */
 
-@ModuleInformation(getName = "Criticals", getDescription = "sword moment", category = Category.Combat)
+@ModuleInformation(name = "Criticals", description = "sword moment", category = Category.Combat)
 public class Criticals extends Module {
 
     public ModeSetting mode = createSetting("Mode", "Strict", Arrays.asList("Strict", "Extra", "John", "Normal"));

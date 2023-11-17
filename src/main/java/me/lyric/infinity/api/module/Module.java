@@ -21,35 +21,33 @@ import java.util.function.Predicate;
 
 public class Module implements IGlobals {
 
-    private String name;
-    private String description;
+    public String name;
+    public String description;
 
     public Color defaultColor;
     public List<Setting<?>> settingList;
     public float animfactor = 0.0f;
-    private Category category;
+    public Category category;
 
-    public boolean enabled;
+    private boolean enabled;
 
-    public KeySetting bind = new KeySetting("Keybind",0);
+    public KeySetting bind;
 
-    public BooleanSetting drawn = new BooleanSetting("Drawn",true);
+    public BooleanSetting drawn;
     public ModuleInformation getModuleInfo() {
-        return this.getClass().getAnnotation(ModuleInformation.class);
+        return getClass().getAnnotation(ModuleInformation.class);
     }
 
     public Module() {
         this.settingList = new ArrayList<>();
+        this.bind = createSetting("Bind", 0);
+        this.drawn = createSetting("Drawn", true);
         this.defaultColor = new Color(254, 254, 254);
         this.enabled = false;
-        this.name = this.getModuleInfo().getName();
-        this.category = this.getModuleInfo().category();
-        this.description = this.getModuleInfo().getDescription();
-    }
+        this.name = getModuleInfo().name();
+        this.category = getModuleInfo().category();
+        this.description = getModuleInfo().description();
 
-
-    public String getName() {
-        return name;
     }
 
     public boolean isDrawn() {
@@ -58,10 +56,6 @@ public class Module implements IGlobals {
 
     public String getDisplayInfo() {
         return "";
-    }
-
-    public Category getCategory() {
-        return category;
     }
     public void onTotemPop(EntityPlayer player)
     {

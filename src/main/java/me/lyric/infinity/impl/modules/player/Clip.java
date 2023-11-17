@@ -3,24 +3,30 @@ package me.lyric.infinity.impl.modules.player;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.IntegerSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.client.SpeedUtil;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Predicate;
+
 /**
  * @author mioclient for the original module, WMS for weirdserver mode, rest is me
  */
-@ModuleInformation(getName = "Clip", getDescription = "we CLIPPING out here", category = Category.Player)
+@ModuleInformation(name = "Clip", description = "we CLIPPING out here", category = Category.Player)
 public class Clip extends Module {
 
-    public Setting<Mode> mode = createSetting("Mode", "Mode for clip.", Mode.CORNER));
+    public ModeSetting mode = createSetting("Mode", "Corner", Arrays.asList("Corner", "5b"));
 
-    public IntegerSetting tick = createSetting("TickExisted", "For clip mode corner.", 5, 1, 10));
+    public IntegerSetting tick = createSetting("TickExisted", 5, 1, 10);
 
-    public BooleanSetting disable = createSetting("Disable", "Disables for you.", true));
+    public BooleanSetting disable = createSetting("Disable", true);
 
-    public IntegerSetting updates = createSetting("Update-Amount", "Amount of ticks before autodisable disables.", 10, 1, 40).withParent(disable));
+    public IntegerSetting updates = createSetting("Update-Amount", 10, 1, 40, (Predicate<Integer>) v -> disable.getValue());
 
     int disableTime = 0;
     @Override
@@ -36,10 +42,10 @@ public class Clip extends Module {
 
         if (SpeedUtil.anyMovementKeys())
         {
-            toggle();
+            disable();
             return;
         }
-        if (mode.getValue() == Mode.CORNER)
+        if (Objects.equals(mode.getValue(), "Corner"))
         {
             if (mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().grow(0.01, 0, 0.01)).size() < 2) {
                 mc.player.setPosition(roundToClosest(mc.player.posX, Math.floor(mc.player.posX) + 0.301, Math.floor(mc.player.posX) + 0.699), mc.player.posY, roundToClosest(mc.player.posZ, Math.floor(mc.player.posZ) + 0.301, Math.floor(mc.player.posZ) + 0.699));
@@ -50,7 +56,7 @@ public class Clip extends Module {
                 mc.player.connection.sendPacket(new CPacketPlayer.Position(roundToClosest(mc.player.posX, Math.floor(mc.player.posX) + 0.23, Math.floor(mc.player.posX) + 0.77), mc.player.posY, roundToClosest(mc.player.posZ, Math.floor(mc.player.posZ) + 0.23, Math.floor(mc.player.posZ) + 0.77), true));
             }
         }
-        if (mode.getValue() == Mode.WEIRDSERVER)
+        if (Objects.equals(mode.getValue(), "5b"))
         {
             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX,mc.player.posY - 0.0042123,mc.player.posZ,mc.player.onGround));
             mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX,mc.player.posY - 0.02141,mc.player.posZ,mc.player.onGround));
@@ -59,7 +65,7 @@ public class Clip extends Module {
         disableTime++;
         if (disable.getValue()) {
             if (disableTime >= updates.getValue()) {
-                toggle();
+                disable();
             }
         }
 
@@ -79,11 +85,4 @@ public class Clip extends Module {
         }
         return high;
     }
-
-    private enum Mode
-    {
-        CORNER,
-        WEIRDSERVER
-    }
-
 }

@@ -1,10 +1,7 @@
 package me.lyric.infinity.manager.client;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
-import me.lyric.infinity.api.util.minecraft.rotation.RotationType;
 import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
-import me.lyric.infinity.impl.modules.client.Internals;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.network.play.client.CPacketEntityAction;

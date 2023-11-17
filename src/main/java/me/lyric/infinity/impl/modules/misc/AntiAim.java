@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * this is alright I guess
  */
 
-@ModuleInformation(getName = "AntiAim", getDescription = "Have a mental breakdown", category = Category.Misc)
+@ModuleInformation(name = "AntiAim", description = "Have a mental breakdown", category = Category.Misc)
 public class AntiAim extends Module {
 
     public ModeSetting yaw = createSetting("Yaw", "Linear", Arrays.asList("Linear", "Reverse", "Random", "Toggle", "None"));

@@ -9,7 +9,7 @@ import me.lyric.infinity.api.module.ModuleInformation;
  * @link {MixinEntityOtherPlayerMP}
  */
 
-@ModuleInformation(getName = "Resolver", getDescription = "we REMOVING INTERPOLATION out here", category = Category.Player)
+@ModuleInformation(name = "Resolver", description = "we REMOVING INTERPOLATION out here", category = Category.Player)
 public class Resolver extends Module {
     @Override
     public String getDisplayInfo()

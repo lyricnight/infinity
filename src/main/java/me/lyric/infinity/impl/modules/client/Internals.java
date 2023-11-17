@@ -12,7 +12,7 @@ import me.lyric.infinity.api.util.string.ChatFormat;
 
 import java.util.function.Predicate;
 
-@ModuleInformation(getName = "Internals", getDescription = "Handles internal settings that don't fit anywhere else.", category = Category.Client)
+@ModuleInformation(name = "Internals", description = "Handles internal settings that don't fit anywhere else.", category = Category.Client)
 public class Internals extends Module {
     public StringSetting commandBracket = createSetting("Bracket", "[");
     public StringSetting commandBracket2 = createSetting("Bracket 2",  "]");
@@ -34,7 +34,7 @@ public class Internals extends Module {
         }
     }
     public String getCommandMessage() {
-        return ChatFormat.coloredString(this.commandBracket.getValue(), ChatFormat.Color.DARK_PURPLE) + ChatFormat.coloredString("Infinity", ChatFormat.Color.LIGHT_PURPLE) + ChatFormat.coloredString(this.commandBracket2.getValue(), ChatFormat.Color.DARK_PURPLE);
+        return ChatFormat.coloredString(this.commandBracket.getValue(), ChatFormat.DARK_PURPLE) + ChatFormat.coloredString("Infinity", ChatFormat.LIGHT_PURPLE) + ChatFormat.coloredString(this.commandBracket2.getValue(), ChatFormat.DARK_PURPLE);
     }
 
 

@@ -35,7 +35,7 @@ def getGitHash = { ->
 }
 
 group = 'me.lyric.infinity'
-version = 'v4-' + getGitHash()
+version = 'v5-' + getGitHash()
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -61,10 +61,6 @@ repositories {
         name = 'jitpack.io'
         url = "https://jitpack.io"
     }
-    maven {
-        name = 'lukflug'
-        url = "https://lukflug.github.io/maven/"
-    }
 }
 
 dependencies {
@@ -81,8 +77,6 @@ dependencies {
     compile group: 'club.minnced', name: 'java-discord-rpc', version: '2.0.1'
     compile group: 'net.jodah', name: 'typetools', version: '0.5.0'
     compile("com.github.therealbush:eventbus:1.0.2")
-    compile("com.lukflug:panelstudio:0.2.1")
-    compile("com.lukflug:panelstudio-mc12:0.2.0")
 }
 
 processResources {
@@ -108,13 +102,10 @@ shadowJar {
         include(dependency('net.jodah:typetools'))
         include(dependency("com.github.therealbush:eventbus:1.0.2"))
         include(dependency('com.googlecode.json-simple:json-simple:1.1.1'))
-        include(dependency("com.lukflug:panelstudio:0.2.1"))
-        include(dependency("com.lukflug:panelstudio-mc12:0.2.0"))
     }
     exclude 'dummyThing'
     exclude 'LICENSE.txt'
     classifier = ''
-    relocate "com.lukflug.panelstudio", "com.lukflug.panelstudio_0_2_1"
 }
 
 mixin {

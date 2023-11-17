@@ -7,6 +7,8 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.IntegerSetting;
+import me.lyric.infinity.api.setting.settings.StringSetting;
 import net.minecraft.item.ItemAppleGold;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
@@ -22,14 +24,14 @@ import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-@ModuleInformation(getName = "Announcer", getDescription = "we ANNOUNCING out here", category = Category.Player)
+@ModuleInformation(name = "Announcer", description = "we ANNOUNCING out here", category = Category.Player)
 public class Announcer extends Module {
-    public StringSetting client = createSetting("Name", "Name to use in announcer.", "Infinity"));
+    public StringSetting client = createSetting("Name", "Infinity");
     public static String[] breakMessages;
     public static String[] placeMessages;
     public static String[] eatMessages;
     public static String[] walkMessages;
-    public IntegerSetting delay = createSetting("Delay", "dumb", 5, 1, 15));
+    public IntegerSetting delay = createSetting("Delay", 5, 1, 15);
     public static int blockBrokeDelay;
     static int blockPlacedDelay;
     static int jumpDelay;
@@ -44,11 +46,6 @@ public class Announcer extends Module {
     int blocksPlaced;
     int blocksBroken;
     int eaten;
-
-    public Announcer()
-    {
-        super("Announcer", "Announces things to be annoying.", Category.PLAYER);
-    }
 
     @EventListener
     public void onPacketSend(PacketEvent event) {

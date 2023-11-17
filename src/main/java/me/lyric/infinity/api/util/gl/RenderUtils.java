@@ -57,7 +57,7 @@ public class RenderUtils implements IGlobals {
         GL11.glScissor(x * scaledResolution.getScaleFactor(), (scaledResolution.getScaledHeight() - y2) * scaledResolution.getScaleFactor(), (x2 - x) * scaledResolution.getScaleFactor(), (y2 - y) * scaledResolution.getScaleFactor());
     }
 
-    public static void drawBBSlab(AxisAlignedBB bb, double height, Color color) {
+    public static void drawBBSlab(AxisAlignedBB bb, float height, Color color) {
         final int r = color.getRed();
         final int g = color.getGreen();
         final int b = color.getBlue();
@@ -66,7 +66,7 @@ public class RenderUtils implements IGlobals {
         double minY = bb.minY;
         double minZ = bb.minZ;
         double maxX = bb.maxX;
-        double maxY = bb.maxY + height;
+        double maxY = bb.maxY + (double) height;
         double maxZ = bb.maxZ;
         pushMatrix();
 
@@ -603,17 +603,6 @@ public class RenderUtils implements IGlobals {
             return 0;
         }
     }
-
-    public static void image(ResourceLocation resourceLocation, int x, int y, int width, int height) {
-        GL11.glPushMatrix();
-        GlStateManager.enableAlpha();
-        mc.getTextureManager().bindTexture(resourceLocation);
-        GlStateManager.color(1.0f, 1.0f, 1.0f);
-        GuiScreen.drawScaledCustomSizeModalRect(x, y, 0.0f, 0.0f, width, height, width, height, (float)width, (float)height);
-        GlStateManager.disableAlpha();
-        GL11.glPopMatrix();
-    }
-
     public static void drawLine(float x, float y, float x1, float y1, float thickness, int hex) {
         float red = (hex >> 16 & 0xFF) / 255.0f;
         float green = (hex >> 8 & 0xFF) / 255.0f;

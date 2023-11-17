@@ -2,7 +2,8 @@ package me.lyric.infinity.impl.modules.render;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.mixin.mixins.accessors.IEntity;
 import net.minecraftforge.client.GuiIngameForge;
 
@@ -10,18 +11,14 @@ import net.minecraftforge.client.GuiIngameForge;
  * @author lyric
  * top ten useful modules
  */
-
+@ModuleInformation(name = "Portals", description = "Changes portal stuff.", category = Category.Render)
 public class Portals extends Module {
 
-    public BooleanSetting gui = createSetting("GUI", "Allows opening guis in portal.", true));
+    public BooleanSetting gui = createSetting("GUI", true);
 
-    public BooleanSetting noRender = createSetting("Render", "Cancels portal rendering.", true));
+    public BooleanSetting noRender = createSetting("Render", true);
 
     private boolean renderPortal = false;
-    public Portals()
-    {
-        super("Portals", "Handles things about portals.", Category.RENDER);
-    }
 
     @Override
     public void onEnable() {

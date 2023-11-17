@@ -28,7 +28,7 @@ import java.util.*;
  * @author lyric
  */
 
-@ModuleInformation(getName = "Arrow", getDescription = "Quiver but worse", category = Category.Combat)
+@ModuleInformation(name = "Arrow", description = "Quiver but worse", category = Category.Combat)
 public class Arrow extends Module {
 
     public KeySetting cyclebind = createSetting("Cycle-Bind", 0);

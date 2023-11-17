@@ -6,7 +6,7 @@ import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.StringSetting;
 import me.lyric.infinity.manager.client.PresenceManager;
-@ModuleInformation(getName = "RPC", getDescription = "Displays a Rich Presence on discord.", category = Category.Client)
+@ModuleInformation(name = "RPC", description = "Displays a Rich Presence on discord.", category = Category.Client)
 public class RPC extends Module {
 
     public StringSetting largeImageText = createSetting("Large Image Text",  "Infinity v5");

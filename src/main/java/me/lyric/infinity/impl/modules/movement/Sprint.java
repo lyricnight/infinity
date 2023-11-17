@@ -8,24 +8,28 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
+
+import java.util.Arrays;
 
 /**
  * @author lyric
  * rewrite?
  */
-@ModuleInformation(getName = "Sprint", getDescription = "we SPRINTING out here", category = Category.Movement)
+@ModuleInformation(name = "Sprint", description = "we SPRINTING out here", category = Category.Movement)
 public class Sprint extends Module {
 
-    public Setting<Mode> mode = createSetting("Mode", "The mode for sprint.", Mode.DIRECTIONAL));
-    public BooleanSetting strict = createSetting("Strict", "Changes sprint to function better in stricter anti-cheats.", false));
+    public ModeSetting mode = createSetting("Mode", "Directional", Arrays.asList("Directional", "Normal"));
+    public BooleanSetting strict = createSetting("Strict", false);
 
     @Override
     public void onUpdate() {
         switch (mode.getValue()) {
-            case DIRECTIONAL:
+            case "Directional":
                 mc.player.setSprinting(handleSprint() && isMoving());
                 break;
-            case NORMAL:
+            case "Normal":
                 mc.player.setSprinting(handleSprint() && isMoving() && !mc.player.collidedHorizontally && mc.gameSettings.keyBindForward.isKeyDown());
                 break;
         }
@@ -33,12 +37,12 @@ public class Sprint extends Module {
 
     @EventListener(priority = ListenerPriority.HIGH)
     public void onMotion(MoveEvent event) {
-        event.setCancelled(nullSafe() && handleSprint() && isMoving() && mode.getValue().equals(Mode.DIRECTIONAL));
+        event.setCancelled(nullSafe() && handleSprint() && isMoving() && mode.getValue().equals("Directional"));
     }
 
     @EventListener(priority = ListenerPriority.HIGH)
     public void onLivingUpdate(LivingUpdateEvent event) {
-        event.setCancelled(nullSafe() && handleSprint() && isMoving() && mode.getValue().equals(Mode.DIRECTIONAL));
+        event.setCancelled(nullSafe() && handleSprint() && isMoving() && mode.getValue().equals("Directional"));
     }
 
     public static boolean isMoving() {
@@ -49,10 +53,6 @@ public class Sprint extends Module {
         return (!mc.player.isHandActive() && !mc.player.isSneaking()) || !strict.getValue();
     }
 
-    public enum Mode {
-        DIRECTIONAL,
-        NORMAL
-    }
     @Override
     public String getDisplayInfo()
     {

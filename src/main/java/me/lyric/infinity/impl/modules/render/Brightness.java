@@ -2,42 +2,42 @@ package me.lyric.infinity.impl.modules.render;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+
+import java.util.Arrays;
 
 /**
  * @author lyric
  * fullbright thingy
  */
 
+@ModuleInformation(name = "Brightness", description = "fullbright", category = Category.Render)
 public class Brightness extends Module {
 
-    public Setting<Mode> mode = createSetting("Mode", "The mode for brightness.", Mode.GAMMA));
+    public ModeSetting mode = createSetting("Mode", "Gamma", Arrays.asList("Gamma", "Potion", "Table"));
 
     private float lastGamma;
-
-    public Brightness() {
-        super("Brightness", "Renders your environment brighter in various ways.", Category.RENDER);
-    }
 
     @Override
     public void onEnable() {
         if (!nullSafe()) return;
-        if (mode.getValue() == Mode.GAMMA) {
+        if (mode.getValue() == "Gamma") {
             lastGamma = mc.gameSettings.gammaSetting;
         }
     }
 
     @Override
     public void onDisable() {
-        if (mode.getValue() == Mode.GAMMA) {
+        if (mode.getValue() == "Gamma") {
             mc.gameSettings.gammaSetting = lastGamma;
         }
-        if (mode.getValue() == Mode.POTION && mc.player != null) {
+        if (mode.getValue() == "Potion" && mc.player != null) {
             mc.player.removePotionEffect(MobEffects.NIGHT_VISION);
         }
-        if (mode.getValue() == Mode.TABLE) {
+        if (mode.getValue() == "Table") {
             if (mc.world != null) {
                 for (int i = 0; i <= 15; i++) {
                     float f1 = 1.0f - i / 15.0f;
@@ -52,17 +52,17 @@ public class Brightness extends Module {
         if (!nullSafe()) return;
         switch (mode.getValue()) {
 
-            case GAMMA:
+            case "Gamma":
                 mc.gameSettings.gammaSetting = 1000;
                 mc.player.removePotionEffect(MobEffects.NIGHT_VISION);
                 break;
 
-            case POTION:
+            case "Potion":
                 mc.gameSettings.gammaSetting = 1.0f;
                 mc.player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 9999));
                 break;
 
-            case TABLE:
+            case "Table":
                 mc.player.removePotionEffect(MobEffects.NIGHT_VISION);
                 mc.gameSettings.gammaSetting = lastGamma;
                 if (mc.world != null) {
@@ -75,14 +75,8 @@ public class Brightness extends Module {
         }
     }
 
-    public enum Mode {
-        GAMMA,
-        POTION,
-        TABLE
-    }
-
     @Override
     public String getDisplayInfo() {
-        return mode.getValue().toString().toLowerCase();
+        return mode.getValue().toLowerCase();
     }
 }

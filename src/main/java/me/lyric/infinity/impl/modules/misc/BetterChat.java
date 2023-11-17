@@ -23,7 +23,7 @@ import java.util.Date;
     @author lyric
  */
 
-@ModuleInformation(getName = "BetterChat", getDescription = "the chat is now better guys", category = Category.Misc)
+@ModuleInformation(name = "BetterChat", description = "the chat is now better guys", category = Category.Misc)
 public class BetterChat extends Module {
     public final BooleanSetting timeStamps = createSetting("Timestamps", true);
     public final BooleanSetting rect = createSetting("NoRect", true);

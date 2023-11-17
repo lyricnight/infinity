@@ -15,7 +15,7 @@ public class CommandManager {
 
     private static final Set<Command> commands = new HashSet<>();
 
-    private String prefix = "-";
+    private static String prefix = "-";
 
     public static Command get(final String commandStr) {
         Command command = null;
@@ -43,8 +43,8 @@ public class CommandManager {
         return prefix;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public static void setPrefix(String in) {
+        prefix = in;
     }
 
     public static Set<Command> getCommands() {

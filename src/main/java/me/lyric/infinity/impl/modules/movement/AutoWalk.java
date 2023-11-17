@@ -5,6 +5,7 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -13,16 +14,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * what a useful module
  */
 
-@ModuleInformation(getName = "AutoWalk", getDescription = "so useful", category = Category.Movement)
+@ModuleInformation(name = "AutoWalk", description = "so useful", category = Category.Movement)
 public class AutoWalk extends Module {
 
-    public BooleanSetting sprint = createSetting("Sprint", "Enables sprinting when you auto walk.", false));
+    public BooleanSetting sprint = createSetting("Sprint", false);
 
     @SubscribeEvent
     public void onUpdateInput(InputUpdateEvent event) {
         if (!nullSafe()) return;
         if (sprint.getValue()) {
-            Infinity.INSTANCE.moduleManager.getModuleByClass(Sprint.class).setEnabled(true);
+            Infinity.INSTANCE.moduleManager.getModuleByClass(Sprint.class).enable();
         }
         event.getMovementInput().moveForward = 1;
     }
@@ -30,7 +31,7 @@ public class AutoWalk extends Module {
     @Override
     public void onDisable() {
         if (sprint.getValue()) {
-            Infinity.INSTANCE.moduleManager.getModuleByClass(Sprint.class).setEnabled(false);
+            Infinity.INSTANCE.moduleManager.getModuleByClass(Sprint.class).disable();
         }
     }
 }

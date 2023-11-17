@@ -45,7 +45,7 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
     @ModifyVariable(method = "updateLightmap", at = @At(value="STORE"), index = 20)
     public int red(int red) {
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).isEnabled()) {
-            red = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getColor().getRed();
+            red = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getRed();
         }
         return red;
     }
@@ -53,7 +53,7 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
     @ModifyVariable(method = "updateLightmap", at = @At(value = "STORE"), index = 21)
     public int green(int green) {
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).isEnabled()) {
-            green = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getColor().getGreen();
+            green = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getGreen();
         }
         return green;
     }
@@ -61,7 +61,7 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
     @ModifyVariable(method = "updateLightmap", at = @At(value="STORE"), index = 22)
     public int blue(int blue) {
         if (Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).isEnabled()) {
-            blue = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getColor().getBlue();
+            blue = Infinity.INSTANCE.moduleManager.getModuleByClass(Ambience.class).color.getValue().getBlue();
         }
         return blue;
     }

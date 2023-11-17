@@ -64,18 +64,19 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Inject(method = "swingArm" , at =  @At("HEAD") , cancellable = true)
     public void swingArm(EnumHand enumHand, CallbackInfo info) {
-        if (Swing.INSTANCE.isEnabled()) {
-            if (Swing.INSTANCE.swing.getValue() == Swing.SwingHand.MAINHAND)
+        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).isEnabled()) {
+            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).swing.getValue() == "Mainhand")
             {
                 super.swingArm(EnumHand.MAIN_HAND);
             }
-            if (Swing.INSTANCE.swing.getValue() == Swing.SwingHand.OFFHAND)
+            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).swing.getValue() == "Offhand")
             {
                 super.swingArm(EnumHand.OFF_HAND);
             }
-            if(Swing.INSTANCE.swing.getValue() == Swing.SwingHand.NONE)
+            if(Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).swing.getValue() == "None")
             {
                 info.cancel();
+                return;
             }
             Objects.requireNonNull(mc.getConnection()).sendPacket(new CPacketAnimation(enumHand));
             info.cancel();

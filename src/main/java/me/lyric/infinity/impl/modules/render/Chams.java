@@ -6,8 +6,11 @@ import me.lyric.infinity.api.event.render.crystal.RenderCrystalPostEvent;
 import me.lyric.infinity.api.event.render.crystal.RenderCrystalPreEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ColorSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -24,42 +27,39 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * @author cpacket
  */
 
+@ModuleInformation(name = "Chams", description = "Module is not updated and isn't very good", category = Category.Render)
 public class Chams extends Module {
 
-    public Setting<Mode> mode = createSetting("Mode", "The chams mode.", Mode.MODEL));
-    public FloatSetting width = createSetting("Line Width", "The line width for the model.", 3.0f, 0.1f, 5.0f).withParent(mode));
+    public ModeSetting mode = createSetting("Mode", "Model", Arrays.asList("Model", "Wire", "Wiremodel", "Shine"));
+    
+    public FloatSetting width = createSetting("Line Width", 3.0f, 0.1f, 5.0f);
 
-    public BooleanSetting players = createSetting("Players", "Renders chams on players.", true));
-    public BooleanSetting mobs = createSetting("Mobs", "Renders chams on mobs.", true));
-    public BooleanSetting monsters = createSetting("Monsters", "Renders chams on monsters.", true));
+    public BooleanSetting players = createSetting("Players", true);
+    public BooleanSetting mobs = createSetting("Mobs", true);
+    public BooleanSetting monsters = createSetting("Monsters", true);
 
-    public BooleanSetting crystals = createSetting("Crystals", "Renders chams on crystals.", true));
-    public Setting<Double> scale = createSetting("Scale", "Scale for the crystal.", 1.0, 0.1, 2.0).withParent(crystals));
+    public BooleanSetting crystals = createSetting("Crystals", true);
 
-    public BooleanSetting texture = createSetting("Textured", "Textures the entity.", false));
-    public BooleanSetting lighting = createSetting("Lighting", "Disables vanilla lighting.", true));
-    public BooleanSetting blend = createSetting("Blended", "Blends the texture.", false));
-    public BooleanSetting transparent = createSetting("Transparent", "Renders the entity models as transparent.", true));
-    public BooleanSetting depth = createSetting("Depth", "Enables entity depth.", true));
-    public BooleanSetting walls = createSetting("Walls", "Enables chams to be rendered through walls.", true));
+    public BooleanSetting texture = createSetting("Textured", false);
+    public BooleanSetting lighting = createSetting("Lighting", true);
+    public BooleanSetting blend = createSetting("Blended", false);
+    public BooleanSetting transparent = createSetting("Transparent", true);
+    public BooleanSetting depth = createSetting("Depth",  true);
+    public BooleanSetting walls = createSetting("Walls",  true);
 
-    public BooleanSetting xqz = createSetting("XQZ", "Secondary color for chams through walls.", false));
-    public Setting<ColorPicker> playerXQZColor = createSetting("Player XQZ", "The XQZ color for players.", new ColorPicker(Color.BLUE)));
-    public Setting<ColorPicker> crystalXQZColor = createSetting("CrystalXQZ", "the XQZ color for crystals.", new ColorPicker(Color.MAGENTA)));
+    public BooleanSetting xqz = createSetting("XQZ",  false);
+    public ColorSetting playerXQZColor = createSetting("Player XQZ", defaultColor);
+    public ColorSetting crystalXQZColor = createSetting("CrystalXQZ", defaultColor);
 
-    public BooleanSetting highlight = createSetting("Highlight", "Highlights the model of the entity.", true));
-    public Setting<ColorPicker> crystalHighlightColor = createSetting("Crystal Highlight Color", "The highlight color for crystals.", new ColorPicker(Color.RED)));
-    public Setting<ColorPicker> playerHighlightColor = createSetting("Player Highlight Color", "The highlight color for players.", new ColorPicker(Color.PINK)));
-
-    public Chams() {
-        super("Chams", "Renders entities through walls in various ways. This modules kinda funky and not really updated....", Category.RENDER);
-    }
-
+    public BooleanSetting highlight = createSetting("Highlight",  true);
+    public ColorSetting crystalHighlightColor = createSetting("Crystal Highlight Color", defaultColor);
+    public ColorSetting playerHighlightColor = createSetting("Player Highlight Color", defaultColor);
     @EventListener
     public void onRenderCrystalPre(RenderCrystalPreEvent event) {
         if (!nullSafe()) return;
@@ -81,8 +81,7 @@ public class Chams extends Module {
             float rotationMoved = MathHelper.sin(rotation * 0.2f) / 2.0f + 0.5f;
             rotationMoved = (float) ((double) rotationMoved + Math.pow(rotationMoved, 2.0));
             GL11.glTranslated(event.getX(), event.getY(), event.getZ());
-            GL11.glScaled(scale.getValue(), scale.getValue(), scale.getValue());
-            if (!texture.getValue() && !mode.getValue().equals(Mode.SHINE)) {
+            if (!texture.getValue() && !mode.getValue().equals("Shine")) {
                 GL11.glDisable(3553);
             }
             if (blend.getValue()) {
@@ -98,12 +97,12 @@ public class Chams extends Module {
                 GL11.glDisable(2929);
             }
             switch (mode.getValue()) {
-                case WIRE: {
+                case "Wire": {
                     GL11.glPolygonMode(1032, 6913);
                     break;
                 }
-                case WIREMODEL:
-                case MODEL: {
+                case "Wiremodel":
+                case "Model": {
                     GL11.glPolygonMode(1032, 6914);
                 }
             }
@@ -111,28 +110,28 @@ public class Chams extends Module {
             GL11.glHint(3154, 4354);
             GL11.glLineWidth(width.getValue());
             if (xqz.getValue()) {
-                setColor(crystalXQZColor.getValue().getColor());
+                setColor(crystalXQZColor.getValue());
             }
             if (event.getEntityEnderCrystal().shouldShowBottom()) {
                 event.getModelBase().render(event.getEntityEnderCrystal(), 0.0f, rotation * 3.0f, rotationMoved * 0.2f, 0.0f, 0.0f, 0.0625f);
             } else {
                 event.getModelNoBase().render(event.getEntityEnderCrystal(), 0.0f, rotation * 3.0f, rotationMoved * 0.2f, 0.0f, 0.0f, 0.0625f);
             }
-            if (walls.getValue() && !mode.getValue().equals(Mode.WIREMODEL)) {
+            if (walls.getValue() && !mode.getValue().equals("Wiremodel")) {
                 GL11.glEnable(2929);
             }
-            if (mode.getValue().equals(Mode.WIREMODEL)) {
+            if (mode.getValue().equals("Wiremodel")) {
                 GL11.glPolygonMode(1032, 6913);
             }
             if (highlight.getValue()) {
-                setColor(mode.getValue().equals(Mode.WIREMODEL) ? new Color(crystalXQZColor.getValue().getColor().getRed(), crystalXQZColor.getValue().getColor().getGreen(), crystalXQZColor.getValue().getColor().getBlue(), 255) : crystalHighlightColor.getValue().getColor());
+                setColor(mode.getValue().equals("Wiremodel") ? new Color(crystalXQZColor.getValue().getRed(), crystalXQZColor.getValue().getGreen(), crystalXQZColor.getValue().getBlue(), 255) : crystalHighlightColor.getValue());
             }
             if (event.getEntityEnderCrystal().shouldShowBottom()) {
                 event.getModelBase().render(event.getEntityEnderCrystal(), 0.0f, rotation * 3.0f, rotationMoved * 0.2f, 0.0f, 0.0f, 0.0625f);
             } else {
                 event.getModelNoBase().render(event.getEntityEnderCrystal(), 0.0f, rotation * 3.0f, rotationMoved * 0.2f, 0.0f, 0.0f, 0.0625f);
             }
-            if (walls.getValue() && mode.getValue().equals(Mode.WIREMODEL)) {
+            if (walls.getValue() && mode.getValue().equals("Wiremodel")) {
                 GL11.glEnable(2929);
             }
             if (lighting.getValue()) {
@@ -144,10 +143,9 @@ public class Chams extends Module {
             if (blend.getValue()) {
                 GL11.glDisable(3042);
             }
-            if (!texture.getValue() && !mode.getValue().equals(Mode.SHINE)) {
+            if (!texture.getValue() && !mode.getValue().equals("Shine")) {
                 GL11.glEnable(3553);
             }
-            GL11.glScaled(1.0 / scale.getValue(), 1.0 / scale.getValue(), 1.0 / scale.getValue());
             GL11.glPopAttrib();
             GL11.glPopMatrix();
         }
@@ -166,7 +164,7 @@ public class Chams extends Module {
             }
             GL11.glPushMatrix();
             GL11.glPushAttrib(1048575);
-            if (!texture.getValue() && !mode.getValue().equals(Mode.SHINE)) {
+            if (!texture.getValue() && !mode.getValue().equals("Shine")) {
                 GL11.glDisable(3553);
             }
             if (blend.getValue()) {
@@ -182,12 +180,12 @@ public class Chams extends Module {
                 GL11.glDisable(2929);
             }
             switch (mode.getValue()) {
-                case WIRE: {
+                case "Wire": {
                     GL11.glPolygonMode(1032, 6913);
                     break;
                 }
-                case WIREMODEL:
-                case MODEL: {
+                case "Wiremodel":
+                case "Model": {
                     GL11.glPolygonMode(1032, 6914);
                 }
             }
@@ -195,20 +193,20 @@ public class Chams extends Module {
             GL11.glHint(3154, 4354);
             GL11.glLineWidth(width.getValue());
             if (xqz.getValue()) {
-                setColor(playerXQZColor.getValue().getColor());
+                setColor(playerXQZColor.getValue());
             }
             event.getModelBase().render(event.getEntityLivingBase(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor());
-            if (walls.getValue() && !mode.getValue().equals(Mode.WIREMODEL)) {
+            if (walls.getValue() && !mode.getValue().equals("Wiremodel")) {
                 GL11.glEnable(2929);
             }
-            if (mode.getValue().equals(Mode.WIREMODEL)) {
+            if (mode.getValue().equals("Wiremodel")) {
                 GL11.glPolygonMode(1032, 6913);
             }
             if (highlight.getValue()) {
-                setColor(mode.getValue().equals(Mode.WIREMODEL) ? new Color(playerXQZColor.getValue().getColor().getRed(), playerXQZColor.getValue().getColor().getGreen(), playerXQZColor.getValue().getColor().getBlue(), 255) : playerHighlightColor.getValue().getColor());
+                setColor(mode.getValue().equals("Wiremodel") ? new Color(playerXQZColor.getValue().getRed(), playerXQZColor.getValue().getGreen(), playerXQZColor.getValue().getBlue(), 255) : playerHighlightColor.getValue());
             }
             event.getModelBase().render(event.getEntityLivingBase(), event.getLimbSwing(), event.getLimbSwingAmount(), event.getAgeInTicks(), event.getNetHeadYaw(), event.getHeadPitch(), event.getScaleFactor());
-            if (walls.getValue() && mode.getValue().equals(Mode.WIREMODEL)) {
+            if (walls.getValue() && mode.getValue().equals("Wiremodel")) {
                 GL11.glEnable(2929);
             }
             if (lighting.getValue()) {
@@ -220,7 +218,7 @@ public class Chams extends Module {
             if (blend.getValue()) {
                 GL11.glDisable(3042);
             }
-            if (!texture.getValue() && !mode.getValue().equals(Mode.SHINE)) {
+            if (!texture.getValue() && !mode.getValue().equals("Shine")) {
                 GL11.glEnable(3553);
             }
             GL11.glPopAttrib();
@@ -250,13 +248,8 @@ public class Chams extends Module {
     public static boolean isNeutralMob(Entity entity) {
         return entity instanceof EntityPigZombie || entity instanceof EntityWolf || entity instanceof EntityEnderman;
     }
-
-    public enum Mode {
-        MODEL, WIRE, WIREMODEL, SHINE
-    }
-
     @Override
     public String getDisplayInfo() {
-        return mode.getValue().toString().toLowerCase();
+        return mode.getValue().toLowerCase();
     }
 }

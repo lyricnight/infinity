@@ -38,8 +38,15 @@ public class ToggleCommand extends Command {
         boolean isModule = false;
 
         for (Module modules : Infinity.INSTANCE.moduleManager.getModules()) {
-            if (modules.getName().equalsIgnoreCase(module)) {
-                Infinity.INSTANCE.moduleManager.getModuleByString(module).toggle();
+            if (modules.name.equalsIgnoreCase(module)) {
+                if (Infinity.INSTANCE.moduleManager.getModuleByString(module).isEnabled())
+                {
+                    Infinity.INSTANCE.moduleManager.getModuleByString(module).disable();
+                }
+                else
+                {
+                    Infinity.INSTANCE.moduleManager.getModuleByString(module).enable();
+                }
                 isModule = true;
                 break;
             }

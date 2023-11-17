@@ -6,8 +6,10 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.RenderNametagEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ColorSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.impl.modules.client.Notifications;
 import me.lyric.infinity.mixin.mixins.accessors.IRenderManager;
@@ -25,7 +27,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -34,35 +35,32 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * meh
  */
 
+@ModuleInformation(name = "NameTags", description = "change all the default colors for good ones", category = Category.Render)
 public class NameTags extends Module {
 
-    private final BooleanSetting health = this.createSetting("Health","Renders health.", true));
-    private final BooleanSetting armor = this.createSetting("Armor","Renders armor.", true));
-    private final BooleanSetting reversedArmour = this.createSetting("ReversedArmour","Reverses the render for armour.", true).withParent(armor));
-    private final BooleanSetting scaleing = this.createSetting("Scale","Whether to modify scale or not.", false));
-    private final FloatSetting scaling = this.createSetting("Scaler","Scale for the nametags.", 0.3f, 0.1f, 20.0f).withParent(scaleing));
-    private final BooleanSetting ping = this.createSetting("Ping","Whether to render ping or not.", true));
-    private final BooleanSetting totemPops = this.createSetting("TotemPops","Displays totem pops.", true));
-    private final BooleanSetting gamemode = this.createSetting("Gamemode","Displays gamemode.", false));
-    private final BooleanSetting entityID = this.createSetting("ID","Displays Entity ID - for oldfag", false));
-    private final BooleanSetting rect = this.createSetting("Rectangle","horrible", true));
-    private final BooleanSetting outline = this.register(new Setting<Object>("Outline","outline",false));
-    private final FloatSetting lineWidth = this.register(new Setting<Object>("LineWidth","Width of line.", 1.5f, 0.1f, 5.0f).withParent(outline));
-    private final BooleanSetting sneak = this.createSetting("SneakColor","Displays a different color for sneaking entities.", false));
-    private final BooleanSetting heldStackName = this.createSetting("StackName","Name of item stack.", false));
-    private final FloatSetting factor = this.register(new Setting<Object>("Factor","Scale Factor.", 1.0f, 0.1f, 1.0f).withParent(scaleing));
-    private final BooleanSetting smartScale = this.register(new Setting<Object>("SmartScale","Whether scaling should be calculated automatically.", false).withParent(scaleing));
-    private final BooleanSetting ench = this.createSetting("Enchantments","Whether to render enchantment names.", false));
-    private final Setting<ColorPicker> mainColor = this.createSetting("MainColour", "Colour of the main rect.", new ColorPicker(Color.BLACK)));
-    private final Setting<ColorPicker> outlineColor = this.createSetting("OutlineColour", "Colour of the main rect's outline.", new ColorPicker(Color.BLACK)));
-    private final Setting<ColorPicker> textColor = this.createSetting("TextColour", "Colour of the main rect's text.", new ColorPicker(Color.WHITE)));
-    private final Setting<ColorPicker> friendtextColor = this.createSetting("FriendColor", "Colour of the nametags for friends.", new ColorPicker(Color.CYAN)));
-    private final Setting<ColorPicker> invisibleText = this.createSetting("InvisColour", "Colour of the main rect's text for invis entities.", new ColorPicker(Color.ORANGE)));
-    private final Setting<ColorPicker> shiftColor = this.createSetting("ShiftColour", "Colour of the main rect's text when an entity is shifted.", new ColorPicker(Color.magenta)));
-    public NameTags() {
-        super("NameTags", "Testing", Category.RENDER);
-    }
-
+    private final BooleanSetting health = createSetting("Health",true);
+    private final BooleanSetting armor = createSetting("Armor", true);
+    private final BooleanSetting reversedArmour = createSetting("ReversedArmour", true, v -> armor.getValue());
+    private final BooleanSetting scaleing = createSetting("Scale", false);
+    private final FloatSetting scaling = createSetting("Scaler", 0.3f, 0.1f, 20.0f, v -> scaleing.getValue());
+    private final BooleanSetting ping = createSetting("Ping", true);
+    private final BooleanSetting totemPops = createSetting("TotemPops", true);
+    private final BooleanSetting gamemode = createSetting("Gamemode", false);
+    private final BooleanSetting entityID = createSetting("ID", false);
+    private final BooleanSetting rect = createSetting("Rectangle", true);
+    private final BooleanSetting outline = createSetting("Outline", false);
+    private final FloatSetting lineWidth = createSetting("LineWidth", 1.5f, 0.1f, 5.0f, v -> outline.getValue());
+    private final BooleanSetting sneak = createSetting("SneakColor", false);
+    private final BooleanSetting heldStackName = createSetting("StackName",false);
+    private final FloatSetting factor = createSetting("Factor", 1.0f, 0.1f, 1.0f, v -> scaleing.getValue());
+    private final BooleanSetting smartScale = createSetting("SmartScale", false, v -> scaleing.getValue());
+    private final BooleanSetting ench = createSetting("Enchantments", false);
+    private final ColorSetting mainColor = createSetting("MainColour", defaultColor);
+    private final ColorSetting outlineColor = createSetting("OutlineColour", defaultColor);
+    private final ColorSetting textColor = createSetting("TextColour", defaultColor);
+    private final ColorSetting friendtextColor = createSetting("FriendColor", defaultColor);
+    private final ColorSetting invisibleText = createSetting("InvisColour", defaultColor);
+    private final ColorSetting shiftColor = createSetting("ShiftColour", defaultColor);
     private CopyOnWriteArrayList<EntityPlayer> players = new CopyOnWriteArrayList<>();
 
     @Override
@@ -74,9 +72,9 @@ public class NameTags extends Module {
     @Override
     public void onRender3D(float partialTicks) {
             for (EntityPlayer player : players) {
-                double x = this.interpolate(player.lastTickPosX, player.posX, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosX();
-                double y = this.interpolate(player.lastTickPosY, player.posY, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosY();
-                double z = this.interpolate(player.lastTickPosZ, player.posZ, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosZ();
+                double x = interpolate(player.lastTickPosX, player.posX, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosX();
+                double y = interpolate(player.lastTickPosY, player.posY, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosY();
+                double z = interpolate(player.lastTickPosZ, player.posZ, partialTicks) - ((IRenderManager)mc.getRenderManager()).getRenderPosZ();
                 renderNameTag(player, x, y, z, partialTicks);
             }
         }
@@ -90,7 +88,7 @@ public class NameTags extends Module {
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.glLineWidth(this.lineWidth.getValue());
+        GlStateManager.glLineWidth(lineWidth.getValue());
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
         bufferbuilder.pos(x, h, 0.0).color(red, green, blue, alpha).endVertex();
@@ -111,7 +109,7 @@ public class NameTags extends Module {
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
-        GlStateManager.glLineWidth(this.lineWidth.getValue());
+        GlStateManager.glLineWidth(lineWidth.getValue());
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         bufferbuilder.begin(2, DefaultVertexFormats.POSITION_COLOR);
         bufferbuilder.pos(x, h, 0.0).color(red, green, blue, alpha).endVertex();
@@ -135,18 +133,18 @@ public class NameTags extends Module {
         double originalPositionX = camera.posX;
         double originalPositionY = camera.posY;
         double originalPositionZ = camera.posZ;
-        camera.posX = this.interpolate(camera.prevPosX, camera.posX, delta);
-        camera.posY = this.interpolate(camera.prevPosY, camera.posY, delta);
-        camera.posZ = this.interpolate(camera.prevPosZ, camera.posZ, delta);
-        String displayTag = this.getDisplayTag(player);
+        camera.posX = interpolate(camera.prevPosX, camera.posX, delta);
+        camera.posY = interpolate(camera.prevPosY, camera.posY, delta);
+        camera.posZ = interpolate(camera.prevPosZ, camera.posZ, delta);
+        String displayTag = getDisplayTag(player);
         double distance = camera.getDistance(x + mc.getRenderManager().viewerPosX, y + mc.getRenderManager().viewerPosY, z + mc.getRenderManager().viewerPosZ);
         int width = mc.fontRenderer.getStringWidth(displayTag) / 2;
-        double scale = (0.0018 + (double) this.scaling.getValue() * (distance * (double) this.factor.getValue())) / 1000.0;
-        if (distance <= 8.0 && this.smartScale.getValue()) {
+        double scale = (0.0018 + (double) scaling.getValue() * (distance * (double) factor.getValue())) / 1000.0;
+        if (distance <= 8.0 && smartScale.getValue()) {
             scale = 0.0245;
         }
-        if (!this.scaleing.getValue()) {
-            scale = (double) this.scaling.getValue() / 100.0;
+        if (!scaleing.getValue()) {
+            scale = (double) scaling.getValue() / 100.0;
         }
         GlStateManager.pushMatrix();
         RenderHelper.enableStandardItemLighting();
@@ -160,20 +158,20 @@ public class NameTags extends Module {
         GlStateManager.enableBlend();
         GlStateManager.enableBlend();
 
-        if (this.rect.getValue()) {
-            drawRect(-width - 2, -(mc.fontRenderer.FONT_HEIGHT + 1), (float) width + 2.0f, 1.5f, Infinity.INSTANCE.friendManager.isFriend(player) ? friendtextColor.getValue().getColor().getRGB() : mainColor.getValue().getColor().getRGB());
-            if (this.outline.getValue()) {
-                this.drawOutlineRect((float) (-width - 2), (float) (-(mc.fontRenderer.FONT_HEIGHT + 1)), width + 2.0f, 1.5f, outlineColor.getValue().getColor().getRGB());
+        if (rect.getValue()) {
+            drawRect(-width - 2, -(mc.fontRenderer.FONT_HEIGHT + 1), (float) width + 2.0f, 1.5f, Infinity.INSTANCE.friendManager.isFriend(player.getDisplayNameString()) ? friendtextColor.getValue().getRGB() : mainColor.getValue().getRGB());
+            if (outline.getValue()) {
+                drawOutlineRect((float) (-width - 2), (float) (-(mc.fontRenderer.FONT_HEIGHT + 1)), width + 2.0f, 1.5f, outlineColor.getValue().getRGB());
             }
         }
         GlStateManager.disableBlend();
         ItemStack renderMainHand = player.getHeldItemMainhand().copy();
-        if (this.heldStackName.getValue() && !renderMainHand.isEmpty() && renderMainHand.getItem() != Items.AIR) {
+        if (heldStackName.getValue() && !renderMainHand.isEmpty() && renderMainHand.getItem() != Items.AIR) {
             String stackName = renderMainHand.getDisplayName();
             int stackNameWidth = mc.fontRenderer.getStringWidth(stackName) / 2;
             GL11.glPushMatrix();
             GL11.glScalef(0.75f, 0.75f, 0.0f);
-            mc.fontRenderer.drawStringWithShadow(stackName, -stackNameWidth, -(this.getBiggestArmorTag(player) + 20.0f), -1);
+            mc.fontRenderer.drawStringWithShadow(stackName, -stackNameWidth, -(getBiggestArmorTag(player) + 20.0f), -1);
             GL11.glScalef(1.5f, 1.5f, 1.0f);
             GL11.glPopMatrix();
         }
@@ -187,15 +185,15 @@ public class NameTags extends Module {
                }
                xOffset -= 8;
                ItemStack renderOffhand = player.getHeldItemOffhand().copy();
-               this.renderItemStack(renderOffhand, xOffset, -26);
+               renderItemStack(renderOffhand, xOffset, -26);
                xOffset += 16;
                for (ItemStack stack : player.inventory.armorInventory) {
                    if (stack == null) continue;
                    ItemStack armourStack = stack.copy();
-                   this.renderItemStack(armourStack, xOffset, -26);
+                   renderItemStack(armourStack, xOffset, -26);
                    xOffset += 16;
                }
-               this.renderItemStack(renderMainHand, xOffset, -26);
+               renderItemStack(renderMainHand, xOffset, -26);
                GlStateManager.popMatrix();
            } else {
                GlStateManager.pushMatrix();
@@ -208,22 +206,22 @@ public class NameTags extends Module {
                xOffset -= 8;
 
                ItemStack renderOffhand = player.getHeldItemOffhand().copy();
-               this.renderItemStack(renderOffhand, xOffset, -26);
+               renderItemStack(renderOffhand, xOffset, -26);
                xOffset += 16;
 
                for (int i = player.inventory.armorInventory.size() - 1; i >= 0; i--) {
                    ItemStack stack = player.inventory.armorInventory.get(i);
                    if (stack == null) continue;
                    ItemStack armourStack = stack.copy();
-                   this.renderItemStack(armourStack, xOffset, -26);
+                   renderItemStack(armourStack, xOffset, -26);
                    xOffset += 16;
                }
 
-               this.renderItemStack(renderMainHand, xOffset, -26);
+               renderItemStack(renderMainHand, xOffset, -26);
                GlStateManager.popMatrix();
            }
         }
-        mc.fontRenderer.drawStringWithShadow(displayTag, -width, -(mc.fontRenderer.FONT_HEIGHT - 1), this.getDisplayColour(player));
+        mc.fontRenderer.drawStringWithShadow(displayTag, -width, -(mc.fontRenderer.FONT_HEIGHT - 1), getDisplayColour(player));
         camera.posX = originalPositionX;
         camera.posY = originalPositionY;
         camera.posZ = originalPositionZ;
@@ -250,7 +248,7 @@ public class NameTags extends Module {
         GlStateManager.scale(0.5f, 0.5f, 0.5f);
         //   GlStateManager.disableDepth();
         if(ench.getValue())
-            this.renderEnchantmentText(stack, x, y);
+            renderEnchantmentText(stack, x, y);
         GlStateManager.scale(2.0f, 2.0f, 2.0f);
         GlStateManager.popMatrix();
     }
@@ -330,22 +328,23 @@ public class NameTags extends Module {
 
     private String getDisplayTag(EntityPlayer player) {
         String name = player.getDisplayName().getFormattedText();
-        if (!this.health.getValue()) {
+        if (!health.getValue()) {
             return name;
         }
         float health = EntityUtil.getHealth(player);
         String color = health > 18.0f ? "\u00a7a" : (health > 16.0f ? "\u00a72" : (health > 12.0f ? "\u00a7e" : (health > 8.0f ? "\u00a76" : (health > 5.0f ? "\u00a7c" : "\u00a74"))));
         String pingStr = "";
-        if (this.ping.getValue()) {
+        if (ping.getValue()) {
             try {
                 int responseTime = Objects.requireNonNull(mc.getConnection()).getPlayerInfo(player.getUniqueID()).getResponseTime();
                 pingStr = pingStr + responseTime + "ms ";
             } catch (Exception responseTime) {
                 //do i really need this?
+                responseTime.printStackTrace();
             }
         }
         String popStr = " ";
-        if (this.totemPops.getValue()) {
+        if (totemPops.getValue()) {
             if (Notifications.totemPops.get(player.getDisplayNameString()) == null)
             {
                 popStr = " ";
@@ -357,11 +356,11 @@ public class NameTags extends Module {
             }
         }
         String idString = "";
-        if (this.entityID.getValue()) {
+        if (entityID.getValue()) {
             idString = idString + "ID: " + player.getEntityId() + " ";
         }
         String gameModeStr = "";
-        if (this.gamemode.getValue()) {
+        if (gamemode.getValue()) {
             gameModeStr = player.isCreative() ? gameModeStr + "[C] " : (player.isSpectator() || player.isInvisible() ? gameModeStr + "[I] " : gameModeStr + "[S] ");
         }
         name = Math.floor(health) == (double) health ? name + color + " " + (health > 0.0f ? Integer.valueOf((int) Math.floor(health)) : "0 ") : name + color + " " + (health > 0.0f ? Integer.valueOf((int) health) : "0 ");
@@ -369,14 +368,14 @@ public class NameTags extends Module {
     }
 
     private int getDisplayColour(EntityPlayer player) {
-        int colour = textColor.getValue().getColor().getRGB();
+        int colour = textColor.getValue().getRGB();
         if (Infinity.INSTANCE.friendManager.isFriend(String.valueOf(player))) {
-            return friendtextColor.getValue().getColor().getRGB();
+            return friendtextColor.getValue().getRGB();
         }
         if (player.isInvisible()) {
-            colour = invisibleText.getValue().getColor().getRGB();
-        } else if (player.isSneaking() && this.sneak.getValue()) {
-            colour = shiftColor.getValue().getColor().getRGB();
+            colour = invisibleText.getValue().getRGB();
+        } else if (player.isSneaking() && sneak.getValue()) {
+            colour = shiftColor.getValue().getRGB();
         }
         return colour;
     }

@@ -6,6 +6,7 @@ import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.*;
 import me.lyric.infinity.api.util.gl.AnimationUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
+import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.gui.Csgo.setting.*;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
 import org.lwjgl.input.Mouse;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class CsgoModule
+public class CsgoModule implements IGlobals
 {
     public ArrayList<CsgoSetting> csgoSettings;
     public Module module;
@@ -73,7 +74,7 @@ public class CsgoModule
         RenderUtils.rectangle(x + this.width - this.animWidth / 2.0f - 2.0f, (float)this.y, x + this.width, this.y + this.animHeight / 2.0f, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
         RenderUtils.rectangle(x + this.width - this.animWidth / 2.0f - 2.0f, this.y + this.height - this.animHeight / 2.0f, x + this.width, (float)(this.y + this.height), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
         RenderUtils.outline(x, (float)this.y, x + this.width, (float)(this.y + this.height), new Color(2894892), 1.0f);
-        final String name = this.module.getName();
+        String name = this.module.name;
         Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, x + 2.0f, this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
         if (this.canRender() && !this.csgoSettings.isEmpty()) {
             int deltaY = CsgoGui.y + 17 + this.scroll;
@@ -127,7 +128,7 @@ public class CsgoModule
 
     public boolean canRender() {
         final int j = CsgoGui.getXByModule(this.module);
-        return CsgoGui.category.equals(this.module.getCategory()) && CsgoGui.module != null && CsgoGui.module.equals(this.module) && j >= CsgoGui.x + 96 && j <= CsgoGui.x + CsgoGui.width - 6;
+        return CsgoGui.category.equals(this.module.category) && CsgoGui.module != null && CsgoGui.module.equals(this.module) && j >= CsgoGui.x + 96 && j <= CsgoGui.x + CsgoGui.width - 6;
     }
 
     public void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) {

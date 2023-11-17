@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
  * @author lyric
  */
 
-@ModuleInformation(getName = "SkinBlink", getDescription = "useless", category = Category.Misc)
+@ModuleInformation(name = "SkinBlink", description = "useless", category = Category.Misc)
 public class SkinBlink extends Module {
 
     static EnumPlayerModelParts[] PARTS_HORIZONTAL;

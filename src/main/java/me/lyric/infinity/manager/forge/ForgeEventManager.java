@@ -94,7 +94,7 @@ public class ForgeEventManager implements IGlobals {
         boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
         if(isOn)
         {
-            Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).threadCount.getValue()));
+            Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
 
         }
     }
@@ -110,20 +110,22 @@ public class ForgeEventManager implements IGlobals {
             boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
             if(isOn)
             {
-                Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).threadCount.getValue()));
+                Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
             }
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW, receiveCanceled = true)
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (Keyboard.getEventKeyState()) {
-            for (Module modules : ModuleManager.getModuleManager().getModules()) {
-                if (modules.getBind().getKey() == Keyboard.getEventKey()) {
-                    modules.toggle();
-                }
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public void onKeyInput(final InputEvent.KeyInputEvent event) {
+        if(mc.player == null || mc.world == null) return;
+        Infinity.INSTANCE.moduleManager.getModules().stream().filter(module -> Keyboard.getEventKeyState() && module.bind.getValue().equals(Keyboard.getEventKey())).forEach(module -> {
+            if (module.isEnabled()) {
+                module.disable();
             }
-        }
+            else {
+                module.enable();
+            }
+        });
     }
     @SubscribeEvent
     public void onChat(ClientChatEvent event) {

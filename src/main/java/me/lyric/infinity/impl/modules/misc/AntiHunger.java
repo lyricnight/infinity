@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.CPacketEntityAction;
  * @author lyric ;)
  */
 
-@ModuleInformation(getName = "AntiHunger", getDescription = "Reduces hunger.", category = Category.Misc)
+@ModuleInformation(name = "AntiHunger", description = "Reduces hunger.", category = Category.Misc)
 public class AntiHunger extends Module {
     @EventListener
     public void onPacketSend(PacketEvent.Send event) {

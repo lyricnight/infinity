@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * @author lyric
  */
 
-@ModuleInformation(getName = "HoleFiller", getDescription = "bot", category = Category.Combat)
+@ModuleInformation(name = "HoleFiller", description = "bot", category = Category.Combat)
 public class HoleFiller extends Module
 {
     public ModeSetting switchMode = createSetting("SwitchMode","Silent",  Arrays.asList("Silent", "SilentPacket", "Slot"));

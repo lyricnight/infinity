@@ -7,7 +7,7 @@ import me.lyric.infinity.api.module.ModuleInformation;
 /**
     @author lyric :P
  */
-@ModuleInformation(getName = "Exception", getDescription = "we NOT GETTING KICKED out here", category = Category.Player)
+@ModuleInformation(name = "Exception", description = "we NOT GETTING KICKED out here", category = Category.Player)
 public class Exception extends Module {
 
 }

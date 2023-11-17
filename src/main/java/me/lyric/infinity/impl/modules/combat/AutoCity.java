@@ -29,7 +29,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 
-@ModuleInformation(getName = "AutoCity", getDescription = "what do you think it does", category = Category.Combat)
+@ModuleInformation(name = "AutoCity", description = "what do you think it does", category = Category.Combat)
 public class AutoCity extends Module
 {
     public FloatSetting targetRange = createSetting("Target Range", 10f, 2f, 15f);

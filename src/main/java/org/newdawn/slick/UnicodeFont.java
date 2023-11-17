@@ -1,8 +1,6 @@
 
 package org.newdawn.slick;
 
-import me.darki.konas.gui.kgui.fill.Fill;
-import me.darki.konas.gui.kgui.shape.KonasRectangle;
 import org.newdawn.slick.font.Glyph;
 import org.newdawn.slick.font.GlyphPage;
 import org.newdawn.slick.font.HieroSettings;
@@ -40,7 +38,7 @@ public class UnicodeFont implements org.newdawn.slick.Font {
 	private static final int PAGES = MAX_GLYPH_CODE / PAGE_SIZE;
 	/** Interface to OpenGL */
 	private static final SGL GL = Renderer.get();
-	/** A dummy display list used as a place holder */
+	/** A dummy display list used as a placeholder */
 	private static final DisplayList EMPTY_DISPLAY_LIST = new DisplayList();
 
 	/**
@@ -537,137 +535,6 @@ public class UnicodeFont implements org.newdawn.slick.Font {
 		displayList.height = (short)(lines * getLineHeight() + totalHeight);
 		return displayList;
 	}
-
-	public DisplayList drawFillDisplayList(float x, float y, String text, Fill fill, int startIndex, int endIndex) {
-		if (text == null) throw new IllegalArgumentException("text cannot be null.");
-		if (text.length() == 0) return EMPTY_DISPLAY_LIST;
-		if (fill == null) throw new IllegalArgumentException("color cannot be null.");
-
-		x -= paddingLeft;
-		y -= paddingTop;
-
-		String displayListKey = text.substring(startIndex, endIndex);
-
-		GL.glColor4f(1F,1F,1F,1F);
-		TextureImpl.bindNone();
-
-		DisplayList displayList = null;
-		if (displayListCaching && queuedGlyphs.isEmpty()) {
-			if (baseDisplayListID == -1) {
-				baseDisplayListID = GL.glGenLists(DISPLAY_LIST_CACHE_SIZE);
-				if (baseDisplayListID == 0) {
-					baseDisplayListID = -1;
-					displayListCaching = false;
-					return new DisplayList();
-				}
-			}
-			// Try to use a display list compiled for this text.
-			if (displayList != null) {
-				if (displayList.invalid)
-					displayList.invalid = false;
-				else {
-					GL.glTranslatef(x, y, 0);
-					GL.glCallList(displayList.id);
-					GL.glTranslatef(-x, -y, 0);
-					return displayList;
-				}
-			} else if (displayList == null) {
-				// Compile a new display list.
-				displayList = new DisplayList();
-				int displayListCount = displayLists.size();
-				displayLists.put(displayListKey, displayList);
-				if (displayListCount < DISPLAY_LIST_CACHE_SIZE)
-					displayList.id = baseDisplayListID + displayListCount;
-				else
-					displayList.id = eldestDisplayListID;
-			}
-			displayLists.put(displayListKey, displayList);
-		}
-
-		GL.glTranslatef(x, y, 0);
-
-		if (displayList != null) GL.glNewList(displayList.id, SGL.GL_COMPILE_AND_EXECUTE);
-
-		char[] chars = text.substring(0, endIndex).toCharArray();
-		GlyphVector vector = font.layoutGlyphVector(GlyphPage.renderContext, chars, 0, chars.length, Font.LAYOUT_LEFT_TO_RIGHT);
-
-		int maxWidth = 0, totalHeight = 0, lines = 0;
-		int extraX = 0, extraY = ascent;
-		boolean startNewLine = false;
-		Texture lastBind = null;
-		for (int glyphIndex = 0, n = vector.getNumGlyphs(); glyphIndex < n; glyphIndex++) {
-			int charIndex = vector.getGlyphCharIndex(glyphIndex);
-			if (charIndex < startIndex) continue;
-			if (charIndex > endIndex) break;
-
-			int codePoint = text.codePointAt(charIndex);
-
-			Rectangle bounds = getGlyphBounds(vector, glyphIndex, codePoint);
-			Glyph glyph = getGlyph(vector.getGlyphCode(glyphIndex), codePoint, bounds, vector, glyphIndex);
-
-			if (startNewLine && codePoint != '\n') {
-				extraX = -bounds.x;
-				startNewLine = false;
-			}
-
-			Image image = glyph.getImage();
-			if (image == null && missingGlyph != null && glyph.isMissing()) image = missingGlyph.getImage();
-			if (image != null) {
-				// Draw glyph, only binding a new glyph page texture when necessary.
-				Texture texture = image.getTexture();
-				if (lastBind != null && lastBind != texture) {
-					GL.glEnd();
-					lastBind = null;
-				}
-				if (lastBind == null) {
-					texture.bind();
-					GL.glBegin(SGL.GL_QUADS);
-					lastBind = texture;
-				}
-
-				KonasRectangle rect = new KonasRectangle(bounds.x + extraX,bounds.y + extraY, image.getWidth(), image.getHeight());
-				java.awt.Color clr = fill.colorAt(rect, bounds.x + extraX, bounds.y + extraY);
-				image.setColor(Image.TOP_LEFT, clr.getRed() / 255F, clr.getGreen() / 255F, clr.getBlue() / 255F, clr.getAlpha() / 255F);
-
-				clr = fill.colorAt(rect, bounds.x + extraX + image.getWidth(), bounds.y + extraY);
-				image.setColor(Image.TOP_RIGHT, clr.getRed() / 255F, clr.getGreen() / 255F, clr.getBlue() / 255F, clr.getAlpha() / 255F);
-
-				clr = fill.colorAt(rect, bounds.x + extraX, bounds.y + extraY + image.getHeight());
-				image.setColor(Image.BOTTOM_LEFT, clr.getRed() / 255F, clr.getGreen() / 255F, clr.getBlue() / 255F, clr.getAlpha() / 255F);
-
-				clr = fill.colorAt(rect, bounds.x + extraX + image.getWidth(), bounds.y + extraY + image.getHeight());
-				image.setColor(Image.BOTTOM_RIGHT, clr.getRed() / 255F, clr.getGreen() / 255F, clr.getBlue() / 255F, clr.getAlpha() / 255F);
-
-				image.drawEmbedded(bounds.x + extraX, bounds.y + extraY, image.getWidth(), image.getHeight());
-			}
-
-			if (glyphIndex >= 0) extraX += paddingRight + paddingLeft + paddingAdvanceX;
-			maxWidth = Math.max(maxWidth, bounds.x + extraX + bounds.width);
-			totalHeight = Math.max(totalHeight, ascent + bounds.y + bounds.height);
-
-			if (codePoint == '\n') {
-				startNewLine = true; // Mac gives -1 for bounds.x of '\n', so use the bounds.x of the next glyph.
-				extraY += getLineHeight();
-				lines++;
-				totalHeight = 0;
-			}
-		}
-		if (lastBind != null) GL.glEnd();
-
-		if (displayList != null) {
-			GL.glEndList();
-			// Invalidate the display list if it had glyphs that need to be loaded.
-			if (!queuedGlyphs.isEmpty()) displayList.invalid = true;
-		}
-
-		GL.glTranslatef(-x, -y, 0);
-
-		if (displayList == null) displayList = new DisplayList();
-		displayList.width = (short)maxWidth;
-		displayList.height = (short)(lines * getLineHeight() + totalHeight);
-		return displayList;
-	}
-
 	public void drawString (float x, float y, String text, Color color, int startIndex, int endIndex) {
 		drawDisplayList(x, y, text, color, startIndex, endIndex);
 	}

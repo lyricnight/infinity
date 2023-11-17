@@ -39,7 +39,7 @@ public class ClientFont implements IGlobals {
     }
 
     private Font getFontByName(String name) throws IOException, FontFormatException {
-        return this.getFontFromInput("/assets/minecraft/textures/infinity/font/" + name + ".ttf");
+        return this.getFontFromInput("/assets/infinity/font/" + name + ".ttf");
     }
 
     private Font getFontFromInput(String path) throws IOException, FontFormatException {

@@ -21,7 +21,7 @@ import java.util.Objects;
  * @author lyric (o_o)
  */
 //TODO: make this activated on a keybind so that you don't double trap yourself everytime somebody traps you if they dont have cev
-@ModuleInformation(getName = "AntiCev", getDescription = "Prevents cevbreaker.", category = Category.Combat)
+@ModuleInformation(name = "AntiCev", description = "Prevents cevbreaker.", category = Category.Combat)
 public class AntiCev extends Module {
     public ModeSetting switchMode = createSetting("SwitchMode","Silent",  Arrays.asList("Silent", "SilentPacket", "Slot"));
     public BooleanSetting rot = createSetting("Rotate", false);

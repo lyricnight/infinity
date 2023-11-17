@@ -4,8 +4,11 @@ import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.api.event.render.RenderNametagEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ColorSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.gl.shader.FramebufferShader;
 import me.lyric.infinity.api.util.gl.shader.shaders.OutlineShader;
 import me.lyric.infinity.api.util.gl.shader.shaders.SpaceShader;
@@ -19,38 +22,36 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * @author cpacket - .vert files from moneymod
  */
 
+@ModuleInformation(name = "ShaderChams", description = "mid", category = Category.Render)
 public class ShaderChams extends Module {
 
-    public BooleanSetting players = createSetting("Players", "Renders the ESP on players.", true));
-    public BooleanSetting crystals = createSetting("Crystals", "Renders the ESP on crystals.", true));
-    public BooleanSetting mobs = createSetting("Mobs", "Renders the ESP on mobs.", false));
-    public BooleanSetting items = createSetting("Items", "Renders the ESP on items.", false));
+    public BooleanSetting players = createSetting("Players",  true);
+    public BooleanSetting crystals = createSetting("Crystals",  true);
+    public BooleanSetting mobs = createSetting("Mobs", false);
+    public BooleanSetting items = createSetting("Items", false);
 
-    public Setting<Shader> shader = createSetting("Shader", "The type of shader.", Shader.SPACE));
+    public ModeSetting shader = createSetting("Shader", "Space", Arrays.asList("Space", "None"));
 
     // RAINBOW
-    public BooleanSetting outline = createSetting("Outline", "Renders a dynamic rainbow gradient.", true));
-    public FloatSetting rainbowSpeed = createSetting("Rainbow Speed", "The speed of the rainbow outline.", 0.4f, 0.0f, 1.0f).withParent(outline));
-    public FloatSetting rainbowStrength = createSetting("Rainbow Strength", "The strength of the rainbow online.", 0.3f, 0.0f, 1.0f).withParent(outline));
-    public FloatSetting saturation = createSetting("Saturation", "The saturation of the rainbow outline.", 0.5f, 0.0f, 1.0f).withParent(outline));
-    public FloatSetting radius = createSetting("Radius", "The radius of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
-    public FloatSetting quality = createSetting("Quality", "The quality of the rainbow outline.", 1.0f, 0.1f, 5.0f).withParent(outline));
+    public BooleanSetting outline = createSetting("Outline", true);
+    public FloatSetting rainbowSpeed = createSetting("Rainbow Speed",  0.4f, 0.0f, 1.0f, v -> outline.getValue());
+    public FloatSetting rainbowStrength = createSetting("Rainbow Strength", 0.3f, 0.0f, 1.0f, v -> outline.getValue());
+    public FloatSetting saturation = createSetting("Saturation", 0.5f, 0.0f, 1.0f, v -> outline.getValue());
+    public FloatSetting radius = createSetting("Radius", 1.0f, 0.1f, 5.0f, v -> outline.getValue());
+    public FloatSetting quality = createSetting("Quality", 1.0f, 0.1f, 5.0f, v -> outline.getValue());
 
-    public Setting<ColorPicker> color = createSetting("Color", "The color for the ESP.", new ColorPicker(Color.BLUE)));
+    public ColorSetting color = createSetting("Color", defaultColor);
 
     // Shader ESP Framebuffer.
     public FramebufferShader framebuffer = null;
     // Nametags variable due to bug with Shader ESP. (This fixes it.) TODO: Find a better way?
     boolean renderNametags;
-
-    public ShaderChams() {
-        super("ShaderChams", "Highlights entities in various ways.", Category.RENDER);
-    }
 
     //try-catch heaven
     @SubscribeEvent
@@ -74,7 +75,7 @@ public class ShaderChams extends Module {
                        // Okay I have no idea what this happens but ok.
                    }
                     renderNametags = false;
-                    OutlineShader.INSTANCE.stopDraw(color.getValue().getColor(), radius.getValue(), quality.getValue(), saturation.getValue(), 1, 0.5f, 0.5f);
+                    OutlineShader.INSTANCE.stopDraw(color.getValue(), radius.getValue(), quality.getValue(), saturation.getValue(), 1, 0.5f, 0.5f);
                     GlStateManager.popMatrix();
                     framebuffer.startDraw(event.getPartialTicks());
                     renderNametags = true;
@@ -88,13 +89,11 @@ public class ShaderChams extends Module {
                        // LMAO
                    }
                     renderNametags = false;
-                    framebuffer.stopDraw(color.getValue().getColor(), 1f, 1f, 0.8f, 1, 0.5f, 0.5f);
+                    framebuffer.stopDraw(color.getValue(), 1f, 1f, 0.8f, 1, 0.5f, 0.5f);
                 }
-                    switch (shader.getValue()) {
-                        case SPACE:
-                            framebuffer = SpaceShader.INSTANCE;
-                            break;
-                    }
+                if (shader.getValue().equals("Space")) {
+                    framebuffer = SpaceShader.INSTANCE;
+                }
                     framebuffer.startDraw(event.getPartialTicks());
                     renderNametags = true;
                     try {
@@ -104,12 +103,14 @@ public class ShaderChams extends Module {
                             }
                         });
                     } catch (ReportedException e) {
+                        e.printStackTrace();
                         // LOL
                     }
                     renderNametags = false;
-                    framebuffer.stopDraw(color.getValue().getColor(), 1f, 1f, 0.8f, 1, 0.5f, 0.5f);
+                    framebuffer.stopDraw(color.getValue(), 1f, 1f, 0.8f, 1, 0.5f, 0.5f);
             } catch (NullPointerException nullPointerException) {
                 // Do nothing. :)
+                nullPointerException.printStackTrace();
             }
         }
     }
@@ -127,16 +128,10 @@ public class ShaderChams extends Module {
         {
             return "";
         }
-        if(shader.getValue() == Shader.SPACE)
+        if(shader.getValue() == "Space")
         {
             return "space";
         }
         return "rainbow";
-    }
-
-
-    public enum Shader {
-        NONE,
-        SPACE,
     }
 }

@@ -80,8 +80,8 @@ public class InventoryUtil implements IGlobals {
 
         if (obbySlot == -1 && eChestSlot == -1)
         {
-            ChatUtils.sendMessage(ChatFormatting.BOLD + "No Obsidian or EChests! Disabling " + module.getName() + "!");
-            module.toggle();
+            ChatUtils.sendMessage(ChatFormatting.BOLD + "No Obsidian or EChests! Disabling " + module.name + "!");
+            module.disable();
         }
     }
 

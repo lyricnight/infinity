@@ -39,7 +39,7 @@ import java.util.Arrays;
  * @author lyric !!
  */
 
-@ModuleInformation(getName = "Burrow", getDescription = "this", category = Category.Combat)
+@ModuleInformation(name = "Burrow", description = "this", category = Category.Combat)
 public class Burrow extends Module {
     public ModeSetting switchMode = createSetting("SwitchMode","Silent",  Arrays.asList("Silent", "SilentPacket", "Slot"));
 

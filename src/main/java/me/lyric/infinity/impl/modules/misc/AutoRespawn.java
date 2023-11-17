@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author who knows
  */
 
-@ModuleInformation(getName = "AutoRespawn", getDescription = "useful", category = Category.Misc)
+@ModuleInformation(name = "AutoRespawn", description = "useful", category = Category.Misc)
 public class AutoRespawn extends Module {
 
     public BooleanSetting message = createSetting("Message", true);

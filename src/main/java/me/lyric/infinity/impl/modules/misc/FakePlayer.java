@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.StringSetting;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.potion.Potion;
@@ -16,18 +16,18 @@ import java.util.Map;
 /**
  * @author lyric
  */
-@ModuleInformation(getName = "FakePlayer", getDescription = "testing things", category = Category.Misc)
+@ModuleInformation(name = "FakePlayer", description = "testing things", category = Category.Misc)
 public class FakePlayer extends Module {
-    public StringSetting username = register(new Setting<Object>("Name","The name of the FakePlayer.", "real"));
+    public StringSetting username = createSetting("Name","real");
     @Override
     public void onLogout()
     {
-        toggle();
+        disable();
     }
     @Override
     public void onEnable() {
         if (mc.player == null || mc.world == null) {
-            this.toggle();
+            this.disable();
             return;
         }
         EntityOtherPlayerMP fake = new EntityOtherPlayerMP((World)mc.world, new GameProfile(mc.session.getProfile().getId(), username.getValue()));

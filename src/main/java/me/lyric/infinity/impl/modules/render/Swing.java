@@ -2,30 +2,19 @@ package me.lyric.infinity.impl.modules.render;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
+import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.mixin.transformer.IItemRenderer;
 
+import java.util.Arrays;
+
+@ModuleInformation(name = "Swing", description = "Modifies Swing.", category = Category.Render)
 public class Swing extends Module {
-
-    public static Swing INSTANCE;
-
-
-    public Setting<SwingHand> swing =
-            createSetting("Swing","Changes hand of swing.", SwingHand.MAINHAND));
-    public BooleanSetting slowSwing =
-            createSetting("SlowSwing","Makes the swing animation slower.", false));
-    public BooleanSetting instantSwap =
-            createSetting("InstantSwap","AKA 1.8 Animations.", false));
-
-    public Swing() {
-        super("Swing", "Changes swing.", Category.RENDER);
-        INSTANCE = this;
-    }
-    public enum SwingHand {
-        MAINHAND,
-        OFFHAND,
-        NONE
-    }
+    public ModeSetting swing = createSetting("Swing","Mainhand", Arrays.asList("Mainhand", "Offhand", "None"));
+    public BooleanSetting slowSwing = createSetting("SlowSwing", false);
+    public BooleanSetting instantSwap = createSetting("InstantSwap", false);
 
     @Override
     public void onUpdate(){
@@ -49,15 +38,15 @@ public class Swing extends Module {
         {
             return "";
         }
-        if (swing.getValue() == SwingHand.MAINHAND)
+        if (swing.getValue() == "Mainhand")
         {
             return "mainhand";
         }
-        if (swing.getValue() == SwingHand.OFFHAND)
+        if (swing.getValue() == "Offhand")
         {
             return "offhand";
         }
-        if (swing.getValue() == SwingHand.NONE)
+        if (swing.getValue() == "None")
         {
             return "none";
         }

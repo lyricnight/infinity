@@ -4,18 +4,22 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.IntegerSetting;
 import me.lyric.infinity.mixin.transformer.IPlayerControllerMP;
+
+import java.util.function.Predicate;
 
 /**
  * @author lyric
  * delays
  */
-@ModuleInformation(getName = "Delays", getDescription = "we GOING FASTER out here", category = Category.Player)
+@ModuleInformation(name = "Delays", description = "we GOING FASTER out here", category = Category.Player)
 public class Delays extends Module {
-    public BooleanSetting eat = createSetting("Eating", "Whether to remove eating delay or not.", false));
-    public BooleanSetting bk = createSetting("Breaking", "Whether to remove breaking delay or not.", false));
-    public BooleanSetting drop = createSetting("Dropping", "Modifies the delay while dropping a stack using Q.", false));
-    public IntegerSetting dropspeed = createSetting("Speed", "Speed of dropping items.", 5, 0, 5).withParent(drop));
+    public BooleanSetting eat = createSetting("Eating", false);
+    public BooleanSetting bk = createSetting("Breaking", false);
+    public BooleanSetting drop = createSetting("Dropping", false);
+    public IntegerSetting dropspeed = createSetting("Speed", 5, 0, 5, (Predicate<Integer>) v -> drop.getValue());
     int delay = 0;
     @Override
     public void onUpdate()

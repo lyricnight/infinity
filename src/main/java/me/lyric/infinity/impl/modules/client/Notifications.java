@@ -20,7 +20,7 @@ import net.minecraft.potion.Potion;
 import java.util.*;
 import java.util.function.Predicate;
 
-@ModuleInformation(getName = "Notifications", getDescription = "Handles various notifications.", category = Category.Client)
+@ModuleInformation(name = "Notifications", description = "Handles various notifications.", category = Category.Client)
 public class Notifications extends Module {
     public BooleanSetting modules = createSetting("Modules", true);
     public BooleanSetting totem = createSetting("Totem Counter" ,true);

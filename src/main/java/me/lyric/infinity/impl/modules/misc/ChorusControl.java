@@ -6,6 +6,9 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ColorSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import net.minecraft.network.play.client.CPacketConfirmTeleport;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -23,15 +26,16 @@ import java.util.Queue;
 /**
  * @author cpacketcustompayload
  */
-@ModuleInformation(getName = "ChorusControl", getDescription = "Control chorus teleportation.", category = Category.Misc)
+@ModuleInformation(name = "ChorusControl", description = "Control chorus teleportation.", category = Category.Misc)
 public class ChorusControl extends Module {
 
-    public BooleanSetting cpacketplayer = createSetting("CPacketPlayer", "Cancels the CPacketPlayer packet.", true));
-    public BooleanSetting spacketplayerposlook = createSetting("SPacketPlayerPosLook", "Cancels the SPacketPlayerPosLook packet.", true));
+    public BooleanSetting cpacketplayer = createSetting("CPacketPlayer", true);
+    public BooleanSetting spacketplayerposlook = createSetting("SPacketPlayerPosLook",true);
 
-    public BooleanSetting render = createSetting("Render", "Renders the predicted teleport spot.", true));
-    public Setting<Double> slabHeight = createSetting("Height", "The height of the slab.", 0.1, -1.0, 1.0).withParent(render));
-    public Setting<ColorPicker> color = createSetting("Color", "The color of the slab.", new ColorPicker(Color.BLUE)));
+    public BooleanSetting render = createSetting("Render", true);
+    public FloatSetting slabHeight = createSetting("Height", 0.1f, -1.0f, 1.0f);
+
+    public ColorSetting color = createSetting("Color", defaultColor);
 
     Queue<CPacketPlayer> packets = new LinkedList<>();
     Queue<CPacketConfirmTeleport> teleportPackets = new LinkedList<>();
@@ -76,11 +80,11 @@ public class ChorusControl extends Module {
 
         BlockPos pos = new BlockPos(sPacketPlayerPosLook.getX(), sPacketPlayerPosLook.getY(), sPacketPlayerPosLook.getZ());
 
-        RenderUtils.drawBBSlab(new AxisAlignedBB(pos), slabHeight.getValue(), color.getValue().getColor());
+        RenderUtils.drawBBSlab(new AxisAlignedBB(pos), slabHeight.getValue(), color.getValue());
     }
 
     @Override
     public void onLogout() {
-        this.setEnabled(false);
+        this.disable();
     }
 }

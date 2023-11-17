@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
  * very useful
  */
 
-@ModuleInformation(getName = "NoHandshake", getDescription = "hypixel players when", category = Category.Misc)
+@ModuleInformation(name = "NoHandshake", description = "hypixel players when", category = Category.Misc)
 public class NoHandshake extends Module {
     @EventListener
     public void onPacketReceive(PacketEvent.Receive event) {

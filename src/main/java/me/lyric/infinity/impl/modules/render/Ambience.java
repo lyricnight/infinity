@@ -2,19 +2,17 @@ package me.lyric.infinity.impl.modules.render;
 
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
-import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.ColorPicker;
+import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.ColorSetting;
 
-import java.awt.*;
 
 /**
  * @author lyric
  */
 
+@ModuleInformation(name = "Ambience", description = "Changes the color of your game.", category = Category.Render)
 public class Ambience extends Module {
 
-    public Setting<ColorPicker> color = createSetting("Colour", "The colour to use for ambience.", new ColorPicker(Color.WHITE)));
-    public Ambience() {
-        super("Ambience", "Changes the color of everything.", Category.RENDER);
-    }
+    public ColorSetting color = createSetting("Colour", defaultColor);
+
 }

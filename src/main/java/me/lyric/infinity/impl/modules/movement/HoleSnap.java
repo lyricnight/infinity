@@ -8,6 +8,8 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.Setting;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.FloatSetting;
 import me.lyric.infinity.api.util.client.CombatUtil;
 import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
@@ -26,11 +28,13 @@ import java.util.Objects;
  * @author lyric
  */
 
-@ModuleInformation(getName = "HoleSnap", getDescription = "we SNAPPING out here", category = Category.Movement)
+@ModuleInformation(name = "HoleSnap", description = "we SNAPPING out here", category = Category.Movement)
 public class HoleSnap extends Module {
-    public FloatSetting range = createSetting("Range","Range to snap.", 4.5f, 0.1f, 12.0f));
-    public FloatSetting factor = createSetting("Factor","Factor!1!1!!", 2.5f, 1.0f, 15.0f));
-    public BooleanSetting debug = createSetting("Debug", "For testing.", false));
+    public FloatSetting range = createSetting("Range", 4.5f, 0.1f, 12.0f);
+
+    public FloatSetting factor = createSetting("Factor", 2.5f, 1.0f, 15.0f);
+
+    public BooleanSetting debug = createSetting("Debug", false);
 
     Timer timer = new Timer();
     HoleUtil.Hole holes;
@@ -65,7 +69,7 @@ public class HoleSnap extends Module {
         Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
         if (EntityUtil.isInLiquid()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in liquid! Disabling ..");
-            toggle();
+            disable();
             return;
         }
         holes = EntityUtil.getTargetHoleVec3D(range.getValue());
@@ -75,12 +79,12 @@ public class HoleSnap extends Module {
         }
         if (holes == null || HoleUtil.isHole(EntityUtil.getPlayerPos()) || CombatUtil.isBurrow(mc.player)) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "Player is in hole, or no holes in range, disabling...");
-            toggle();
+            disable();
             return;
         }
         if (timer.passedMs(500L) && SpeedUtil.anyMovementKeys()) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "HoleSnap timed out, disabling...");
-            toggle();
+            disable();
             return;
         }
         Vec3d playerPos = mc.player.getPositionVector();
@@ -106,7 +110,7 @@ public class HoleSnap extends Module {
     public void onPacketReceive(PacketEvent.Receive e) {
         if (e.getPacket() instanceof SPacketPlayerPosLook) {
             ChatUtils.sendMessage(ChatFormatting.BOLD + "HoleSnap lagged you back! Preventing snapping...");
-            toggle();
+            disable();
         }
     }
 }
