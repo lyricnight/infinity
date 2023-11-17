@@ -28,13 +28,20 @@ public class ImageUtils implements IGlobals {
         return byteBuffer;
     }
 
-    public static void image(ResourceLocation resourceLocation, int x, int y, int width, int height) {
+    public static void image(ResourceLocation image, int x, int y, int width, int height) {
+        mc.getTextureManager().bindTexture(image);
         GL11.glPushMatrix();
-        GlStateManager.enableAlpha();
-        mc.getTextureManager().bindTexture(resourceLocation);
-        GlStateManager.color(1.0f, 1.0f, 1.0f);
-        GuiScreen.drawScaledCustomSizeModalRect(x, y, 0.0f, 0.0f, width, height, width, height, (float)width, (float)height);
-        GlStateManager.disableAlpha();
+        GL11.glTranslatef(posX, posY, 0.0f);
+        GL11.glBegin(7);
+        GL11.glTexCoord2f(0.0f, 0.0f);
+        GL11.glVertex3f(0.0f, 0.0f, 0.0f);
+        GL11.glTexCoord2f(0.0f, 1.0f);
+        GL11.glVertex3f(0.0f, (float) height, 0.0f);
+        GL11.glTexCoord2f(1.0f, 1.0f);
+        GL11.glVertex3f((float) width, (float) height, 0.0f);
+        GL11.glTexCoord2f(1.0f, 0.0f);
+        GL11.glVertex3f((float) width, 0.0f, 0.0f);
+        GL11.glEnd();
         GL11.glPopMatrix();
     }
 
