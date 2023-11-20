@@ -4,6 +4,7 @@ import me.bush.eventbus.bus.EventBus;
 import me.bush.eventbus.handler.handlers.LambdaHandler;
 import me.lyric.infinity.api.util.gl.SplashProgress;
 import me.lyric.infinity.api.util.string.ClientFont;
+import me.lyric.infinity.api.util.string.Renderer;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
 import net.minecraftforge.fml.common.Mod;

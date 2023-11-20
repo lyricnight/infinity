@@ -46,15 +46,16 @@ public class ConfigManager implements IGlobals {
         savePrefix();
     }
 
-    public static void load(String folder) {
+    public static boolean load(String folder) {
         path = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Configs" + File.separator + folder);
         if (!path.exists()) {
-            return;
+            return false;
         }
         setModuleValue();
         setModuleBind();
         setModuleSettingValues();
         saveActiveConfig(folder);
+        return true;
     }
 
     public static void savePlayer() {
@@ -104,7 +105,7 @@ public class ConfigManager implements IGlobals {
         try {
             File file = new File(mc.gameDir + File.separator + "ClientRewrite" + File.separator + "ActiveConfig.txt");
             if (!file.exists()) {
-                file.createNewFile();
+                file.mkdir();
             }
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
             bufferedWriter.write(folder);
@@ -203,7 +204,7 @@ public class ConfigManager implements IGlobals {
             }
         }
         catch (Exception exception) {
-            // empty catch block
+            exception.printStackTrace();
         }
     }
 

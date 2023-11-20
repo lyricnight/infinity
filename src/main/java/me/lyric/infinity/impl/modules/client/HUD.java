@@ -1,13 +1,10 @@
 package me.lyric.infinity.impl.modules.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.Infinity;
-import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.ColorSetting;
 import me.lyric.infinity.api.setting.settings.IntegerSetting;
@@ -16,7 +13,6 @@ import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.gl.ColorUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.metadata.MathUtils;
-import me.lyric.infinity.api.util.time.Timer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiDownloadTerrain;
@@ -60,6 +56,8 @@ public class HUD extends Module {
     public BooleanSetting armor = createSetting("Armor", false);
     public BooleanSetting welcomer = createSetting("Welcomer", false);
     public StringSetting textthing = createSetting("Welcomer String", "Welcome to infinity!", v -> welcomer.getValue());
+
+    public BooleanSetting custom = createSetting("Custom-Font", false);
     private int offset = 0;
     private final ArrayList<Module> modules = new ArrayList<>();
     @SubscribeEvent
@@ -78,7 +76,6 @@ public class HUD extends Module {
         }
         offset = 0;
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
-        int y = new ScaledResolution(mc).getScaledHeight() - 11;
         if (activeModules.getValue()) {
             Infinity.INSTANCE.moduleManager.getModules().stream().filter(module -> module.isEnabled() && !modules.contains(module)).forEach(modules::add);
             modules.sort(Comparator.comparing(Module::getFullWidth));
@@ -87,14 +84,35 @@ public class HUD extends Module {
                 if (!module.isDrawn()) {
                     continue;
                 }
+                float x;
                 module.animfactor = MathUtils.linearInterpolation(module.animfactor, module.isEnabled() ? 1.0f : 0.0f, 0.005f * Infinity.INSTANCE.forgeEventManager.frameTime);
-                final float x = SCREEN_WIDTH - ((module.animfactor * mc.fontRenderer.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + 2);
+                if (custom.getValue())
+                {
+                    x = SCREEN_WIDTH - ((module.animfactor * Infinity.INSTANCE.infinityFont.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + 2);
+                }
+                else
+                {
+                    x = SCREEN_WIDTH - ((module.animfactor * mc.fontRenderer.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + 2);
+                }
                 if (!module.isEnabled() && module.animfactor < 0.05f) {
                     modules.remove(module);
                 }
                 String text = module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
-                mc.fontRenderer.drawString(text, x, deltaY, getTextColor(deltaY).getRGB(), shadow.getValue());
-                deltaY += (mc.fontRenderer.FONT_HEIGHT + 1) * module.animfactor;
+                if (custom.getValue()) {
+                    Infinity.INSTANCE.infinityFont.drawString(text, x, deltaY, getTextColor(deltaY).getRGB(), shadow.getValue());
+                }
+                else
+                {
+                    mc.fontRenderer.drawString(text, x, deltaY, getTextColor(deltaY).getRGB(), shadow.getValue());
+                }
+                if (custom.getValue())
+                {
+                    deltaY += (Infinity.INSTANCE.infinityFont.getHeight(text) + 1) * module.animfactor;
+                }
+                else
+                {
+                    deltaY += (mc.fontRenderer.FONT_HEIGHT + 1) * module.animfactor;
+                }
             }
         }
         if (info.getValue()) {

@@ -1,6 +1,7 @@
 package me.lyric.infinity.manager.forge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import jdk.nashorn.internal.ir.IfNode;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.event.render.Render3DEvent;
@@ -87,6 +88,10 @@ public class ForgeEventManager implements IGlobals {
     public void onUpdate(LivingEvent.LivingUpdateEvent event) {
         if (mc.player != null && mc.world != null && event.getEntity().getEntityWorld().isRemote && event.getEntityLiving().equals(mc.player)) {
             Infinity.INSTANCE.moduleManager.onUpdate();
+            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).isDisabled())
+            {
+                Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).enable();
+            }
         }
     }
     @SubscribeEvent(priority = EventPriority.LOW)

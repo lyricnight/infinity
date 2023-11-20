@@ -81,7 +81,8 @@ public class HoleFiller extends Module
         target = CombatUtil.getTarget((smartTargetRange.getValue()).doubleValue());
         if (target != null)
         {
-            if (HoleUtil.isHole(target.getPosition()) || isBurrow(target) || EntityUtil.isSuffocating(target))
+            BlockPos testPos = new BlockPos(target.posX + 0.5, target.posY + 0.5, target.posZ + 0.5);
+            if (HoleUtil.isHole(testPos) || isBurrow(target))
             {
                 return;
             }

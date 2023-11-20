@@ -1,5 +1,6 @@
 package me.lyric.infinity.api.setting.settings;
 
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.setting.Setting;
 import java.util.List;
 import java.util.function.Predicate;
@@ -23,6 +24,15 @@ public final class ModeSetting extends Setting<String> {
 
     @Override
     public void setValue(String value) {
-        this.value = this.modes.contains(value) ? value : (String)this.value;
+        for (String mode : modes)
+        {
+            if (mode.equalsIgnoreCase(value))
+            {
+                this.value = mode;
+            }
+            else {
+                Infinity.LOGGER.error("A ModeSetting may have been set incorrectly! Module: " + this.getModule() + " Value passed to the method: " + value + " All the possible values: " + modes.toString());
+            }
+        }
     }
 }
