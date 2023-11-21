@@ -1,7 +1,6 @@
 package me.lyric.infinity.api.util.string;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -15,12 +14,6 @@ public class Renderer extends CFont {
     private static final Random CHAR_RANDOM = new Random();
     final boolean SHADOW = true;
     private static final List<Character> RANDOM_CHARS = new ArrayList<>("ÀÁÂÈÊËÍÓÔÕÚßãõğİıŒœŞşŴŵžȇ\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αβΓπΣσμτΦΘΩδ∞∅∈∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■\u0000".chars().mapToObj(c -> Character.valueOf((char)c)).collect(Collectors.toList()));
-    protected CFont.CharData[] boldChars = new CFont.CharData[256];
-    protected CFont.CharData[] italicChars = new CFont.CharData[256];
-    protected CFont.CharData[] boldItalicChars = new CFont.CharData[256];
-    protected DynamicTexture texBold;
-    protected DynamicTexture texItalic;
-    protected DynamicTexture texBoth;
     private final int[] colorCode = new int[32];
 
     public Renderer(Font font, boolean antiAlias, boolean fractionalMetrics) {
@@ -59,8 +52,6 @@ public class Renderer extends CFont {
         CFont.CharData[] currentData = this.charData;
         float alpha = (float)(color >> 24 & 0xFF) / 255.0f;
         boolean random = false;
-        boolean bold = false;
-        boolean italic = false;
         boolean strike = false;
         boolean underline = false;
         boolean rainbowP = false;
@@ -80,8 +71,6 @@ public class Renderer extends CFont {
             if (character == '§' && i + 1 < text.length()) {
                 int colorIndex = COLOR_CODES.indexOf(text.charAt(i + 1));
                 if (colorIndex < 16) {
-                    bold = false;
-                    italic = false;
                     random = false;
                     underline = false;
                     strike = false;
@@ -100,30 +89,14 @@ public class Renderer extends CFont {
                 } else if (colorIndex == 16) {
                     random = true;
                 } else if (colorIndex == 17) {
-                    bold = true;
-                    if (italic) {
-                        GlStateManager.bindTexture(this.texBoth.getGlTextureId());
-                        currentData = this.boldItalicChars;
-                    } else {
-                        GlStateManager.bindTexture(this.texBold.getGlTextureId());
-                        currentData = this.boldChars;
-                    }
+
                 } else if (colorIndex == 18) {
                     strike = true;
                 } else if (colorIndex == 19) {
                     underline = true;
                 } else if (colorIndex == 20) {
-                    italic = true;
-                    if (bold) {
-                        GlStateManager.bindTexture(this.texBoth.getGlTextureId());
-                        currentData = this.boldItalicChars;
-                    } else {
-                        GlStateManager.bindTexture(this.texItalic.getGlTextureId());
-                        currentData = this.italicChars;
-                    }
+
                 } else if (colorIndex == 21) {
-                    bold = false;
-                    italic = false;
                     random = false;
                     underline = false;
                     strike = false;
@@ -135,8 +108,6 @@ public class Renderer extends CFont {
                 } else {
                     if (colorIndex == 22) {
                         int colorcode;
-                        bold = false;
-                        italic = false;
                         random = false;
                         underline = false;
                         strike = false;
@@ -164,8 +135,6 @@ public class Renderer extends CFont {
                         continue;
                     }
                     if (colorIndex == 23) {
-                        bold = false;
-                        italic = false;
                         random = false;
                         underline = false;
                         strike = false;
@@ -176,8 +145,6 @@ public class Renderer extends CFont {
                         int rainbow = Color.HSBtoRGB(1.0f, 1.0f, 1.0f);
                         GlStateManager.color((float)(rainbow >> 16 & 0xFF) / 255.0f / (float)(shadow ? 4 : 1), (float)(rainbow >> 8 & 0xFF) / 255.0f / (float)(shadow ? 4 : 1), (float)(rainbow & 0xFF) / 255.0f / (float)(shadow ? 4 : 1), alpha);
                     } else if (colorIndex == 24) {
-                        bold = false;
-                        italic = false;
                         random = false;
                         underline = false;
                         strike = false;
@@ -186,8 +153,6 @@ public class Renderer extends CFont {
                         GlStateManager.bindTexture(this.tex.getGlTextureId());
                         currentData = this.charData;
                     } else {
-                        bold = false;
-                        italic = false;
                         random = false;
                         underline = false;
                         strike = false;
@@ -241,42 +206,30 @@ public class Renderer extends CFont {
         }
         CFont.CharData[] currentData = this.charData;
         int width = 0;
-        boolean bold = false;
-        boolean italic = false;
         for (int i = 0; i < text.length(); ++i) {
             char character = text.charAt(i);
             if (character == '§' && i + 1 < text.length()) {
                 int colorIndex = COLOR_CODES.indexOf(text.charAt(i + 1));
                 if (colorIndex < 16) {
-                    bold = false;
-                    italic = false;
+
                 } else if (colorIndex == 17) {
-                    bold = true;
-                    currentData = italic ? this.boldItalicChars : this.boldChars;
+
                 } else if (colorIndex == 20) {
-                    italic = true;
-                    currentData = bold ? this.boldItalicChars : this.italicChars;
+
                 } else if (colorIndex == 21) {
-                    bold = false;
-                    italic = false;
                     currentData = this.charData;
                 } else {
                     if (colorIndex == 22) {
-                        bold = false;
-                        italic = false;
                         currentData = this.charData;
                         i += 9;
                         continue;
                     }
                     if (colorIndex == 23) {
-                        bold = false;
-                        italic = false;
+
                     } else if (colorIndex == 24) {
-                        bold = false;
-                        italic = false;
+
                     } else {
-                        bold = false;
-                        italic = false;
+
                     }
                 }
                 ++i;

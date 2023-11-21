@@ -1,15 +1,18 @@
 package me.lyric.infinity.mixin.mixins.gui;
 
 import com.google.common.collect.Lists;
+import jdk.nashorn.internal.ir.IfNode;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.gl.Stencil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.impl.modules.client.Internals;
 import me.lyric.infinity.impl.modules.misc.BetterChat;
+import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.Timer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
@@ -108,7 +111,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                         if (chatline != null && (updateCounter - chatline.getUpdatedCounter() < 200 || isChatOpen)) {
                             render = true;
                             if (!isChatOpen && updateCounter - chatline.getUpdatedCounter() > 195) {
-                                float percent = 1.0f - (updateCounter - chatline.getUpdatedCounter() + TimerUtil.getTimer().field_74281_c - 195.0f) / 5.0f;
+                                float percent = 1.0f - (updateCounter - chatline.getUpdatedCounter() + ((IMinecraft)mc).getTimer().renderPartialTicks - 195.0f) / 5.0f;
                                 percent = MathUtils.clamp(percent, 0.0f, 1.0f);
                                 y -= fontHeight * percent;
                             }
@@ -118,7 +121,6 @@ public abstract class MixinGuiNewChat extends MixinGui {
                         }
                     }
                     if (render) {
-                        int blur = 0;
                         Stencil.initStencil();
                         Stencil.bindWriteStencilBuffer();
                         if (!Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).rect.getValue())
@@ -183,6 +185,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
      * @author lyric
      * @reason to use customchat
      */
+
     @Nullable
     @Overwrite
     public ITextComponent getChatComponent(int p_146236_1_, int p_146236_2_) {
@@ -223,14 +226,14 @@ public abstract class MixinGuiNewChat extends MixinGui {
         return null;
     }
     @Redirect(method = { "setChatLine" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiUtilRenderComponents;splitText(Lnet/minecraft/util/text/ITextComponent;ILnet/minecraft/client/gui/FontRenderer;ZZ)Ljava/util/List;"))
-    private List<ITextComponent> onFunc(ITextComponent k, int s1, FontRenderer chatcomponenttext, final boolean l, final boolean chatcomponenttext2) {
+    private List<ITextComponent> onFunc(ITextComponent k, int s1, FontRenderer chatcomponenttext, boolean l, boolean chatcomponenttext2) {
         return (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue() && Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled()) ? this.wrapToLen(k, s1, chatcomponenttext) : GuiUtilRenderComponents.splitText(k, s1, chatcomponenttext, l, chatcomponenttext2);
     }
 
     private List<ITextComponent> wrapToLen(ITextComponent p_178908_0_, int p_178908_1_, FontRenderer p_178908_2_) {
         int i = 0;
-        ITextComponent ichatcomponent = (ITextComponent) new TextComponentString("");
-        List<ITextComponent> list = (List<ITextComponent>) new ArrayList<ITextComponent>();
+        ITextComponent ichatcomponent = new TextComponentString("");
+        List<ITextComponent> list = new ArrayList<>();
         List<ITextComponent> list2 = (List<ITextComponent>) Lists.newArrayList((Iterable)p_178908_0_);
         for (int j = 0; j < list2.size(); ++j) {
             ITextComponent ichatcomponent2 = list2.get(j);
@@ -242,7 +245,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                 s = s.substring(0, k + 1);
                 TextComponentString chatcomponenttext = new TextComponentString(s2);
                 chatcomponenttext.setStyle(ichatcomponent2.getStyle().createShallowCopy());
-                list2.add(j + 1, (ITextComponent) chatcomponenttext);
+                list2.add(j + 1, chatcomponenttext);
                 flag = true;
             }
             String s3 = GuiUtilRenderComponents.removeTextColorsIfConfigured(ichatcomponent2.getStyle().getFormattingCode() + s, false);
@@ -251,10 +254,10 @@ public abstract class MixinGuiNewChat extends MixinGui {
             TextComponentString chatcomponenttext2 = new TextComponentString(s4);
             chatcomponenttext2.setStyle(ichatcomponent2.getStyle().createShallowCopy());
             if (i + i2 > p_178908_1_) {
-                String s5 = Fonts.robotoBig.trimStringToWidth(s3, p_178908_1_ - i, false);
+                String s5 = Infinity.INSTANCE.fontManager.renderer.wrapWords(s3, p_178908_1_ - i).toString();
                 String s6 = (s5.length() < s3.length()) ? s3.substring(s5.length()) : null;
                 if (s6 != null && s6.length() > 0) {
-                    final int l = s5.lastIndexOf(" ");
+                    int l = s5.lastIndexOf(" ");
                     if (l >= 0 && Infinity.INSTANCE.fontManager.getStringWidth(s3.substring(0, l)) > 0.0) {
                         s5 = s3.substring(0, l);
                         s6 = s3.substring(l);
@@ -266,7 +269,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                     s6 = FontRenderer.getFormatFromString(s5) + s6;
                     TextComponentString chatcomponenttext3 = new TextComponentString(s6);
                     chatcomponenttext3.setStyle(ichatcomponent2.getStyle().createShallowCopy());
-                    list2.add(j + 1, (ITextComponent) chatcomponenttext3);
+                    list2.add(j + 1, chatcomponenttext3);
                 }
                 i2 = Infinity.INSTANCE.fontManager.getStringWidth(s5);
                 chatcomponenttext2 = new TextComponentString(s5);
@@ -275,7 +278,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
             }
             if (i + i2 <= p_178908_1_) {
                 i += (int)i2;
-                ichatcomponent.appendSibling((ITextComponent) chatcomponenttext2);
+                ichatcomponent.appendSibling(chatcomponenttext2);
             }
             else {
                 flag = true;
@@ -283,12 +286,13 @@ public abstract class MixinGuiNewChat extends MixinGui {
             if (flag) {
                 list.add(ichatcomponent);
                 i = 0;
-                ichatcomponent = (ITextComponent) new TextComponentString("");
+                ichatcomponent = new TextComponentString("");
             }
         }
         list.add(ichatcomponent);
         return list;
     }
+
 
 
 }

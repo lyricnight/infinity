@@ -4,7 +4,13 @@ import net.minecraft.client.gui.Gui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(Gui.class)
+/**
+ * @author lyric
+ * @apiNote used for MixinGuiNewChat customFont
+ */
+
+
+@Mixin( Gui.class )
 public abstract class MixinGui
 {
     @Shadow
