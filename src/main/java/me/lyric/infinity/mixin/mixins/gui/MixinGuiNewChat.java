@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
@@ -27,7 +28,9 @@ public class MixinGuiNewChat {
         } else {
             Gui.drawRect(left, top, right, bottom, color);
         }
+
     }
+
     @Redirect(method = {"setChatLine"}, at = @At(value = "INVOKE", target = "Ljava/util/List;size()I", ordinal = 0, remap = false))
     public int drawnChatLinesSize(List<ChatLine> list) {
         return Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).inf.getValue() ? -2147483647 : list.size();

@@ -4,7 +4,6 @@ import me.bush.eventbus.bus.EventBus;
 import me.bush.eventbus.handler.handlers.LambdaHandler;
 import me.lyric.infinity.api.util.gl.SplashProgress;
 import me.lyric.infinity.api.util.string.ClientFont;
-import me.lyric.infinity.api.util.string.Renderer;
 import me.lyric.infinity.manager.client.*;
 import me.lyric.infinity.manager.forge.ForgeEventManager;
 import net.minecraftforge.fml.common.Mod;
@@ -37,6 +36,8 @@ public class Infinity {
     public FriendManager friendManager;
     public ConfigManager configManager;
     public RotationManager rotationManager;
+
+    public FontManager fontManager;
 
     public static void startup() {
         ConfigManager.loadPlayer();
@@ -91,6 +92,8 @@ public class Infinity {
         this.placementManager = new PlacementManager();
         this.placementManager.init();
         LOGGER.info("PlacementManager initialised!");
+        this.fontManager = new FontManager();
+        LOGGER.info("FontManager initialised!");
         LOGGER.info("All Managers loaded successfully!");
         infinityFont = new ClientFont("Comfortaa-Regular", 17.0f);
         LOGGER.info("Infinity has set its font.");

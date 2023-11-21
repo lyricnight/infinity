@@ -50,10 +50,10 @@ public class SplashProgress implements IGlobals {
         GlStateManager.enableTexture2D();
 
         if (splash == null) {
-            splash = new ResourceLocation("textures/splash.png");
+            splash = new ResourceLocation("infinity/textures/splash.png");
         }
 
-//        textureManager.bindTexture(splash);
+
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, RenderUtils.loadGlTexture(splash));
 
         GlStateManager.resetColor();

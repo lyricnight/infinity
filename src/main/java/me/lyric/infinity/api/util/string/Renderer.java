@@ -26,7 +26,6 @@ public class Renderer extends CFont {
     public Renderer(Font font, boolean antiAlias, boolean fractionalMetrics) {
         super(font, antiAlias, fractionalMetrics);
         this.setupMinecraftColorcodes();
-        this.setupBoldItalicIDs();
     }
 
     public float drawStringWithShadow(String text, double x, double y, int color) {
@@ -292,25 +291,16 @@ public class Renderer extends CFont {
     @Override
     public void setFont(Font font) {
         super.setFont(font);
-        this.setupBoldItalicIDs();
     }
 
     @Override
     public void setAntiAlias(boolean antiAlias) {
         super.setAntiAlias(antiAlias);
-        this.setupBoldItalicIDs();
     }
 
     @Override
     public void setFractionalMetrics(boolean fractionalMetrics) {
         super.setFractionalMetrics(fractionalMetrics);
-        this.setupBoldItalicIDs();
-    }
-
-    private void setupBoldItalicIDs() {
-        this.texBold = this.setupTexture(this.font.deriveFont(1), this.antiAlias, this.fractionalMetrics, this.boldChars);
-        this.texItalic = this.setupTexture(this.font.deriveFont(2), this.antiAlias, this.fractionalMetrics, this.italicChars);
-        this.texBoth = this.setupTexture(this.font.deriveFont(3), this.antiAlias, this.fractionalMetrics, this.boldItalicChars);
     }
 
     private void drawLine(double x, double y, double x1, double y1) {

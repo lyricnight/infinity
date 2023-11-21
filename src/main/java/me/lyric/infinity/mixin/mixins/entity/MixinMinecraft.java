@@ -44,10 +44,10 @@ public abstract class MixinMinecraft implements IMinecraft {
     }
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 1, shift = At.Shift.AFTER))
     public void step1(CallbackInfo ci) {
-        SplashProgress.setProgress(2, "textures");
+        SplashProgress.setProgress(1, "textures");
     }
     @Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 2, shift = At.Shift.AFTER))
     public void step2(CallbackInfo ci) {
-        SplashProgress.setProgress(3, "Gui");
+        SplashProgress.setProgress(4, "Gui");
     }
 }

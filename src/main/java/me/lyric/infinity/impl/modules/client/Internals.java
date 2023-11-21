@@ -45,15 +45,8 @@ public class Internals extends Module {
         }
         if(cfont.getValue())
         {
-            setFonts();
+            Infinity.INSTANCE.fontManager.setFonts(size.getValue(), aalias.getValue(), frac.getValue());
         }
-    }
-
-    private void setFonts()
-    {
-        font = font.deriveFont(size.getValue());
-        font = font.deriveFont(0);
-        renderer = new Renderer(font, aalias.getValue(), frac.getValue());
     }
 
     public String getCommandMessage() {

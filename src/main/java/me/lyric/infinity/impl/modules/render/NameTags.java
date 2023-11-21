@@ -1,6 +1,7 @@
 package me.lyric.infinity.impl.modules.render;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import jdk.nashorn.internal.ir.IfNode;
 import me.bush.eventbus.annotation.EventListener;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.RenderNametagEvent;
@@ -138,7 +139,7 @@ public class NameTags extends Module {
         camera.posZ = interpolate(camera.prevPosZ, camera.posZ, delta);
         String displayTag = getDisplayTag(player);
         double distance = camera.getDistance(x + mc.getRenderManager().viewerPosX, y + mc.getRenderManager().viewerPosY, z + mc.getRenderManager().viewerPosZ);
-        int width = mc.fontRenderer.getStringWidth(displayTag) / 2;
+        int width = Infinity.INSTANCE.fontManager.getStringWidth(displayTag) / 2;
         double scale = (0.0018 + (double) scaling.getValue() * (distance * (double) factor.getValue())) / 1000.0;
         if (distance <= 8.0 && smartScale.getValue()) {
             scale = 0.0245;
@@ -159,9 +160,9 @@ public class NameTags extends Module {
         GlStateManager.enableBlend();
 
         if (rect.getValue()) {
-            drawRect(-width - 2, -(mc.fontRenderer.FONT_HEIGHT + 1), (float) width + 2.0f, 1.5f, Infinity.INSTANCE.friendManager.isFriend(player.getDisplayNameString()) ? friendtextColor.getValue().getRGB() : mainColor.getValue().getRGB());
+            drawRect(-width - 2, -(Infinity.INSTANCE.fontManager.getHeight(displayTag) + 1), (float) width + 2.0f, 1.5f, Infinity.INSTANCE.friendManager.isFriend(player.getDisplayNameString()) ? friendtextColor.getValue().getRGB() : mainColor.getValue().getRGB());
             if (outline.getValue()) {
-                drawOutlineRect((float) (-width - 2), (float) (-(mc.fontRenderer.FONT_HEIGHT + 1)), width + 2.0f, 1.5f, outlineColor.getValue().getRGB());
+                drawOutlineRect((float) (-width - 2), (float) (-(Infinity.INSTANCE.fontManager.getHeight(displayTag) + 1)), width + 2.0f, 1.5f, outlineColor.getValue().getRGB());
             }
         }
         GlStateManager.disableBlend();
@@ -171,7 +172,7 @@ public class NameTags extends Module {
             int stackNameWidth = mc.fontRenderer.getStringWidth(stackName) / 2;
             GL11.glPushMatrix();
             GL11.glScalef(0.75f, 0.75f, 0.0f);
-            mc.fontRenderer.drawStringWithShadow(stackName, -stackNameWidth, -(getBiggestArmorTag(player) + 20.0f), -1);
+            Infinity.INSTANCE.fontManager.drawString(stackName, -stackNameWidth, -(getBiggestArmorTag(player) + 20.0f), -1, true);
             GL11.glScalef(1.5f, 1.5f, 1.0f);
             GL11.glPopMatrix();
         }
@@ -221,7 +222,7 @@ public class NameTags extends Module {
                GlStateManager.popMatrix();
            }
         }
-        mc.fontRenderer.drawStringWithShadow(displayTag, -width, -(mc.fontRenderer.FONT_HEIGHT - 1), getDisplayColour(player));
+        Infinity.INSTANCE.fontManager.drawString(displayTag, -width, -(mc.fontRenderer.FONT_HEIGHT - 1), getDisplayColour(player), true);
         camera.posX = originalPositionX;
         camera.posY = originalPositionY;
         camera.posZ = originalPositionZ;
@@ -256,7 +257,7 @@ public class NameTags extends Module {
     private void renderEnchantmentText(ItemStack stack, int x, int y) {
         int enchantmentY = y - 8;
         if (stack.getItem() == Items.GOLDEN_APPLE && stack.hasEffect()) {
-            mc.fontRenderer.drawStringWithShadow("god", x * 2, enchantmentY, -3977919);
+            Infinity.INSTANCE.fontManager.drawString("god", x * 2, enchantmentY, -3977919, true);
             enchantmentY -= 8;
         }
         NBTTagList enchants = stack.getEnchantmentTagList();
@@ -267,7 +268,7 @@ public class NameTags extends Module {
             if (enc == null) continue;
             String encName = enc.isCurse() ? TextFormatting.RED + enc.getTranslatedName(level).substring(11).substring(0, 1).toLowerCase() : enc.getTranslatedName(level).substring(0, 1).toLowerCase();
             encName = encName + level;
-            mc.fontRenderer.drawStringWithShadow(encName, x * 2, enchantmentY, -1);
+            Infinity.INSTANCE.fontManager.drawString(encName, x * 2, enchantmentY, -1, true);
             enchantmentY -= 8;
         }
 
@@ -339,7 +340,6 @@ public class NameTags extends Module {
                 int responseTime = Objects.requireNonNull(mc.getConnection()).getPlayerInfo(player.getUniqueID()).getResponseTime();
                 pingStr = pingStr + responseTime + "ms ";
             } catch (Exception responseTime) {
-                //do i really need this?
                 responseTime.printStackTrace();
             }
         }

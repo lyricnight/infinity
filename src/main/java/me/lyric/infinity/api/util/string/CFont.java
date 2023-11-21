@@ -1,5 +1,6 @@
 package me.lyric.infinity.api.util.string;
 
+import me.lyric.infinity.Infinity;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import org.lwjgl.opengl.GL11;
 
@@ -31,6 +32,7 @@ public class CFont {
         }
         catch (Exception e) {
             e.printStackTrace();
+            Infinity.LOGGER.error(e.getCause());
             return null;
         }
     }
