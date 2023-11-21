@@ -45,6 +45,11 @@ public class Command {
         }
     }
 
+    /**
+     * override
+     * @param args the arguments in chat
+     */
+
     public void onCommand(String[] args) {
     }
 }

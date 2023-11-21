@@ -22,6 +22,7 @@
     "entity.MixinEntityPlayerSP",
     "entity.MixinEntityRenderer",
     "entity.MixinMinecraft",
+    "gui.MixinGui",
     "gui.MixinGuiIngame",
     "gui.MixinGuiNewChat",
     "network.MixinNetworkManager",
