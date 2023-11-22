@@ -67,6 +67,7 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
     }
 
 
+    @SuppressWarnings("UnresolvedMixinReference")
     @Redirect(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onSetupCameraTransform(float fovy, float aspect, float zNear, float zFar) {
         AspectEvent event = new AspectEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
@@ -74,6 +75,7 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 
+    @SuppressWarnings("UnresolvedMixinReference")
     @Redirect(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onRenderWorldPass(float fovy, float aspect, float zNear, float zFar) {
         AspectEvent event = new AspectEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);
@@ -81,6 +83,7 @@ public class MixinEntityRenderer implements IEntityRenderer, IGlobals {
         Project.gluPerspective(fovy, event.getAspect(), zNear, zFar);
     }
 
+    @SuppressWarnings("UnresolvedMixinReference")
     @Redirect(method = "renderCloudsCheck", at = @At(value = "INVOKE", target = "Lorg/lwjgl/util/glu/Project;gluPerspective(FFFF)V"))
     private void onRenderCloudsCheck(float fovy, float aspect, float zNear, float zFar) {
         AspectEvent event = new AspectEvent((float) this.mc.displayWidth / (float) this.mc.displayHeight);

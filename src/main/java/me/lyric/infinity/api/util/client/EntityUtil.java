@@ -62,8 +62,8 @@ public class EntityUtil implements IGlobals {
     public static double getEyeHeight(final Entity entity) {
         return entity.posY + entity.getEyeHeight();
     }
-    public static HoleUtil.Hole getTargetHoleVec3D(double targetRange) {
-        return HoleUtil.getHoles(targetRange, getPlayerPos(), false).stream().filter(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)) <= targetRange).min(Comparator.comparingDouble(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)))).orElse(null);
+    public static HoleUtil.Hole getTargetHoleVec3D(double targetRange, int deviation) {
+        return HoleUtil.getHoles(targetRange, getPlayerPos(), false).stream().filter(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)) <= targetRange).filter(hole -> mc.player.posY + deviation >= hole.pos1.getY()).min(Comparator.comparingDouble(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)))).orElse(null);
     }
     public static BlockPos getPlayerPos() {
         double decimalPoint = mc.player.posY - Math.floor(mc.player.posY);

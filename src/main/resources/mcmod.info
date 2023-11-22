@@ -3,14 +3,14 @@
     "modid": "infinity",
     "name": "Infinity",
     "description": "from london with love",
-    "version": "v4",
+    "version": "v5",
     "mcversion": "1.12.2-14.23.5.2768",
     "url": "",
     "updateUrl": "",
     "authorList": [
       "lyric"
     ],
-    "credits": "lyric, CPacketCustomPayload",
+    "credits": "lyric",
     "logoFile": "",
     "screenshots": [],
     "dependencies": []
