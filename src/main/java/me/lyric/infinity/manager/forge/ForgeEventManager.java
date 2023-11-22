@@ -1,7 +1,6 @@
 package me.lyric.infinity.manager.forge;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import jdk.nashorn.internal.ir.IfNode;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.event.render.Render3DEvent;
@@ -9,14 +8,13 @@ import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.impl.modules.client.Internals;
-import me.lyric.infinity.impl.modules.render.HoleESP;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.manager.client.CommandManager;
 import me.lyric.infinity.manager.client.ModuleManager;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -26,28 +24,18 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
 
-import java.util.concurrent.Executors;
-
 public class ForgeEventManager implements IGlobals {
 
-    public static ForgeEventManager forgeEventManager;
     public long frameTime;
     public long previous;
-    public ForgeEventManager() {
-        forgeEventManager = this;
 
-    }
-    public void init() {
-        MinecraftForge.EVENT_BUS.register(this);
-        Infinity.INSTANCE.eventBus.subscribe(this);
-    }
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onWorldRender(RenderWorldLastEvent event) {
         if (event.isCanceled()) {
             return;
         }
         Render3DEvent render3DEvent = new Render3DEvent(event.getPartialTicks());
-        Infinity.INSTANCE.eventBus.post(render3DEvent);
+        Infinity.eventBus.post(render3DEvent);
         frameTime = System.currentTimeMillis() - previous;
         previous = System.currentTimeMillis();
 
@@ -60,8 +48,7 @@ public class ForgeEventManager implements IGlobals {
 
     @SubscribeEvent
     public void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-        Infinity.INSTANCE.moduleManager.onLogout();
-
+        Managers.MODULES.onLogout();
     }
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Post event) {
@@ -87,43 +74,34 @@ public class ForgeEventManager implements IGlobals {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onUpdate(LivingEvent.LivingUpdateEvent event) {
         if (mc.player != null && mc.world != null && event.getEntity().getEntityWorld().isRemote && event.getEntityLiving().equals(mc.player)) {
-            Infinity.INSTANCE.moduleManager.onUpdate();
-            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).isDisabled())
+            Managers.MODULES.onUpdate();
+            if (Managers.MODULES.getModuleByClass(Internals.class).isDisabled())
             {
-                Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).enable();
+                Managers.MODULES.getModuleByClass(Internals.class).enable();
             }
         }
     }
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event){
-        boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
-        if(isOn)
-        {
-            Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
-
-        }
+        Managers.THREADS.threadDeath();
     }
     @SubscribeEvent()
     public void onTick(TickEvent.ClientTickEvent e)
     {
-        Infinity.INSTANCE.moduleManager.onTick();
+        Managers.MODULES.onTick();
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onDeath(LivingDeathEvent event){
         if (event.getEntity().equals(mc.player)){
-            boolean isOn = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
-            if(isOn)
-            {
-                Infinity.INSTANCE.threadManager.setExecutorService(Executors.newFixedThreadPool(2));
-            }
+            Managers.THREADS.threadDeath();
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onKeyInput(final InputEvent.KeyInputEvent event) {
         if(mc.player == null || mc.world == null) return;
-        Infinity.INSTANCE.moduleManager.getModules().stream().filter(module -> Keyboard.getEventKeyState() && module.bind.getValue().equals(Keyboard.getEventKey())).forEach(module -> {
+        Managers.MODULES.getModules().stream().filter(module -> Keyboard.getEventKeyState() && module.bind.getValue().equals(Keyboard.getEventKey())).forEach(module -> {
             if (module.isEnabled()) {
                 module.disable();
             }
@@ -136,10 +114,10 @@ public class ForgeEventManager implements IGlobals {
     public void onChat(ClientChatEvent event) {
         String message = event.getMessage();
 
-        if (message.startsWith(Infinity.INSTANCE.commandManager.getPrefix())) {
+        if (message.startsWith(Managers.COMMANDS.getPrefix())) {
             event.setCanceled(true);
 
-            String[] arguments = message.replaceFirst(Infinity.INSTANCE.commandManager.getPrefix(), "").split(" ");
+            String[] arguments = message.replaceFirst(Managers.COMMANDS.getPrefix(), "").split(" ");
 
             mc.ingameGUI.getChatGUI().addToSentMessages(message);
 
@@ -155,7 +133,7 @@ public class ForgeEventManager implements IGlobals {
                 }
             }
             if (!isCommand) {
-                ChatUtils.sendMessage(ChatFormatting.RED + "Unknown command. Try " + Infinity.INSTANCE.commandManager.getPrefix() + "commands for a list of available commands.");
+                ChatUtils.sendMessage(ChatFormatting.RED + "Unknown command. Try " + Managers.COMMANDS.getPrefix() + "commands for a list of available commands.");
             }
         }
     }

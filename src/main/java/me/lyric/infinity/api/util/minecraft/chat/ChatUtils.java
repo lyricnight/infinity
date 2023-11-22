@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.util.minecraft.chat;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentBase;
 import net.minecraft.util.text.TextComponentString;
@@ -27,25 +27,23 @@ public class ChatUtils implements IGlobals {
         if (mc.ingameGUI == null || mc.ingameGUI.getChatGUI() == null) {
             return;
         }
-        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(Infinity.INSTANCE.commandManager.getClientMessage() +" "+ message));
+        mc.ingameGUI.getChatGUI().printChatMessage(new TextComponentString(Managers.COMMANDS.getClientMessage() +" "+ message));
     }
 
     public static void sendOverwriteMessage(String message) {
         if (mc.ingameGUI == null) return;
-        String commandMessage = message;
-        mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(Infinity.INSTANCE.commandManager.getClientMessage() +" "+ commandMessage), 69);
+        mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new TextComponentString(Managers.COMMANDS.getClientMessage() +" "+ message), 69);
     }
 
     public static void sendMessageWithID(String message, int id) {
         if (mc.ingameGUI == null || mc.ingameGUI.getChatGUI() == null) {
             return;
         }
-        mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new ChatMessage(Infinity.INSTANCE.commandManager.getClientMessage() +" "+ message), id);
+        mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new ChatMessage(Managers.COMMANDS.getClientMessage() +" "+ message), id);
     }
 
 
-    public static class ChatMessage
-            extends TextComponentBase {
+    public static class ChatMessage extends TextComponentBase {
         private final String text;
 
         public ChatMessage(String text) {

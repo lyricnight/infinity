@@ -5,13 +5,8 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
-import me.lyric.infinity.api.setting.settings.BooleanSetting;
-import me.lyric.infinity.api.setting.settings.ModeSetting;
 import net.minecraft.network.play.client.CPacketChatMessage;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,6 +14,7 @@ import java.util.Objects;
  */
 @ModuleInformation(name = "ChatColours", description = "only for 2b2tpvp", category = Category.Misc)
 public class ChatColours extends Module {
+    //TODO: redo this whole ass module
     //public ModeSetting colour = createSetting("Colour", Color.Aqua);
     //public Setting<Modifier> modifier = createSetting("Modifier", Modifier.None);
     private final String[] disallowed = new String[] {".", "/", ",", "-"};

@@ -18,7 +18,7 @@ public abstract class MixinGuiIngame {
     @Inject(method = "renderAttackIndicator", at = @At("HEAD"), cancellable = true)
     protected void renderAttackIndicator(float partialTicks, ScaledResolution p_184045_2_, CallbackInfo ci) {
         final CrosshairEvent event = new CrosshairEvent();
-        Infinity.INSTANCE.eventBus.post(event);
+        Infinity.eventBus.post(event);
         if (event.isCancelled())
             ci.cancel();
     }

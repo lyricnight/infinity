@@ -2,13 +2,12 @@ package me.lyric.infinity.impl.modules.player;
 
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.math.Vec3d;
 
@@ -37,7 +36,7 @@ public class AutoReply extends Module {
                 if (mc.player.getName().equals(ign)) {
                     return;
                 }
-                if (Infinity.INSTANCE.friendManager.isFriend((ign))) {
+                if (Managers.FRIENDS.isFriend((ign))) {
                     String lowerCaseMsg = msg.toLowerCase();
                     if (lowerCaseMsg.contains("cord") || lowerCaseMsg.contains("coord") || lowerCaseMsg.contains("coords") || lowerCaseMsg.contains("cords") || lowerCaseMsg.contains("wya") || lowerCaseMsg.contains("where are you") || lowerCaseMsg.contains("where r u") || lowerCaseMsg.contains("where ru")) {
                         if (lowerCaseMsg.contains("discord") || lowerCaseMsg.contains("record")) {

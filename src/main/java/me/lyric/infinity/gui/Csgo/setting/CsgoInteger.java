@@ -7,6 +7,7 @@ import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.gui.Csgo.CsgoGui;
 import me.lyric.infinity.gui.Csgo.CsgoSetting;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
+import me.lyric.infinity.manager.Managers;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -37,9 +38,9 @@ public class CsgoInteger extends CsgoSetting
         else if (this.indicator > sliderWidth) {
             this.indicator = AnimationUtils.decreaseNumber(this.indicator, sliderWidth, (this.indicator - sliderWidth) / CsgoGui.getAnimationSpeedAccordingly(50));
         }
-        RenderUtils.rectangle(x + this.indicator - 1.0f, (float)this.y, x + this.indicator + 1.0f, (float)(this.y + this.height), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x + this.indicator - 1.0f, (float)this.y, x + this.indicator + 1.0f, (float)(this.y + this.height), (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
         final String string = this.setting.getName() + ": " + this.setting.getValue();
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(string, x + this.width / 2.0f - Infinity.INSTANCE.infinityFont.getStringWidth(string) / 2.0f, this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(string) / 2.0f, -1);
+        Infinity.infinityFont.drawStringWithShadow(string, x + this.width / 2.0f - Infinity.infinityFont.getStringWidth(string) / 2.0f, this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(string) / 2.0f, -1);
     }
     
     public float sliderWidthValue() {

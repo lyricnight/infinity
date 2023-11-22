@@ -11,7 +11,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -22,12 +21,8 @@ import java.util.Objects;
 public class PlacementManager implements IGlobals {
     private static List<BlockPos> tickCache;
 
-    public void init() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
-
     @SubscribeEvent
-    public void onUpdate(final TickEvent.ClientTickEvent event) {
+    public void onUpdate(TickEvent.ClientTickEvent event) {
         tickCache = new ArrayList<>();
     }
 

@@ -7,6 +7,7 @@ import me.lyric.infinity.api.util.gl.AnimationUtils;
 import me.lyric.infinity.api.util.gl.ImageUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -39,7 +40,7 @@ public class CsgoGui extends GuiScreen {
         scaleH = 0.0f;
         scaleY = 0.1f;
         deltaY = 0;
-        Infinity.INSTANCE.moduleManager.getCategories().forEach(category -> this.csgoCategories.add(new CsgoCategory((category), x + 1, deltaY += 22, 120, 20)));
+        Managers.MODULES.getCategories().forEach(category -> this.csgoCategories.add(new CsgoCategory((category), x + 1, deltaY += 22, 120, 20)));
         CsgoGui.category = Category.Combat;
         module = null;
     }
@@ -48,7 +49,7 @@ public class CsgoGui extends GuiScreen {
         Module module1;
         float x = (float)CsgoGui.x / scaleH;
         int i = (int)(x + 264.0f + currentModuleDif);
-        Iterator<Module> iterator = Infinity.INSTANCE.moduleManager.getModulesInCategory(category).iterator();
+        Iterator<Module> iterator = Managers.MODULES.getModulesInCategory(category).iterator();
         do {
             if (!iterator.hasNext()) return -69420;
             module1 = iterator.next();
@@ -58,7 +59,7 @@ public class CsgoGui extends GuiScreen {
     }
 
     public static float getAnimationSpeedAccordingly(int original) {
-        return (float)original / (25.0f / (26.0f - Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).scrollSpeed.getValue().floatValue()));
+        return (float)original / (25.0f / (26.0f - Managers.MODULES.getModuleByClass(ClickGUI.class).scrollSpeed.getValue().floatValue()));
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -85,7 +86,7 @@ public class CsgoGui extends GuiScreen {
         RenderUtils.rectangle(x, y, x + (float)width, y + (float)height, new Color(0x313131).getRGB());
         RenderUtils.outline(x, y, x + (float)width, y + (float)height, new Color(0x2C2C2C), 2.0f);
         RenderUtils.outline(x + 2.0f, y + 5.0f, x + (float)width - 2.0f, y + (float)height - 2.0f, new Color(0x2C2C2C), 2.0f);
-        RenderUtils.rectangle(x + 1.0f, y + 1.0f, x + (float)width - 1.0f, y + 2.0f, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
+        RenderUtils.rectangle(x + 1.0f, y + 1.0f, x + (float)width - 1.0f, y + 2.0f, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
         ImageUtils.image(new ResourceLocation("infinity/textures/icons/logo.png"), (int)(x + 14.0f), (int)(y + 4.0f), 100, 19);
         RenderUtils.rectangle(x + 7.0f, y + 23.0f, x + 118.0f, y + 24.0f, new Color(0x2C2C2C).getRGB());
         RenderUtils.prepareScissor((int)x + 2, (int)y, width, height);
@@ -115,7 +116,7 @@ public class CsgoGui extends GuiScreen {
         int i = (int)(x + 264.0f + currentModuleDif);
         int diff = this.getDiffModule(category, module);
         currentModuleDif = currentModuleDif < (float)diff ? AnimationUtils.increaseNumber(currentModuleDif, (float)diff, ((float)diff - currentModuleDif) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue() : AnimationUtils.decreaseNumber(currentModuleDif, (float)diff, (currentModuleDif - (float)diff) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
-        Iterator<Module> iterator = Infinity.INSTANCE.moduleManager.getModulesInCategory(category).iterator();
+        Iterator<Module> iterator = Managers.MODULES.getModulesInCategory(category).iterator();
         while (true) {
             if (!iterator.hasNext()) {
                 RenderUtils.releaseScissor();
@@ -123,13 +124,13 @@ public class CsgoGui extends GuiScreen {
             }
             Module module1 = iterator.next();
             String name = module1.name;
-            Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, (float)((i += 300) - 175) - Infinity.INSTANCE.infinityFont.getStringWidth(name) / 2.0f, y + 18.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
+            Infinity.infinityFont.drawStringWithShadow(name, (float)((i += 300) - 175) - Infinity.infinityFont.getStringWidth(name) / 2.0f, y + 18.0f - Infinity.infinityFont.getHeight(name) / 2.0f, -1);
         }
     }
 
     public int getDiffModule(Category category, Module module) {
         int i = -30;
-        for (Module module1 : Infinity.INSTANCE.moduleManager.getModulesInCategory(category)) {
+        for (Module module1 : Managers.MODULES.getModulesInCategory(category)) {
             if (module.equals(module1)) {
                 return i;
             }
@@ -146,7 +147,7 @@ public class CsgoGui extends GuiScreen {
         int diff = this.getDiff(category);
         currentCategoryImageXDiff = currentCategoryImageXDiff < (float)diff ? AnimationUtils.increaseNumber(currentCategoryImageXDiff, (float)diff, ((float)diff - currentCategoryImageXDiff) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue() : AnimationUtils.decreaseNumber(currentCategoryImageXDiff, (float)diff, (currentCategoryImageXDiff - (float)diff) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
         RenderUtils.prepareScissor((int)x + 126, (int)y + 8, 118, 20);
-        Iterator<Category> iterator = Infinity.INSTANCE.moduleManager.getCategories().iterator();
+        Iterator<Category> iterator = Managers.MODULES.getCategories().iterator();
         while (true) {
             if (!iterator.hasNext()) {
                 RenderUtils.releaseScissor();

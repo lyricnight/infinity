@@ -7,6 +7,8 @@ import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.IntegerSetting;
 import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.client.SpeedUtil;
+import me.lyric.infinity.impl.modules.movement.InstantSpeed;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.MathHelper;
 
@@ -32,6 +34,7 @@ public class Clip extends Module {
     @Override
     public void onDisable()
     {
+        Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = false;
         disableTime = 0;
     }
 
@@ -45,6 +48,7 @@ public class Clip extends Module {
             disable();
             return;
         }
+        Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = true;
         if (Objects.equals(mode.getValue(), "Corner"))
         {
             if (mc.world.getCollisionBoxes(mc.player, mc.player.getEntityBoundingBox().grow(0.01, 0, 0.01)).size() < 2) {

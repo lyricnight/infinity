@@ -1,24 +1,25 @@
 package me.lyric.infinity.mixin.mixins.gui;
 
 import com.google.common.collect.Lists;
-import jdk.nashorn.internal.ir.IfNode;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.gl.Stencil;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.impl.modules.client.Internals;
 import me.lyric.infinity.impl.modules.misc.BetterChat;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.Timer;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import org.lwjgl.opengl.GL11;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -62,7 +63,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
 
     @Redirect(method = {"drawChat"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiNewChat;drawRect(IIIII)V"))
     public void drawChatHook1(int left, int top, int right, int bottom, int color) {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).rect.getValue()) {
+        if (Managers.MODULES.getModuleByClass(BetterChat.class).isEnabled() && Managers.MODULES.getModuleByClass(BetterChat.class).rect.getValue()) {
             Gui.drawRect(left, top, right, bottom, 0);
         } else {
             Gui.drawRect(left, top, right, bottom, color);
@@ -72,18 +73,18 @@ public abstract class MixinGuiNewChat extends MixinGui {
 
     @Redirect(method = {"setChatLine"}, at = @At(value = "INVOKE", target = "Ljava/util/List;size()I", ordinal = 0, remap = false))
     public int drawnChatLinesSize(List<ChatLine> list) {
-        return Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).inf.getValue() ? -2147483647 : list.size();
+        return Managers.MODULES.getModuleByClass(BetterChat.class).isEnabled() && Managers.MODULES.getModuleByClass(BetterChat.class).inf.getValue() ? -2147483647 : list.size();
     }
 
     @Redirect(method = {"setChatLine"}, at = @At(value = "INVOKE", target = "Ljava/util/List;size()I", ordinal = 2, remap = false))
     public int chatLinesSize(List<ChatLine> list) {
-        return Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).inf.getValue() ? -2147483647 : list.size();
+        return Managers.MODULES.getModuleByClass(BetterChat.class).isEnabled() && Managers.MODULES.getModuleByClass(BetterChat.class).inf.getValue() ? -2147483647 : list.size();
     }
 
 
     @Inject(method = { "drawChat" }, at =  @At("HEAD"), cancellable = true)
     private void drawChat(final int updateCounter, final CallbackInfo ci) {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue()) {
+        if (Managers.MODULES.getModuleByClass(BetterChat.class).isEnabled() && Managers.MODULES.getModuleByClass(Internals.class).cfont.getValue()) {
             if (mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
                 ScaledResolution scaledresolution = new ScaledResolution(mc);
                 GL11.glPopMatrix();
@@ -93,7 +94,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                 boolean isChatOpen = false;
                 int j = 0;
                 int lineCount = this.drawnChatLines.size();
-                int fontHeight = Infinity.INSTANCE.fontManager.getHeight("exampletext");
+                int fontHeight = Managers.FONT.getHeight("exampletext");
                 if (lineCount > 0) {
                     if (getChatOpen()) {
                         isChatOpen = true;
@@ -123,7 +124,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                     if (render) {
                         Stencil.initStencil();
                         Stencil.bindWriteStencilBuffer();
-                        if (!Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).rect.getValue())
+                        if (!Managers.MODULES.getModuleByClass(BetterChat.class).rect.getValue())
                         {
                             RenderUtils.drawRoundedRect(x - 2.0f, y, x + scaledWidth + 4.0f, 1.0, 5.0, Color.white.getRGB());
                         }
@@ -135,7 +136,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                         GL11.glPushMatrix();
                         GlStateManager.translate(2.0f, 20.0f, 0.0f);
                         GlStateManager.scale(scale, scale, 1.0f);
-                        if (!Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).rect.getValue())
+                        if (!Managers.MODULES.getModuleByClass(BetterChat.class).rect.getValue())
                         {
                             RenderUtils.drawRoundedRect(x - 2.0f, y, x + scaledWidth + 4.0f, 1.0, 5.0, new Color(20, 20, 20, 60).getRGB());
 
@@ -151,7 +152,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                                 final int top = -i * fontHeight;
                                 final String text = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                Infinity.INSTANCE.fontManager.drawString(text, (float)left, (float)(top - (fontHeight - 2.3)), Color.white.getRGB(), true);
+                                Managers.FONT.drawString(text, (float)left, (float)(top - (fontHeight - 2.3)), Color.white.getRGB(), true);
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
@@ -162,7 +163,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                     }
                     if (isChatOpen) {
                         GlStateManager.translate(-3.0f, 0.0f, 0.0f);
-                        fontHeight = Infinity.INSTANCE.fontManager.getHeight("exampletext");
+                        fontHeight = Managers.FONT.getHeight("exampletext");
                         int l2 = lineCount * fontHeight + lineCount;
                         int i2 = j * fontHeight + j;
                         int j3 = this.scrollPos * i2 / lineCount;
@@ -197,7 +198,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
         float f = this.getChatScale();
         int j = p_146236_1_ / i - 3;
         int k = p_146236_2_ / i - 27;
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue() && Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled()) {
+        if (Managers.MODULES.getModuleByClass(Internals.class).cfont.getValue() && Managers.MODULES.getModuleByClass(BetterChat.class).isEnabled()) {
             k -= 12;
         }
         j = MathHelper.floor(j / f);
@@ -206,14 +207,14 @@ public abstract class MixinGuiNewChat extends MixinGui {
             return null;
         }
         int l = Math.min(this.getLineCount(), this.drawnChatLines.size());
-        if (j <= MathHelper.floor(this.getChatWidth() / this.getChatScale()) && k < Infinity.INSTANCE.fontManager.getHeight("Exampletext") * l + l) {
-            int i2 = k / Infinity.INSTANCE.fontManager.getHeight("Exampletext") + this.scrollPos;
+        if (j <= MathHelper.floor(this.getChatWidth() / this.getChatScale()) && k < Managers.FONT.getHeight("Exampletext") * l + l) {
+            int i2 = k / Managers.FONT.getHeight("Exampletext") + this.scrollPos;
             if (i2 >= 0 && i2 < this.drawnChatLines.size()) {
                 ChatLine chatline = this.drawnChatLines.get(i2);
                 int j2 = 0;
                 for (ITextComponent ichatcomponent : chatline.getChatComponent()) {
                     if (ichatcomponent instanceof TextComponentString) {
-                        j2 += (int)(Infinity.INSTANCE.fontManager.getStringWidth(GuiUtilRenderComponents.removeTextColorsIfConfigured(((TextComponentString)ichatcomponent).getText(), false)));
+                        j2 += (int)(Managers.FONT.getStringWidth(GuiUtilRenderComponents.removeTextColorsIfConfigured(((TextComponentString)ichatcomponent).getText(), false)));
                         if (j2 > j) {
                             return ichatcomponent;
                         }
@@ -227,7 +228,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
     }
     @Redirect(method = { "setChatLine" }, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiUtilRenderComponents;splitText(Lnet/minecraft/util/text/ITextComponent;ILnet/minecraft/client/gui/FontRenderer;ZZ)Ljava/util/List;"))
     private List<ITextComponent> onFunc(ITextComponent k, int s1, FontRenderer chatcomponenttext, boolean l, boolean chatcomponenttext2) {
-        return (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue() && Infinity.INSTANCE.moduleManager.getModuleByClass(BetterChat.class).isEnabled()) ? this.wrapToLen(k, s1, chatcomponenttext) : GuiUtilRenderComponents.splitText(k, s1, chatcomponenttext, l, chatcomponenttext2);
+        return (Managers.MODULES.getModuleByClass(Internals.class).cfont.getValue() && Managers.MODULES.getModuleByClass(BetterChat.class).isEnabled()) ? this.wrapToLen(k, s1, chatcomponenttext) : GuiUtilRenderComponents.splitText(k, s1, chatcomponenttext, l, chatcomponenttext2);
     }
 
     private List<ITextComponent> wrapToLen(ITextComponent p_178908_0_, int p_178908_1_, FontRenderer p_178908_2_) {
@@ -250,15 +251,15 @@ public abstract class MixinGuiNewChat extends MixinGui {
             }
             String s3 = GuiUtilRenderComponents.removeTextColorsIfConfigured(ichatcomponent2.getStyle().getFormattingCode() + s, false);
             String s4 = s3.endsWith("\n") ? s3.substring(0, s3.length() - 1) : s3;
-            double i2 = Infinity.INSTANCE.fontManager.getStringWidth(s4);
+            double i2 = Managers.FONT.getStringWidth(s4);
             TextComponentString chatcomponenttext2 = new TextComponentString(s4);
             chatcomponenttext2.setStyle(ichatcomponent2.getStyle().createShallowCopy());
             if (i + i2 > p_178908_1_) {
-                String s5 = Infinity.INSTANCE.fontManager.renderer.wrapWords(s3, p_178908_1_ - i).toString();
+                String s5 = Managers.FONT.renderer.wrapWords(s3, p_178908_1_ - i).toString();
                 String s6 = (s5.length() < s3.length()) ? s3.substring(s5.length()) : null;
                 if (s6 != null && s6.length() > 0) {
                     int l = s5.lastIndexOf(" ");
-                    if (l >= 0 && Infinity.INSTANCE.fontManager.getStringWidth(s3.substring(0, l)) > 0.0) {
+                    if (l >= 0 && Managers.FONT.getStringWidth(s3.substring(0, l)) > 0.0) {
                         s5 = s3.substring(0, l);
                         s6 = s3.substring(l);
                     }
@@ -271,7 +272,7 @@ public abstract class MixinGuiNewChat extends MixinGui {
                     chatcomponenttext3.setStyle(ichatcomponent2.getStyle().createShallowCopy());
                     list2.add(j + 1, chatcomponenttext3);
                 }
-                i2 = Infinity.INSTANCE.fontManager.getStringWidth(s5);
+                i2 = Managers.FONT.getStringWidth(s5);
                 chatcomponenttext2 = new TextComponentString(s5);
                 chatcomponenttext2.setStyle(ichatcomponent2.getStyle().createShallowCopy());
                 flag = true;

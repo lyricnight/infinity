@@ -6,6 +6,7 @@ import me.lyric.infinity.api.event.entity.LivingUpdateEvent;
 import me.lyric.infinity.api.event.player.MotionUpdateEvent;
 import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.impl.modules.render.Swing;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.MoverType;
@@ -33,13 +34,13 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
     @Override
     public void move(@NotNull MoverType type, double x, double y, double z) {
         MoveEvent event = new MoveEvent(type, x, y, z);
-        Infinity.INSTANCE.eventBus.post(event);
+        Infinity.eventBus.post(event);
         super.move(type, event.getMotionX(), event.getMotionY(), event.getMotionZ());
     }
     @Inject(method = "onUpdateWalkingPlayer", at = @At(value = "HEAD"), cancellable = true)
     private void onUpdateWalkingPlayerHead(CallbackInfo callbackInfo) {
         motionEvent = new MotionUpdateEvent(1, this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
-        Infinity.INSTANCE.eventBus.post(motionEvent);
+        Infinity.eventBus.post(motionEvent);
         if (motionEvent.isCancelled()) {
             callbackInfo.cancel();
         }
@@ -48,13 +49,13 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
     private void onUpdateWalkingPlayerReturn(CallbackInfo callbackInfo) {
         MotionUpdateEvent event = new MotionUpdateEvent(2, motionEvent);
         event.setCancelled(motionEvent.isCancelled());
-        Infinity.INSTANCE.eventBus.post(event);
+        Infinity.eventBus.post(event);
     }
 
     @Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;setSprinting(Z)V", ordinal = 2))
     public void onLivingUpdate(EntityPlayerSP entityPlayerSP, boolean sprinting) {
         LivingUpdateEvent livingUpdateEvent = new LivingUpdateEvent(entityPlayerSP, sprinting);
-        Infinity.INSTANCE.eventBus.post(livingUpdateEvent);
+        Infinity.eventBus.post(livingUpdateEvent);
 
         if (livingUpdateEvent.isCancelled())
             livingUpdateEvent.getEntityPlayerSP().setSprinting(true);
@@ -64,16 +65,16 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     @Inject(method = "swingArm" , at =  @At("HEAD") , cancellable = true)
     public void swingArm(EnumHand enumHand, CallbackInfo info) {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).isEnabled()) {
-            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).swing.getValue() == "Mainhand")
+        if (Managers.MODULES.getModuleByClass(Swing.class).isEnabled()) {
+            if (Managers.MODULES.getModuleByClass(Swing.class).swing.getValue() == "Mainhand")
             {
                 super.swingArm(EnumHand.MAIN_HAND);
             }
-            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).swing.getValue() == "Offhand")
+            if (Managers.MODULES.getModuleByClass(Swing.class).swing.getValue() == "Offhand")
             {
                 super.swingArm(EnumHand.OFF_HAND);
             }
-            if(Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).swing.getValue() == "None")
+            if(Managers.MODULES.getModuleByClass(Swing.class).swing.getValue() == "None")
             {
                 info.cancel();
                 return;

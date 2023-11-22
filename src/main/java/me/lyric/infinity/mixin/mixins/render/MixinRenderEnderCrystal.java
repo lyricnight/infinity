@@ -5,6 +5,7 @@ import me.lyric.infinity.api.event.render.crystal.CrystalTextureEvent;
 import me.lyric.infinity.api.event.render.crystal.RenderCrystalPostEvent;
 import me.lyric.infinity.api.event.render.crystal.RenderCrystalPreEvent;
 import me.lyric.infinity.impl.modules.render.CModifier;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -39,8 +40,8 @@ public class MixinRenderEnderCrystal {
     @Redirect(method = {"doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void doRender(ModelBase modelBase, Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         RenderCrystalPreEvent renderCrystalEvent = new RenderCrystalPreEvent(modelBase, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        Infinity.INSTANCE.eventBus.post(renderCrystalEvent);
-        if (!renderCrystalEvent.isCancelled() && Infinity.INSTANCE.moduleManager.getModuleByClass(CModifier.class).isDisabled()) {
+        Infinity.eventBus.post(renderCrystalEvent);
+        if (!renderCrystalEvent.isCancelled() && Managers.MODULES.getModuleByClass(CModifier.class).isDisabled()) {
             modelBase.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
         CrystalTextureEvent crystalTextureEvent = new CrystalTextureEvent();
@@ -50,16 +51,16 @@ public class MixinRenderEnderCrystal {
     @Inject(method = {"doRender(Lnet/minecraft/entity/item/EntityEnderCrystal;DDDFF)V"}, at = {@At(value = "RETURN")}, cancellable = true)
     public void doRender(EntityEnderCrystal entityEnderCrystal, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo info) {
         RenderCrystalPostEvent renderCrystalEvent = new RenderCrystalPostEvent(this.modelEnderCrystal, this.modelEnderCrystalNoBase, entityEnderCrystal, x, y, z, entityYaw, partialTicks);
-        Infinity.INSTANCE.eventBus.post(renderCrystalEvent);
-        if(Infinity.INSTANCE.moduleManager.getModuleByClass(CModifier.class).isEnabled())
+        Infinity.eventBus.post(renderCrystalEvent);
+        if(Managers.MODULES.getModuleByClass(CModifier.class).isEnabled())
         {
 
             Minecraft mc = Minecraft.getMinecraft();
             mc.gameSettings.fancyGraphics = false;
             GL11.glPushMatrix();
-            float i = Infinity.INSTANCE.moduleManager.getModuleByClass(CModifier.class).scale.getValue();
-            float j = Infinity.INSTANCE.moduleManager.getModuleByClass(CModifier.class).spinSpeed.getValue();
-            float k = Infinity.INSTANCE.moduleManager.getModuleByClass(CModifier.class).bounceFactor.getValue();
+            float i = Managers.MODULES.getModuleByClass(CModifier.class).scale.getValue();
+            float j = Managers.MODULES.getModuleByClass(CModifier.class).spinSpeed.getValue();
+            float k = Managers.MODULES.getModuleByClass(CModifier.class).bounceFactor.getValue();
             float mod1 = entityEnderCrystal.innerRotation + partialTicks;
             float mod2 = MathHelper.sin((mod1 * 0.2f)) / 2.0f + 0.5f;
             mod2 += mod2 * mod2;

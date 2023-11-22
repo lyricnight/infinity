@@ -1,11 +1,11 @@
 package me.lyric.infinity.impl.commands;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.manager.Managers;
 
 /**
  * @author lyric
@@ -37,15 +37,15 @@ public class ToggleCommand extends Command {
 
         boolean isModule = false;
 
-        for (Module modules : Infinity.INSTANCE.moduleManager.getModules()) {
+        for (Module modules : Managers.MODULES.getModules()) {
             if (modules.name.equalsIgnoreCase(module)) {
-                if (Infinity.INSTANCE.moduleManager.getModuleByString(module).isEnabled())
+                if (Managers.MODULES.getModuleByString(module).isEnabled())
                 {
-                    Infinity.INSTANCE.moduleManager.getModuleByString(module).disable();
+                    Managers.MODULES.getModuleByString(module).disable();
                 }
                 else
                 {
-                    Infinity.INSTANCE.moduleManager.getModuleByString(module).enable();
+                    Managers.MODULES.getModuleByString(module).enable();
                 }
                 isModule = true;
                 break;

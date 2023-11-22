@@ -4,7 +4,6 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.client.gui.GuiGameOver;

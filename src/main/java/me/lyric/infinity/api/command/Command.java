@@ -3,6 +3,7 @@ package me.lyric.infinity.api.command;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.manager.Managers;
 
 /**
  * @author lyric -_-
@@ -34,7 +35,7 @@ public class Command {
     public void splash(CommandState state) {
         switch (state) {
             case ERROR: {
-                ChatUtils.sendMessage(ChatFormatting.RED + "Invalid syntax. Try: '" + Infinity.INSTANCE.commandManager.getPrefix() + theCommand() + "'");
+                ChatUtils.sendMessage(ChatFormatting.RED + "Invalid syntax. Try: '" + Managers.COMMANDS.getPrefix() + theCommand() + "'");
 
                 break;
             }

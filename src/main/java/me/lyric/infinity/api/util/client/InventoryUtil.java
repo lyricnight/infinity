@@ -6,7 +6,6 @@ import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.inventory.ClickType;

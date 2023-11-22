@@ -1,6 +1,5 @@
 package me.lyric.infinity.impl.modules.client;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
@@ -10,6 +9,7 @@ import me.lyric.infinity.api.setting.settings.IntegerSetting;
 import me.lyric.infinity.api.setting.settings.StringSetting;
 import me.lyric.infinity.api.util.string.ChatFormat;
 import me.lyric.infinity.api.util.string.Renderer;
+import me.lyric.infinity.manager.Managers;
 
 import java.awt.*;
 import java.util.function.Predicate;
@@ -38,14 +38,14 @@ public class Internals extends Module {
 
     @Override
     public void onUpdate() {
-        Infinity.INSTANCE.commandManager.setClientMessage(getCommandMessage());
+        Managers.COMMANDS.setClientMessage(getCommandMessage());
         if(fov.getValue())
         {
             mc.gameSettings.fovSetting = fovslider.getValue();
         }
         if(cfont.getValue())
         {
-            Infinity.INSTANCE.fontManager.setFonts(size.getValue(), aalias.getValue(), frac.getValue());
+            Managers.FONT.setFonts(size.getValue(), aalias.getValue(), frac.getValue());
         }
     }
 

@@ -24,15 +24,15 @@ public class CsgoString extends CsgoSetting
     
     public void drawScreen(final int mouseX, final int mouseY) {
         final String name = this.setting.getName();
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, (float)(this.x + 1), this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
+        Infinity.infinityFont.drawStringWithShadow(name, (float)(this.x + 1), this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, -1);
         this.settingString = (this.setting.isOpen ? (this.setting.getValue() + this.getTypingIcon()) : this.setting.getValue());
-        RenderUtils.rectangle(this.x + this.width - 4 - Infinity.INSTANCE.infinityFont.getStringWidth(this.settingString), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(0, 0, 0, this.isInsideBox(mouseX, mouseY) ? 40 : 20).getRGB());
-        RenderUtils.outline(this.x + this.width - 4 - Infinity.INSTANCE.infinityFont.getStringWidth(this.settingString), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(2894892), 1.0f);
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(this.settingString, this.x + this.width - 4 - Infinity.INSTANCE.infinityFont.getStringWidth(this.settingString) + (Infinity.INSTANCE.infinityFont.getStringWidth(this.settingString) + 2.0f) / 2.0f - Infinity.INSTANCE.infinityFont.getStringWidth(this.settingString) / 2.0f, this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(this.settingString) / 2.0f, -1);
+        RenderUtils.rectangle(this.x + this.width - 4 - Infinity.infinityFont.getStringWidth(this.settingString), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(0, 0, 0, this.isInsideBox(mouseX, mouseY) ? 40 : 20).getRGB());
+        RenderUtils.outline(this.x + this.width - 4 - Infinity.infinityFont.getStringWidth(this.settingString), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(2894892), 1.0f);
+        Infinity.infinityFont.drawStringWithShadow(this.settingString, this.x + this.width - 4 - Infinity.infinityFont.getStringWidth(this.settingString) + (Infinity.infinityFont.getStringWidth(this.settingString) + 2.0f) / 2.0f - Infinity.infinityFont.getStringWidth(this.settingString) / 2.0f, this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(this.settingString) / 2.0f, -1);
     }
     
     public boolean isInsideBox(final int mouseX, final int mouseY) {
-        return mouseX > this.x + this.width - 4 - Infinity.INSTANCE.infinityFont.getStringWidth(this.settingString) && mouseX < this.x + this.width - 2 && mouseY > this.y + 4 && mouseY < this.y + this.height - 4;
+        return mouseX > this.x + this.width - 4 - Infinity.infinityFont.getStringWidth(this.settingString) && mouseX < this.x + this.width - 2 && mouseY > this.y + 4 && mouseY < this.y + this.height - 4;
     }
     
     public void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) {

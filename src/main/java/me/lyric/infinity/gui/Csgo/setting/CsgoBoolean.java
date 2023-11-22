@@ -5,6 +5,7 @@ import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.gui.Csgo.CsgoSetting;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
+import me.lyric.infinity.manager.Managers;
 
 import java.awt.*;
 
@@ -19,10 +20,10 @@ public class CsgoBoolean extends CsgoSetting
     
     public void drawScreen(final int mouseX, final int mouseY) {
         final String name = this.setting.getName();
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, (float)(this.x + 1), this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
+        Infinity.infinityFont.drawStringWithShadow(name, (float)(this.x + 1), this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, -1);
         RenderUtils.rectangle((float)(this.x + this.width - 18), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(0, 0, 0, this.isInsideBox(mouseX, mouseY) ? 40 : 20).getRGB());
         final String value = this.setting.getValue() ? "On" : "Off";
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(value, this.x + this.width - 10.0f - Infinity.INSTANCE.infinityFont.getStringWidth(value) / 2.0f, this.y + 2 + (this.height - 2) / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, (this.setting.getValue()) ? (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB() : -1);
+        Infinity.infinityFont.drawStringWithShadow(value, this.x + this.width - 10.0f - Infinity.infinityFont.getStringWidth(value) / 2.0f, this.y + 2 + (this.height - 2) / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, (this.setting.getValue()) ? (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB() : -1);
         RenderUtils.outline((float)(this.x + this.width - 18), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(2894892), 1.0f);
     }
     

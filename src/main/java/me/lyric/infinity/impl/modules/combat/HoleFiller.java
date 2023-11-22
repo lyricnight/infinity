@@ -1,7 +1,6 @@
 package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
@@ -14,10 +13,11 @@ import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.client.HoleUtil;
 import me.lyric.infinity.api.util.client.InventoryUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
-import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.minecraft.rotation.Rotation;
+import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.impl.modules.movement.InstantSpeed;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.manager.client.PlacementManager;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.block.BlockObsidian;
@@ -89,7 +89,7 @@ public class HoleFiller extends Module
         }
         int blocksPlaced = 0;
         if (timer.passedMs(delay.getValue())) {
-            getHoles();
+            loadHoles();
             if (holes == null || holes.isEmpty()) {
                 if (disableAfter.getValue()) {
                     ChatUtils.sendMessage(ChatFormatting.BOLD + "All holes filled, disabling HoleFiller...");
@@ -97,13 +97,13 @@ public class HoleFiller extends Module
                 }
                 return;
             }
-            final int oldSlot = mc.player.inventory.currentItem;
-            final int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
-            final int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
+            int oldSlot = mc.player.inventory.currentItem;
+            int blockSlot = InventoryUtil.findHotbarBlock(BlockObsidian.class);
+            int chestSlot = InventoryUtil.findHotbarBlock(BlockEnderChest.class);
             int slot = (blockSlot == -1 ? chestSlot : blockSlot);
             boolean switched = false;
-            for (final HoleUtil.Hole hole : holes) {
-                Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
+            for (HoleUtil.Hole hole : holes) {
+                Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = true;
                 if (!switched) {
                     Switch.doSwitch(slot, switchMode.getValue());
                     switched = true;
@@ -119,7 +119,7 @@ public class HoleFiller extends Module
                     break;
                 }
             }
-            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
+            Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = false;
             if (switchMode.getValue() == "Slot")
             {
                 Switch.switchBackAlt(slot);
@@ -130,11 +130,6 @@ public class HoleFiller extends Module
             }
             timer.reset();
         }
-    }
-
-
-    public void getHoles() {
-        loadHoles();
     }
     public static boolean isBurrow(EntityPlayer target) {
         if(mc.world == null || mc.player == null || target == null)

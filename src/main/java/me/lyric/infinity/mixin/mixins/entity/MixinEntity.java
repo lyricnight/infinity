@@ -1,8 +1,8 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.render.NoRender;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.mixin.mixins.accessors.IEntity;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +18,7 @@ public abstract class MixinEntity implements IEntity, IGlobals {
     {
         if (mc.player != null && mc.world != null)
         {
-            cir.setReturnValue(Infinity.INSTANCE.moduleManager.getModuleByClass(NoRender.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(NoRender.class).sneak.getValue());
+            cir.setReturnValue(Managers.MODULES.getModuleByClass(NoRender.class).isEnabled() && Managers.MODULES.getModuleByClass(NoRender.class).sneak.getValue());
         }
     }
 }

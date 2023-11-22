@@ -7,6 +7,7 @@ import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.gui.Csgo.CsgoGui;
 import me.lyric.infinity.gui.Csgo.CsgoSetting;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
+import me.lyric.infinity.manager.Managers;
 
 import java.awt.*;
 
@@ -30,8 +31,8 @@ public class CsgoMode extends CsgoSetting
         RenderUtils.outline((float)(this.x + 1), (float)(this.y + 1), (float)(this.x + this.width - 1), (float)(this.y + this.height - 1), new Color(2894892), 1.0f);
         RenderUtils.drawArrow((float)(this.x + this.width - 10), this.y + this.height / 2.0f + 2.0f, 5.0f, 1.0f, 20.0f, 1.0f);
         final String name = this.setting.getName() + ":";
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, (float)(this.x + 1), this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(this.setting.getValue(), this.x + Infinity.INSTANCE.infinityFont.getStringWidth(name + " ") + 1.0f, this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        Infinity.infinityFont.drawStringWithShadow(name, (float)(this.x + 1), this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, -1);
+        Infinity.infinityFont.drawStringWithShadow(this.setting.getValue(), this.x + Infinity.infinityFont.getStringWidth(name + " ") + 1.0f, this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
         final int j = this.setting.modes.stream().mapToInt(string -> this.height + 1).sum();
         if (this.isOpened) {
             this.extendedAmount = AnimationUtils.increaseNumber(this.extendedAmount, (float)(j + 5), (j + 5 - this.extendedAmount) / CsgoGui.getAnimationSpeedAccordingly(100));
@@ -49,7 +50,7 @@ public class CsgoMode extends CsgoSetting
                 final boolean inside = mouseX > this.x + 1 && mouseX < this.x + this.width - 1 && mouseY > i && mouseY < i + this.height;
                 RenderUtils.rectangle((float)(this.x + 2), (float)i, (float)(this.x + this.width - 2), (float)(i + this.height), new Color(0, 0, 0, inside ? 40 : 20).getRGB());
                 RenderUtils.outline((float)(this.x + 2), (float)i, (float)(this.x + this.width - 2), (float)(i + this.height), new Color(2894892), 1.0f);
-                Infinity.INSTANCE.infinityFont.drawStringWithShadow(string, (float)(this.x + 3), i + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(string) / 2.0f, (this.setting.getValue()).equals(string) ? (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB() : -1);
+                Infinity.infinityFont.drawStringWithShadow(string, (float)(this.x + 3), i + this.height / 2.0f - Infinity.infinityFont.getHeight(string) / 2.0f, (this.setting.getValue()).equals(string) ? (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB() : -1);
             }
             RenderUtils.releaseScissor();
         }

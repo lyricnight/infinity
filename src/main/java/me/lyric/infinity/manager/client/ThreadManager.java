@@ -10,7 +10,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ThreadManager {
-    //TODO: need to fix this by implementing threadDeathEvent
     public ExecutorService executorService;
 
     public static ScheduledExecutorService newDaemonScheduledExecutor(String name) {
@@ -33,6 +32,11 @@ public class ThreadManager {
         } catch (Exception e){
             Infinity.LOGGER.error("Error in thread executor!" + " " + e.getMessage());
         }
+    }
+
+    public void threadDeath()
+    {
+        setExecutorService(Executors.newFixedThreadPool(2));
     }
 
     public void setExecutorService(ExecutorService executorService) {

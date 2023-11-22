@@ -6,7 +6,6 @@ import me.lyric.infinity.api.event.render.AspectEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.FloatSetting;
 
 import java.text.DecimalFormat;

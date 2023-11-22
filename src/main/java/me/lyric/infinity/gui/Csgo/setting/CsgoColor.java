@@ -211,15 +211,15 @@ public class CsgoColor extends CsgoSetting implements IGlobals
             ex.printStackTrace();
         }
         RenderUtils.outline((float)(this.x + this.width - 12), (float)(this.y + 1), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), Color.BLACK, 0.1f);
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(this.setting.getName(), (float)this.x, (float)this.y, -1);
+        Infinity.infinityFont.drawStringWithShadow(this.setting.getName(), (float)this.x, (float)this.y, -1);
         if (this.setting.isOpen) {
             this.drawPicker(this.setting, this.x, this.y + 15, this.x, this.y + 103, this.x, this.y + 93, mouseX, mouseY);
             RenderUtils.rectangle((float)this.x, (float)(this.y + 111), this.x + 41.0f - 1.0f, (float)(this.y + 121), new Color(0, 0, 0, 20).getRGB());
             RenderUtils.rectangle(this.x + 41.0f + 1.0f, (float)(this.y + 111), (float)(this.x + 93), (float)(this.y + 121), new Color(0, 0, 0, 20).getRGB());
             RenderUtils.outline((float)this.x, (float)(this.y + 111), this.x + 41.0f - 1.0f, (float)(this.y + 121), new Color(2894892), 1.0f);
             RenderUtils.outline(this.x + 41.0f + 1.0f, (float)(this.y + 111), (float)(this.x + 93), (float)(this.y + 121), new Color(2894892), 1.0f);
-            Infinity.INSTANCE.infinityFont.drawStringWithShadow("Copy", this.x + 20.5f - Infinity.INSTANCE.infinityFont.getStringWidth("Copy") / 2.0f, (float)(this.y + 112), this.isInsideCopy(mouseX, mouseY) ? new Color(128, 128, 128, 255).getRGB() : -1);
-            Infinity.INSTANCE.infinityFont.drawStringWithShadow("Paste", this.x + 61.5f - Infinity.INSTANCE.infinityFont.getStringWidth("Paste") / 2.0f, (float)(this.y + 112), this.isInsidePaste(mouseX, mouseY) ? new Color(128, 128, 128, 255).getRGB() : -1);
+            Infinity.infinityFont.drawStringWithShadow("Copy", this.x + 20.5f - Infinity.infinityFont.getStringWidth("Copy") / 2.0f, (float)(this.y + 112), this.isInsideCopy(mouseX, mouseY) ? new Color(128, 128, 128, 255).getRGB() : -1);
+            Infinity.infinityFont.drawStringWithShadow("Paste", this.x + 61.5f - Infinity.infinityFont.getStringWidth("Paste") / 2.0f, (float)(this.y + 112), this.isInsidePaste(mouseX, mouseY) ? new Color(128, 128, 128, 255).getRGB() : -1);
             this.setting.setValue(this.finalColor);
         }
     }

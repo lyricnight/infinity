@@ -1,9 +1,9 @@
 package me.lyric.infinity.impl.commands;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.util.string.StringUtils;
+import me.lyric.infinity.manager.Managers;
 
 /**
  * @author lyric :((
@@ -41,12 +41,12 @@ public class FriendCommand extends Command {
         }
         if (StringUtils.contains(task, "add"))
         {
-            Infinity.INSTANCE.friendManager.addFriend(friend);
+            Managers.FRIENDS.addFriend(friend);
             this.splash(CommandState.PERFORMED);
         }
         if (StringUtils.contains(task, "del"))
         {
-            Infinity.INSTANCE.friendManager.removeFriend(friend);
+            Managers.FRIENDS.removeFriend(friend);
             this.splash(CommandState.PERFORMED);
         }
 

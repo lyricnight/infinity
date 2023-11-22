@@ -5,6 +5,7 @@ import me.lyric.infinity.api.util.client.EntityUtil;
 import me.lyric.infinity.api.util.gl.Interpolation;
 import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPacketPlayer;
@@ -60,7 +61,7 @@ public class RotationUtil implements IGlobals {
     }
 
     public static float[] smoothen(float[] rotations, double maxAngle) {
-        float[] server = {Infinity.INSTANCE.rotationManager.getYaw(), Infinity.INSTANCE.rotationManager.getYaw()};
+        float[] server = {Managers.ROTATIONS.getYaw(), Managers.ROTATIONS.getYaw()};
         return smoothen(server, rotations, maxAngle);
     }
 
@@ -139,7 +140,7 @@ public class RotationUtil implements IGlobals {
                 break;
             }
             case "Normal": {
-                Infinity.INSTANCE.rotationManager.setRotations(angles[0], angles[1]);
+                Managers.ROTATIONS.setRotations(angles[0], angles[1]);
                 break;
             }
         }

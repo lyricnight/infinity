@@ -2,6 +2,7 @@ package me.lyric.infinity.api.setting.settings;
 
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.setting.Setting;
+
 import java.util.List;
 import java.util.function.Predicate;
 

@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.util.minecraft.rotation;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -27,8 +27,8 @@ public class Rotation implements IGlobals {
                     mc.player.renderYawOffset = this.yaw;
                     mc.player.rotationYawHead = this.yaw;
                     mc.player.rotationPitch = this.pitch;
-                    Infinity.INSTANCE.rotationManager.setYaw(this.yaw);
-                    Infinity.INSTANCE.rotationManager.setPitch(this.pitch);
+                    Managers.ROTATIONS.setYaw(this.yaw);
+                    Managers.ROTATIONS.setPitch(this.pitch);
                     break;
                 case CLIENT:
                     mc.player.rotationYaw = this.yaw;

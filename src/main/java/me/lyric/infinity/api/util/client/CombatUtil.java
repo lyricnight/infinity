@@ -1,7 +1,7 @@
 package me.lyric.infinity.api.util.client;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class CombatUtil implements IGlobals {
     public static EntityPlayer getTarget(final double targetRange) {
-        return (EntityPlayer) mc.world.getLoadedEntityList().stream().filter(Objects::nonNull).filter(entity -> entity instanceof EntityPlayer).filter(CombatUtil::isAlive).filter(entity -> !entity.getName().equals(mc.player.getName())).filter(entity -> entity.getEntityId() != mc.player.getEntityId()).filter(entity -> !Infinity.INSTANCE.friendManager.isFriend(((EntityPlayer) entity).getDisplayNameString())).filter(entity -> mc.player.getDistance(entity) <= targetRange).min(Comparator.comparingDouble(entity -> mc.player.getDistance(entity))).orElse(null);
+        return (EntityPlayer) mc.world.getLoadedEntityList().stream().filter(Objects::nonNull).filter(entity -> entity instanceof EntityPlayer).filter(CombatUtil::isAlive).filter(entity -> !entity.getName().equals(mc.player.getName())).filter(entity -> entity.getEntityId() != mc.player.getEntityId()).filter(entity -> !Managers.FRIENDS.isFriend(((EntityPlayer) entity).getDisplayNameString())).filter(entity -> mc.player.getDistance(entity) <= targetRange).min(Comparator.comparingDouble(entity -> mc.player.getDistance(entity))).orElse(null);
     }
 
     public static boolean isAlive(final Entity entity) {

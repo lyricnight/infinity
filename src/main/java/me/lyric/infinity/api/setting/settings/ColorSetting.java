@@ -1,6 +1,7 @@
 package me.lyric.infinity.api.setting.settings;
 
 import me.lyric.infinity.api.setting.Setting;
+
 import java.awt.*;
 import java.util.function.Predicate;
 

@@ -2,7 +2,6 @@ package me.lyric.infinity.manager.client;
 
 import me.bush.eventbus.annotation.EventListener;
 import me.bush.eventbus.annotation.ListenerPriority;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.player.MotionUpdateEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 
@@ -16,12 +15,6 @@ public class RotationManager implements IGlobals {
     private int ticksSinceNoRotate;
     private double x, y, z;
     private boolean onGround;
-
-    public void init()
-    {
-        Infinity.INSTANCE.eventBus.subscribe(this);
-    }
-
     @EventListener(priority = ListenerPriority.HIGHEST)
     public void onMotionUpdate(MotionUpdateEvent event)
     {

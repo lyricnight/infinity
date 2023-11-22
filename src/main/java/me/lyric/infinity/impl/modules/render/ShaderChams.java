@@ -21,7 +21,6 @@ import net.minecraft.util.ReportedException;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
 import java.util.Arrays;
 
 /**
@@ -30,6 +29,8 @@ import java.util.Arrays;
 
 @ModuleInformation(name = "ShaderChams", description = "mid", category = Category.Render)
 public class ShaderChams extends Module {
+
+    //todo: delete this.
 
     public BooleanSetting players = createSetting("Players",  true);
     public BooleanSetting crystals = createSetting("Crystals",  true);
@@ -50,7 +51,7 @@ public class ShaderChams extends Module {
 
     // Shader ESP Framebuffer.
     public FramebufferShader framebuffer = null;
-    // Nametags variable due to bug with Shader ESP. (This fixes it.) TODO: Find a better way?
+    // Nametags variable due to bug with Shader ESP. (This fixes it.)
     boolean renderNametags;
 
     //try-catch heaven

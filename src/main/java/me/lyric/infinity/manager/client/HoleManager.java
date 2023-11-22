@@ -1,12 +1,12 @@
 package me.lyric.infinity.manager.client;
 
 import me.bush.eventbus.annotation.EventListener;
-import me.bush.eventbus.annotation.ListenerPriority;
 import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.render.Render3DEvent;
 import me.lyric.infinity.api.util.client.BlockUtil;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.render.HoleESP;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -16,11 +16,6 @@ import java.util.stream.Collectors;
 
 public class HoleManager implements IGlobals {
     public ArrayList<HolePos> holes = new ArrayList<>();
-
-    public void init()
-    {
-        Infinity.INSTANCE.eventBus.subscribe(this);
-    }
     public Vec3i[] Hole = {
             new Vec3i(1, 0, 0),
             new Vec3i(-1, 0, 0),
@@ -51,16 +46,16 @@ public class HoleManager implements IGlobals {
 
     @EventListener
     public void onRender3D(Render3DEvent event) {
-        boolean enable = Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).isEnabled();
+        boolean enable = Managers.MODULES.getModuleByClass(HoleESP.class).isEnabled();
         if (enable)
         {
-            Infinity.INSTANCE.threadManager.run(() -> holes = getHoles());
+            Managers.THREADS.run(() -> holes = getHoles());
         }
     }
 
     public ArrayList<HolePos> getHoles() {
         final ArrayList<HolePos> holes = new ArrayList<>();
-        for (final BlockPos pos : BlockUtil.getBlocksInRadius(Infinity.INSTANCE.moduleManager.getModuleByClass(HoleESP.class).radius.getValue().intValue(), false, 0).stream().filter(blockPos -> this.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)).collect(Collectors.toList())) {
+        for (final BlockPos pos : BlockUtil.getBlocksInRadius(Managers.MODULES.getModuleByClass(HoleESP.class).radius.getValue().intValue(), false, 0).stream().filter(blockPos -> this.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)).collect(Collectors.toList())) {
             if (this.isEnterable(pos)) {
                 boolean isSafe = true;
                 for (final Vec3i vec3i : this.Hole) {

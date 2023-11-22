@@ -6,7 +6,6 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.IntegerSetting;
 import me.lyric.infinity.manager.client.ThreadManager;
 import me.lyric.infinity.mixin.transformer.INetworkManager;

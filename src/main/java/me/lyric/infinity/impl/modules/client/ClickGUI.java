@@ -13,7 +13,7 @@ import java.awt.*;
 
 @ModuleInformation(name = "ClickGUI", description = "what do you think", category = Category.Client)
 public class ClickGUI extends Module {
-    public IntegerSetting scrollSpeed = createSetting("ScrollSpeed", 5, 1, 20);
+    public IntegerSetting scrollSpeed = createSetting("ScrollSpeed", 5, 1, 50);
 
     public FloatSetting animationSpeed = createSetting("AnimationSpeed", 5.0f, 0.0f, 25.0f);
 

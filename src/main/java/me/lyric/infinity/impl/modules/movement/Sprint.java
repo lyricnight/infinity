@@ -7,7 +7,6 @@ import me.lyric.infinity.api.event.player.MoveEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.ModeSetting;
 

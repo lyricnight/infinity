@@ -1,10 +1,10 @@
 package me.lyric.infinity.manager.client;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.*;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
+import me.lyric.infinity.manager.Managers;
 
 import java.awt.*;
 import java.io.*;
@@ -74,7 +74,7 @@ public class ConfigManager implements IGlobals {
                 file.createNewFile();
             }
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            bufferedWriter.write(Infinity.INSTANCE.commandManager.getPrefix());
+            bufferedWriter.write(Managers.COMMANDS.getPrefix());
             bufferedWriter.close();
         }
         catch (Exception exception) {
@@ -142,7 +142,7 @@ public class ConfigManager implements IGlobals {
                 file.createNewFile();
             }
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            for (FriendManager.FriendPlayer friendPlayer : Infinity.INSTANCE.friendManager.friendList) {
+            for (FriendManager.FriendPlayer friendPlayer : Managers.FRIENDS.friendList) {
                 bufferedWriter.write(friendPlayer.getName());
                 bufferedWriter.write("\r\n");
             }
@@ -162,7 +162,7 @@ public class ConfigManager implements IGlobals {
             FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
             DataInputStream dataInputStream = new DataInputStream(fileInputStream);
             BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
-            bufferReader.lines().forEach(line -> Infinity.INSTANCE.friendManager.addFriend(line));
+            bufferReader.lines().forEach(Managers.FRIENDS::addFriend);
             bufferReader.close();
         }
         catch (Exception exception) {
@@ -172,7 +172,7 @@ public class ConfigManager implements IGlobals {
 
     public static void saveModuleFile() {
         try {
-            for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+            for (Module module : Managers.MODULES.getModules()) {
                 File file;
                 File categoryPath = new File(path + File.separator + module.category.toString());
                 if (!categoryPath.exists()) {
@@ -209,7 +209,7 @@ public class ConfigManager implements IGlobals {
     }
 
     public static void setModuleValue() {
-        for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+        for (Module module : Managers.MODULES.getModules()) {
             try {
                 File file;
                 File categoryPath = new File(path + File.separator + module.category.toString());
@@ -237,7 +237,7 @@ public class ConfigManager implements IGlobals {
     }
 
     public static void setModuleBind() {
-        for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+        for (Module module : Managers.MODULES.getModules()) {
             try {
                 File file;
                 File categoryPath = new File(path + File.separator + module.category.toString());
@@ -264,7 +264,7 @@ public class ConfigManager implements IGlobals {
     }
 
     public static void setModuleSettingValues() {
-        for (Module module : Infinity.INSTANCE.moduleManager.getModules()) {
+        for (Module module : Managers.MODULES.getModules()) {
             try {
                 File file;
                 File categoryPath = new File(path.getAbsolutePath() + File.separator + module.category.toString());

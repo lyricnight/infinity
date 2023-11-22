@@ -5,6 +5,8 @@ import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.manager.Managers;
+import me.lyric.infinity.manager.client.CommandManager;
 
 /**
  * @author lyric
@@ -35,7 +37,7 @@ public class PrefixCommand extends Command {
             return;
         }
 
-        Infinity.INSTANCE.commandManager.setPrefix(character);
+        CommandManager.setPrefix(character);
 
         ChatUtils.sendMessage("Prefix changed to " + ChatFormatting.WHITE + character);
 

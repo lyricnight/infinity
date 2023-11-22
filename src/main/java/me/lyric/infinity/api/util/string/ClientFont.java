@@ -3,9 +3,9 @@ package me.lyric.infinity.api.util.string;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.StringUtils;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
-import net.minecraft.util.StringUtils;
 
 import java.awt.*;
 import java.io.IOException;

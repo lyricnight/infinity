@@ -1,9 +1,9 @@
 package me.lyric.infinity.manager.client;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.string.Renderer;
 import me.lyric.infinity.impl.modules.client.Internals;
+import me.lyric.infinity.manager.Managers;
 
 import java.awt.*;
 
@@ -15,12 +15,12 @@ public class FontManager implements IGlobals {
 
     public FontManager()
     {
-        renderer = new Renderer(font, Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).aalias.getValue(), Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).frac.getValue());
+        renderer = new Renderer(font, Managers.MODULES.getModuleByClass(Internals.class).aalias.getValue(), Managers.MODULES.getModuleByClass(Internals.class).frac.getValue());
     }
 
     public void drawString(String text, float x, float y, int color, boolean shadow)
     {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue())
+        if (Managers.MODULES.getModuleByClass(Internals.class).cfont.getValue())
         {
             renderer.drawString(text, x, y, color, shadow);
         }
@@ -32,7 +32,7 @@ public class FontManager implements IGlobals {
 
     public void drawCenteredString(String text, float x, float y, int color, boolean shadow)
     {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue())
+        if (Managers.MODULES.getModuleByClass(Internals.class).cfont.getValue())
         {
             if (shadow)
             {
@@ -47,7 +47,7 @@ public class FontManager implements IGlobals {
 
     public int getStringWidth(String text)
     {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue())
+        if (Managers.MODULES.getModuleByClass(Internals.class).cfont.getValue())
         {
             return renderer.getStringWidth(text);
         }
@@ -59,7 +59,7 @@ public class FontManager implements IGlobals {
 
     public int getHeight(String text)
     {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Internals.class).cfont.getValue())
+        if (Managers.MODULES.getModuleByClass(Internals.class).cfont.getValue())
         {
             return renderer.getStringHeight(text);
         }
@@ -76,5 +76,4 @@ public class FontManager implements IGlobals {
         font = font.deriveFont(0);
         renderer = new Renderer(font, alias, fractional);
     }
-
 }

@@ -2,7 +2,6 @@ package me.lyric.infinity.impl.modules.combat;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
@@ -15,6 +14,7 @@ import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.switcher.Switch;
 import me.lyric.infinity.api.util.time.Timer;
 import me.lyric.infinity.impl.modules.movement.InstantSpeed;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.mixin.mixins.accessors.IEntityPlayerSP;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketPlayerPosLook;
 import net.minecraft.block.BlockAir;
@@ -67,7 +67,7 @@ public class Burrow extends Module {
             return;
         }
         if (mc.world.getBlockState(new BlockPos(mc.player)).getBlock() == Blocks.AIR) {
-            Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
+            Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = true;
 
             BlockPos pos = new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ);
 
@@ -131,7 +131,7 @@ public class Burrow extends Module {
     @Override
     public void onDisable()
     {
-        Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
+        Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = false;
     }
 
     private double getPos() {

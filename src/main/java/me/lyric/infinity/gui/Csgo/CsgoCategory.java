@@ -6,6 +6,7 @@ import me.lyric.infinity.api.util.gl.AnimationUtils;
 import me.lyric.infinity.api.util.gl.ImageUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -47,13 +48,13 @@ public class CsgoCategory {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.textX = (float)x - Infinity.INSTANCE.infinityFont.getStringWidth(category.toString());
+        this.textX = (float)x - Infinity.infinityFont.getStringWidth(category.toString());
         this.alpha = 0.0f;
         if (!this.csgoModules.isEmpty()) {
             this.csgoModules.clear();
         }
         this.deltaY = CsgoGui.y + 10 + this.scrollingY;
-        Infinity.INSTANCE.moduleManager.getModulesInCategory(category).forEach(module -> this.csgoModules.add(new CsgoModule(module, x + 127, this.deltaY += 21, x + 242, 20)));
+        Managers.MODULES.getModulesInCategory(category).forEach(module -> this.csgoModules.add(new CsgoModule(module, x + 127, this.deltaY += 21, x + 242, 20)));
     }
 
     public void drawScreen(int mouseX, int mouseY) {
@@ -69,7 +70,7 @@ public class CsgoCategory {
             this.isIncreasingAlpha = false;
         }
         if (this.textX > (float)(this.x + this.width)) {
-            this.textX = (float)this.x - Infinity.INSTANCE.infinityFont.getStringWidth(this.category.toString());
+            this.textX = (float)this.x - Infinity.infinityFont.getStringWidth(this.category.toString());
         }
         String name = this.category.toString();
         int x = (int)((float)this.x / this.scale);
@@ -98,26 +99,26 @@ public class CsgoCategory {
                 this.bottomWidth = AnimationUtils.decreaseNumber(this.bottomWidth, (float)x, (this.bottomWidth - (float)x) / CsgoGui.getAnimationSpeedAccordingly(25)).floatValue();
             }
         }
-        RenderUtils.rectangle(x, this.leftHeight, x + 1, this.y + this.height, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
-        RenderUtils.rectangle(x, this.y + this.height - 1, this.bottomWidth, this.y + this.height, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
-        RenderUtils.rectangle(x, this.y, this.topWidth, this.y + 1, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
-        RenderUtils.rectangle(x + this.width - 1, this.rightHeight, x + this.width, this.y + this.height, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
+        RenderUtils.rectangle(x, this.leftHeight, x + 1, this.y + this.height, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
+        RenderUtils.rectangle(x, this.y + this.height - 1, this.bottomWidth, this.y + this.height, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
+        RenderUtils.rectangle(x, this.y, this.topWidth, this.y + 1, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
+        RenderUtils.rectangle(x + this.width - 1, this.rightHeight, x + this.width, this.y + this.height, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getRGB()));
         x = (int)((float)this.x / this.scale);
-        RenderUtils.rectangle(x, this.y, x + this.width, this.y + this.height, new Color((float)(Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getRed()) / 255.0f, (float)Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getGreen() / 255.0f, (float)Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue().getBlue() / 255.0f, this.alpha / 255.0f).getRGB());
+        RenderUtils.rectangle(x, this.y, x + this.width, this.y + this.height, new Color((float)(Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getRed()) / 255.0f, (float)Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getGreen() / 255.0f, (float)Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue().getBlue() / 255.0f, this.alpha / 255.0f).getRGB());
         if (this.isInside(mouseX, mouseY)) {
             this.imageX = AnimationUtils.decreaseNumber(this.imageX, (float)(x + 1), (this.imageX - (float)x + 1.0f) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
             if (this.imageX <= (float)(x + 2)) {
-                float targetX = (float)x + (float)this.width / 2.0f - Infinity.INSTANCE.infinityFont.getStringWidth(name) / 2.0f;
+                float targetX = (float)x + (float)this.width / 2.0f - Infinity.infinityFont.getStringWidth(name) / 2.0f;
                 this.textX = AnimationUtils.increaseNumber(this.textX, targetX, (targetX - this.textX) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
             }
         } else {
-            float targetX = (float)x - Infinity.INSTANCE.infinityFont.getStringWidth(name);
+            float targetX = (float)x - Infinity.infinityFont.getStringWidth(name);
             this.textX = AnimationUtils.decreaseNumber(this.textX, targetX, (this.textX - targetX) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
             this.imageX = AnimationUtils.increaseNumber(this.imageX, (float)x + (float)this.width / 2.0f - 10.0f, ((float)x + (float)this.width / 2.0f - 10.0f - this.imageX) / CsgoGui.getAnimationSpeedAccordingly(100)).floatValue();
         }
         ImageUtils.image(new ResourceLocation("infinity/textures/icons/" + name.toLowerCase() + ".png"), (int)this.imageX, this.y + 1, 18, 18);
         RenderUtils.prepareScissor((int)(this.imageX + 18.0f), this.y, this.width, this.height);
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, this.textX, (float)this.y + (float)this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
+        Infinity.infinityFont.drawStringWithShadow(name, this.textX, (float)this.y + (float)this.height / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, -1);
         RenderUtils.releaseScissor();
         if (CsgoGui.finishedScaling && !this.setRight) {
             this.setCsgoModules();
@@ -138,9 +139,9 @@ public class CsgoCategory {
         if (!this.isInsideModules(mouseX, mouseY)) return;
         int dWheel = Mouse.getDWheel();
         if (dWheel < 0) {
-            this.scrollingY -= Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
+            this.scrollingY -= Managers.MODULES.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
         } else if (dWheel > 0) {
-            this.scrollingY += Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
+            this.scrollingY += Managers.MODULES.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
         }
         int lastModuleY = this.getLastModuleY();
         if (lastModuleY != -69420) {
@@ -203,7 +204,7 @@ public class CsgoCategory {
             this.csgoModules.clear();
         }
         this.deltaY = CsgoGui.y + 10 + this.scrollingY;
-        Infinity.INSTANCE.moduleManager.getModulesInCategory(this.category).forEach(module -> this.csgoModules.add(new CsgoModule(module, CsgoGui.x + 125, this.deltaY += 21, 116, 20)));
+        Managers.MODULES.getModulesInCategory(this.category).forEach(module -> this.csgoModules.add(new CsgoModule(module, CsgoGui.x + 125, this.deltaY += 21, 116, 20)));
     }
 
     public void keyTyped(char typedChar, int keyCode) {

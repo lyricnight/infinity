@@ -1,8 +1,8 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
 import com.mojang.authlib.GameProfile;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.impl.modules.player.Resolver;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.util.math.MathHelper;
@@ -54,7 +54,7 @@ public class MixinEntityOtherPlayerMP extends AbstractClientPlayer {
             double d0, d1, d2;
             double d3;
 
-            if (Infinity.INSTANCE.moduleManager.getModuleByClass(Resolver.class).isEnabled()) {
+            if (Managers.MODULES.getModuleByClass(Resolver.class).isEnabled()) {
                 d0 = serverPosX / 4096.0D;
                 d1 = serverPosY / 4096.0D;
                 d2 = serverPosZ / 4096.0D;

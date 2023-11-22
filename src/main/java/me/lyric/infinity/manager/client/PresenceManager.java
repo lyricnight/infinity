@@ -3,9 +3,9 @@ package me.lyric.infinity.manager.client;
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.client.RPC;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.GuiConnecting;
 
@@ -21,23 +21,23 @@ public class PresenceManager implements IGlobals {
         handlers.ready = (user) -> System.out.println("[Infinity] RPC Started!");
         lib.Discord_Initialize("1099438888424054864", handlers, true, "");
         presence.startTimestamp = System.currentTimeMillis() / 1000;
-        presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
+        presence.details = Managers.MODULES.getModuleByClass(RPC.class).details.getValue();
         presence.state = "";
         presence.largeImageKey = "rich";
-        presence.largeImageText = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).largeImageText.getValue();
+        presence.largeImageText = Managers.MODULES.getModuleByClass(RPC.class).largeImageText.getValue();
 
         lib.Discord_UpdatePresence(presence);
         new Thread(() -> {
             while (!Thread.currentThread().isInterrupted()) {
                 lib.Discord_RunCallbacks();
 
-                presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
+                presence.details = Managers.MODULES.getModuleByClass(RPC.class).details.getValue();
                 presence.state = "";
                 presence.largeImageKey = "rich";
-                presence.largeImageText = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).largeImageText.getValue();
+                presence.largeImageText = Managers.MODULES.getModuleByClass(RPC.class).largeImageText.getValue();
 
                 if (mc.world == null) {
-                    presence.details = Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).details.getValue();
+                    presence.details = Managers.MODULES.getModuleByClass(RPC.class).details.getValue();
                     if (mc.currentScreen instanceof GuiWorldSelection) {
                         presence.state = "Selecting a world.";
                     } else if (mc.currentScreen instanceof GuiMainMenu) {
@@ -59,7 +59,7 @@ public class PresenceManager implements IGlobals {
                     if (mc.player != null) {
                         int health = Math.round(mc.player.getHealth() + mc.player.getAbsorptionAmount());
                         int armor = Math.round(mc.player.getTotalArmorValue());
-                        if(!Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).ign.getValue())
+                        if(!Managers.MODULES.getModuleByClass(RPC.class).ign.getValue())
                         {
                             presence.state = "Health " + health + " | " + "Armor " + armor;
                         }
@@ -68,7 +68,7 @@ public class PresenceManager implements IGlobals {
                             presence.state = mc.player.getName() + " | Health " + health + " | " + "Armor " + armor;
                         }
                         if (mc.player.isDead) {
-                            if (!Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).ign.getValue())
+                            if (!Managers.MODULES.getModuleByClass(RPC.class).ign.getValue())
                             {
                                 presence.state = mc.player.getName() + " | " + "Dead" + " | " + "Armor " + armor;
                             }
@@ -80,7 +80,7 @@ public class PresenceManager implements IGlobals {
                         if (mc.isIntegratedServerRunning()) {
                             presence.details = "Playing singleplayer";
                         } else if (!mc.isIntegratedServerRunning()) {
-                            if (Infinity.INSTANCE.moduleManager.getModuleByClass(RPC.class).showIP.getValue()) {
+                            if (Managers.MODULES.getModuleByClass(RPC.class).showIP.getValue()) {
                                 presence.details = "Playing on " + Objects.requireNonNull(mc.getCurrentServerData()).serverIP;
                             }
                         }

@@ -5,7 +5,6 @@ import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.ColorSetting;
 import me.lyric.infinity.api.setting.settings.FloatSetting;
@@ -18,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;

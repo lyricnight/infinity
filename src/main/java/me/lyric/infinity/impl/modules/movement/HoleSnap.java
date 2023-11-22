@@ -17,6 +17,7 @@ import me.lyric.infinity.api.util.client.SpeedUtil;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
 import me.lyric.infinity.api.util.time.Timer;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.mixin.mixins.accessors.ITimer;
 import me.lyric.infinity.mixin.transformer.IMinecraft;
 import net.minecraft.network.play.server.SPacketPlayerPosLook;
@@ -33,7 +34,6 @@ public class HoleSnap extends Module {
     public FloatSetting range = createSetting("Range", 4.5f, 0.1f, 12.0f);
 
     public FloatSetting factor = createSetting("Factor", 2.5f, 1.0f, 15.0f);
-
     public IntegerSetting vdist = createSetting("Vertical-Cutoff", 2, 1, 4);
 
     public BooleanSetting debug = createSetting("Debug", false);
@@ -66,9 +66,9 @@ public class HoleSnap extends Module {
         timer.reset();
         holes = null;
         if (((ITimer) ((IMinecraft) mc).getTimer()).getTickLength() != 50.0f) {
-            Infinity.INSTANCE.tpsManager.reset2();
+            Managers.TPS.reset2();
         }
-        Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = false;
+        Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = false;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class HoleSnap extends Module {
             return;
         }
         holes = EntityUtil.getTargetHoleVec3D(range.getValue(), vdist.getValue());
-        Infinity.INSTANCE.moduleManager.getModuleByClass(InstantSpeed.class).pause = true;
+        Managers.MODULES.getModuleByClass(InstantSpeed.class).pause = true;
         if (debug.getValue())
         {
             ChatUtils.sendMessage("Reached holegetter, and disabled instantspeed.");
@@ -114,7 +114,7 @@ public class HoleSnap extends Module {
             ChatUtils.sendMessage(cout2);
             ChatUtils.sendMessage(cout3);
         }
-        Infinity.INSTANCE.tpsManager.set(factor.getValue());
+        Managers.TPS.set(factor.getValue());
         mc.player.motionX = -Math.sin(yawRad) * speed;
         mc.player.motionZ = Math.cos(yawRad) * speed;
     }

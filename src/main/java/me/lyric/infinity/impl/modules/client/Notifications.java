@@ -2,16 +2,15 @@ package me.lyric.infinity.impl.modules.client;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
-import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.IntegerSetting;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.time.Timer;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.play.server.SPacketEntityStatus;
@@ -86,11 +85,11 @@ public class Notifications extends Module {
                 else
                 {
                     if (entityPlayer.isPotionActive(MobEffects.STRENGTH) && !this.str.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " has" + ChatFormatting.RED + " strength" + ChatFormatting.BOLD + "!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Managers.FRIENDS.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " has" + ChatFormatting.RED + " strength" + ChatFormatting.BOLD + "!");
                         this.str.add(entityPlayer);
                     }
                     if (!this.str.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.STRENGTH)) continue;
-                    ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " no longer has" + ChatFormatting.RED + " strength"+ ChatFormatting.BOLD + "!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Managers.FRIENDS.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " no longer has" + ChatFormatting.RED + " strength"+ ChatFormatting.BOLD + "!");
                     this.str.remove(entityPlayer);
                 }
 
@@ -116,11 +115,11 @@ public class Notifications extends Module {
                 else
                 {
                     if (entityPlayer.isPotionActive(MobEffects.SPEED) && !this.spd.contains(entityPlayer)) {
-                        ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
+                        ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Managers.FRIENDS.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                         this.spd.add(entityPlayer);
                     }
                     if (!this.spd.contains(entityPlayer) || entityPlayer.isPotionActive(MobEffects.SPEED)) continue;
-                    ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Infinity.INSTANCE.friendManager.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " no longer has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
+                    ChatUtils.sendMessage(ChatFormatting.BOLD + "" + (!Managers.FRIENDS.isFriend(entityPlayer.getDisplayNameString()) ? ChatFormatting.WHITE : ChatFormatting.AQUA) + entityPlayer.getDisplayNameString() + ChatFormatting.RESET + " no longer has" + ChatFormatting.AQUA + " speed" + ChatFormatting.BOLD + "!");
                     this.spd.remove(entityPlayer);
                 }
 
@@ -132,7 +131,7 @@ public class Notifications extends Module {
 
     public void onDeath(EntityPlayer player) {
         if(!totem.getValue()) return;
-        boolean isFriend = (Infinity.INSTANCE.friendManager.isFriend(player.getName()));
+        boolean isFriend = (Managers.FRIENDS.isFriend(player.getName()));
         if (totemPops.containsKey(player.getName())) {
             int popCount = totemPops.get(player.getName());
             totemPops.remove(player.getName());
@@ -153,7 +152,7 @@ public class Notifications extends Module {
     }
     public void onTotemPop(EntityPlayer player) {
         int popCount = 1;
-        boolean isFriend = (Infinity.INSTANCE.friendManager.isFriend(player.getName()));
+        boolean isFriend = (Managers.FRIENDS.isFriend(player.getName()));
 
         if (mc.player == null || mc.player.equals(player) && !totem.getValue()) {
             return;

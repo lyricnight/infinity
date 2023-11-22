@@ -9,6 +9,7 @@ import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.gui.Csgo.setting.*;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
+import me.lyric.infinity.manager.Managers;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -69,13 +70,13 @@ public class CsgoModule implements IGlobals
                 this.animHeight = AnimationUtils.decreaseNumber(this.animHeight, 0.0f, this.animHeight / CsgoGui.getAnimationSpeedAccordingly(25));
             }
         }
-        RenderUtils.rectangle(x, (float)this.y, x + 2.0f + this.animWidth / 2.0f, this.y + this.animHeight / 2.0f, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
-        RenderUtils.rectangle(x, this.y + this.height - this.animHeight / 2.0f, x + 2.0f + this.animWidth / 2.0f, (float)(this.y + this.height), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
-        RenderUtils.rectangle(x + this.width - this.animWidth / 2.0f - 2.0f, (float)this.y, x + this.width, this.y + this.animHeight / 2.0f, (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
-        RenderUtils.rectangle(x + this.width - this.animWidth / 2.0f - 2.0f, this.y + this.height - this.animHeight / 2.0f, x + this.width, (float)(this.y + this.height), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x, (float)this.y, x + 2.0f + this.animWidth / 2.0f, this.y + this.animHeight / 2.0f, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x, this.y + this.height - this.animHeight / 2.0f, x + 2.0f + this.animWidth / 2.0f, (float)(this.y + this.height), (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x + this.width - this.animWidth / 2.0f - 2.0f, (float)this.y, x + this.width, this.y + this.animHeight / 2.0f, (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x + this.width - this.animWidth / 2.0f - 2.0f, this.y + this.height - this.animHeight / 2.0f, x + this.width, (float)(this.y + this.height), (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
         RenderUtils.outline(x, (float)this.y, x + this.width, (float)(this.y + this.height), new Color(2894892), 1.0f);
         String name = this.module.name;
-        Infinity.INSTANCE.infinityFont.drawStringWithShadow(name, x + 2.0f, this.y + this.height / 2.0f - Infinity.INSTANCE.infinityFont.getHeight(name) / 2.0f, -1);
+        Infinity.infinityFont.drawStringWithShadow(name, x + 2.0f, this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, -1);
         if (this.canRender() && !this.csgoSettings.isEmpty()) {
             int deltaY = CsgoGui.y + 17 + this.scroll;
             for (CsgoSetting csgoSetting2 : this.csgoSettings) {
@@ -120,10 +121,10 @@ public class CsgoModule implements IGlobals
                 this.bottomWidth = AnimationUtils.decreaseNumber(this.bottomWidth, x, (this.bottomWidth - x) / CsgoGui.getAnimationSpeedAccordingly(25));
             }
         }
-        RenderUtils.rectangle(x, this.leftHeight, x + 1.0f, (float)(this.y + this.height), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
-        RenderUtils.rectangle(x, (float)(this.y + this.height - 1), this.bottomWidth, (float)(this.y + this.height), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
-        RenderUtils.rectangle(x, (float)this.y, this.topWidth, (float)(this.y + 1), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
-        RenderUtils.rectangle(x + this.width - 1.0f, this.rightHeight, x + this.width, (float)(this.y + this.height), (Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x, this.leftHeight, x + 1.0f, (float)(this.y + this.height), (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x, (float)(this.y + this.height - 1), this.bottomWidth, (float)(this.y + this.height), (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x, (float)this.y, this.topWidth, (float)(this.y + 1), (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
+        RenderUtils.rectangle(x + this.width - 1.0f, this.rightHeight, x + this.width, (float)(this.y + this.height), (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB());
     }
 
     public boolean canRender() {
@@ -206,10 +207,10 @@ public class CsgoModule implements IGlobals
         if (this.isInsideSettings(mouseX, mouseY)) {
             final int dWheel = Mouse.getDWheel();
             if (dWheel < 0) {
-                this.scroll -= Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
+                this.scroll -= Managers.MODULES.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
             }
             else if (dWheel > 0) {
-                this.scroll += Infinity.INSTANCE.moduleManager.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
+                this.scroll += Managers.MODULES.getModuleByClass(ClickGUI.class).scrollSpeed.getValue();
             }
             final int lastSetting = this.getLastSettingY() - 14;
             if (lastSetting != -69420) {

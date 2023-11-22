@@ -1,7 +1,6 @@
 package me.lyric.infinity.manager.client;
 
 import me.bush.eventbus.annotation.EventListener;
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.time.Timer;
@@ -28,13 +27,12 @@ public class TPSManager implements IGlobals {
     private final float[] tpsCounts = new float[10];
     private final DecimalFormat format = new DecimalFormat("##.00");
 
-    public void load() {
+    public void init() {
         this.prevTime = -1L;
         int len = this.ticks.length;
         for (int i = 0; i < len; ++i) {
             this.ticks[i] = 0.0f;
         }
-        Infinity.INSTANCE.eventBus.subscribe(this);
     }
 
     public static void unload()

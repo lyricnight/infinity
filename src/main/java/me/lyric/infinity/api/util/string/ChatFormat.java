@@ -1,7 +1,6 @@
 package me.lyric.infinity.api.util.string;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 
 import java.util.Arrays;
 import java.util.List;

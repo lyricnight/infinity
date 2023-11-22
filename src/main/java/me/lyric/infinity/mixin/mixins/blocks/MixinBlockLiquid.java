@@ -19,7 +19,7 @@ public class MixinBlockLiquid {
     @Inject(method = "canCollideCheck", at = @At("HEAD"), cancellable = true)
     public void canCollideCheck(final IBlockState blockState, final boolean b, final CallbackInfoReturnable<Boolean> ci) {
         CanCollideCheckEvent event = new CanCollideCheckEvent();
-        Infinity.INSTANCE.eventBus.post(event);
+        Infinity.eventBus.post(event);
         ci.setReturnValue(event.isCancelled());
     }
 }

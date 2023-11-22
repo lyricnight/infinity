@@ -9,6 +9,7 @@ import me.lyric.infinity.api.setting.settings.ColorSetting;
 import me.lyric.infinity.api.setting.settings.FloatSetting;
 import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.util.gl.RenderUtils;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.manager.client.HoleManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -16,8 +17,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -42,7 +43,7 @@ public class HoleESP extends Module {
     @Override
     public void onRender3D(float partialTicks) {
         camera.setPosition(Objects.requireNonNull(mc.getRenderViewEntity()).posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
-        final List<HoleManager.HolePos> holes = Infinity.INSTANCE.holeManager.holes.stream().filter(holePos -> (mc.player.getDistanceSq(holePos.pos) < radius.getValue() * radius.getValue()) && (doubles.getValue() || (holePos.holeType.equals(HoleManager.Type.Bedrock) || holePos.holeType.equals(HoleManager.Type.Obsidian)))).collect(Collectors.toList());
+        final List<HoleManager.HolePos> holes = Managers.HOLES.holes.stream().filter(holePos -> (mc.player.getDistanceSq(holePos.pos) < radius.getValue() * radius.getValue()) && (doubles.getValue() || (holePos.holeType.equals(HoleManager.Type.Bedrock) || holePos.holeType.equals(HoleManager.Type.Obsidian)))).collect(Collectors.toList());
         new HashMap<>(holePosLongHashMap).entrySet().stream().filter(entry -> holes.stream().noneMatch(holePos -> holePos.pos.equals(entry.getKey()))).forEach(entry -> holePosLongHashMap.remove(entry.getKey()));
         for (HoleManager.HolePos holePos : holes) {
             AxisAlignedBB bb = animation.getValue() == "Grow" ? new AxisAlignedBB(holePos.pos).shrink(0.5) : new AxisAlignedBB(holePos.pos);

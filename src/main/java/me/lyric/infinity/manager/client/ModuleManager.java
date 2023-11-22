@@ -4,10 +4,10 @@ import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.impl.modules.client.*;
 import me.lyric.infinity.impl.modules.combat.*;
-import me.lyric.infinity.impl.modules.player.*;
 import me.lyric.infinity.impl.modules.misc.*;
 import me.lyric.infinity.impl.modules.movement.*;
 import me.lyric.infinity.impl.modules.player.Exception;
+import me.lyric.infinity.impl.modules.player.*;
 import me.lyric.infinity.impl.modules.render.*;
 
 import java.util.ArrayList;

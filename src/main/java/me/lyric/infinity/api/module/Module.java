@@ -7,6 +7,7 @@ import me.lyric.infinity.api.setting.settings.*;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.impl.modules.client.Notifications;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -87,18 +88,18 @@ public class Module implements IGlobals {
 
     protected void onEnable() {
             MinecraftForge.EVENT_BUS.register(this);
-            Infinity.INSTANCE.eventBus.subscribe(this);
+            Infinity.eventBus.subscribe(this);
     }
 
     protected void onDisable() {
             MinecraftForge.EVENT_BUS.unregister(this);
-            Infinity.INSTANCE.eventBus.unsubscribe(this);
+            Infinity.eventBus.unsubscribe(this);
     }
     public void enable()
     {
         this.enabled = true;
         this.onEnable();
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
+        if (Managers.MODULES.getModuleByClass(Notifications.class).isEnabled() && Managers.MODULES.getModuleByClass(Notifications.class).modules.getValue()) {
             ChatUtils.sendMessageWithID(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.GREEN + "enabled!", hashCode());
         }
     }
@@ -107,7 +108,7 @@ public class Module implements IGlobals {
     {
         this.enabled = false;
         this.onDisable();
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Notifications.class).modules.getValue()) {
+        if (Managers.MODULES.getModuleByClass(Notifications.class).isEnabled() && Managers.MODULES.getModuleByClass(Notifications.class).modules.getValue()) {
             ChatUtils.sendMessageWithID(ChatFormatting.BOLD + this.name + " " + ChatFormatting.RESET + ChatFormatting.RED + "disabled!", hashCode());
         }
     }

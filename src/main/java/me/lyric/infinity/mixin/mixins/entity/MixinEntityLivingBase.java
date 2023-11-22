@@ -1,9 +1,9 @@
 package me.lyric.infinity.mixin.mixins.entity;
 
-import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.util.minecraft.IGlobals;
 import me.lyric.infinity.impl.modules.player.Delays;
 import me.lyric.infinity.impl.modules.render.Swing;
+import me.lyric.infinity.manager.Managers;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemFood;
@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value={EntityLivingBase.class})
 public class MixinEntityLivingBase implements IGlobals {
 
-
     @Shadow
     public int activeItemStackUseCount;
     @Shadow
@@ -28,14 +27,14 @@ public class MixinEntityLivingBase implements IGlobals {
 
     @Inject(method={"getArmSwingAnimationEnd"}, at={@At(value="HEAD")}, cancellable=true)
     private void getArmSwingAnimationEnd(CallbackInfoReturnable<Integer> info) {
-        if (Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).isEnabled() && Infinity.INSTANCE.moduleManager.getModuleByClass(Swing.class).slowSwing.getValue()) {
+        if (Managers.MODULES.getModuleByClass(Swing.class).isEnabled() && Managers.MODULES.getModuleByClass(Swing.class).slowSwing.getValue()) {
             info.setReturnValue(15);
 
         }
     }
     @Redirect(method = "onItemUseFinish", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;resetActiveHand()V"))
     public void resetActiveHandHook(EntityLivingBase base) {
-        if (mc.world.isRemote && Infinity.INSTANCE.moduleManager.getModuleByClass(Delays.class).eat.getValue() && base instanceof EntityPlayerSP && !mc.isSingleplayer() && this.activeItemStack.getItem() instanceof ItemFood) {
+        if (mc.world.isRemote && Managers.MODULES.getModuleByClass(Delays.class).eat.getValue() && base instanceof EntityPlayerSP && !mc.isSingleplayer() && this.activeItemStack.getItem() instanceof ItemFood) {
             this.activeItemStackUseCount = 0;
             ((EntityPlayerSP) base).connection.sendPacket(new CPacketPlayerTryUseItem(base.getActiveHand()));
         } else {
