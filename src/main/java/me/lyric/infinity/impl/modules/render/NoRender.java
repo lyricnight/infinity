@@ -8,7 +8,7 @@ import net.minecraft.init.MobEffects;
 
 @ModuleInformation(name = "NoRender", description = "Prevents certain things from rendering.", category = Category.Render)
 public class NoRender extends Module {
-    public BooleanSetting effects = createSetting("Effects", false); // TODO: Add more potion effects lol.
+    public BooleanSetting effects = createSetting("Effects", false);
     public BooleanSetting weather = createSetting("Weather", false);
 
      //public BooleanSetting Fire = createSetting("Fire", "Avoids fire overlay render.", false));

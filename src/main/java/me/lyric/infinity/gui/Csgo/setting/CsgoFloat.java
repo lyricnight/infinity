@@ -28,7 +28,7 @@ public class CsgoFloat extends CsgoSetting
     
     public void drawScreen(final int mouseX, final int mouseY) {
         this.dragSlider(mouseX, mouseY);
-        final int x = this.x - 1;
+        int x = this.x - 1;
         RenderUtils.rectangle((float)(x + 1), (float)(this.y + 1), (float)(x + this.width - 1), (float)(this.y + this.height - 1), new Color(0, 0, 0, this.isInside(mouseX, mouseY) ? 40 : 20).getRGB());
         RenderUtils.outline((float)(x + 1), (float)(this.y + 1), (float)(x + this.width - 1), (float)(this.y + this.height - 1), new Color(2894892), 1.0f);
         float sliderWidth = this.width * this.sliderWidthValue();

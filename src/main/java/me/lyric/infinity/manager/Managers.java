@@ -35,7 +35,7 @@ public class Managers implements IGlobals {
     public static final ForgeEventManager FORGE = new ForgeEventManager();
 
     /**
-     * loads everything.
+     * @apiNote loads everything.
      */
 
     public static void init()
@@ -64,6 +64,7 @@ public class Managers implements IGlobals {
         TPSManager.unload();
         ConfigManager.savePlayer();
         ConfigManager.save(ConfigManager.getActiveConfig());
+        Infinity.LOGGER.info("Done.");
     }
 
 

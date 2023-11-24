@@ -4,6 +4,7 @@ import me.lyric.infinity.api.event.player.MoveEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.MobEffects;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.MovementInput;
 
 import java.util.Objects;
@@ -59,11 +60,11 @@ public class SpeedUtil {
         int amplifier;
         double defaultSpeed = 0.2873;
         if (SpeedUtil.mc.player.isPotionActive(MobEffects.SPEED)) {
-            amplifier = Objects.requireNonNull(SpeedUtil.mc.player.getActivePotionEffect(MobEffects.SPEED)).getAmplifier();
+            amplifier = Objects.requireNonNull(mc.player.getActivePotionEffect(MobEffects.SPEED)).getAmplifier();
             defaultSpeed *= 1.0 + 0.2 * (double)(amplifier + 1);
         }
         if (slowness && SpeedUtil.mc.player.isPotionActive(MobEffects.SLOWNESS)) {
-            amplifier = Objects.requireNonNull(SpeedUtil.mc.player.getActivePotionEffect(MobEffects.SLOWNESS)).getAmplifier();
+            amplifier = Objects.requireNonNull(mc.player.getActivePotionEffect(MobEffects.SLOWNESS)).getAmplifier();
             defaultSpeed /= 1.0 + 0.2 * (double)(amplifier + 1);
         }
         return defaultSpeed;
@@ -71,4 +72,13 @@ public class SpeedUtil {
     public static boolean anyMovementKeys() {
         return SpeedUtil.mc.player.movementInput.forwardKeyDown || SpeedUtil.mc.player.movementInput.backKeyDown || SpeedUtil.mc.player.movementInput.leftKeyDown || SpeedUtil.mc.player.movementInput.rightKeyDown || SpeedUtil.mc.player.movementInput.jump || SpeedUtil.mc.player.movementInput.sneak;
     }
+    public static double getDefaultMoveSpeed() {
+        double baseSpeed = 0.2873;
+        if (mc.player != null && mc.player.isPotionActive(Objects.requireNonNull(Potion.getPotionById(1)))) {
+            int amplifier = Objects.requireNonNull(mc.player.getActivePotionEffect(Objects.requireNonNull(Potion.getPotionById(1)))).getAmplifier();
+            baseSpeed *= 1.0 + 0.2 * (amplifier + 1);
+        }
+        return baseSpeed;
+    }
+
 }

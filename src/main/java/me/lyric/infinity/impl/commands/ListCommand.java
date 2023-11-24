@@ -4,6 +4,7 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
+import me.lyric.infinity.api.util.string.StringUtils;
 import me.lyric.infinity.manager.client.CommandManager;
 
 public class ListCommand extends Command {

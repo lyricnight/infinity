@@ -12,7 +12,6 @@ import me.lyric.infinity.manager.Managers;
 public class Command {
 
     private final String command;
-    //TODO: maybe add a description command?
     private final String description;
 
     public Command(String command, String description) {

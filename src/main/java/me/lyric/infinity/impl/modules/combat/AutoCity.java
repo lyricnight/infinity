@@ -15,7 +15,6 @@ import me.lyric.infinity.api.util.metadata.MathUtils;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.minecraft.rotation.RotationUtil;
 import net.minecraft.block.BlockAir;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemPickaxe;
@@ -45,8 +44,7 @@ public class AutoCity extends Module
 
     BlockPos mining;
     long startTime;
-    //TODO: is there a reason i kept this as an entity and not entityplayer?
-    Entity target;
+    EntityPlayer target;
     int old;
     boolean swapBack;
 
@@ -67,7 +65,7 @@ public class AutoCity extends Module
         }
         if (target != null)
         {
-            return ((EntityPlayer)target).getDisplayNameString().toLowerCase();
+            return (target).getDisplayNameString().toLowerCase();
         }
         return ChatFormatting.RED + "none" + ChatFormatting.RESET;
 
@@ -98,7 +96,7 @@ public class AutoCity extends Module
                 mining = null;
                 return;
             }
-            if (holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && !CombatUtil.isBurrow((EntityPlayer) target)) {
+            if (holeCheck.getValue() && !HoleUtil.isHole(CombatUtil.getOtherPlayerPos(target)) && !CombatUtil.isBurrow(target)) {
                 mining = null;
                 return;
             }
@@ -107,16 +105,16 @@ public class AutoCity extends Module
                 mining = null;
             }
         }
-        if (mining == null && getBurrowBlock((EntityPlayer)target) != null && burrow.getValue())
+        if (mining == null && getBurrowBlock(target) != null && burrow.getValue())
         {
-            mine(getBurrowBlock((EntityPlayer) target));
+            mine(getBurrowBlock(target));
         }
-        else if (mining == null && HoleUtil.isHole(CombatUtil.getOtherPlayerPos((EntityPlayer)target)) && getCityBlockSurround((EntityPlayer)target) != null) {
-            mine(getCityBlockSurround((EntityPlayer)target));
+        else if (mining == null && HoleUtil.isHole(CombatUtil.getOtherPlayerPos(target)) && getCityBlockSurround(target) != null) {
+            mine(getCityBlockSurround(target));
         }
     }
 
-    private void mine(final BlockPos blockPos) {
+    private void mine(BlockPos blockPos) {
         if (mc.player.getDistanceSq(blockPos) > MathUtils.square(resetRange.getValue()))
         {
             return;
@@ -140,15 +138,15 @@ public class AutoCity extends Module
         swapBack = false;
     }
 
-    public static List<BlockPos> getSurroundBlocks(final EntityPlayer player) {
+    public static List<BlockPos> getSurroundBlocks(EntityPlayer player) {
         if (player == null) {
             return null;
         }
-        final List<BlockPos> positions = new ArrayList<BlockPos>();
-        for (final EnumFacing direction : EnumFacing.values()) {
+        List<BlockPos> positions = new ArrayList<>();
+        for (EnumFacing direction : EnumFacing.values()) {
             if (direction != EnumFacing.UP) {
                 if (direction != EnumFacing.DOWN) {
-                    final BlockPos pos = CombatUtil.getOtherPlayerPos(player).offset(direction);
+                    BlockPos pos = CombatUtil.getOtherPlayerPos(player).offset(direction);
                     if (mc.world.getBlockState(pos).getBlock() == Blocks.OBSIDIAN && canCityBlock(pos, direction)) {
                         positions.add(pos);
                     }
@@ -157,13 +155,13 @@ public class AutoCity extends Module
         }
         return positions;
     }
-    public BlockPos getBurrowBlock(final EntityPlayer player)
+    public BlockPos getBurrowBlock(EntityPlayer player)
     {
         if (player == null)
         {
             return null;
         }
-        final BlockPos blockPos = new BlockPos(player.posX, player.posY, player.posZ);
+        BlockPos blockPos = new BlockPos(player.posX, player.posY, player.posZ);
         if (mc.world.getBlockState(blockPos).getBlock().equals(Blocks.OBSIDIAN) || mc.world.getBlockState(blockPos).getBlock().equals(Blocks.ENDER_CHEST))
         {
             return blockPos;
@@ -174,12 +172,12 @@ public class AutoCity extends Module
         }
     }
 
-    public static BlockPos getCityBlockSurround(final EntityPlayer player) {
-        final List<BlockPos> posList = getSurroundBlocks(player);
+    public static BlockPos getCityBlockSurround(EntityPlayer player) {
+        List<BlockPos> posList = getSurroundBlocks(player);
         posList.sort(Comparator.comparingDouble((ToDoubleFunction<? super BlockPos>)MathUtils::distanceTo));
         return posList.isEmpty() ? null : posList.get(0);
     }
-    public static boolean canCityBlock(final BlockPos blockPos, final EnumFacing direction) {
+    public static boolean canCityBlock(BlockPos blockPos, EnumFacing direction) {
         return mc.world.getBlockState(blockPos.up()).getBlock() == Blocks.AIR || (mc.world.getBlockState(blockPos.offset(direction)).getBlock() == Blocks.AIR && mc.world.getBlockState(blockPos.offset(direction).up()).getBlock() == Blocks.AIR && (mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(blockPos.offset(direction).down()).getBlock() == Blocks.BEDROCK));
     }
 }

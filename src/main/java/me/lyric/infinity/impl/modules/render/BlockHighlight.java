@@ -24,8 +24,6 @@ public class BlockHighlight extends Module {
 
     public ModeSetting mode = createSetting("Mode", "Outline" , Arrays.asList("Outline", "Fill", "Both", "Claw"));
     public FloatSetting renderWidth = createSetting("Width", 0.5f, 0.1f, 3.0f);
-
-    // I wanted to make this depend on a certain option from a setting. TODO: this. //did it work?
     public FloatSetting clawHeight = createSetting("Claw Height", 0.3f, 0.1f, 1.0f, v -> mode.getValue() == "Claw");
     public ColorSetting primaryColor = createSetting("Gradient Color 1", defaultColor);
     public ColorSetting secondaryColor = createSetting("Gradient Color 2", defaultColor);

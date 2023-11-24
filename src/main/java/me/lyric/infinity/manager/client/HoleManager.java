@@ -54,8 +54,8 @@ public class HoleManager implements IGlobals {
     }
 
     public ArrayList<HolePos> getHoles() {
-        final ArrayList<HolePos> holes = new ArrayList<>();
-        for (final BlockPos pos : BlockUtil.getBlocksInRadius(Managers.MODULES.getModuleByClass(HoleESP.class).radius.getValue().intValue(), false, 0).stream().filter(blockPos -> this.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)).collect(Collectors.toList())) {
+        ArrayList<HolePos> holes = new ArrayList<>();
+        for (BlockPos pos : BlockUtil.getBlocksInRadius(Managers.MODULES.getModuleByClass(HoleESP.class).radius.getValue().intValue(), false, 0).stream().filter(blockPos -> this.mc.world.getBlockState(blockPos).getBlock().equals(Blocks.AIR)).collect(Collectors.toList())) {
             if (this.isEnterable(pos)) {
                 boolean isSafe = true;
                 for (final Vec3i vec3i : this.Hole) {

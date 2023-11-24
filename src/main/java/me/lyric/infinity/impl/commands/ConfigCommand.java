@@ -13,12 +13,12 @@ import me.lyric.infinity.manager.client.ConfigManager;
 public class ConfigCommand extends Command {
 
     public ConfigCommand() {
-        super("config", "Create, and manage your configs.");
+        super("config", "Create and manage your configs. Do -config load <name> or -config save <name>");
     }
 
     @Override
     public String theCommand() {
-        return "config <save/load> <name>";
+        return "config <save/load> <name> / description>";
     }
 
     @Override
@@ -49,14 +49,19 @@ public class ConfigCommand extends Command {
         {
             if (ConfigManager.load(name))
             {
-                ChatUtils.sendMessage("The config file" + name + " was identified and loaded.");
+                ChatUtils.sendMessage("The config file " + name + " was identified and loaded.");
                 splash(CommandState.PERFORMED);
             }
             else
             {
-                ChatUtils.sendMessage("The config file" + name + " does not exist!");
+                ChatUtils.sendMessage("The config file " + name + " does not exist!");
                 splash(CommandState.ERROR);
             }
+        }
+        if (StringUtils.contains(task, "description"))
+        {
+            ChatUtils.sendMessage(getDescription());
+            splash(CommandState.PERFORMED);
         }
     }
 }

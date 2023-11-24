@@ -1,23 +1,29 @@
 package me.lyric.infinity.impl.modules.misc;
 
 import me.bush.eventbus.annotation.EventListener;
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.event.network.PacketEvent;
 import me.lyric.infinity.api.module.Category;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.module.ModuleInformation;
+import me.lyric.infinity.api.setting.settings.BooleanSetting;
+import me.lyric.infinity.api.setting.settings.ModeSetting;
 import net.minecraft.network.play.client.CPacketChatMessage;
 
-import java.util.Objects;
+import java.util.Arrays;
 
 /**
  * @author lyric
  */
 @ModuleInformation(name = "ChatColours", description = "only for 2b2tpvp", category = Category.Misc)
 public class ChatColours extends Module {
-    //TODO: redo this whole ass module
-    //public ModeSetting colour = createSetting("Colour", Color.Aqua);
-    //public Setting<Modifier> modifier = createSetting("Modifier", Modifier.None);
-    private final String[] disallowed = new String[] {".", "/", ",", "-"};
+
+    public ModeSetting colour = createSetting("Colour", "None", Arrays.asList("None", "Black", "DarkGray", "Gray", "DarkBlue", "Blue", "DarkGreen", "Green", "DarkAqua", "Aqua", "DarkRed", "Red", "DarkPurple", "Purple", "Gold", "Yellow"));
+    public ModeSetting modifier = createSetting("Modifier", "None", Arrays.asList("None", "Bold", "Italic", "BoldItalic", "LineThrough", "Underline"));
+
+    public BooleanSetting space = createSetting("Space", true);
+
+    private final String[] disallowed = new String[] {".", "/", ",", "-", "!"};
     @EventListener
     public void onPacketSend(PacketEvent.Send event)
     {
@@ -26,13 +32,20 @@ public class ChatColours extends Module {
         {
             CPacketChatMessage message = (CPacketChatMessage) event.getPacket();
             String the = message.getMessage();
-            //the = colour.getValue().getValue() + modifier.getValue().getValue() + " " + the;
+            the = getCodeFromSetting(colour.getValue()) + getModifierFromSetting(modifier.getValue()) + (space.getValue() ? " " : "") + the;
             message.message = the;
         }
     }
-    public boolean isAllowed(final String message) {
+
+    /**
+     * @apiNote this method checks if the message contains a banned prefix.
+     * @param message - the message input
+     * @return - is the message valid to be modified?
+     */
+
+    public boolean isAllowed(String message) {
         boolean allow = true;
-        for (final String s : disallowed) {
+        for (String s : disallowed) {
             if (message.startsWith(s)) {
                 allow = false;
                 break;
@@ -40,63 +53,72 @@ public class ChatColours extends Module {
         }
         return allow;
     }
-    public enum Color {
-        None('f',false),
-        Black('0',false),
-        BlackNormal(']',true),
-        DarkGray('8',false),
-        Gray('7',false),
-        GrayNormal('[',true),
-        DarkBlue('1',false),
-        Blue('9',false),
-        DarkGreen('2',false),
-        Green('a',false),
-        NormalGreen('>',true),
-        DarkAqua('3',false),
-        DarkAquaNormal(';',true),
-        Aqua('b',false),
-        AquaNormal(':',true),
-        DarkRed('4',false),
-        Red('c',false),
-        RedNormal('<',true),
-        DarkPurple('5',false),
-        Purple('d',false),
-        Gold('6',false),
-        GoldNormal(',',true),
-        Yellow('e',false),
-        YellowNormal('!',true),
-        Obfuscated('k',false);
 
-        private final String value;
+    /**
+     * These methods get the codes to put into chat.
+     * @param value - settings
+     * @return - the code.
+     */
 
-        Color(char c,boolean bypass) {
-            if(bypass) value = String.valueOf(c);
-            else value = "&" + c;
+    public String getCodeFromSetting(String value)
+    {
+        switch (value)
+        {
+            case "None":
+                return "";
+            case "Black":
+                return "&0";
+            case "DarkGray":
+                return "&8";
+            case "Gray":
+                return "&7";
+            case "DarkBlue":
+                return "&1";
+            case "Blue":
+                return "&9";
+            case "DarkGreen":
+                return "&2";
+            case "Green":
+                return "&a";
+            case "DarkAqua":
+                return "&3";
+            case "Aqua":
+                return "&b";
+            case "DarkRed":
+                return "&4";
+            case "Red":
+                return "&c";
+            case "DarkPurple":
+                return "&5";
+            case "Purple":
+                return "&d";
+            case "Gold":
+                return "&6";
+            case "Yellow":
+                return "&e";
         }
-
-        public String getValue() {
-            return value;
-        }
-    }
-    public enum Modifier {
-        None(" "),
-        Bold("l"),
-        Italic("o"),
-        BoldItalic("l&o"),
-        StrikeThrough("m"),
-        Underline("n");
-
-        private final String value;
-
-        Modifier(String c) {
-            if(Objects.equals(c, " ")) value = "";
-            else value = "&" + c;
-        }
-        public String getValue() {
-            return value;
-        }
+        Infinity.LOGGER.error("ChatColours couldn't return a proper colour! String value passed to method: " + value);
+        return "";
     }
 
-
-
+    public String getModifierFromSetting(String value)
+    {
+        switch (value)
+        {
+            case "None":
+                return "";
+            case "Bold":
+                return "&l";
+            case "Italic":
+                return "&o";
+            case "BoldItalic":
+                return "&l&o";
+            case "LineThrough":
+                return "&m";
+            case "Underline":
+                return "&n";
+        }
+        Infinity.LOGGER.error("ChatColours couldn't return a proper modifier! String value passed to the method: " + value);
+        return "";
+    }
 }

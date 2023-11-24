@@ -30,6 +30,32 @@ public class EntityUtil implements IGlobals {
         }
         return 0.0f;
     }
+
+    public static double[] forward(double speed) {
+        float forward = mc.player.movementInput.moveForward;
+        float side = mc.player.movementInput.moveStrafe;
+        float yaw = mc.player.prevRotationYaw + (mc.player.rotationYaw - mc.player.prevRotationYaw) * mc.getRenderPartialTicks();
+        if (forward != 0.0f) {
+            if (side > 0.0f) {
+                yaw += ((forward > 0.0f) ? -45 : 45);
+            }
+            else if (side < 0.0f) {
+                yaw += ((forward > 0.0f) ? 45 : -45);
+            }
+            side = 0.0f;
+            if (forward > 0.0f) {
+                forward = 1.0f;
+            }
+            else if (forward < 0.0f) {
+                forward = -1.0f;
+            }
+        }
+        double sin = Math.sin(Math.toRadians(yaw + 90.0f));
+        double cos = Math.cos(Math.toRadians(yaw + 90.0f));
+        double posX = forward * speed * cos + side * speed * sin;
+        double posZ = forward * speed * sin - side * speed * cos;
+        return new double[] { posX, posZ };
+    }
     public static String getFacing(final String in) {
         final String gray = ChatFormatting.DARK_GRAY + "";
         final String white = ChatFormatting.WHITE + "";
@@ -55,6 +81,11 @@ public class EntityUtil implements IGlobals {
     public static double getEyeHeight(final Entity entity) {
         return entity.posY + entity.getEyeHeight();
     }
+
+    public static Vec3d getEyesPos(final Entity entity) {
+        return new Vec3d(entity.posX, getEyeHeight(entity), entity.posZ);
+    }
+
     public static HoleUtil.Hole getTargetHoleVec3D(double targetRange, int deviation) {
         return HoleUtil.getHoles(targetRange, getPlayerPos(), false).stream().filter(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)) <= targetRange).filter(hole -> mc.player.posY + deviation >= hole.pos1.getY()).min(Comparator.comparingDouble(hole -> mc.player.getPositionVector().distanceTo(new Vec3d((double)hole.pos1.getX() + 0.5, mc.player.posY, (double)hole.pos1.getZ() + 0.5)))).orElse(null);
     }

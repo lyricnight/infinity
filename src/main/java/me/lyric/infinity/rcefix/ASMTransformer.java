@@ -21,8 +21,8 @@ public class ASMTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         if (transformedName.equals("net.minecraft.client.gui.GuiNewChat")) {
-            final ClassNode node = new ClassNode();
-            final ClassReader reader = new ClassReader(basicClass);
+            ClassNode node = new ClassNode();
+            ClassReader reader = new ClassReader(basicClass);
             reader.accept(node, ClassReader.EXPAND_FRAMES);
 
             for (MethodNode methodNode : node.methods) {
@@ -34,7 +34,7 @@ public class ASMTransformer implements IClassTransformer {
                 }
             }
 
-            final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
             node.accept(writer);
             return writer.toByteArray();
         } else {

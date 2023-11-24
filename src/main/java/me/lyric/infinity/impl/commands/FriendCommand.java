@@ -2,6 +2,7 @@ package me.lyric.infinity.impl.commands;
 
 import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
+import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.string.StringUtils;
 import me.lyric.infinity.manager.Managers;
 
@@ -49,7 +50,11 @@ public class FriendCommand extends Command {
             Managers.FRIENDS.removeFriend(friend);
             this.splash(CommandState.PERFORMED);
         }
-
+        if (StringUtils.contains(task, "description"))
+        {
+            ChatUtils.sendMessage(getDescription());
+            splash(CommandState.PERFORMED);
+        }
     }
 
 
