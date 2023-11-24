@@ -127,6 +127,7 @@ public class ModuleManager {
         this.modules.add(new Criticals());
         this.modules.add(new HoleFiller());
         this.modules.add(new Burrow());
+        this.modules.add(new Trap());
         this.modules.add(new Arrow());
         this.modules.add(new AntiCev());
         this.modules.add(new AutoCity());
