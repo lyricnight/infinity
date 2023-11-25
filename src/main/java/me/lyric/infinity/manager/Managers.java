@@ -16,6 +16,8 @@ public class Managers implements IGlobals {
 
     public static final ModuleManager MODULES = new ModuleManager();
 
+    public static final ConfigManager CONFIG = new ConfigManager();
+
     public static final CommandManager COMMANDS = new CommandManager();
 
     public static final FontManager FONT = new FontManager();
@@ -41,12 +43,13 @@ public class Managers implements IGlobals {
     public static void init()
     {
         Infinity.LOGGER.info("Subscribing all managers.");
-        subscribe(MODULES, COMMANDS, FONT, FRIENDS, HOLES, PLACEMENTS, ROTATIONS, THREADS, TPS, FORGE);
+        subscribe(MODULES, CONFIG, COMMANDS, FONT, FRIENDS, HOLES, PLACEMENTS, ROTATIONS, THREADS, TPS, FORGE);
         Infinity.LOGGER.info("Subscribing done.");
         MODULES.init();
         COMMANDS.init();
         TPS.init();
         THREADS.init();
+        FONT.init();
         Infinity.LOGGER.info("Initialising done.");
         SplashProgress.setProgress(2, "Loading Infinity's Configs...");
         ConfigManager.loadPlayer();

@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 public class CFont {
+    //TODO: Fix this not working properly. Maybe I need a different font, or copy Slick's stuff into here.
     private static final int IMG_SIZE = 512;
     protected CharData[] charData = new CharData[256];
     protected Font font;

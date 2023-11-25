@@ -85,20 +85,20 @@ public class HUD extends Module {
                 }
                 float x;
                 module.animfactor = MathUtils.linearInterpolation(module.animfactor, module.isEnabled() ? 1.0f : 0.0f, 0.005f * Managers.FORGE.frameTime);
-                x = SCREEN_WIDTH - ((module.animfactor * Managers.FONT.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) + 2);
+                x = SCREEN_WIDTH - ((module.animfactor * (Infinity.infinityFont.getStringWidth(module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : ""))) / 2.0f ) + 2);
                 if (!module.isEnabled() && module.animfactor < 0.05f) {
                     modules.remove(module);
                 }
                 String text = module.name + (!module.getDisplayInfo().equals("") ? ChatFormatting.GRAY + " [" + ChatFormatting.WHITE + module.getDisplayInfo() + ChatFormatting.GRAY + "]" : "");
-                Managers.FONT.drawString(text, x, deltaY, getTextColor(deltaY).getRGB(), shadow.getValue());
-                deltaY += (int) ((Managers.FONT.getHeight(text) + 1) * module.animfactor);
+                Infinity.infinityFont.drawString(text, x, deltaY, getTextColor(deltaY).getRGB(), shadow.getValue());
+                deltaY += (int) (((Infinity.infinityFont.getHeight(text) / 2.0f) + 1) * module.animfactor);
             }
         }
         if (info.getValue()) {
             DecimalFormat minuteFormatter = new DecimalFormat("0");
             DecimalFormat secondsFormatter = new DecimalFormat("00");
-            List<InfoComponent> potions = new ArrayList<InfoComponent>();
-            List<InfoComponent> info = new ArrayList<InfoComponent>();
+            List<InfoComponent> potions = new ArrayList<>();
+            List<InfoComponent> info = new ArrayList<>();
             for (PotionEffect effect : mc.player.getActivePotionEffects()) {
                 double timeS = (double) effect.getDuration() / 20 % 60;
                 double timeM = (double) effect.getDuration() / 20 / 60;
@@ -115,7 +115,7 @@ public class HUD extends Module {
             double distanceX = mc.player.posX - mc.player.prevPosX;
             double distanceZ = mc.player.posZ - mc.player.prevPosZ;
             info.add(new InfoComponent("Speed " + ChatFormatting.WHITE + MathUtils.roundFloat((MathHelper.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceZ, 2)) / 1000) / (0.05F / 3600), 1) + " km/h"));
-            info.sort(Comparator.comparingInt(i -> - Managers.FONT.getStringWidth(i.text)));
+            info.sort(Comparator.comparingInt(i -> - (int)(Infinity.infinityFont.getStringWidth(i.text) / 2.0f)));
             renderPotions(potions);
             renderInfo(info);
         }
@@ -124,16 +124,16 @@ public class HUD extends Module {
             DecimalFormat coordFormat = new DecimalFormat("#.#");
             boolean inHell = mc.world.getBiome(mc.player.getPosition()).getBiomeName().equals("Hell");
             int k = (mc.currentScreen instanceof GuiChat) ? 14 : 0;
-            Managers.FONT.drawString(EntityUtil.getFacing(mc.player.getHorizontalFacing().getName().toUpperCase()), 2, 530 - mc.fontRenderer.FONT_HEIGHT - k, getTextColor(530 - mc.fontRenderer.FONT_HEIGHT).getRGB(), shadow.getValue());
+            Infinity.infinityFont.drawString(EntityUtil.getFacing(mc.player.getHorizontalFacing().getName().toUpperCase()), 2, 530 - mc.fontRenderer.FONT_HEIGHT - k, getTextColor(530 - mc.fontRenderer.FONT_HEIGHT).getRGB(), shadow.getValue());
             if (inHell) {
-                Managers.FONT.drawString("XYZ " + ChatFormatting.WHITE + coordFormat.format(mc.player.posX) + ", " + coordFormat.format(mc.player.posY) + ", " + coordFormat.format(mc.player.posZ) + ChatFormatting.DARK_GRAY + " (" + ChatFormatting.WHITE + coordFormat.format(mc.player.posX * 7.0) + ", " + coordFormat.format(mc.player.posZ * 7.0) + ChatFormatting.DARK_GRAY + ")", 2, 530 - k, getTextColor(530).getRGB(), shadow.getValue());
+                Infinity.infinityFont.drawString("XYZ " + ChatFormatting.WHITE + coordFormat.format(mc.player.posX) + ", " + coordFormat.format(mc.player.posY) + ", " + coordFormat.format(mc.player.posZ) + ChatFormatting.DARK_GRAY + " (" + ChatFormatting.WHITE + coordFormat.format(mc.player.posX * 7.0) + ", " + coordFormat.format(mc.player.posZ * 7.0) + ChatFormatting.DARK_GRAY + ")", 2, 530 - k, getTextColor(530).getRGB(), shadow.getValue());
             }
             else {
-                Managers.FONT.drawString("XYZ " + ChatFormatting.WHITE + coordFormat.format(mc.player.posX) + ", " + coordFormat.format(mc.player.posY) + ", " + coordFormat.format(mc.player.posZ) + ChatFormatting.DARK_GRAY + " (" + ChatFormatting.WHITE + coordFormat.format(mc.player.posX / 7.0) + ", " + coordFormat.format(mc.player.posZ / 7.0) + ChatFormatting.DARK_GRAY + ")", 2, 530 - k, getTextColor(530).getRGB(), shadow.getValue());
+                Infinity.infinityFont.drawString("XYZ " + ChatFormatting.WHITE + coordFormat.format(mc.player.posX) + ", " + coordFormat.format(mc.player.posY) + ", " + coordFormat.format(mc.player.posZ) + ChatFormatting.DARK_GRAY + " (" + ChatFormatting.WHITE + coordFormat.format(mc.player.posX / 7.0) + ", " + coordFormat.format(mc.player.posZ / 7.0) + ChatFormatting.DARK_GRAY + ")", 2, 530 - k, getTextColor(530).getRGB(), shadow.getValue());
             }
         }
         if (watermark.getValue()) {
-            Managers.FONT.drawString("Infinity" + " " + Infinity.INSTANCE.version, waterX.getValue(), waterY.getValue(), getTextColor(waterY.getValue()).getRGB(), shadow.getValue());
+            Infinity.infinityFont.drawString("Infinity" + " " + Infinity.INSTANCE.version, waterX.getValue(), waterY.getValue(), getTextColor(waterY.getValue()).getRGB(), shadow.getValue());
         }
         if (armor.getValue()) {
             RenderUtils.renderArmorNew();
@@ -153,24 +153,24 @@ public class HUD extends Module {
     public void renderGreeter() {
         int width = new ScaledResolution(mc).getScaledWidth();
         String welcomerString = String.format(textthing.getValue(), mc.player.getName());
-        Managers.FONT.drawString(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, getTextColor(2).getRGB(), shadow.getValue());
+        Infinity.infinityFont.drawString(welcomerString, width / 2.0f - mc.fontRenderer.getStringWidth(welcomerString) / 2.0f + 2.0f, 2, getTextColor(2).getRGB(), shadow.getValue());
     }
     public void renderInfo(List<InfoComponent> info) {
         int start = new ScaledResolution(mc).getScaledHeight() - 11;
         int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
         for (InfoComponent comp : info) {
-            int x = SCREEN_WIDTH - mc.fontRenderer.getStringWidth(comp.text);
-            Managers.FONT.drawString(comp.text, x - 2, (start + offset + 1), getTextColor(start + offset).getRGB(), shadow.getValue());
-            offset -= Managers.FONT.getHeight(comp.text) + 1;
+            int x = SCREEN_WIDTH - (int)(Infinity.infinityFont.getStringWidth(comp.text) / 2.0f);
+            Infinity.infinityFont.drawString(comp.text, x - 2, (start + offset + 1), getTextColor(start + offset).getRGB(), shadow.getValue());
+            offset -= (Infinity.infinityFont.getHeight(comp.text) / 2.0f ) + 1;
         }
     }
     public void renderPotions(List<InfoComponent> potions) {
         int start = new ScaledResolution(mc).getScaledHeight() - 11;
         for (InfoComponent comp : potions) {
             int SCREEN_WIDTH = new ScaledResolution(mc).getScaledWidth();
-            int x = SCREEN_WIDTH - mc.fontRenderer.getStringWidth(comp.text);
-            Managers.FONT.drawString(comp.text, (x - 2), (start + offset + 1), getTextColor(start + offset).getRGB(), shadow.getValue());
-            offset -= Managers.FONT.getHeight(comp.text) + 1;
+            int x = SCREEN_WIDTH - (int) (Infinity.infinityFont.getStringWidth(comp.text) / 2.0f);
+            Infinity.infinityFont.drawString(comp.text, (x - 2), (start + offset + 1), getTextColor(start + offset).getRGB(), shadow.getValue());
+            offset -= (Infinity.infinityFont.getHeight(comp.text) / 2.0f) + 1;
         }
     }
     public static class InfoComponent

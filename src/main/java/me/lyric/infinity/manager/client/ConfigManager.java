@@ -36,6 +36,23 @@ public class ConfigManager implements IGlobals {
         }
     }
 
+    public String[] getAllConfigs()
+    {
+        try {
+            path = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Configs" + File.separator);
+            if (!path.exists())
+            {
+                return new String[]{""};
+            }
+            return path.list();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new String[]{""};
+        }
+    }
+
     public static void save(String folder) {
         path = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Configs" + File.separator + folder);
         if (!path.exists()) {
@@ -103,7 +120,7 @@ public class ConfigManager implements IGlobals {
 
     public static void saveActiveConfig(String folder) {
         try {
-            File file = new File(mc.gameDir + File.separator + "ClientRewrite" + File.separator + "ActiveConfig.txt");
+            File file = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "ActiveConfig.txt");
             if (!file.exists()) {
                 file.mkdir();
             }
@@ -118,7 +135,7 @@ public class ConfigManager implements IGlobals {
 
     public static String getActiveConfig() {
         try {
-            File file = new File(mc.gameDir + File.separator + "ClientRewrite" + File.separator + "ActiveConfig.txt");
+            File file = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "ActiveConfig.txt");
             if (!file.exists()) {
                 return "0";
             }

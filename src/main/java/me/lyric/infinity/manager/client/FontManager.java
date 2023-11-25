@@ -12,8 +12,7 @@ public class FontManager implements IGlobals {
     public Font font = new Font("Comfortaa-Regular", 0, 18);
 
     public Renderer renderer;
-
-    public FontManager()
+    public void init()
     {
         renderer = new Renderer(font, Managers.MODULES.getModuleByClass(Internals.class).aalias.getValue(), Managers.MODULES.getModuleByClass(Internals.class).frac.getValue());
     }

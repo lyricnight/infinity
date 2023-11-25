@@ -32,25 +32,4 @@ public class BlockUtil implements IGlobals {
         }
         return posses;
     }
-    public static EnumFacing getFacing(BlockPos pos) {
-        return getFacing(pos, mc.world);
-    }
-
-    public static EnumFacing getFacing(BlockPos pos, IBlockAccess provider) {
-        for (EnumFacing facing : EnumFacing.values()) {
-            if (!provider.getBlockState(pos.offset(facing)).getMaterial().isReplaceable()) {
-                return facing;
-            }
-        }
-
-        return null;
-    }
-
-    public static double getDistanceSq(BlockPos pos) {
-        return getDistanceSq(mc.player, pos);
-    }
-
-    public static double getDistanceSq(Entity from, BlockPos to) {
-        return from.getDistanceSqToCenter(to);
-    }
 }

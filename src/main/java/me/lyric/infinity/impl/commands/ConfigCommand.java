@@ -4,7 +4,10 @@ import me.lyric.infinity.api.command.Command;
 import me.lyric.infinity.api.command.CommandState;
 import me.lyric.infinity.api.util.minecraft.chat.ChatUtils;
 import me.lyric.infinity.api.util.string.StringUtils;
+import me.lyric.infinity.manager.Managers;
 import me.lyric.infinity.manager.client.ConfigManager;
+
+import java.util.Arrays;
 
 /**
  * @author lyric
@@ -18,7 +21,7 @@ public class ConfigCommand extends Command {
 
     @Override
     public String theCommand() {
-        return "config <save/load> <name> / description>";
+        return "config <save/load> <name> / description / list>";
     }
 
     @Override
@@ -57,6 +60,12 @@ public class ConfigCommand extends Command {
                 ChatUtils.sendMessage("The config file " + name + " does not exist!");
                 splash(CommandState.ERROR);
             }
+        }
+        if (StringUtils.contains(task, "list"))
+        {
+            String[] all = Managers.CONFIG.getAllConfigs();
+            Arrays.stream(all).forEach(string -> ChatUtils.sendMessage(string + " "));
+            splash(CommandState.PERFORMED);
         }
         if (StringUtils.contains(task, "description"))
         {

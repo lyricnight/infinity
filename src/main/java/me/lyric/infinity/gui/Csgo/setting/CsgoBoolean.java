@@ -13,16 +13,16 @@ public class CsgoBoolean extends CsgoSetting
 {
     BooleanSetting setting;
     
-    public CsgoBoolean(final BooleanSetting setting) {
+    public CsgoBoolean(BooleanSetting setting) {
         super(setting);
         this.setting = setting;
     }
     
-    public void drawScreen(final int mouseX, final int mouseY) {
-        final String name = this.setting.getName();
+    public void drawScreen(int mouseX, int mouseY) {
+        String name = this.setting.getName();
         Infinity.infinityFont.drawStringWithShadow(name, (float)(this.x + 1), this.y + this.height / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, -1);
         RenderUtils.rectangle((float)(this.x + this.width - 18), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(0, 0, 0, this.isInsideBox(mouseX, mouseY) ? 40 : 20).getRGB());
-        final String value = this.setting.getValue() ? "On" : "Off";
+        String value = this.setting.getValue() ? "On" : "Off";
         Infinity.infinityFont.drawStringWithShadow(value, this.x + this.width - 10.0f - Infinity.infinityFont.getStringWidth(value) / 2.0f, this.y + 2 + (this.height - 2) / 2.0f - Infinity.infinityFont.getHeight(name) / 2.0f, (this.setting.getValue()) ? (Managers.MODULES.getModuleByClass(ClickGUI.class).color.getValue()).getRGB() : -1);
         RenderUtils.outline((float)(this.x + this.width - 18), (float)(this.y + 2), (float)(this.x + this.width - 2), (float)(this.y + this.height - 2), new Color(2894892), 1.0f);
     }
