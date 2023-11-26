@@ -8,6 +8,7 @@ import me.lyric.infinity.api.util.gl.ImageUtils;
 import me.lyric.infinity.api.util.gl.RenderUtils;
 import me.lyric.infinity.impl.modules.client.ClickGUI;
 import me.lyric.infinity.manager.Managers;
+import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
@@ -197,6 +198,7 @@ public class CsgoGui extends GuiScreen {
 
     public void initGui() {
         if (!OpenGlHelper.shadersSupported) return;
+        if(mc.player == null || mc.world == null || mc.currentScreen instanceof GuiDownloadTerrain) return;
         if (!(mc.getRenderViewEntity() instanceof EntityPlayer)) return;
         try {
             mc.entityRenderer.getShaderGroup().deleteShaderGroup();

@@ -19,6 +19,8 @@ import org.lwjgl.opengl.Display;
 public class Infinity {
     public static final Logger LOGGER = LogManager.getLogger("Infinity");
 
+    public Managers managers;
+
     public static ClientFont infinityFont;
 
     public static EventBus eventBus = new EventBus(LambdaHandler.class, Infinity.LOGGER::error, Infinity.LOGGER::info);
@@ -34,6 +36,7 @@ public class Infinity {
     }
 
     public void whoosh(String whoosh) {
+        managers = new Managers();
         SplashProgress.setProgress(1, "Initializing Minecraft");
         LOGGER.info("Initialising Infinity.");
         Display.setTitle("Infinity " + version);

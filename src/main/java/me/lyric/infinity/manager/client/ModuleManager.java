@@ -70,6 +70,7 @@ public class ModuleManager {
         this.modules.add(new ClickGUI());
         this.modules.add(new Notifications());
         this.modules.add(new HUD());
+        this.modules.add(new Fonts());
         this.modules.add(new Internals());
         this.modules.add(new RPC());
 

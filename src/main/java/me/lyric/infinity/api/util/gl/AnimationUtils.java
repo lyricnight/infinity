@@ -16,9 +16,9 @@ public class AnimationUtils implements IGlobals {
 
     public static Float increaseNumber(float input, float target, float delta) {
         if (input < target) {
-            return Float.valueOf(input + delta);
+            return input + delta;
         }
-        return Float.valueOf(target);
+        return target;
     }
 
     public static Double increaseNumber(double input, double target, double delta) {
@@ -37,8 +37,8 @@ public class AnimationUtils implements IGlobals {
 
     public static Float decreaseNumber(float input, float target, float delta) {
         if (input > target) {
-            return Float.valueOf(input - delta);
+            return input - delta;
         }
-        return Float.valueOf(target);
+        return target;
     }
 }

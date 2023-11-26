@@ -36,24 +36,4 @@ public class ImageUtils implements IGlobals {
         GuiScreen.drawScaledCustomSizeModalRect(x, y, 0.0f, 0.0f, width, height, width, height, (float)width, (float)height);
         GlStateManager.disableAlpha();
     }
-
-
-    /**
-     * perhaps a way to get around icons not loading? update - doesn't work properly
-     * @param resourceLocation
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     */
-    public static void imageGL(ResourceLocation resourceLocation, int x, int y, int width, int height)
-    {
-        ScaledResolution scaledResolution = new ScaledResolution(mc);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, RenderUtils.loadGlTexture(resourceLocation));
-
-        GlStateManager.resetColor();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
-        Gui.drawScaledCustomSizeModalRect(x, y, 0, 0, width, height, scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight(), width, height);
-    }
 }

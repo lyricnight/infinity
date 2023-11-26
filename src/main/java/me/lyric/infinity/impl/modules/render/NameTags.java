@@ -159,16 +159,16 @@ public class NameTags extends Module {
         GlStateManager.enableBlend();
 
         if (rect.getValue()) {
-            drawRect(-width - 2, -(Managers.FONT.getHeight(displayTag) + 1), (float) width + 2.0f, 1.5f, Managers.FRIENDS.isFriend(player.getDisplayNameString()) ? friendtextColor.getValue().getRGB() : mainColor.getValue().getRGB());
+            drawRect(-width - 2, -(Managers.FONT.getStringHeight() + 1), (float) width + 2.0f, 1.5f, Managers.FRIENDS.isFriend(player.getDisplayNameString()) ? friendtextColor.getValue().getRGB() : mainColor.getValue().getRGB());
             if (outline.getValue()) {
-                drawOutlineRect((float) (-width - 2), (float) (-(Managers.FONT.getHeight(displayTag) + 1)), width + 2.0f, 1.5f, outlineColor.getValue().getRGB());
+                drawOutlineRect((float) (-width - 2), (float) (-(Managers.FONT.getStringHeight() + 1)), width + 2.0f, 1.5f, outlineColor.getValue().getRGB());
             }
         }
         GlStateManager.disableBlend();
         ItemStack renderMainHand = player.getHeldItemMainhand().copy();
         if (heldStackName.getValue() && !renderMainHand.isEmpty() && renderMainHand.getItem() != Items.AIR) {
             String stackName = renderMainHand.getDisplayName();
-            int stackNameWidth = mc.fontRenderer.getStringWidth(stackName) / 2;
+            int stackNameWidth = Managers.FONT.getStringWidth(stackName) / 2;
             GL11.glPushMatrix();
             GL11.glScalef(0.75f, 0.75f, 0.0f);
             Managers.FONT.drawString(stackName, -stackNameWidth, -(getBiggestArmorTag(player) + 20.0f), -1, true);
@@ -221,7 +221,7 @@ public class NameTags extends Module {
                GlStateManager.popMatrix();
            }
         }
-        Managers.FONT.drawString(displayTag, -width, -(mc.fontRenderer.FONT_HEIGHT - 1), getDisplayColour(player), true);
+        Managers.FONT.drawString(displayTag, -width, -(Managers.FONT.getStringHeight() - 1), getDisplayColour(player), true);
         camera.posX = originalPositionX;
         camera.posY = originalPositionY;
         camera.posZ = originalPositionZ;
@@ -382,6 +382,8 @@ public class NameTags extends Module {
     private double interpolate(double previous, double current, float delta) {
         return previous + (current - previous) * (double) delta;
     }
+
+    @SuppressWarnings("unused")
     @EventListener
     public void onRenderNametag(RenderNametagEvent event) {
         if (!nullSafe()) return;

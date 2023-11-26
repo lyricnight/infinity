@@ -9,7 +9,7 @@ import me.lyric.infinity.api.module.ModuleInformation;
 import me.lyric.infinity.api.setting.settings.BooleanSetting;
 import me.lyric.infinity.api.setting.settings.ModeSetting;
 import me.lyric.infinity.api.setting.settings.StringSetting;
-import me.lyric.infinity.api.util.string.ChatFormat;
+import me.lyric.infinity.api.util.string.StringUtils;
 import me.lyric.infinity.mixin.mixins.accessors.ICPacketChat;
 import me.lyric.infinity.mixin.mixins.accessors.ISPacketChat;
 import net.minecraft.network.play.client.CPacketChatMessage;
@@ -17,6 +17,7 @@ import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.util.text.TextComponentString;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 /**
     @author lyric
@@ -26,8 +27,8 @@ import java.util.Date;
 public class BetterChat extends Module {
     public final BooleanSetting timeStamps = createSetting("Timestamps", true);
     public final BooleanSetting rect = createSetting("NoRect", true);
-    public ModeSetting bracketColor = createSetting("BracketColor", ChatFormat.DARK_PURPLE, ChatFormat.getAll());
-    public ModeSetting commandColor = createSetting("NameColor", ChatFormat.LIGHT_PURPLE, ChatFormat.getAll());
+    public ModeSetting bracketColor = createSetting("BracketColor", "Black", Arrays.asList("None", "Black", "DarkGray", "Gray", "DarkBlue", "Blue", "DarkGreen", "Green", "DarkAqua", "Aqua", "DarkRed", "Red", "DarkPurple", "Purple", "Gold", "Yellow"));
+    public ModeSetting commandColor = createSetting("NameColor", "DarkGray", Arrays.asList("None", "Black", "DarkGray", "Gray", "DarkBlue", "Blue", "DarkGreen", "Green", "DarkAqua", "Aqua", "DarkRed", "Red", "DarkPurple", "Purple", "Gold", "Yellow"));
 
     public BooleanSetting inf = createSetting("Infinite", false);
 
@@ -60,8 +61,7 @@ public class BetterChat extends Module {
         String date = new SimpleDateFormat("k:mm").format(new Date());
         final String bracket = "<";
         final String bracket2 = ">";
-        return ChatFormat.coloredString(bracket, this.bracketColor.getValue()) + ChatFormat.coloredString(date, this.commandColor.getValue()) + ChatFormat.coloredString(bracket2, this.bracketColor.getValue());
+        return StringUtils.coloredString(bracket, this.bracketColor.getValue()) + StringUtils.coloredString(date, this.commandColor.getValue()) + StringUtils.coloredString(bracket2, this.bracketColor.getValue());
     }
-
 }
 

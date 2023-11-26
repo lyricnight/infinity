@@ -1,5 +1,6 @@
 package me.lyric.infinity.manager.client;
 
+import me.lyric.infinity.Infinity;
 import me.lyric.infinity.api.module.Module;
 import me.lyric.infinity.api.setting.Setting;
 import me.lyric.infinity.api.setting.settings.*;
@@ -28,10 +29,12 @@ public class ConfigManager implements IGlobals {
             path.mkdirs();
         }
         if (!getActiveConfig().equals("0")) {
+            Infinity.LOGGER.info("loading config " + getActiveConfig());
             load(getActiveConfig());
         }
         else
         {
+            Infinity.LOGGER.info("loading default.");
             load("0");
         }
     }
@@ -48,6 +51,7 @@ public class ConfigManager implements IGlobals {
         }
         catch (Exception e)
         {
+            Infinity.LOGGER.info("Exception in all configs.");
             e.printStackTrace();
             return new String[]{""};
         }
@@ -58,6 +62,7 @@ public class ConfigManager implements IGlobals {
         if (!path.exists()) {
             path.mkdirs();
         }
+        Infinity.LOGGER.info("saving config " + folder);
         saveModuleFile();
         saveActiveConfig(folder);
         savePrefix();
@@ -66,8 +71,10 @@ public class ConfigManager implements IGlobals {
     public static boolean load(String folder) {
         path = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Configs" + File.separator + folder);
         if (!path.exists()) {
+            Infinity.LOGGER.info("config does not exist: " + folder);
             return false;
         }
+        Infinity.LOGGER.info("loading config " + folder);
         setModuleValue();
         setModuleBind();
         setModuleSettingValues();
@@ -90,6 +97,7 @@ public class ConfigManager implements IGlobals {
             if (!file.exists()) {
                 file.createNewFile();
             }
+            Infinity.LOGGER.info("saving prefix.");
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
             bufferedWriter.write(Managers.COMMANDS.getPrefix());
             bufferedWriter.close();
@@ -103,8 +111,10 @@ public class ConfigManager implements IGlobals {
         try {
             File file = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "Prefix.txt");
             if (!file.exists()) {
+                Infinity.LOGGER.info("prefix returned incorrect.");
                 return ".";
             }
+            Infinity.LOGGER.info("loading prefix.");
             FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
             DataInputStream dataInputStream = new DataInputStream(fileInputStream);
             BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
@@ -114,6 +124,7 @@ public class ConfigManager implements IGlobals {
         }
         catch (Exception exception) {
             exception.printStackTrace();
+            Infinity.LOGGER.info("prefix returned incorrect.");
             return ".";
         }
     }
@@ -122,11 +133,12 @@ public class ConfigManager implements IGlobals {
         try {
             File file = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "ActiveConfig.txt");
             if (!file.exists()) {
-                file.mkdir();
+                file.createNewFile();
             }
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
             bufferedWriter.write(folder);
             bufferedWriter.close();
+            Infinity.LOGGER.info("ActiveConfig saved.");
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -144,10 +156,12 @@ public class ConfigManager implements IGlobals {
             BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
             String line = bufferReader.readLine();
             bufferReader.close();
+            Infinity.LOGGER.info(line);
             return line;
         }
         catch (Exception exception) {
             exception.printStackTrace();
+            Infinity.LOGGER.info("getActiveConfig returned incorrect.");
             return "0";
         }
     }

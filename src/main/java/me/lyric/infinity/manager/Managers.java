@@ -49,7 +49,6 @@ public class Managers implements IGlobals {
         COMMANDS.init();
         TPS.init();
         THREADS.init();
-        FONT.init();
         Infinity.LOGGER.info("Initialising done.");
         SplashProgress.setProgress(2, "Loading Infinity's Configs...");
         ConfigManager.loadPlayer();
@@ -65,6 +64,7 @@ public class Managers implements IGlobals {
     {
         Infinity.LOGGER.info("Unloading Managers.");
         TPSManager.unload();
+        Infinity.LOGGER.info("TPSManager done.");
         ConfigManager.savePlayer();
         ConfigManager.save(ConfigManager.getActiveConfig());
         Infinity.LOGGER.info("Done.");

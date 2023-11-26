@@ -98,10 +98,4 @@ public class ColorUtils implements IGlobals {
         final float a = sa * value + ea * (1.0f - value);
         return new Color(r, g, b, a);
     }
-
-    public static Color interpolate(final Color color1, final Color color2, final float value) {
-        return new Color((int)(color1.getRed() + (color2.getRed() - color1.getRed()) * value), (int)(color1.getGreen() + (color2.getGreen() - color1.getGreen()) * value), (int)(color1.getBlue() + (color2.getBlue() - color1.getBlue()) * value));
-    }
-
-
 }
