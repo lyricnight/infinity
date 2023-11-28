@@ -46,13 +46,15 @@ public class Managers implements IGlobals {
         subscribe(MODULES, CONFIG, COMMANDS, FONT, FRIENDS, HOLES, PLACEMENTS, ROTATIONS, THREADS, TPS, FORGE);
         Infinity.LOGGER.info("Subscribing done.");
         MODULES.init();
+        CONFIG.init();
         COMMANDS.init();
         TPS.init();
         THREADS.init();
         Infinity.LOGGER.info("Initialising done.");
         SplashProgress.setProgress(2, "Loading Infinity's Configs...");
-        ConfigManager.loadPlayer();
-        CommandManager.setPrefix(ConfigManager.getPrefix());
+        CONFIG.loadPlayer();
+        CommandManager.setPrefix(CONFIG.getPrefix());
+        Infinity.LOGGER.info("ConfigManager found prefix to be :" + CONFIG.getPrefix());
         Infinity.LOGGER.info("ConfigManager has loaded config and prefix.");
     }
 
@@ -60,13 +62,14 @@ public class Managers implements IGlobals {
     /**
      * @apiNote unloads all managers.
      */
+
     public static void unload()
     {
         Infinity.LOGGER.info("Unloading Managers.");
         TPSManager.unload();
         Infinity.LOGGER.info("TPSManager done.");
-        ConfigManager.savePlayer();
-        ConfigManager.save(ConfigManager.getActiveConfig());
+        CONFIG.savePlayer();
+        CONFIG.save(CONFIG.getActiveConfig());
         Infinity.LOGGER.info("Done.");
     }
 
@@ -80,6 +83,7 @@ public class Managers implements IGlobals {
     {
         for (Object subscriber : subscribers)
         {
+            Infinity.LOGGER.info("Subscribed " + subscriber);
             Infinity.eventBus.subscribe(subscriber);
             MinecraftForge.EVENT_BUS.register(subscriber);
         }

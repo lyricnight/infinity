@@ -18,18 +18,20 @@ import java.util.Iterator;
 public class ConfigManager implements IGlobals {
     public static File socialsPath;
     static File path;
-
-    public ConfigManager() {
+    public void init()
+    {
         socialsPath = new File(this.mc.gameDir + File.separator + "Infinity" + File.separator + "Socials");
         if (!socialsPath.exists()) {
             socialsPath.mkdirs();
         }
+        Infinity.LOGGER.info("Loaded socials paths.");
         path = new File(this.mc.gameDir + File.separator + "Infinity" + File.separator + "Configs");
         if (!path.exists()) {
             path.mkdirs();
         }
+        Infinity.LOGGER.info("Loaded config paths.");
         if (!getActiveConfig().equals("0")) {
-            Infinity.LOGGER.info("loading config " + getActiveConfig());
+            Infinity.LOGGER.info("loading config from init() :" + getActiveConfig());
             load(getActiveConfig());
         }
         else
@@ -103,6 +105,7 @@ public class ConfigManager implements IGlobals {
             bufferedWriter.close();
         }
         catch (Exception exception) {
+            Infinity.LOGGER.info("prefix exception.");
             exception.printStackTrace();
         }
     }
@@ -120,6 +123,7 @@ public class ConfigManager implements IGlobals {
             BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
             String line = bufferReader.readLine();
             bufferReader.close();
+            Infinity.LOGGER.info("getPrefix returned:" + line);
             return line;
         }
         catch (Exception exception) {
@@ -149,6 +153,7 @@ public class ConfigManager implements IGlobals {
         try {
             File file = new File(mc.gameDir + File.separator + "Infinity" + File.separator + "ActiveConfig.txt");
             if (!file.exists()) {
+                Infinity.LOGGER.info("getActiveConfig returned 0.");
                 return "0";
             }
             FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
@@ -156,7 +161,7 @@ public class ConfigManager implements IGlobals {
             BufferedReader bufferReader = new BufferedReader(new InputStreamReader(dataInputStream));
             String line = bufferReader.readLine();
             bufferReader.close();
-            Infinity.LOGGER.info(line);
+            Infinity.LOGGER.info("getActiveConfig returned:" + line);
             return line;
         }
         catch (Exception exception) {
